@@ -1,10 +1,10 @@
 export const projects = [
   {
-    title: 'Survey Form',
-    description: "Using HTLM, CSS you'll learn how to build a Full Stack MERN Application - from start to finish. The App is called Memories and it is a simple social media app that allows users to post interesting events that happened in their lives.",
-      image: '/images/1.png',
-      tags: ['HTML', 'CSS'],
-    source: 'https://github.com/Canepro/FCC-Survey-Form',
+    title: 'Personal Portfolio',
+    description: "Using Next.js, JavaScript to build my first personal portfolio.",
+      image: '/images/6.png',
+      tags: ['Next.js', 'JavaScript'],
+    source: 'https://github.com/Canepro/portfolio_website-main',
     visit: 'https://codepen.io/canepro/pen/vYemNmm',
     id: 0,
   },
