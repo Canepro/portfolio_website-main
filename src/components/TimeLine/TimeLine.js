@@ -48,9 +48,9 @@ const Timeline = () => {
       <SectionText>
       Customer-focused, result-oriented team player and knowledgeable DevOps Engineer/Front-End Web Developer/Cloud Solutions Architect with over 5 years of experience assisting customers with various issues. Provided in-depth technical support to clients at a Tier 2 level, solving 99.3% of issues without transferring to Tier 3 support. <br />
 
-I have extensive experience in Cloud Administrations (Microsoft Azure and AWS) and Front-End Web Development (HTML, CSS and React.js) and possess excellent client-facing skills, natural problem solving and analytical skills and the ability to contribute to the development of best practices, procedures, and policies within a company. <br />
+      I have extensive experience in Cloud Administrations (Microsoft Azure and AWS) and Front-End Web Development (HTML, CSS and React.js) and possess excellent client-facing skills, natural problem solving and analytical skills and the ability to contribute to the development of best practices, procedures, and policies within a company. <br />
 
-My colleagues would describe me as resourceful, patient and optimistic, as I see setbacks as opportunities to learn and grow. There is always a creative solution to a problem, and I love searching for it. One instance that comes to mind was when I was commended by my previous Team manager and colleagues for developing a knowledge base and incorporating it into the Team’s group chat for easy accessibility, reference, and usage. This improved the team KPI and performance.
+      My colleagues would describe me as resourceful, patient and optimistic, as I see setbacks as opportunities to learn and grow. There is always a creative solution to a problem, and I love searching for it. One instance that comes to mind was when I was commended by my previous Team manager and colleagues for developing a knowledge base and incorporating it into the Team’s group chat for easy accessibility, reference, and usage. This improved the team KPI and performance.
       </SectionText>
       <CarouselContainer ref={carouselRef} onScroll={handleScroll}>
         <>

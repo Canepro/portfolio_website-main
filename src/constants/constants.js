@@ -38,10 +38,10 @@ export const projects = [
 ];
 
 export const TimeLineData = [
-  { year: 2015, text: 'Worked with HERITAGE BANK LIMITED as an IT REGIONAL SUPPORT OFFICER.', },
-  { year: 2019, text: 'Worked with TEK-EXPERTS as TECHNICAL SUPPORT ENGINEER (Stage II).', },
-  { year: 2019, text: 'Got my MANAGING MICROSOFT 365 IDENTITY & SERVICES (MS 100)', },
-  { year: 2020, text: 'Became a TECHNICAL LEAD at TEK-EXPERTS.', },
+  { year: 2015, text: 'Worked with Heritage Bank as an IT Regional Support Officer.', },
+  { year: 2019, text: 'Worked with Tek-Experts as a Technical Support Engineer (Stage II).', },
+  { year: 2019, text: 'Got my Managing Microsoft 365 Identity & Services (MS 100)', },
+  { year: 2020, text: 'Became a TECHNICAL LEAD at Tek-Experts.', },
   { year: 2020, text: 'Joined Crossover for Work as an L1 Technical Support Engineer.', },
   { year: 2021, text: 'Started my DevOps journey', },
   { year: 2022, text: 'Started my Front-End Development journey', },
