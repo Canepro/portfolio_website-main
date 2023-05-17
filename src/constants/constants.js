@@ -5,7 +5,7 @@ export const projects = [
       image: '/images/6.png',
       tags: ['Next.js', 'JavaScript'],
     source: 'https://github.com/Canepro/portfolio_website-main',
-    visit: 'https://codepen.io/canepro/pen/vYemNmm',
+    visit: 'https://quirky-bell-385b8d.netlify.app/',
     id: 0,
   },
   {
