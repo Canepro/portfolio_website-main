@@ -43,7 +43,7 @@ const Technologies = () =>  (
           <DiZend size="3rem" />
         </picture>
         <ListContainer>
-          <ListTitle>Customer Tech Support</ListTitle>
+          <ListTitle>Technical Support Analyst</ListTitle>
           <ListParagraph>
             Experience with Services like <br />
             Microsoft 365 (Exchange Online) <br />
