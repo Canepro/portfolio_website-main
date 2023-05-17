@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start"
   },
   "dependencies": {
@@ -16,3 +16,21 @@
     "styled-normalize": "^8.0.7"
   }
 }
+
+//Q: What is missing?
+//A: The "next export" command is missing from the "build" script. This is the command that will generate the static files for the export. Without it, the build will fail.   
+
+//Q: What is the difference between "next build" and "next export"?
+
+//A: The "next build" command will generate the static files for the export. The "next export" command will generate the static files for the export and will also generate the static files for the dynamic routes.
+
+//Q: How do you fix the error?
+//A: Add the "next export" command to the "build" script.
+
+//Q: Where can I find the "build" script?
+//A: In the "package.json" file.
+
+//Q: What is the command I need and where in the "package.json" file?
+
+
+
