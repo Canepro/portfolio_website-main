@@ -31,3 +31,6 @@ export default Acomplishments;
 // check out the above code and fix for errors
 // Path: src\components\Acomplishments\AcomplishmentsStyles.js
 
+//q: What is the issue in AcomplishmentsStyles.js?
+//a: 
+
