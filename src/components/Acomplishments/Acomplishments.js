@@ -26,3 +26,8 @@ const Acomplishments = () => (
 );
 
 export default Acomplishments;
+
+
+// check out the above code and fix for errors
+// Path: src\components\Acomplishments\AcomplishmentsStyles.js
+
