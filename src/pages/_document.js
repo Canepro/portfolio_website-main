@@ -27,11 +27,30 @@ export default class MyDocument extends Document {
       sheet.seal()
     }
   }
+
   render() {
     return (
       <Html lang='en-GB'>
         <Head>
-          <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+          />
+          <script type="text/javascript">
+            {`
+              (function(w, d, s, u) {
+                w.RocketChat = function(c) { w.RocketChat._.push(c) };
+                w.RocketChat._ = [];
+                w.RocketChat.url = u;
+                var h = d.getElementsByTagName(s)[0],
+                  j = d.createElement(s);
+                j.async = true;
+                j.src = 'https://canepros.rocket.chat/livechat/rocketchat-livechat.min.js?_=201903270000';
+                h.parentNode.insertBefore(j, h);
+              })(window, document, 'script', 'https://canepros.rocket.chat/livechat');
+            `}
+          </script>
+          
         </Head>
         <body>
           <Main />
