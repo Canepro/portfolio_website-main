@@ -45,7 +45,7 @@ export default class MyDocument extends Document {
                 var h = d.getElementsByTagName(s)[0],
                   j = d.createElement(s);
                 j.async = true;
-                j.src = 'https://canepros.rocket.chat/livechat';
+                j.src = 'https://canepros.rocket.chat/livechat/rocketchat-livechat.min.js?_=201903270000';
                 h.parentNode.insertBefore(j, h);
               })(window, document, 'script', 'https://canepros.rocket.chat/livechat');
             `}
