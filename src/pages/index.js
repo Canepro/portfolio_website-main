@@ -7,46 +7,36 @@ import Timeline from '../components/TimeLine/TimeLine';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const Home = () => {
-  // Define a state variable to store the livechat script
-  const [livechatScript, setLivechatScript] = React.useState(null);
+  // Define a ref variable to store the livechat script
+  const livechatScript = useRef(null);
 
-  // Define a function to load the livechat script
-  const loadLivechatScript = () => {
+  // Use an effect hook to load and unload the livechat script on mount and unmount
+  useEffect(() => {
     // Create a script element
     const script = document.createElement('script');
 
     // Set the source and attributes of the script
-    script.src = 'https://canepros.rocket.chat/livechat/rocketchat-livechat.min.js?_=201903270000';
+    script.src =
+      'https://canepros.rocket.chat/livechat/rocketchat-livechat.min.js?_=201903270000';
     script.async = true;
     script.id = 'livechat-script';
 
-    // Append the script to the document body
-    document.body.appendChild(script);
+    // Append the script to the document head
+    document.head.appendChild(script);
 
-    // Set the livechat script state variable to the script element
-    setLivechatScript(script);
-  };
-
-  // Define a function to unload the livechat script
-  const unloadLivechatScript = () => {
-    // Remove the script element from the document body
-    document.body.removeChild(livechatScript);
-
-    // Set the livechat script state variable to null
-    setLivechatScript(null);
-  };
-
-  // Use an effect hook to load and unload the livechat script on mount and unmount
-  useEffect(() => {
-    // Load the livechat script on mount
-    loadLivechatScript();
+    // Set the livechat script ref variable to the script element
+    livechatScript.current = script;
 
     // Return a cleanup function to unload the livechat script on unmount
     return () => {
-      unloadLivechatScript();
+      // Remove the script element from the document head
+      document.head.removeChild(livechatScript.current);
+
+      // Set the livechat script ref variable to null
+      livechatScript.current = null;
     };
   }, []);
 
@@ -82,3 +72,4 @@ const Home = () => {
 };
 
 export default Home;
+
