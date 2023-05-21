@@ -59,12 +59,16 @@ const Technologies = () =>  (
           <ListTitle>Technical Support Analyst</ListTitle>
           <ListParagraph style={{ listStyleType: 'disc' }}>
             Experience with Services like <br />
-            Microsoft 365 (Exchange Online) <br />
-            Microsoft Azure <br />
-            RocketChat <br /> 
-            Support ticketing software (RAVE, ZohoDesk, Zendesk, ZenDesk Chat, HelpScout, Intercom, etc.….) <br />
-            Jira <br />
-            Confluence <br />
+            Microsoft 365 (Exchange Online) 
+            <br /><br />
+            Microsoft Azure 
+            <br /><br />
+            RocketChat 
+            <br /><br /> 
+            Support ticketing software (RAVE, ZohoDesk, Zendesk, ZenDesk Chat, HelpScout, Intercom, etc.….) 
+            <br /><br />
+            Jira and Confluence
+            <br /><br />
             Github <br />
           </ListParagraph>
         </ListContainer>
