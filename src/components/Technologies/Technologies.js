@@ -8,7 +8,7 @@ const Technologies = () =>  (
     <SectionDivider divider />
     <SectionTitle>Technologies</SectionTitle>
     <SectionText>
-      I've worked with a range a technologies in the both in Cloud and web development world.
+      I have experience working with a variety of technologies in both cloud and web development.
     </SectionText>
     <List>
       <ListItem>
@@ -21,7 +21,9 @@ const Technologies = () =>  (
             Experiece with <br />
             React.js <br />
             HTML 5 <br />
-            CSS3
+            CSS3 <br />
+            JavaScript <br />
+            API <br />            
           </ListParagraph>
         </ListContainer>
       </ListItem>
@@ -30,12 +32,14 @@ const Technologies = () =>  (
           <DiFirebase size="3rem" />
         </picture>
         <ListContainer>
-          <ListTitle>Cloud</ListTitle>
+          <ListTitle>DevOps/Cloud</ListTitle>
           <ListParagraph>
-            Experience with <br />
-            Azure Cloud <br />
-            AWS Cloud
-          </ListParagraph>
+            Experience with designing, planning, implementing, and maintaining cloud-based infrastructure and services. <br />
+            Working with cloud providers, such as Amazon Web Services (AWS) and Microsoft Azure, to build and manage cloud environments. <br />
+            Collaborating with software developers, system administrators, and other IT professionals to ensure that cloud-based applications and services are secure, scalable, and highly available. <br />
+            Having a strong understanding of cloud computing concepts. <br />
+            Having experience with cloud platforms, networking, security, and automation tools. <br />
+        </ListParagraph>
         </ListContainer>
       </ListItem>
       <ListItem>
@@ -47,8 +51,12 @@ const Technologies = () =>  (
           <ListParagraph>
             Experience with Services like <br />
             Microsoft 365 (Exchange Online) <br />
-            Support ticketing software (RAVE, Zendesk, ZenDesk Chat, HelpScout, Intercom, etc.….) <br />
+            Microsoft Azure <br />
+            RocketChat <br /> 
+            Support ticketing software (RAVE, ZohoDesk, Zendesk, ZenDesk Chat, HelpScout, Intercom, etc.….) <br />
             Jira <br />
+            Confluence <br />
+            Github <br />
           </ListParagraph>
         </ListContainer>
       </ListItem>
