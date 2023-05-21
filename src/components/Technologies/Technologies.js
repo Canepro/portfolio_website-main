@@ -17,7 +17,7 @@ const Technologies = () =>  (
         </picture>
         <ListContainer>
           <ListTitle>Front-End</ListTitle>
-          <ListParagraph>
+          <ListParagraph style={{ listStyleType: 'disc' }}>
             Experiece with <br />
             React.js <br />
             HTML 5 <br />
@@ -33,14 +33,20 @@ const Technologies = () =>  (
         </picture>
         <ListContainer>
           <ListTitle>DevOps/Cloud</ListTitle>
-          <ListParagraph>
-            Experience with designing, planning, implementing, and maintaining cloud-based infrastructure and services. 
+          <ListParagraph style={{ listStyleType: 'disc' }}>
+            Experience with cloud platforms such as Amazon Web Services (AWS) and Microsoft Azure. 
             <br /><br />
-            Working with cloud providers, such as Amazon Web Services (AWS) and Microsoft Azure, to build and manage cloud environments. 
+            Experience with Infrastructure as Code (IaC) tools such as Terraform and CloudFormation. 
             <br /><br />
-            Collaborating with software developers, system administrators, and other IT professionals to ensure that cloud-based applications and services are secure, scalable, and highly available. 
+            Experience with configuration management tools such as Ansible and Chef. 
             <br /><br />
-            Strong understanding of cloud computing concepts and experience with cloud platforms, networking, security, and automation tools. 
+            Experience with containerization tools such as Docker and Kubernetes. 
+            <br /><br />
+            Experience with monitoring and logging tools such as CloudWatch, Prometheus, and Grafana. 
+            <br /><br />
+            Experience with automation tools such as Jenkins and GitLab CI/CD. 
+            <br /><br />
+            Experience with security tools such as AWS Security Hub and Azure Security Center. 
             <br /><br />
         </ListParagraph>
         </ListContainer>
@@ -51,7 +57,7 @@ const Technologies = () =>  (
         </picture>
         <ListContainer>
           <ListTitle>Technical Support Analyst</ListTitle>
-          <ListParagraph>
+          <ListParagraph style={{ listStyleType: 'disc' }}>
             Experience with Services like <br />
             Microsoft 365 (Exchange Online) <br />
             Microsoft Azure <br />
