@@ -34,12 +34,15 @@ const Technologies = () =>  (
         <ListContainer>
           <ListTitle>DevOps/Cloud</ListTitle>
           <ListParagraph>
-            Experience with designing, planning, implementing, and maintaining cloud-based infrastructure and services. <br />
-            Working with cloud providers, such as Amazon Web Services (AWS) and Microsoft Azure, to build and manage cloud environments. <br />
-            Collaborating with software developers, system administrators, and other IT professionals to ensure that cloud-based applications and services are secure, scalable, and highly available. <br />
-            Having a strong understanding of cloud computing concepts. <br />
-            Having experience with cloud platforms, networking, security, and automation tools. <br />
-        </ListParagraph>
+            Experience with designing, planning, implementing, and maintaining cloud-based infrastructure and services. 
+            <br />
+            Working with cloud providers, such as Amazon Web Services (AWS) and Microsoft Azure, to build and manage cloud environments. 
+            <br />
+            Collaborating with software developers, system administrators, and other IT professionals to ensure that cloud-based applications and services are secure, scalable, and highly available. 
+            <br />
+            Strong understanding of cloud computing concepts and experience with cloud platforms, networking, security, and automation tools. 
+            <br />
+            </ListParagraph>
         </ListContainer>
       </ListItem>
       <ListItem>
