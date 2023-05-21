@@ -17,22 +17,22 @@ const Acomplishments = () => (
       {data.map((card, index) => (
         <Box key={index}>
           {card.text === 'Open Source Projects' ? (
-            <a href="https://github.com/canepro?tab=repositories">
+            <a href="https://github.com/canepro?tab=repositories" target="_blank">
               <BoxNum>{`${card.number}+`}</BoxNum>
               <BoxText>{card.text}</BoxText>
             </a>
           ) : card.text === 'Certifications' ? (
-            <a href="https://www.credly.com/users/vincent-mogah">
+            <a href="https://www.credly.com/users/vincent-mogah" target="_blank">
               <BoxNum>{`${card.number}+`}</BoxNum>
               <BoxText>{card.text}</BoxText>
             </a>
           ) : card.text === 'Github Followers' ? (
-            <a href="https://github.com/canepro?tab=followers">
+            <a href="https://github.com/canepro?tab=followers" target="_blank">
               <BoxNum>{`${card.number}+`}</BoxNum>
               <BoxText>{card.text}</BoxText>
             </a>
           ) : (
-            <a href="https://github.com/canepro?tab=stars">
+            <a href="https://github.com/canepro?tab=stars" target="_blank">
               <BoxNum>{`${card.number}+`}</BoxNum>
               <BoxText>{card.text}</BoxText>
             </a>
