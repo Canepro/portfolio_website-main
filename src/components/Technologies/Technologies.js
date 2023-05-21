@@ -60,15 +60,15 @@ const Technologies = () =>  (
           <ListParagraph style={{ listStyleType: 'disc' }}>
             Experience with Services like <br />
             Microsoft 365 (Exchange Online) 
-            <br /><br />
+            <br />
             Microsoft Azure 
-            <br /><br />
+            <br />
             RocketChat 
-            <br /><br /> 
+            <br />
             Support ticketing software (RAVE, ZohoDesk, Zendesk, ZenDesk Chat, HelpScout, Intercom, etc.….) 
-            <br /><br />
+            <br />
             Jira and Confluence
-            <br /><br />
+            <br />
             Github <br />
           </ListParagraph>
         </ListContainer>
