@@ -46,7 +46,9 @@ const Timeline = () => {
     <Section id="about">
       <SectionTitle>About Me</SectionTitle>
       <SectionText>
-          I am a DevOps Engineer, Front-End Web Developer, and Cloud Solutions Architect with over 5 years of experience in providing technical support to clients at a Tier 2 level. I have extensive experience in Cloud Administrations (Microsoft Azure and AWS) and Front-End Web Development (HTML, CSS and React.js). 
+          I am a DevOps Engineer, Front-End Web Developer, and Cloud Solutions Architect with over 5 years of experience in providing technical support to clients at a Tier 2 level. 
+          <br /><br />
+          I have extensive experience in Cloud Administrations (Microsoft Azure and AWS) and Front-End Web Development (HTML, CSS and React.js). 
           <br /><br />
           I possess excellent client-facing skills, natural problem-solving and analytical skills, and the ability to contribute to the development of best practices, procedures, and policies within a company. 
           <br /><br />
