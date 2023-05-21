@@ -16,8 +16,27 @@ const Acomplishments = () => (
     <Boxes>
       {data.map((card, index) => (
         <Box key={index}>
-          <BoxNum>{`${card.number}+`}</BoxNum>
-          <BoxText>{card.text}</BoxText>
+          {card.text === 'Open Source Projects' ? (
+            <a href="https://github.com/your-username?tab=repositories">
+              <BoxNum>{`${card.number}+`}</BoxNum>
+              <BoxText>{card.text}</BoxText>
+            </a>
+          ) : card.text === 'Certifications' ? (
+            <a href="https://www.your-certification-website.com">
+              <BoxNum>{`${card.number}+`}</BoxNum>
+              <BoxText>{card.text}</BoxText>
+            </a>
+          ) : card.text === 'Github Followers' ? (
+            <a href="https://github.com/your-username?tab=followers">
+              <BoxNum>{`${card.number}+`}</BoxNum>
+              <BoxText>{card.text}</BoxText>
+            </a>
+          ) : (
+            <a href="https://github.com/your-username?tab=stars">
+              <BoxNum>{`${card.number}+`}</BoxNum>
+              <BoxText>{card.text}</BoxText>
+            </a>
+          )}
         </Box>
       ))}
     </Boxes>
@@ -26,11 +45,3 @@ const Acomplishments = () => (
 );
 
 export default Acomplishments;
-
-
-// check out the above code and fix for errors
-// Path: src\components\Acomplishments\AcomplishmentsStyles.js
-
-//q: What is the issue in AcomplishmentsStyles.js?
-//a: 
-
