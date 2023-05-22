@@ -46,7 +46,7 @@ max-width: 196px;
 z-index: 0;
 
 &:hover {
-  background-color: #f5f5f5;
+  background-color: background-color: rgba(245, 245, 245, 0.5);
   border: none;
   cursor: pointer;
   opacity: 1;
@@ -139,6 +139,10 @@ export const CarouselItemText = styled.p`
 
   &:not(:hover) {
     color: rgba(255, 255, 255, 0.75);
+  }
+
+  &:hover {
+    color: black;
   }
 
   @media ${props => props.theme.breakpoints.lg} {
