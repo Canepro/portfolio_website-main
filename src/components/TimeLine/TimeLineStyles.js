@@ -45,14 +45,27 @@ export const CarouselItem = styled.div`
   max-width: 196px;
   z-index: 0;
   }
-  
+
+  // make hover effect for all screens
+
+  &:hover {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #ccc !important;
+    cursor: pointer;
+    z-index: 1;
+  }
+
   @media ${props => props.theme.breakpoints.md} {
     max-width: 124px;
-    
-  }
-  
-  @media ${props => props.theme.breakpoints.sm} {
     margin-left: 32px;
+
+    &:first-of-type{
+      margin-left: 0;
+    }
+  }
+
+  @media ${props => props.theme.breakpoints.sm} {
+    margin-left: 16px;
     min-width: 120px;
     background: #0E131F;
     padding: 4px;
@@ -62,18 +75,17 @@ export const CarouselItem = styled.div`
     overflow: visible;
     position: relative;
     height: fit-content;
-    
-    ${(props) => props.active === props.index ? `opacity: 1` : `opacity: 0.5`}; 
 
-    &:hover {
+    ${(props) => props.active === props.index ? `opacity: 1` : `opacity: 0.5`};
+
+      &:hover {
       background-color: #f5f5f5 !important;
       border: 1px solid #ccc !important;
       cursor: pointer;
       z-index: 1;
-
-}
+    }
+  }
 `
-
 export const CarouselItemTitle = styled.h4`
   font-weight: bold;
   font-size: 24px;
@@ -85,6 +97,12 @@ export const CarouselItemTitle = styled.h4`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
+
+  @media ${props => props.theme.breakpoints.lg} {
+    font-size: 20px;
+    line-height: 28px;
+    margin-bottom: 4px;
+  }
 
   @media ${props => props.theme.breakpoints.md} {
     font-size: 20px;
@@ -102,6 +120,11 @@ export const CarouselItemImg = styled.svg`
   -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
   width: 100%;
 
+  @media ${props => props.theme.breakpoints.md} {
+    margin-left: 16px;
+    width: 100%;
+  }
+
   @media ${props => props.theme.breakpoints.sm} {
     -webkit-mask-image: none;
     margin-left: 16px;
@@ -115,6 +138,12 @@ export const CarouselItemText = styled.p`
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0.75);
   padding-right: 16px;
+
+  @media ${props => props.theme.breakpoints.lg} {
+    font-size: 12px;
+    line-height: 18px;
+    padding-right: 32px;
+  }
 
   @media ${props => props.theme.breakpoints.md} {
     font-size: 12px;
@@ -134,12 +163,19 @@ export const CarouselButtons = styled.div`
   visibility: visible;
   margin-bottom: 24px;
 
-  @media ${props => props.theme.breakpoints.sm} {
-    margin-bottom: 48px;
+  @media ${props => props.theme.breakpoints.lg} {
+    width: 208px;
+    margin-bottom: 16px;
   }
 
   @media ${props => props.theme.breakpoints.md} {
-    margin-bottom: 24px;
+    visibility: hidden;
+    width: 208px;
+    margin-bottom: 16px;
+  }
+
+  @media ${props => props.theme.breakpoints.sm} {
+    margin-bottom: 48px;
   }
 `
 
