@@ -157,3 +157,115 @@ export const LinkTitle = styled.h4`
 		margin-bottom: 8px;
 	}
 `
+// check out the above code and fix for errors
+export const SocialIcons = styled.a`
+transition: 0.3s ease;
+color: white;
+border-radius: 50px;
+padding: 8px;
+display: inline-block;
+
+&:hover {
+	transform: scale(1.2);
+	background-color: #212d45;
+}
+
+
+@media ${props => props.theme.breakpoints.sm} {
+	padding: 4px;
+}
+`
+export const FooterLink = styled.a`
+	color: rgba(255, 255, 255, 0.75);
+	margin-bottom: 0.5rem;
+	font-size: 18px;
+	line-height: 30px;
+	transition: 0.3s ease;
+	position: relative;
+	left: 0;
+
+	&:hover {
+		color: #fff;
+		left: 6px;
+	}
+
+	@media ${props => props.theme.breakpoints.md} {
+		font-size: 16px;
+		line-height: 28px;
+		display: flex;
+	}
+
+	@media ${props => props.theme.breakpoints.sm} {
+		font-size: 8px;
+		line-height: 14px;
+		margin-bottom: 8px;
+		display: flex;
+		align-items: center;
+	}
+`
+export const Heading = styled.p`
+	font-size: 18px;
+	color: rgba(255, 255, 255, 0.75);
+	margin-bottom: 40px;
+	font-weight: bold;
+	line-height: 30px;
+
+	@media ${props => props.theme.breakpoints.md} {
+
+		font-size: 16px;
+		line-height: 28px;
+		margin-bottom: 24px;
+	}
+	@media ${props => props.theme.breakpoints.sm} {
+		font-size: 8px;
+		line-height: 14px;
+		margin-bottom: 16px;
+		display: flex;
+		align-items: center;
+	}
+`
+
+export const LinkColumn2 = styled.div`
+
+	display: flex;
+	flex-direction: column;
+	max-width: 220px;
+	width: 100%;
+`	
+export const LinkTitle2 = styled.h4`
+	font-style: normal;
+	font-weight: 600;
+	font-size: 12px;
+
+	line-height: 24px;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.4);
+	margin-bottom: 16px;
+
+	@media ${props => props.theme.breakpoints.sm} {
+		font-size: 10px;
+		line-height: 12px;
+		margin-bottom: 8px;
+	}
+`
+
+export const LinkColumn3 = styled.div`
+	display: flex;
+	flex-direction: column;
+	max-width: 220px;
+	width: 100%;
+`
+export const LinkTitle3 = styled.h4`
+	font-style: normal;
+	font-weight: 600;
+	font-size: 12px;
+	line-height: 24px;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.4);
+	margin-bottom: 16px;
+
+ 
+
+
+//q: What is the problem with this code?
+`

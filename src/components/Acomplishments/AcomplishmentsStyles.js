@@ -132,3 +132,7 @@ export const IconContainer = styled.div`
     justify-content: space-between;
   }
 `
+// check out the above code and fix for errors
+// Path: src\components\Footer\FooterStyles.js
+//q: why is the footer not showing up?
+//a: because it is not imported in the layout.js file

@@ -4,8 +4,8 @@ import { Section, SectionText, SectionTitle } from '../../styles/GlobalComponent
 import Button from '../../styles/GlobalComponents/Button';
 import { LeftSection } from './HeroStyles';
 
-const Hero = (props) => (
-  <>
+const Hero = () => {
+  return (
     <Section row nopadding>
       <LeftSection>
         <SectionTitle main center>
@@ -13,12 +13,17 @@ const Hero = (props) => (
           I am Vincent Mogah
         </SectionTitle>
         <SectionText>
-        A DevOps Engineer/Front-End Web Developer/Cloud Solutions Architect. I have extensive experience in Cloud Administrations (Microsoft Azure and AWS) and Web Development (HTML, CSS and React.js) and possess excellent client-facing skills, natural problem solving and analytical skills and the ability to contribute to the development of best practices, procedures, and policies within a company.
+          <p>I am a DevOps Engineer with 5+ years of experience in cloud administration and web development. I am a quick learner and I am eager to learn new technologies. I am also a team player and I am able to work effectively with others. I am confident that I can contribute to your company's success.</p>
+          <br />
+          <p>I have experience with Microsoft Azure and AWS, and I am able to deploy and manage applications in the cloud. I am also able to configure and manage cloud resources. I have experience with HTML, CSS, and React.js, and I am able to develop user interfaces and web applications. I am also able to integrate web applications with cloud services.</p>
+          <br />
+          <p>I am a highly motivated and results-oriented individual. I am confident that I can make a significant contribution to your company. I am eager to learn more about your company and the position you are seeking to fill. Thank you for your time and consideration.</p>
         </SectionText>
-        <Button onClick={() => window.location = 'https://github.com/Canepro'}>Learn More</Button>
+
+        <Button onClick={() => window.location = 'https://www.linkedin.com/in/vincent-mogah/'}>Learn More</Button>
       </LeftSection>
     </Section>
-  </>
-);
+  );
+};
 
 export default Hero;

@@ -5,7 +5,7 @@ export const projects = [
       image: '/images/6.png',
       tags: ['Next.js', 'JavaScript'],
     source: 'https://github.com/Canepro/portfolio_website-main',
-    visit: 'https://codepen.io/canepro/pen/vYemNmm',
+    visit: 'https://quirky-bell-385b8d.netlify.app/',
     id: 0,
   },
   {
@@ -45,4 +45,6 @@ export const TimeLineData = [
   { year: 2020, text: 'Joined Crossover for Work as an L1 Technical Support Engineer.', },
   { year: 2021, text: 'Started my DevOps journey', },
   { year: 2022, text: 'Started my Front-End Development journey', },
+  { year: 2022, text: 'Also Started working with a tech start-up, Rocket.Chat as A Technical Support Analyst', },
+  { year: 2023, text: 'Still working with Rocket.Chat, while improving my DevOps and Cloud skills', },
 ];

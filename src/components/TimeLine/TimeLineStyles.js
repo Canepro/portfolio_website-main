@@ -61,7 +61,12 @@ export const CarouselItem = styled.div`
     height: fit-content;
     
     ${(props) => props.active === props.index ? `opacity: 1` : `opacity: 0.5`}; 
-  }
+
+ &:hover {
+  background-color: #f5f5f5 !important;
+  border: 1px solid #ccc !important;
+  cursor: pointer;
+}
 `
 
 export const CarouselItemTitle = styled.h4`
@@ -120,13 +125,16 @@ export const CarouselItemText = styled.p`
 export const CarouselButtons = styled.div`
   width: 288px;
 
-  display: none;
-  visibility: hidden;
+  display: flex;
+  visibility: visible;
+  margin-bottom: 24px;
 
   @media ${props => props.theme.breakpoints.sm} {
-    display: flex;
-    visibility: visible;
     margin-bottom: 48px;
+  }
+
+  @media ${props => props.theme.breakpoints.md} {
+    margin-bottom: 24px;
   }
 `
 
@@ -140,10 +148,12 @@ export const CarouselButton = styled.button`
   opacity: ${(props) => props.active === props.index ? `1` : `.33`};
   transform: ${(props) => props.active === props.index ? `scale(1.6)` : `scale(1)`};
 
-  &:focus {
-    outline: none;
+  &:hover {
+    background-color: transparent;
+    border: none;
+    z-index: 1;
   }
-`
+`;
 
 export const CarouselButtonDot = styled.div`
   background-color: white;
