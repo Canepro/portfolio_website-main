@@ -46,11 +46,9 @@ export const CarouselItem = styled.div`
   z-index: 0;
   }
 
-  // make hover effect for all screens
-
   &:hover {
-    background-color: #f5f5f5 !important;
-    border: 1px solid #ccc !important;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
     cursor: pointer;
     z-index: 1;
   }
