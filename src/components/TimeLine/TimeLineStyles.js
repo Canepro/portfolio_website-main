@@ -46,7 +46,7 @@ max-width: 196px;
 z-index: 0;
 
 &:hover {
-  background-color: transparent;
+  background-color: #f5f5f5;
   border: none;
   cursor: pointer;
   opacity: 1;
