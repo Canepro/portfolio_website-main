@@ -137,6 +137,10 @@ export const CarouselItemText = styled.p`
   color: rgba(255, 255, 255, 0.75);
   padding-right: 16px;
 
+  &:not(:hover) {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
   @media ${props => props.theme.breakpoints.lg} {
     font-size: 12px;
     line-height: 18px;
