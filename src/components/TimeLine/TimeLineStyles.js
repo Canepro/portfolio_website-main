@@ -43,25 +43,7 @@ export const CarouselItem = styled.div`
   background: #0F1624;
   border-radius: 3px;
   max-width: 196px;
-  padding: 1rem;
-  align-content: start;
-  scroll-snap-align: start;
-  margin-left: 32px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  overflow: visible;
-  position: relative;
-  height: fit-content;
-  transition: opacity 0.3s ease-in-out;
-
-  ${(props) => props.active === props.index ? `opacity: 1` : `opacity: 0.5`};
-
-  &:hover {
-    background-color: #f5f5f5 !important;
-    border: 1px solid #ccc !important;
-    cursor: pointer;
-    opacity: 1;
-    z-index: 1;
+  z-index: 0;
   }
   
   @media ${props => props.theme.breakpoints.md} {
@@ -83,12 +65,11 @@ export const CarouselItem = styled.div`
     
     ${(props) => props.active === props.index ? `opacity: 1` : `opacity: 0.5`}; 
 
- &:hover {
-  background-color: #f5f5f5 !important;
-  border: 1px solid #ccc !important;
-  cursor: pointer;
-  opacity: 1;
-  z-index: 1;
+    &:hover {
+      background-color: #f5f5f5 !important;
+      border: 1px solid #ccc !important;
+      cursor: pointer;
+      z-index: 1;
 
 }
 `
