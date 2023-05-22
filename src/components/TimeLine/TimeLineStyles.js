@@ -77,8 +77,8 @@ export const CarouselItem = styled.div`
     ${(props) => props.active === props.index ? `opacity: 1` : `opacity: 0.5`};
 
       &:hover {
-      background-color: #f5f5f5 !important;
-      border: 1px solid #ccc !important;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
       cursor: pointer;
       z-index: 1;
     }
