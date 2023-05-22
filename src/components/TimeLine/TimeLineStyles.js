@@ -40,17 +40,26 @@ export const CarouselMobileScrollNode = styled.div`
 `
 
 export const CarouselItem = styled.div`
-  background: #0F1624;
-  border-radius: 3px;
-  max-width: 196px;
-  z-index: 0;
-  }
+line-height: 1.15;
+text-size-adjust: 100%;
+font-family: "Space Grotesk", sans-serif;
+font-size: 1.6rem;
+color: rgb(242, 245, 247);
+cursor: default;
+list-style: none;
+box-sizing: border-box;
+margin: 0px;
+padding: 0px;
+background: rgb(15, 22, 36);
+border-radius: 3px;
+max-width: 196px;
+z-index: 0;
 
-  &:hover {
-    background-color: #f5f5f5 !important;
-    border: 1px solid #ccc;
-    cursor: pointer;
-    z-index: 1;
+&:hover {
+  background-color: blue;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  z-index: 1;
   }
 
   @media ${props => props.theme.breakpoints.md} {
