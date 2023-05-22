@@ -47,7 +47,7 @@ export const CarouselItem = styled.div`
   }
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: #f5f5f5 !important;
     border: 1px solid #ccc;
     cursor: pointer;
     z-index: 1;
