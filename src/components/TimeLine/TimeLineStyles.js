@@ -49,7 +49,7 @@ z-index: 0;
   background-color: transparent;
   border: none;
   cursor: pointer;
-  opacity: 0.8;
+  opacity: 1;
   z-index: 1;
   }
 
