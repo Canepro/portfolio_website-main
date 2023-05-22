@@ -125,13 +125,16 @@ export const CarouselItemText = styled.p`
 export const CarouselButtons = styled.div`
   width: 288px;
 
-  display: none;
-  visibility: hidden;
+  display: flex;
+  visibility: visible;
+  margin-bottom: 24px;
 
   @media ${props => props.theme.breakpoints.sm} {
-    display: flex;
-    visibility: visible;
     margin-bottom: 48px;
+  }
+
+  @media ${props => props.theme.breakpoints.md} {
+    margin-bottom: 24px;
   }
 `
 
