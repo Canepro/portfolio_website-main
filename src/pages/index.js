@@ -6,7 +6,6 @@ import Technologies from '../components/Technologies/Technologies';
 import Timeline from '../components/TimeLine/TimeLine';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
-
 import React, { useEffect, useRef } from 'react';
 
 const Home = () => {
@@ -50,7 +49,6 @@ const Home = () => {
       <Technologies />
       <Timeline />
       <Acomplishments />
-
     </Layout>
   );
 };
