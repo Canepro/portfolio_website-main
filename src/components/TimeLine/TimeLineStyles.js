@@ -61,6 +61,11 @@ export const CarouselItem = styled.div`
     height: fit-content;
     
     ${(props) => props.active === props.index ? `opacity: 1` : `opacity: 0.5`}; 
+
+    &:hover {
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+    }
   }
 `
 
