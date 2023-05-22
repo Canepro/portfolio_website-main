@@ -47,8 +47,9 @@ z-index: 0;
 
 &:hover {
   background-color: transparent;
-  border: 1px solid #ccc;
+  border: none;
   cursor: pointer;
+  opacity: 0.8;
   z-index: 1;
   }
 
