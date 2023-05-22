@@ -148,10 +148,12 @@ export const CarouselButton = styled.button`
   opacity: ${(props) => props.active === props.index ? `1` : `.33`};
   transform: ${(props) => props.active === props.index ? `scale(1.6)` : `scale(1)`};
 
-  &:focus {
-    outline: none;
+  &:hover {
+    background-color: transparent;
+    border: none;
+    z-index: 1;
   }
-`
+`;
 
 export const CarouselButtonDot = styled.div`
   background-color: white;
