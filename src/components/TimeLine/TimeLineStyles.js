@@ -109,6 +109,10 @@ export const CarouselItemTitle = styled.h4`
   -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
 
+  &:hover {
+    color: black;
+  }
+
   @media ${props => props.theme.breakpoints.lg} {
     font-size: 20px;
     line-height: 28px;
