@@ -46,10 +46,10 @@ max-width: 196px;
 z-index: 0;
 
 &:hover {
-  background-color: background-color: rgba(245, 245, 245, 0.5);
+  background-color: rgba(245, 245, 245, 0.8);
   border: none;
   cursor: pointer;
-  opacity: 1;
+  opacity: 0.8;
   z-index: 1;
   }
 
