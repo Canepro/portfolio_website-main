@@ -53,6 +53,19 @@ z-index: 0;
   z-index: 1;
   }
 
+@media ${props => props.theme.breakpoints.lg} {
+  margin-left: 16px;
+  min-width: 120px;
+  background: #0E131F;
+  padding: 4px;
+  align-content: start;
+  scroll-snap-align: start;
+  border-radius: 3px;
+  overflow: visible;
+  position: relative;
+  height: fit-content;
+  }
+
   @media ${props => props.theme.breakpoints.md} {
     max-width: 124px;
     margin-left: 32px;
