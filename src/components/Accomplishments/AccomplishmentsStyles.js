@@ -49,22 +49,6 @@ export const Box = styled.div`
 export const BoxNum = styled.h5`
   font-style: normal;
   font-weight: 600;
-<<<<<<< HEAD
-  font-size: 36px;
-  line-height: 40px;
-  letter-spacing: 0.01em;
-  color: #FFFFFF;
-  margin-bottom: 8px;
-
-  @media ${props => props.theme.breakpoints.md} {
-    font-size: 28px;
-    line-height: 32px;
-  }
-  @media ${props => props.theme.breakpoints.sm} {
-    font-size: 24px;
-    line-height: 26px;
-}
-=======
   font-size: 32px;
   line-height: 39px;
   color: #F7F7F7;
@@ -79,26 +63,24 @@ export const BoxNum = styled.h5`
     font-size: 24px;
     line-height: 30px;
   }
->>>>>>> origin/fix/standardize-component-names
 `
 
 export const BoxText = styled.p`
   font-style: normal;
-<<<<<<< HEAD
-  font-weight: normal;
-  font-size: 18px;
+  font-weight: 400;
+  font-size: 16px;
   line-height: 24px;
-  letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.75);
+  color: #A7B2C4;
+  margin: 0;
 
-  @media ${props => props.theme.breakpoints.md}{
-    font-size: 16px;
-    line-height: 20px;
-  };
+  @media ${props => props.theme.breakpoints.md} {
+    font-size: 14px;
+    line-height: 22px;
+  }
 
   @media ${props => props.theme.breakpoints.sm} {
-    font-size: 10px;
-    line-height: 14px;
+    font-size: 12px;
+    line-height: 20px;
   }
 `
 
@@ -150,25 +132,3 @@ export const IconContainer = styled.div`
     justify-content: space-between;
   }
 `
-// check out the above code and fix for errors
-// Path: src\components\Footer\FooterStyles.js
-//q: why is the footer not showing up?
-//a: because it is not imported in the layout.js file
-=======
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #A7B2C4;
-  margin: 0;
-
-  @media ${props => props.theme.breakpoints.md} {
-    font-size: 14px;
-    line-height: 22px;
-  }
-
-  @media ${props => props.theme.breakpoints.sm} {
-    font-size: 12px;
-    line-height: 20px;
-  }
-`
->>>>>>> origin/fix/standardize-component-names
