@@ -8,6 +8,7 @@ const BackgroundAnimation = () => (
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
+<<<<<<< HEAD
       <g opacity="0.15">
         <path
           fillRule="evenodd"
@@ -358,8 +359,15 @@ const BackgroundAnimation = () => (
           <stop offset="1" stopColor="#13ADC7" stopOpacity="0" />
         </linearGradient>
       </defs>
+=======
+      {/* ...existing SVG code... */}
+>>>>>>> origin/fix/standardize-component-names
     </svg>
   </div>
 );
 
+<<<<<<< HEAD
 export default BackgroundAnimation;
+=======
+export default BackgroundAnimation;
+>>>>>>> origin/fix/standardize-component-names
