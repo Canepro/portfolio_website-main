@@ -92,19 +92,22 @@ const projectsWithImages = [
     title: "Azure Cloud Infrastructure",
     description: "Designed and implemented scalable cloud infrastructure solutions using Azure services. Automated deployment processes and optimized resource utilization for enterprise workloads.",
     technologies: ["Azure", "ARM Templates", "PowerShell", "Azure DevOps", "Monitoring"],
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=80"
+    image: "https://picsum.photos/600/300?random=200",
+    fallback: "https://via.placeholder.com/600x300/1a202c/0078d4?text=Azure+Cloud"
   },
   {
     title: "CI/CD Pipeline Automation",
     description: "Built comprehensive continuous integration and deployment pipelines using modern DevOps tools. Reduced deployment time and improved code quality through automated testing.",
     technologies: ["Jenkins", "Azure DevOps", "Docker", "Git", "YAML"],
-    image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&q=80"
+    image: "https://picsum.photos/600/300?random=300",
+    fallback: "https://via.placeholder.com/600x300/1a202c/10B981?text=CI%2FCD+Pipeline"
   },
   {
     title: "Container Orchestration",
     description: "Implemented containerization strategies and orchestrated applications using Kubernetes. Managed microservices architecture with automated scaling and monitoring.",
     technologies: ["Docker", "Kubernetes", "Helm", "Prometheus", "Grafana"],
-    image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&q=80"
+    image: "https://picsum.photos/600/300?random=400",
+    fallback: "https://via.placeholder.com/600x300/1a202c/326ce5?text=Kubernetes"
   }
 ];
 
@@ -119,6 +122,9 @@ const ProjectShowcase = () => {
               src={project.image} 
               alt={project.title}
               loading="lazy"
+              onError={(e) => {
+                e.target.src = project.fallback;
+              }}
             />
             <ProjectInfo>
               <ProjectTitle>{project.title}</ProjectTitle>

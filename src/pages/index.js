@@ -39,8 +39,10 @@ const HeroSection = styled.section`
     right: 0;
     bottom: 0;
     background: 
+      url('https://picsum.photos/1920/1080?random=1&blur=2') center/cover,
       radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
       radial-gradient(circle at 70% 60%, rgba(239, 68, 68, 0.08) 0%, transparent 50%);
+    opacity: 0.3;
     pointer-events: none;
   }
   
@@ -214,6 +216,21 @@ const InteractiveSection = styled.section`
   text-align: center;
 `;
 
+// Add a hero image overlay
+const HeroImageOverlay = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background: url('https://via.placeholder.com/300x300/1a202c/3B82F6?text=CANEPRO') center/contain no-repeat;
+  opacity: 0.1;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(1px);
+`;
+
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -273,6 +290,7 @@ export default function HomePage() {
       
       <main style={{ position: 'relative', zIndex: 1, paddingTop: '70px' }} role="main">
         <HeroSection id="home">
+          <HeroImageOverlay />
           <TypewriterEffect 
             texts={[
               "QUANTUM DEVOPS ENGINEER", 

@@ -23,9 +23,9 @@ const FooterContainer = styled.footer`
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80') center/cover;
-    opacity: 0.05;
-    filter: blur(3px);
+    background: url('https://picsum.photos/1200/400?random=500&blur=3') center/cover;
+    opacity: 0.03;
+    filter: blur(5px);
   }
 `;
 

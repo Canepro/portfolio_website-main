@@ -59,9 +59,12 @@ const HeroImageSection = () => {
   return (
     <HeroImageContainer>
       <HeroImage 
-        src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80"
+        src="https://picsum.photos/1200/400?random=100"
         alt="Advanced Technology and Cloud Infrastructure"
         loading="lazy"
+        onError={(e) => {
+          e.target.src = "https://via.placeholder.com/1200x400/1a202c/3B82F6?text=ENGINEERING+THE+FUTURE";
+        }}
       />
       <HeroOverlay>
         <HeroImageTitle>ENGINEERING THE FUTURE</HeroImageTitle>

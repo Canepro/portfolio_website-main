@@ -67,43 +67,60 @@ const ImageDescription = styled.p`
   line-height: 1.4;
 `;
 
+const ImageWithFallback = styled.img`
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  
+  ${ImageCard}:hover & {
+    transform: scale(1.1);
+  }
+`;
+
 const ImageGallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const devopsImages = [
     {
       id: 1,
-      url: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
+      url: "https://picsum.photos/800/400?random=10",
+      fallback: "https://via.placeholder.com/800x400/1a202c/3B82F6?text=Cloud+Infrastructure",
       title: "Cloud Infrastructure",
       description: "Modern cloud architecture with scalable microservices and container orchestration"
     },
     {
       id: 2,
-      url: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&q=80",
+      url: "https://picsum.photos/800/400?random=20",
+      fallback: "https://via.placeholder.com/800x400/1a202c/10B981?text=CI%2FCD+Pipeline",
       title: "CI/CD Pipeline",
       description: "Automated deployment pipelines ensuring rapid and reliable software delivery"
     },
     {
       id: 3,
-      url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+      url: "https://picsum.photos/800/400?random=30",
+      fallback: "https://via.placeholder.com/800x400/1a202c/EF4444?text=Monitoring+%26+Analytics",
       title: "Monitoring & Analytics",
       description: "Real-time system monitoring with advanced analytics and alerting"
     },
     {
       id: 4,
-      url: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&q=80",
+      url: "https://picsum.photos/800/400?random=40",
+      fallback: "https://via.placeholder.com/800x400/1a202c/F59E0B?text=Container+Technology",
       title: "Container Technology",
       description: "Docker and Kubernetes orchestration for scalable application deployment"
     },
     {
       id: 5,
-      url: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&q=80",
+      url: "https://picsum.photos/800/400?random=50",
+      fallback: "https://via.placeholder.com/800x400/1a202c/8B5CF6?text=Infrastructure+as+Code",
       title: "Infrastructure as Code",
       description: "Terraform and ARM templates for reproducible infrastructure management"
     },
     {
       id: 6,
-      url: "https://images.unsplash.com/photo-1551033406-611cf9a28f54?w=800&q=80",
+      url: "https://picsum.photos/800/400?random=60",
+      fallback: "https://via.placeholder.com/800x400/1a202c/06B6D4?text=Security+%26+Compliance",
       title: "Security & Compliance",
       description: "Advanced security practices and compliance automation across all environments"
     }
@@ -122,10 +139,13 @@ const ImageGallery = () => {
       <GalleryGrid>
         {devopsImages.map((image) => (
           <ImageCard key={image.id} onClick={() => setSelectedImage(image)}>
-            <StockImage 
+            <ImageWithFallback 
               src={image.url} 
               alt={image.title}
               loading="lazy"
+              onError={(e) => {
+                e.target.src = image.fallback;
+              }}
             />
             <ImageOverlay>
               <ImageTitle>{image.title}</ImageTitle>
