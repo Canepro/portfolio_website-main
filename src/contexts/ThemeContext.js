@@ -56,6 +56,16 @@ export const themes = {
       boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
     },
 
+    // Breakpoints
+    breakpoints: {
+      xs: 'screen and (max-width: 480px)',
+      sm: 'screen and (max-width: 640px)',
+      md: 'screen and (max-width: 768px)',
+      lg: 'screen and (max-width: 1024px)',
+      xl: 'screen and (max-width: 1280px)',
+      xxl: 'screen and (max-width: 1536px)'
+    },
+
     // Animations
     animations: {
       duration: {
@@ -114,6 +124,16 @@ export const themes = {
       border: '1px solid rgba(148, 163, 184, 0.2)',
       backdropFilter: 'blur(10px)',
       boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.5)',
+    },
+
+    // Breakpoints
+    breakpoints: {
+      xs: 'screen and (max-width: 480px)',
+      sm: 'screen and (max-width: 640px)',
+      md: 'screen and (max-width: 768px)',
+      lg: 'screen and (max-width: 1024px)',
+      xl: 'screen and (max-width: 1280px)',
+      xxl: 'screen and (max-width: 1536px)'
     },
 
     // Animations
