@@ -6,18 +6,35 @@ import ModernTechnologies from '../components/Technologies/ModernTechnologies';
 import ModernContact from '../components/Contact/ModernContact';
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle';
 import AnimatedBackground from '../components/ThreeBackground/ThreeBackground';
+import Three3DBackground from '../components/ThreeBackground/Three3DBackground';
+import AIAssistant from '../components/AIAssistant/AIAssistant';
+import { MicroAnimationsProvider } from '../components/MicroAnimations/MicroAnimations';
 import ModernNavigation from '../components/Navigation/ModernNavigation';
 import LoadingScreen, { useLoading } from '../components/Loading/LoadingScreen';
+import ScrollAnimations from '../components/ScrollAnimations/ScrollAnimations';
+import CustomCursor from '../components/CustomCursor/CustomCursor';
 import Timeline from '../components/TimeLine/TimeLine';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
-import React, { useEffect, useRef } from 'react';
+import { IntegrationTest } from '../utils/integrationTest';
+import React, { useEffect, useRef, useState } from 'react';
 
 const Home = () => {
   const { isLoading, progress, loadingText } = useLoading();
+  const [use3D, setUse3D] = useState(true);
   
   // Define a ref variable to store the livechat script
   const livechatScript = useRef(null);
+
+  // Check WebGL support
+  useEffect(() => {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) {
+      setUse3D(false);
+      console.warn('WebGL not supported, falling back to CSS animations');
+    }
+  }, []);
 
   // Use an effect hook to load and unload the livechat script on mount and unmount
   useEffect(() => {
@@ -52,30 +69,48 @@ const Home = () => {
       />
       
       {!isLoading && (
-        <Layout>
-          <AnimatedBackground />
-          <ModernNavigation />
-          <ThemeToggle />
-          <Section grid id="home">
-            <ModernHero />
-            <BgAnimation />
-          </Section>
-          <div id="projects">
-            <ModernProjects />
-          </div>
-          <div id="skills">
-            <ModernTechnologies />
-          </div>
-          <div id="experience">
-            <Timeline />
-          </div>
-          <div id="about">
-            <Accomplishments />
-          </div>
-          <div id="contact">
-            <ModernContact />
-          </div>
-        </Layout>
+        <MicroAnimationsProvider>
+          <CustomCursor />
+          <Layout>
+            {/* Use 3D background if WebGL is supported, otherwise fallback to CSS */}
+            {use3D ? <Three3DBackground /> : <AnimatedBackground />}
+            
+            <ModernNavigation />
+            <ThemeToggle />
+            <ScrollAnimations />
+            
+            <Section grid id="home">
+              <ModernHero />
+              <BgAnimation />
+            </Section>
+            
+            <div id="projects">
+              <ModernProjects />
+            </div>
+            
+            <div id="skills">
+              <ModernTechnologies />
+            </div>
+            
+            <div id="experience">
+              <Timeline />
+            </div>
+            
+            <div id="about">
+              <Accomplishments />
+            </div>
+            
+            <div id="contact">
+              <ModernContact />
+            </div>
+            
+            {/* AI Assistant - available on all pages */}
+            <AIAssistant />
+            
+            {/* Integration Test - runs in development only */}
+            {process.env.NODE_ENV === 'development' && <IntegrationTest />}
+          </Layout>
+        </MicroAnimationsProvider>
       )}
     </>
   );
