@@ -7,6 +7,7 @@ import ModernContact from '../components/Contact/ModernContact';
 import TypewriterEffect from '../components/Animations/TypewriterEffect';
 import AnimatedCounter from '../components/Animations/AnimatedCounter';
 import styled from 'styled-components';
+import InstallPrompt from '../components/PWA/InstallPrompt';
 
 const HeroSection = styled.section`
   height: 70vh;
@@ -195,8 +196,9 @@ export default function HomePage() {
     <>
       <Three3DBackground />
       <ChatBot />
+      <InstallPrompt />
       
-      <main style={{ position: 'relative', zIndex: 1 }}>
+      <main style={{ position: 'relative', zIndex: 1 }} role="main">
         <HeroSection>
           <TypewriterEffect 
             texts={[
@@ -215,8 +217,8 @@ export default function HomePage() {
           </HeroSubtitle>
         </HeroSection>
 
-        <AboutSection>
-          <AboutTitle>About Vincent Mogah</AboutTitle>
+        <AboutSection aria-labelledby="about-title">
+          <AboutTitle id="about-title">About Vincent Mogah</AboutTitle>
           <AboutText>
             I'm Vincent Mogah, a dedicated DevOps Engineer with expertise in cloud infrastructure, 
             automation, and continuous integration/deployment. I specialize in designing robust, 
@@ -229,8 +231,8 @@ export default function HomePage() {
           </AboutText>
         </AboutSection>
 
-        <TechnologiesSection>
-          <AboutTitle style={{ color: 'inherit' }}>Core Technologies & Tools</AboutTitle>
+        <TechnologiesSection aria-labelledby="tech-title">
+          <AboutTitle id="tech-title" style={{ color: 'inherit' }}>Core Technologies & Tools</AboutTitle>
           <TechGrid>
             {technologies.map((tech, index) => (
               <TechCard key={tech.name}>
@@ -241,8 +243,8 @@ export default function HomePage() {
           </TechGrid>
         </TechnologiesSection>
 
-        <ProjectsSection>
-          <AboutTitle>Featured DevOps Projects</AboutTitle>
+        <ProjectsSection aria-labelledby="projects-title">
+          <AboutTitle id="projects-title">Featured DevOps Projects</AboutTitle>
           <ProjectGrid>
             {projects.map((project, index) => (
               <ProjectCard key={project.title}>
@@ -260,7 +262,10 @@ export default function HomePage() {
           </ProjectGrid>
         </ProjectsSection>
 
-        <StatsSection>
+        <StatsSection aria-labelledby="stats-title">
+          <h2 id="stats-title" style={{ gridColumn: '1 / -1', textAlign: 'center', marginBottom: '20px' }}>
+            Professional Metrics
+          </h2>
           <AnimatedCounter 
             end={20} 
             label="Infrastructure Projects" 
