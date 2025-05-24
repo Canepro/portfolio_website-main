@@ -1,10 +1,10 @@
-export default {
-  // Temp fonts
+export const defaultTheme = {
+  // Example fonts
   fonts: {
     title: "Space Grotesk, sans-serif",
-    main: "Space Grotesk, sans-serif"
+    main: "Space Grotesk, sans-serif",
   },
-  // Colors for layout
+  // Example colors
   colors: {
     primary1: "hsl(204,23.8%,95.9%)",
     background1: "#0F1624",
@@ -19,4 +19,4 @@ export default {
     lg: 'screen and (max-width: 1024px)',
     xl: 'screen and (max-width: 1280px)'
   },
-}
+};
