@@ -13,6 +13,8 @@ import Footer from '../components/Layout/Footer';
 import DevOpsPipelineVisualizer from '../components/Interactive/DevOpsPipelineVisualizer';
 import InfrastructureTopology from '../components/Interactive/InfrastructureTopology';
 import SkillRadarChart from '../components/Interactive/SkillRadarChart';
+import LiveMetricsDashboard from '../components/Interactive/LiveMetricsDashboard';
+import TechStackBuilder from '../components/Interactive/TechStackBuilder';
 
 const HeroSection = styled.section`
   height: 60vh; /* Reduced from 100vh */
@@ -295,6 +297,22 @@ export default function HomePage() {
               Explore a typical cloud infrastructure setup. Click nodes for details and "Show Traffic" to visualize data flow.
             </p>
             <InfrastructureTopology />
+          </div>
+
+          <div style={{ marginTop: '60px' }}>
+            <h3 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>Live Infrastructure Monitoring</h3>
+            <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
+              Real-time metrics dashboard showing system health, performance, and key DevOps indicators.
+            </p>
+            <LiveMetricsDashboard />
+          </div>
+
+          <div style={{ marginTop: '60px' }}>
+            <h3 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>Technology Stack Explorer</h3>
+            <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
+              Build and explore different technology combinations. Try the presets or create your own stack.
+            </p>
+            <TechStackBuilder />
           </div>
         </InteractiveSection>
 
