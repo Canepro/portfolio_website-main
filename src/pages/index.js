@@ -8,6 +8,8 @@ import TypewriterEffect from '../components/Animations/TypewriterEffect';
 import AnimatedCounter from '../components/Animations/AnimatedCounter';
 import styled from 'styled-components';
 import InstallPrompt from '../components/PWA/InstallPrompt';
+import Header from '../components/Layout/Header';
+import Footer from '../components/Layout/Footer';
 
 const HeroSection = styled.section`
   height: 70vh;
@@ -196,8 +198,7 @@ export default function HomePage() {
     <>
       <Three3DBackground />
       <ChatBot />
-      <InstallPrompt />
-      
+      <Header />
       <main style={{ position: 'relative', zIndex: 1 }} role="main">
         <HeroSection>
           <TypewriterEffect 
@@ -294,6 +295,7 @@ export default function HomePage() {
 
         <ModernContact />
       </main>
+      <Footer />
     </>
   );
 }
