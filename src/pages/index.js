@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import InstallPrompt from '../components/PWA/InstallPrompt';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
+import DevOpsPipelineVisualizer from '../components/Interactive/DevOpsPipelineVisualizer';
+import SkillRadarChart from '../components/Interactive/SkillRadarChart';
 
 const HeroSection = styled.section`
   height: 60vh; /* Reduced from 100vh */
@@ -182,6 +184,13 @@ const StatsSection = styled.section`
   border: 1px solid ${({ theme }) => theme.colors.accent1}22;
 `;
 
+const InteractiveSection = styled.section`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 20px;
+  text-align: center;
+`;
+
 export default function HomePage() {
   const technologies = [
     { name: "Azure", icon: "☁️" },
@@ -260,7 +269,21 @@ export default function HomePage() {
               </TechCard>
             ))}
           </TechGrid>
+          
+          {/* New interactive skill radar */}
+          <div style={{ marginTop: '60px' }}>
+            <h3 style={{ marginBottom: '30px', fontSize: '1.5rem' }}>Interactive Skill Assessment</h3>
+            <SkillRadarChart />
+          </div>
         </TechnologiesSection>
+
+        <InteractiveSection>
+          <AboutTitle>DevOps Pipeline Demonstration</AboutTitle>
+          <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
+            Watch an interactive CI/CD pipeline in action. Click "Run Pipeline" to see the automated workflow.
+          </p>
+          <DevOpsPipelineVisualizer />
+        </InteractiveSection>
 
         <ProjectsSection id="projects" aria-labelledby="projects-title">
           <AboutTitle id="projects-title">Featured DevOps Projects</AboutTitle>
