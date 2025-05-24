@@ -1,6 +1,5 @@
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Stars } from '@react-three/drei';
 import styled from 'styled-components';
 
 const BackgroundContainer = styled.div`
@@ -11,16 +10,14 @@ const BackgroundContainer = styled.div`
   height: 100vh;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.6; /* Make it more subtle */
+  opacity: 0.6;
 `;
 
-// Simplified particle-like geometry
 function FloatingParticle({ position, color, speed = 1 }) {
   const meshRef = useRef();
 
   useFrame((state) => {
     if (meshRef.current) {
-      // More dynamic floating motion
       meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * speed * 0.8) * 2;
       meshRef.current.position.x = position[0] + Math.cos(state.clock.elapsedTime * speed * 0.6) * 1.5;
       meshRef.current.position.z = position[2] + Math.sin(state.clock.elapsedTime * speed * 0.4) * 1;
@@ -32,24 +29,55 @@ function FloatingParticle({ position, color, speed = 1 }) {
 
   return (
     <mesh ref={meshRef} position={position} scale={0.4}>
-      <icosahedronGeometry args={[1, 1]} />
+      <sphereGeometry args={[1, 12, 12]} />
       <meshStandardMaterial 
         color={color} 
         transparent
         opacity={0.8}
         emissive={color}
         emissiveIntensity={0.3}
-        metalness={0.8}
-        roughness={0.2}
       />
     </mesh>
   );
 }
 
+function SimpleStars({ count = 1000 }) {
+  const starsRef = useRef();
+  
+  const starPositions = useMemo(() => {
+    const positions = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 100;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+    }
+    return positions;
+  }, [count]);
+
+  useFrame(() => {
+    if (starsRef.current) {
+      starsRef.current.rotation.y += 0.0002;
+    }
+  });
+
+  return (
+    <points ref={starsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={count}
+          array={starPositions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial size={0.5} color="#ffffff" transparent opacity={0.6} />
+    </points>
+  );
+}
+
 const Three3DBackground = () => {
-  // Generate more particles for richer effect
   const particles = useMemo(() => {
-    return Array.from({ length: 12 }, (_, i) => ({
+    return Array.from({ length: 8 }, (_, i) => ({
       id: i,
       position: [
         (Math.random() - 0.5) * 30,
@@ -72,24 +100,13 @@ const Three3DBackground = () => {
         }}
         dpr={[1, 1.5]}
       >
-        {/* Enhanced lighting */}
         <ambientLight intensity={0.4} />
         <pointLight position={[15, 15, 15]} intensity={0.6} color="#3B82F6" />
         <pointLight position={[-15, -15, -15]} intensity={0.4} color="#F59E0B" />
         <pointLight position={[0, 20, 10]} intensity={0.3} color="#10B981" />
         
-        {/* Enhanced stars */}
-        <Stars 
-          radius={80} 
-          depth={50} 
-          count={1500} 
-          factor={2} 
-          saturation={0} 
-          fade 
-          speed={0.5}
-        />
+        <SimpleStars count={1500} />
         
-        {/* Floating particles */}
         {particles.map((particle) => (
           <FloatingParticle
             key={particle.id}

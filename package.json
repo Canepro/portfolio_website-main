@@ -29,7 +29,7 @@
     "react-transition-group": "^4.4.5",
     "styled-components": "^5.3.0",
     "styled-normalize": "^8.0.7",
-    "three": "^0.158.0"
+    "three": "^0.160.1"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^15.1.8"
