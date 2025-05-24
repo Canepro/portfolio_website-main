@@ -12,14 +12,31 @@ import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 
 const HeroSection = styled.section`
-  height: 70vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 0 20px;
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.background1}00, ${({ theme }) => theme.colors.background2}44);
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.background1}00, ${({ theme }) => theme.colors.background2}22);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 70%, ${({ theme }) => theme.colors.accent1}11, transparent 50%),
+                radial-gradient(circle at 70% 30%, ${({ theme }) => theme.colors.button}11, transparent 50%);
+  }
+  
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 `;
 
 const HeroSubtitle = styled.p`
@@ -199,7 +216,7 @@ export default function HomePage() {
       <Three3DBackground />
       <ChatBot />
       <Header />
-      <main style={{ position: 'relative', zIndex: 1 }} role="main">
+      <main style={{ position: 'relative', zIndex: 1, paddingTop: '70px' }} role="main">
         <HeroSection>
           <TypewriterEffect 
             texts={[
