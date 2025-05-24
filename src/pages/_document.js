@@ -16,13 +16,16 @@ export default class MyDocument extends Document {
       const initialProps = await Document.getInitialProps(ctx);
       return {
         ...initialProps,
-        styles: (
-          <>
-            {initialProps.styles}
-            {sheet.getStyleElement()}
-          </>
-        ),
+        styles: [
+          initialProps.styles,
+          sheet.getStyleElement(),
+        ],
       };
+    } catch (error) {
+      console.error('Document getInitialProps error:', error);
+      // Return basic document props if there's an error
+      const fallbackProps = await Document.getInitialProps(ctx);
+      return fallbackProps;
     } finally {
       sheet.seal();
     }
@@ -30,33 +33,16 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="en-GB">
+      <Html lang="en">
         <Head>
-          <link
-            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-            rel="stylesheet"
-          />
+          <meta charSet="utf-8" />
+          <meta name="theme-color" content="#0070f3" />
+          <meta name="description" content="Modern portfolio showcasing web development projects" />
+          <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>
           <Main />
           <NextScript />
-          <script
-            type="text/javascript"
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function(w, d, s, u) {
-                  w.RocketChat = function(c) { w.RocketChat._.push(c) };
-                  w.RocketChat._ = [];
-                  w.RocketChat.url = u;
-                  var h = d.getElementsByTagName(s)[0],
-                    j = d.createElement(s);
-                  j.async = true;
-                  j.src = 'https://canepros.rocket.chat/livechat/rocketchat-livechat.min.js?_=201903270000';
-                  h.parentNode.insertBefore(j, h);
-                })(window, document, 'script', 'https://canepros.rocket.chat/livechat');
-              `,
-            }}
-          />
         </body>
       </Html>
     );

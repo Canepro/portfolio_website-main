@@ -8,41 +8,33 @@ import { Container, Div1, Div2, Div3, NavLink, SocialIcons, Span } from './Heade
 const Header = () =>  (
   <Container>
     <Div1>
-      <Link href="/">
-        <a style={{ display: 'flex', alignItems: 'center', color:"white", marginBottom: '20px' }}>
-          <DiCssdeck size="3rem" /> <Span>Personal Portfolio</Span>
-        </a>
+      <Link href="/" style={{ display: 'flex', alignItems: 'center', color:"white", marginBottom: '20px' }}>
+        <DiCssdeck size="3rem" /> <Span>Personal Portfolio</Span>
       </Link>
     </Div1>
     <Div2>
       <li>
-        <Link href="#projects">
-          <NavLink>Projects</NavLink>
-        </Link>
+        <NavLink href="#projects">Projects</NavLink>
       </li>
       <li>
-        <Link href="#tech">
-          <NavLink>Technologies</NavLink>
-        </Link>
+        <NavLink href="#tech">Technologies</NavLink>
       </li>        
       <li>
-        <Link href="#about">
-          <NavLink>About</NavLink>
-        </Link>
+        <NavLink href="#about">About</NavLink>
       </li>        
     </Div2>
-      <Div3>
-        <SocialIcons href="https://github.com/Canepro">
-          <AiFillGithub size="3rem" />
-        </SocialIcons>
-        <SocialIcons href="https://www.linkedin.com/in/vincent-mogah/">
-          <AiFillLinkedin size="3rem" />
-        </SocialIcons>
-        <SocialIcons href="https://twitter.com/Canepro">
-          <AiFillTwitterCircle size="3rem"/>
-        </SocialIcons>
-      </Div3>
-    </Container>
+    <Div3>
+      <SocialIcons href="https://github.com/Canepro">
+        <AiFillGithub size="3rem" />
+      </SocialIcons>
+      <SocialIcons href="https://www.linkedin.com/in/vincent-mogah/">
+        <AiFillLinkedin size="3rem" />
+      </SocialIcons>
+      <SocialIcons href="https://twitter.com/Canepro">
+        <AiFillTwitterCircle size="3rem"/>
+      </SocialIcons>
+    </Div3>
+  </Container>
 );
 
 export default Header;

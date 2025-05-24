@@ -6,13 +6,43 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
-  },  "dependencies": {
+  },
+  "dependencies": {
+    "@axe-core/react": "^4.10.1",
     "@babel/runtime": "^7.24.0",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.18.0",
+    "@react-three/postprocessing": "^2.19.1",
+    "@use-gesture/react": "^10.3.1",
+    "@vercel/analytics": "^1.5.0",
+    "critters": "^0.0.23",
+    "focus-trap-react": "^11.0.3",
+    "framer-motion": "^11.18.2",
+    "gsap": "^3.13.0",
+    "lottie-react": "^2.4.1",
+    "maath": "^0.10.8",
     "next": "^14.1.1",
+    "next-pwa": "^5.6.0",
+    "next-router-events": "^2.1.0",
+    "next-seo": "^6.8.0",
+    "openai": "^4.103.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.56.4",
+    "react-hot-toast": "^2.5.2",
     "react-icons": "^4.2.0",
+    "react-intersection-observer": "^9.10.2",
+    "react-speech-recognition": "^4.0.1",
+    "react-spring": "^9.7.3",
+    "react-transition-group": "^4.4.5",
+    "react-use-gesture": "^9.1.3",
     "styled-components": "^5.3.0",
-    "styled-normalize": "^8.0.7"
+    "styled-normalize": "^8.0.7",
+    "three": "^0.160.1",
+    "three-stdlib": "^2.36.0",
+    "web-vitals": "^5.0.1"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^15.1.8"
   }
 }
