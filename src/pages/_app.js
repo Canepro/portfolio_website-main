@@ -1,7 +1,7 @@
 import React from 'react';
 import { DefaultSeo } from 'next-seo';
 import { Analytics } from '@vercel/analytics/react';
-import { ThemeProvider } from '../contexts/ThemeContext';
+import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
 import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from '../themes/default';
 import GlobalStyles from '../styles/GlobalStyles';
