@@ -3,6 +3,9 @@ import BgAnimation from '../components/BackgroundAnimation/BackgroundAnimation';
 import ModernHero from '../components/Hero/ModernHero';
 import ModernProjects from '../components/Projects/ModernProjects';
 import ModernTechnologies from '../components/Technologies/ModernTechnologies';
+import ModernContact from '../components/Contact/ModernContact';
+import ThemeToggle from '../components/ThemeToggle/ThemeToggle';
+import AnimatedBackground from '../components/ThreeBackground/ThreeBackground';
 import Timeline from '../components/TimeLine/TimeLine';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
@@ -36,10 +39,10 @@ const Home = () => {
 
       // Set the livechat script ref variable to null
       livechatScript.current = null;
-    };  }, []);
-
-  return (
+    };  }, []);  return (
     <Layout>
+      <AnimatedBackground />
+      <ThemeToggle />
       <Section grid>
         <ModernHero />
         <BgAnimation />
@@ -48,6 +51,7 @@ const Home = () => {
       <ModernTechnologies />
       <Timeline />
       <Accomplishments />
+      <ModernContact />
     </Layout>
   );
 };
