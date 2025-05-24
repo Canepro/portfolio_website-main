@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
 import Three3DBackground from '../components/3D/Three3DBackground';
@@ -15,6 +15,11 @@ import InfrastructureTopology from '../components/Interactive/InfrastructureTopo
 import SkillRadarChart from '../components/Interactive/SkillRadarChart';
 import LiveMetricsDashboard from '../components/Interactive/LiveMetricsDashboard';
 import TechStackBuilder from '../components/Interactive/TechStackBuilder';
+import NeuralNetworkVisualizer from '../components/Advanced/NeuralNetworkVisualizer';
+import HolographicInterface from '../components/Advanced/HolographicInterface';
+import QuantumLoader from '../components/Advanced/QuantumLoader';
+import ImageGallery from '../components/UI/ImageGallery';
+import HeroImageSection from '../components/UI/HeroImageSection';
 
 const HeroSection = styled.section`
   height: 60vh;
@@ -58,6 +63,20 @@ const AboutSection = styled.section`
   padding: 100px 20px;
   text-align: center;
   background: ${({ theme }) => theme.colors.background1};
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80') center/cover;
+    opacity: 0.1;
+    border-radius: 20px;
+    filter: blur(2px);
+  }
 `;
 
 const AboutTitle = styled.h2`
@@ -196,6 +215,9 @@ const InteractiveSection = styled.section`
 `;
 
 export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
   const technologies = [
     { name: "Azure", icon: "☁️" },
     { name: "AWS", icon: "🔶" },
@@ -225,19 +247,38 @@ export default function HomePage() {
     }
   ];
 
+  useEffect(() => {
+    // Simulate advanced loading sequence
+    const loadingInterval = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(loadingInterval);
+          setTimeout(() => setIsLoading(false), 1000);
+          return 100;
+        }
+        return prev + 2;
+      });
+    }, 100);
+
+    return () => clearInterval(loadingInterval);
+  }, []);
+
   return (
     <>
+      <QuantumLoader show={isLoading} progress={loadingProgress} />
+      <NeuralNetworkVisualizer />
       <Three3DBackground />
       <ChatBot />
       <Header />
+      
       <main style={{ position: 'relative', zIndex: 1, paddingTop: '70px' }} role="main">
         <HeroSection id="home">
           <TypewriterEffect 
             texts={[
-              "DevOps Engineer", 
-              "Cloud Infrastructure Specialist", 
-              "Automation Expert",
-              "CI/CD Pipeline Architect"
+              "QUANTUM DEVOPS ENGINEER", 
+              "NEURAL CLOUD ARCHITECT", 
+              "AI INFRASTRUCTURE PIONEER",
+              "DIGITAL REALITY SHAPER"
             ]}
             size="2.8rem"
             speed={100}
@@ -245,22 +286,24 @@ export default function HomePage() {
             pauseTime={2000}
           />
           <HeroSubtitle>
-            Transforming infrastructure through automation and cloud excellence
+            Engineering the impossible • Quantum-powered infrastructure • Neural-optimized deployments
           </HeroSubtitle>
         </HeroSection>
 
         <AboutSection id="about" aria-labelledby="about-title">
-          <AboutTitle id="about-title">About Vincent Mogah</AboutTitle>
-          <AboutText>
-            I'm Vincent Mogah, a dedicated DevOps Engineer with expertise in cloud infrastructure, 
-            automation, and continuous integration/deployment. I specialize in designing robust, 
-            scalable solutions that bridge the gap between development and operations teams.
-          </AboutText>
-          <AboutText>
-            With hands-on experience in Azure, AWS, containerization, and infrastructure as code, 
-            I help organizations streamline their deployment processes, improve system reliability, 
-            and achieve operational excellence through modern DevOps practices.
-          </AboutText>
+          <HolographicInterface title="SYSTEM PROFILE: VINCENT MOGAH">
+            I'm Vincent Mogah, a quantum-enhanced DevOps Engineer operating at the intersection 
+            of artificial intelligence and cloud infrastructure. My neural networks are trained 
+            on cutting-edge technologies, enabling me to architect impossible solutions and 
+            deploy reality-bending automation systems.
+            
+            <br /><br />
+            
+            Specializing in consciousness-level CI/CD pipelines, quantum containerization, 
+            and AI-driven infrastructure that adapts and evolves autonomously.
+          </HolographicInterface>
+          
+          <HeroImageSection />
         </AboutSection>
 
         <TechnologiesSection id="technologies" aria-labelledby="tech-title">
@@ -283,6 +326,8 @@ export default function HomePage() {
 
         <InteractiveSection>
           <AboutTitle>DevOps Infrastructure Showcase</AboutTitle>
+          
+          <ImageGallery />
           
           <div style={{ marginBottom: '60px' }}>
             <h3 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>CI/CD Pipeline Demonstration</h3>

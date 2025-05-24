@@ -15,6 +15,18 @@ const FooterContainer = styled.footer`
     height: 2px;
     background: linear-gradient(90deg, transparent, ${({ theme }) => theme.colors.accent1}, transparent);
   }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80') center/cover;
+    opacity: 0.05;
+    filter: blur(3px);
+  }
 `;
 
 const FooterContent = styled.div`
