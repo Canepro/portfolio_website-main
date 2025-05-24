@@ -1,6 +1,6 @@
 import Accomplishments from '../components/Accomplishments/Accomplishments';
 import BgAnimation from '../components/BackgroundAnimation/BackgroundAnimation';
-import Hero from '../components/Hero/Hero';
+import ModernHero from '../components/Hero/ModernHero';
 import Projects from '../components/Projects/Projects';
 import Technologies from '../components/Technologies/Technologies';
 import Timeline from '../components/TimeLine/TimeLine';
@@ -38,13 +38,12 @@ const Home = () => {
       livechatScript.current = null;
     };
   }, []);
-
   return (
     <Layout>
       <Section grid>
-        <Hero />
+        <ModernHero />
         <BgAnimation />
-      </Section>      <Projects />
+      </Section><Projects />
       <Technologies />
       <Timeline />
       <Accomplishments />
