@@ -55,6 +55,23 @@ export const themes = {
       backdropFilter: 'blur(10px)',
       boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
     },
+
+    // Animations
+    animations: {
+      duration: {
+        fast: '150ms',
+        normal: '300ms',
+        slow: '500ms',
+        slower: '750ms',
+      },
+      easing: {
+        ease: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+        easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+        easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+        easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        spring: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+      }
+    },
   },
   
   dark: {
@@ -97,6 +114,23 @@ export const themes = {
       border: '1px solid rgba(148, 163, 184, 0.2)',
       backdropFilter: 'blur(10px)',
       boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.5)',
+    },
+
+    // Animations
+    animations: {
+      duration: {
+        fast: '150ms',
+        normal: '300ms',
+        slow: '500ms',
+        slower: '750ms',
+      },
+      easing: {
+        ease: 'cubic-bezier(0.25, 0.1, 0.25, 1)',
+        easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+        easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+        easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        spring: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+      }
     },
   }
 };
