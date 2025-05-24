@@ -4,39 +4,78 @@ import { Section } from '../styles/GlobalComponents';
 import Three3DBackground from '../components/3D/Three3DBackground';
 import ChatBot from '../components/AI/ChatBot';
 import ModernContact from '../components/Contact/ModernContact';
+import TypewriterEffect from '../components/Animations/TypewriterEffect';
+import AnimatedCounter from '../components/Animations/AnimatedCounter';
+import styled from 'styled-components';
+
+const HeroSection = styled.section`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+`;
+
+const StatsSection = styled.section`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+`;
 
 const Home = () => {
   return (
     <Layout>
       <Three3DBackground />
       <ChatBot />
-      <Section grid>
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <h1 style={{ 
-            fontSize: '3rem', 
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            marginBottom: '1rem'
-          }}>
-            Vincent Mogah
-          </h1>
-          <p style={{ fontSize: '1.2rem', color: '#666', marginBottom: '2rem' }}>
-            DevOps Engineer & Web Developer
-          </p>
-          <div style={{
-            padding: '2rem',
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)',
-            borderRadius: '15px',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)'
-          }}>
-            <h2>✅ Portfolio Ready</h2>
-            <p>Basic setup is working! You can now add components step by step.</p>
-          </div>
-        </div>
-      </Section>
+      
       <main style={{ position: 'relative', zIndex: 1 }}>
+        <HeroSection>
+          <TypewriterEffect 
+            texts={[
+              "Full Stack Developer", 
+              "AI Enthusiast", 
+              "3D Graphics Explorer",
+              "Modern Web Architect"
+            ]}
+            size="3rem"
+            speed={100}
+            deleteSpeed={50}
+            pauseTime={2000}
+          />
+        </HeroSection>
+
+        <StatsSection>
+          <AnimatedCounter 
+            end={50} 
+            label="Projects Completed" 
+            suffix="+"
+            duration={2500}
+          />
+          <AnimatedCounter 
+            end={3} 
+            label="Years Experience" 
+            suffix="+"
+            duration={2000}
+          />
+          <AnimatedCounter 
+            end={25} 
+            label="Technologies Mastered" 
+            suffix="+"
+            duration={3000}
+          />
+          <AnimatedCounter 
+            end={100} 
+            label="Client Satisfaction" 
+            suffix="%"
+            duration={2800}
+          />
+        </StatsSection>
+
         <ModernContact />
       </main>
     </Layout>
