@@ -1,74 +1,71 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  // Enable modern JavaScript
   swcMinify: true,
+  
+  // Compiler optimizations
   compiler: {
     styledComponents: true,
-  },  experimental: {
-    // Enable modern bundling optimizations
-    optimizeCss: true,
+    removeConsole: process.env.NODE_ENV === 'production',
   },
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Handle Three.js and related modules
-    config.module.rules.push({
-      test: /\.(glsl|vs|fs|vert|frag)$/,
-      use: ['raw-loader'],
-    });
-
-    // Optimize for Three.js
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      three: 'three',
-    };
-
-    // Handle WebGL context issues
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        module: false,
-      };
-    }
-
-    // Optimize chunk splitting
-    if (!dev && !isServer) {
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            vendor: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-            },
-            three: {
-              test: /[\\/]node_modules[\\/](three|@react-three)[\\/]/,
-              name: 'three',
-              chunks: 'all',
-            },
-            common: {
-              name: 'common',
-              minChunks: 2,
-              chunks: 'all',
-              enforce: true,
-            },
-          },
-        },
-      };
-    }
-
-    return config;
-  },
-  // Handle image optimization
+  
+  // Image optimization
   images: {
-    domains: ['localhost'],
     formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  // Performance optimizations
-  poweredByHeader: false,
-  generateEtags: false,
-  compress: true,
+  
+  // Headers for caching
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+        ],
+      },
+      {
+        source: '/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
+  
+  // Bundle analyzer (conditional)
+  ...(process.env.ANALYZE === 'true' && {
+    webpack: (config) => {
+      config.plugins.push(
+        new (require('@next/bundle-analyzer'))({
+          enabled: true,
+          openAnalyzer: true,
+        })
+      );
+      return config;
+    },
+  }),
+  
+  // Experimental features for performance
+  experimental: {
+    optimizeCss: true,
+    scrollRestoration: true,
+  },
 };
 
 module.exports = nextConfig;
