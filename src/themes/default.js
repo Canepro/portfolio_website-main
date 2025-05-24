@@ -14,12 +14,12 @@ const commonFonts = {
 export const lightTheme = {
   fonts: commonFonts,
   colors: {
-    primary1: "hsl(204,23.8%,95.9%)", // Light grey
-    background1: "#FFFFFF",           // White
-    accent1: "hsl(34.9,98.6%,72.9%)", // Orange
-    button: "hsl(205.1,100%,36.1%)", // Blue
-    background2: "hsl(0,0%,90%)",   // Light grey for secondary background
-    text: "#0F1624",                  // Dark text
+    primary1: "hsl(210, 40%, 98%)",
+    background1: "#FFFFFF",
+    accent1: "hsl(220, 90%, 56%)", // Better blue
+    button: "hsl(220, 90%, 56%)",
+    background2: "hsl(220, 14%, 96%)", // Softer grey
+    text: "#1a202c",
   },
   breakpoints: commonBreakpoints,
 };
@@ -27,12 +27,12 @@ export const lightTheme = {
 export const darkTheme = {
   fonts: commonFonts,
   colors: {
-    primary1: "hsl(204,23.8%,95.9%)", // Light grey (can be same or different)
-    background1: "#0F1624",           // Dark blue/black
-    accent1: "hsl(34.9,98.6%,72.9%)", // Orange (can be same or different)
-    button: "hsl(205.1,100%,36.1%)", // Blue (can be same or different)
-    background2: "hsl(232.7,27.3%,23.7%)", // Darker blue/grey
-    text: "#FFFFFF",                  // Light text
+    primary1: "hsl(210, 40%, 98%)",
+    background1: "#0f172a", // Richer dark blue
+    accent1: "hsl(220, 90%, 70%)", // Brighter for dark mode
+    button: "hsl(220, 90%, 70%)",
+    background2: "hsl(220, 19%, 18%)", // Better contrast
+    text: "#f1f5f9",
   },
   breakpoints: commonBreakpoints,
 };
