@@ -2,7 +2,7 @@
 
 > A modern, responsive portfolio website built with Next.js and React
 
-### 🌐 [Live Site](https://portfolio.canepros.com/)
+### 🌐 [Live Site](https://quirky-bell-385b8d.netlify.app/)
 
 ![Portfolio Website](https://db3pap006files.storage.live.com/y4mJbxekblyRayOVyfrhAlqx9b9m2SCQ5vgPqCsbh_YDRw2HOYC8frX1wsBkWRrkgTKDqELxTtQmbj0gGMjNF9zZsuQSPnjS7EorGfGp1mdFDC7xPMkHH-3gluRJ-zeqJlCL_41iLvSnA0wQ5IgNVyjdF3DaUZkWwOSbntlwDO-eUK38pvoxbDgmhjqITouXWsw?width=1900&height=926&cropmode=none)
 
@@ -144,7 +144,7 @@ This project is for portfolio purposes. All rights reserved.
 
 ## 📞 Contact
 
-For questions or collaboration opportunities, please reach out through the contact form on the [live site](https://portfolio.canepros.com/).
+For questions or collaboration opportunities, please reach out through the contact form on the [live site](https://quirky-bell-385b8d.netlify.app/).
 
 ---
 
