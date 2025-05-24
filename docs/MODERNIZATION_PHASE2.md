@@ -9,7 +9,7 @@ Phase 2 will focus on advanced 3D elements, AI-powered features, enhanced perfor
 - Create advanced micro-animations
 - Optimize performance and Core Web Vitals
 - Enhance SEO and accessibility
-- Add dark/light theme toggle
+- [x] Add dark/light theme toggle <!-- Updated -->
 - Implement contact form with validation
 
 ## 🔧 Technical Implementation Plan
@@ -73,7 +73,7 @@ Phase 2 will focus on advanced 3D elements, AI-powered features, enhanced perfor
 
 ### 5. Enhanced User Experience
 **Components to Create:**
-- `ThemeToggle` - Dark/light mode switcher
+- [x] `ThemeToggle` - Dark/light mode switcher <!-- Updated -->
 - `ModernContact` - Enhanced contact form
 - `ProgressIndicator` - Page loading progress
 - `NotificationSystem` - Toast notifications
