@@ -133,6 +133,9 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
+  // Debug log to see if theme is working
+  console.log('Current theme:', theme);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -170,7 +173,13 @@ const Header = () => {
           >
             LinkedIn
           </NavLink>
-          <ThemeToggleButton onClick={toggleTheme} title="Toggle theme">
+          <ThemeToggleButton 
+            onClick={() => {
+              console.log('Toggle clicked, current theme:', theme);
+              toggleTheme();
+            }} 
+            title="Toggle theme"
+          >
             {theme === 'light' ? '🌙' : '☀️'}
           </ThemeToggleButton>
         </Nav>

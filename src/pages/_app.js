@@ -1,7 +1,7 @@
 import React from 'react';
 import { DefaultSeo } from 'next-seo';
 import { Analytics } from '@vercel/analytics/react';
-import { ThemeProvider as CustomPageThemeProvider, useTheme } from '../contexts/ThemeContext';
+import { ThemeProvider } from '../contexts/ThemeContext';
 import { ThemeProvider as StyledComponentsThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from '../themes/default';
 import GlobalStyles from '../styles/GlobalStyles';
@@ -44,26 +44,25 @@ const seoConfig = {
   ],
 };
 
-// This component will consume the theme from context and pass it to StyledComponentsThemeProvider
-const AppWithTheme = ({ Component, pageProps }) => {
-  const { theme } = useTheme(); // 'light' or 'dark'
-  const currentThemeObject = theme === 'light' ? lightTheme : darkTheme;
+function AppWithTheme({ Component, pageProps }) {
+  const { theme } = useTheme();
+  const currentTheme = theme === 'light' ? lightTheme : darkTheme;
 
   return (
-    <StyledComponentsThemeProvider theme={currentThemeObject}>
-      <GlobalStyles /> {/* Add GlobalStyles here */}
+    <StyledComponentsThemeProvider theme={currentTheme}>
+      <GlobalStyles />
       <Component {...pageProps} />
     </StyledComponentsThemeProvider>
   );
-};
+}
 
 function MyApp({ Component, pageProps }) {
   return (
-    <CustomPageThemeProvider> {/* This provides { theme, toggleTheme } */}
+    <ThemeProvider>
       <DefaultSeo {...seoConfig} />
       <AppWithTheme Component={Component} pageProps={pageProps} />
       <Analytics />
-    </CustomPageThemeProvider>
+    </ThemeProvider>
   );
 }
 
