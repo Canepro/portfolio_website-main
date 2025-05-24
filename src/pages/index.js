@@ -127,6 +127,16 @@ const TechTag = styled.span`
   font-size: 0.9rem;
 `;
 
+const StatsSection = styled.section`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: ${({ theme }) => theme.colors.background2};
+`;
+
 export default function HomePage() {
   const technologies = [
     { name: "React", icon: "⚛️" },
