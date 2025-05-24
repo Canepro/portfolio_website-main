@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Text, Box, Sphere } from '@react-three/drei';
+import { Text, Box, Sphere, Cylinder } from '@react-three/drei';
 
 const VisualizerContainer = styled.div`
   width: 100%;
@@ -39,33 +39,95 @@ const ControlButton = styled.button`
   }
 `;
 
-const PipelineStage = ({ position, stage, isActive, color }) => {
+const StatusDisplay = styled.div`
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: ${({ theme }) => theme.colors.background1}ee;
+  backdrop-filter: blur(10px);
+  border: 1px solid ${({ theme }) => theme.colors.accent1}44;
+  border-radius: 10px;
+  padding: 15px;
+  color: ${({ theme }) => theme.colors.text};
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  min-width: 200px;
+`;
+
+const ProgressBar = styled.div`
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  right: 20px;
+  height: 4px;
+  background: ${({ theme }) => theme.colors.background1}44;
+  border-radius: 2px;
+  overflow: hidden;
+`;
+
+const ProgressFill = styled.div`
+  height: 100%;
+  background: linear-gradient(90deg, #3B82F6, #10B981, #F59E0B, #8B5CF6, #EF4444);
+  border-radius: 2px;
+  transition: width 0.5s ease;
+  width: ${props => props.progress}%;
+`;
+
+const PipelineStage = ({ position, stage, isActive, isCompleted, color, icon }) => {
   const meshRef = useRef();
+  const textRef = useRef();
   
   useFrame((state) => {
-    if (meshRef.current && isActive) {
-      meshRef.current.rotation.y += 0.02;
-      meshRef.current.scale.setScalar(1 + Math.sin(state.clock.elapsedTime * 2) * 0.1);
+    if (meshRef.current) {
+      if (isActive) {
+        meshRef.current.rotation.y += 0.03;
+        meshRef.current.scale.setScalar(1 + Math.sin(state.clock.elapsedTime * 3) * 0.15);
+      } else if (isCompleted) {
+        meshRef.current.scale.setScalar(1.1);
+      } else {
+        meshRef.current.scale.setScalar(0.8);
+      }
+    }
+    
+    if (textRef.current) {
+      textRef.current.rotation.y = -state.camera.rotation.y;
     }
   });
 
   return (
     <group position={position}>
-      <Box ref={meshRef} args={[1.5, 1.5, 1.5]}>
+      <Box ref={meshRef} args={[1.8, 1.8, 1.8]}>
         <meshStandardMaterial 
           color={color} 
           transparent 
-          opacity={isActive ? 1 : 0.6}
-          emissive={isActive ? color : '#000000'}
-          emissiveIntensity={isActive ? 0.3 : 0}
+          opacity={isActive ? 1 : isCompleted ? 0.8 : 0.4}
+          emissive={isActive ? color : isCompleted ? color : '#000000'}
+          emissiveIntensity={isActive ? 0.4 : isCompleted ? 0.2 : 0}
+          roughness={0.3}
+          metalness={0.7}
         />
       </Box>
+      
+      {/* Stage Icon */}
       <Text
-        position={[0, -1.5, 0]}
-        fontSize={0.3}
+        ref={textRef}
+        position={[0, 0, 1]}
+        fontSize={0.6}
         color="white"
         anchorX="center"
         anchorY="middle"
+      >
+        {icon}
+      </Text>
+      
+      {/* Stage Name */}
+      <Text
+        position={[0, -1.8, 0]}
+        fontSize={0.3}
+        color={isActive || isCompleted ? "white" : "#888888"}
+        anchorX="center"
+        anchorY="middle"
+        font="/fonts/inter-bold.woff"
       >
         {stage}
       </Text>
@@ -73,25 +135,35 @@ const PipelineStage = ({ position, stage, isActive, color }) => {
   );
 };
 
-const DataFlow = ({ from, to, isActive }) => {
-  const groupRef = useRef();
+const DataFlow = ({ from, to, isActive, delay, color }) => {
+  const particlesRef = useRef();
   
   useFrame((state) => {
-    if (groupRef.current && isActive) {
-      groupRef.current.children.forEach((child, index) => {
-        const progress = ((state.clock.elapsedTime * 0.5 + index * 0.2) % 1);
-        child.position.x = from[0] + (to[0] - from[0]) * progress;
-        child.position.y = from[1] + (to[1] - from[1]) * progress;
-        child.position.z = from[2] + (to[2] - from[2]) * progress;
+    if (particlesRef.current && isActive) {
+      particlesRef.current.children.forEach((particle, index) => {
+        const time = state.clock.elapsedTime + delay + index * 0.3;
+        const progress = ((time * 0.8) % 1);
+        
+        particle.position.x = from[0] + (to[0] - from[0]) * progress;
+        particle.position.y = from[1] + (to[1] - from[1]) * progress + Math.sin(time * 2) * 0.2;
+        particle.position.z = from[2] + (to[2] - from[2]) * progress;
+        
+        particle.scale.setScalar(0.5 + Math.sin(time * 4) * 0.3);
       });
     }
   });
 
   return (
-    <group ref={groupRef}>
-      {isActive && Array.from({ length: 5 }).map((_, i) => (
-        <Sphere key={i} args={[0.1]}>
-          <meshStandardMaterial color="#00ff88" emissive="#00ff88" emissiveIntensity={0.5} />
+    <group ref={particlesRef}>
+      {isActive && Array.from({ length: 8 }).map((_, i) => (
+        <Sphere key={i} args={[0.15]}>
+          <meshStandardMaterial 
+            color={color} 
+            emissive={color} 
+            emissiveIntensity={0.8}
+            transparent
+            opacity={0.9}
+          />
         </Sphere>
       ))}
     </group>
@@ -99,25 +171,46 @@ const DataFlow = ({ from, to, isActive }) => {
 };
 
 const DevOpsPipelineVisualizer = () => {
-  const [activeStage, setActiveStage] = useState(0);
+  const [activeStage, setActiveStage] = useState(-1);
   const [isRunning, setIsRunning] = useState(false);
+  const [completedStages, setCompletedStages] = useState(new Set());
 
   const stages = [
-    { name: 'Code', color: '#3B82F6', position: [-4, 0, 0] },
-    { name: 'Build', color: '#10B981', position: [-2, 0, 0] },
-    { name: 'Test', color: '#F59E0B', position: [0, 0, 0] },
-    { name: 'Deploy', color: '#8B5CF6', position: [2, 0, 0] },
-    { name: 'Monitor', color: '#EF4444', position: [4, 0, 0] }
+    { name: 'Source', color: '#3B82F6', position: [-6, 0, 0], icon: '📝', status: 'Pulling latest code...' },
+    { name: 'Build', color: '#10B981', position: [-3, 0, 0], icon: '🔨', status: 'Compiling application...' },
+    { name: 'Test', color: '#F59E0B', position: [0, 0, 0], icon: '🧪', status: 'Running test suite...' },
+    { name: 'Deploy', color: '#8B5CF6', position: [3, 0, 0], icon: '🚀', status: 'Deploying to staging...' },
+    { name: 'Monitor', color: '#EF4444', position: [6, 0, 0], icon: '📊', status: 'Monitoring metrics...' }
   ];
 
   React.useEffect(() => {
     if (isRunning) {
       const interval = setInterval(() => {
-        setActiveStage((prev) => (prev + 1) % stages.length);
-      }, 2000);
+        setActiveStage((prev) => {
+          const next = prev + 1;
+          if (next >= stages.length) {
+            setIsRunning(false);
+            setCompletedStages(new Set(Array.from({ length: stages.length }, (_, i) => i)));
+            return -1;
+          }
+          if (prev >= 0) {
+            setCompletedStages(prev => new Set([...prev, prev]));
+          }
+          return next;
+        });
+      }, 2500);
       return () => clearInterval(interval);
     }
   }, [isRunning, stages.length]);
+
+  const resetPipeline = () => {
+    setActiveStage(-1);
+    setCompletedStages(new Set());
+    setIsRunning(false);
+  };
+
+  const currentStageData = activeStage >= 0 ? stages[activeStage] : null;
+  const progress = isRunning ? ((activeStage + 1) / stages.length) * 100 : completedStages.size > 0 ? 100 : 0;
 
   return (
     <VisualizerContainer>
@@ -125,25 +218,33 @@ const DevOpsPipelineVisualizer = () => {
         <ControlButton 
           active={isRunning} 
           onClick={() => setIsRunning(!isRunning)}
+          disabled={isRunning}
         >
-          {isRunning ? 'Stop Pipeline' : 'Run Pipeline'}
+          {isRunning ? 'Pipeline Running...' : 'Deploy Application'}
         </ControlButton>
-        <ControlButton onClick={() => setActiveStage(0)}>
-          Reset
+        <ControlButton onClick={resetPipeline}>
+          Reset Pipeline
         </ControlButton>
       </ControlPanel>
+
+      <ProgressBar>
+        <ProgressFill progress={progress} />
+      </ProgressBar>
       
-      <Canvas camera={{ position: [0, 2, 8], fov: 50 }}>
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} />
+      <Canvas camera={{ position: [0, 3, 12], fov: 50 }}>
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
+        <pointLight position={[0, 5, 5]} intensity={0.8} color="#3B82F6" />
+        <spotLight position={[-5, 5, 5]} intensity={0.6} color="#10B981" />
         
         {stages.map((stage, index) => (
           <PipelineStage
             key={stage.name}
             position={stage.position}
             stage={stage.name}
-            isActive={isRunning ? index <= activeStage : index === activeStage}
+            icon={stage.icon}
+            isActive={index === activeStage}
+            isCompleted={completedStages.has(index)}
             color={stage.color}
           />
         ))}
@@ -154,9 +255,22 @@ const DevOpsPipelineVisualizer = () => {
             from={stage.position}
             to={stages[index + 1].position}
             isActive={isRunning && index < activeStage}
+            delay={index * 0.2}
+            color={stage.color}
           />
         ))}
       </Canvas>
+
+      {currentStageData && (
+        <StatusDisplay>
+          <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>
+            {currentStageData.icon} {currentStageData.name} Stage
+          </div>
+          <div style={{ opacity: 0.8 }}>
+            {currentStageData.status}
+          </div>
+        </StatusDisplay>
+      )}
     </VisualizerContainer>
   );
 };

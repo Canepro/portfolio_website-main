@@ -15,12 +15,12 @@ export const lightTheme = {
   fonts: commonFonts,
   colors: {
     primary1: "hsl(210, 40%, 98%)",
-    background1: "#fafafa",
-    accent1: "hsl(220, 90%, 60%)",
-    button: "hsl(220, 90%, 60%)",
-    background2: "hsl(220, 14%, 96%)",
+    background1: "#ffffff",
+    accent1: "hsl(220, 90%, 50%)",
+    button: "hsl(220, 90%, 50%)",
+    background2: "hsl(220, 14%, 98%)",
     text: "#1a202c",
-    accent2: "#EF4444", // Added red accent
+    accent2: "#EF4444",
   },
   breakpoints: commonBreakpoints,
 };
@@ -34,7 +34,7 @@ export const darkTheme = {
     button: "hsl(220, 90%, 70%)",
     background2: "hsl(220, 19%, 12%)",
     text: "#f1f5f9",
-    accent2: "#EF4444", // Added red accent
+    accent2: "#EF4444",
   },
   breakpoints: commonBreakpoints,
 };

@@ -98,22 +98,43 @@ const Projects = () => {
       title: "Azure Cloud Infrastructure",
       description: "Designed and implemented scalable cloud infrastructure solutions using Azure services. Automated deployment processes and optimized resource utilization for enterprise workloads.",
       technologies: ["Azure", "ARM Templates", "PowerShell", "Azure DevOps", "Monitoring"],
-      image: "https://picsum.photos/600/300?random=200",
-      fallback: "https://via.placeholder.com/600x300/1a202c/0078d4?text=Azure+Cloud"
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=300&fit=crop&crop=center",
+      fallback: "https://via.placeholder.com/600x300/0078d4/ffffff?text=Azure+Cloud+Infrastructure"
     },
     {
       title: "CI/CD Pipeline Automation",
       description: "Built comprehensive continuous integration and deployment pipelines using modern DevOps tools. Reduced deployment time and improved code quality through automated testing.",
       technologies: ["Jenkins", "Azure DevOps", "Docker", "Git", "YAML"],
-      image: "https://picsum.photos/600/300?random=300",
-      fallback: "https://via.placeholder.com/600x300/1a202c/10B981?text=CI%2FCD+Pipeline"
+      image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=600&h=300&fit=crop&crop=center",
+      fallback: "https://via.placeholder.com/600x300/10B981/ffffff?text=CI%2FCD+Pipeline"
     },
     {
       title: "Container Orchestration",
       description: "Implemented containerization strategies and orchestrated applications using Kubernetes. Managed microservices architecture with automated scaling and monitoring.",
       technologies: ["Docker", "Kubernetes", "Helm", "Prometheus", "Grafana"],
-      image: "https://picsum.photos/600/300?random=400",
-      fallback: "https://via.placeholder.com/600x300/1a202c/326ce5?text=Kubernetes"
+      image: "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=600&h=300&fit=crop&crop=center",
+      fallback: "https://via.placeholder.com/600x300/326ce5/ffffff?text=Kubernetes+Orchestration"
+    },
+    {
+      title: "Infrastructure Monitoring",
+      description: "Deployed comprehensive monitoring solutions with real-time alerting, performance metrics, and automated incident response for mission-critical applications.",
+      technologies: ["Prometheus", "Grafana", "AlertManager", "ELK Stack", "Datadog"],
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=300&fit=crop&crop=center",
+      fallback: "https://via.placeholder.com/600x300/F59E0B/ffffff?text=Infrastructure+Monitoring"
+    },
+    {
+      title: "Security & Compliance",
+      description: "Implemented security best practices, vulnerability scanning, and compliance automation across development and production environments.",
+      technologies: ["Azure Security Center", "OWASP", "Vault", "SIEM", "Compliance"],
+      image: "https://images.unsplash.com/photo-1563206767-5b18f218e8de?w=600&h=300&fit=crop&crop=center",
+      fallback: "https://via.placeholder.com/600x300/EF4444/ffffff?text=Security+%26+Compliance"
+    },
+    {
+      title: "Infrastructure as Code",
+      description: "Developed and maintained infrastructure templates using Terraform and ARM templates for consistent, repeatable deployments across environments.",
+      technologies: ["Terraform", "ARM Templates", "CloudFormation", "Ansible", "GitOps"],
+      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=300&fit=crop&crop=center",
+      fallback: "https://via.placeholder.com/600x300/8B5CF6/ffffff?text=Infrastructure+as+Code"
     }
   ];
 

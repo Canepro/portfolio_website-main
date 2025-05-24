@@ -25,6 +25,33 @@ const GlobalStyles = createGlobalStyle`
     line-height: 1.6;
   }
 
+  /* Enhanced text contrast for light mode */
+  body.light {
+    --text-primary: #1a202c;
+    --text-secondary: #4a5568;
+    --background-primary: #ffffff;
+    --background-secondary: #f7fafc;
+  }
+
+  body.dark {
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e0;
+    --background-primary: #0a0a0f;
+    --background-secondary: #1a202c;
+  }
+
+  /* Improve text readability */
+  h1, h2, h3, h4, h5, h6 {
+    color: ${({ theme }) => theme.colors.text};
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  p, span, div {
+    color: ${({ theme }) => theme.colors.text};
+    line-height: 1.6;
+  }
+
   #__next {
     min-height: 100vh;
     position: relative;
