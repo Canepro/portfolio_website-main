@@ -308,22 +308,6 @@ export default function HomePage() {
           </HeroSubtitle>
         </HeroSection>
 
-        <AboutSection id="about" aria-labelledby="about-title">
-          <HolographicInterface title="SYSTEM PROFILE: VINCENT MOGAH">
-            I'm Vincent Mogah, a quantum-enhanced DevOps Engineer operating at the intersection 
-            of artificial intelligence and cloud infrastructure. My neural networks are trained 
-            on cutting-edge technologies, enabling me to architect impossible solutions and 
-            deploy reality-bending automation systems.
-            
-            <br /><br />
-            
-            Specializing in consciousness-level CI/CD pipelines, quantum containerization, 
-            and AI-driven infrastructure that adapts and evolves autonomously.
-          </HolographicInterface>
-          
-          <HeroImageSection />
-        </AboutSection>
-
         <TechnologiesSection id="technologies" aria-labelledby="tech-title">
           <AboutTitle id="tech-title">Core Technologies & Tools</AboutTitle>
           <TechGrid>
@@ -335,69 +319,11 @@ export default function HomePage() {
             ))}
           </TechGrid>
           
-          {/* New interactive skill radar */}
           <div style={{ marginTop: '60px' }}>
             <h3 style={{ marginBottom: '30px', fontSize: '1.5rem' }}>Interactive Skill Assessment</h3>
             <SkillRadarChart />
           </div>
         </TechnologiesSection>
-
-        <InteractiveSection>
-          <AboutTitle>DevOps Infrastructure Showcase</AboutTitle>
-          
-          <ImageGallery />
-          
-          <div style={{ marginBottom: '60px' }}>
-            <h3 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>CI/CD Pipeline Demonstration</h3>
-            <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
-              Watch an interactive CI/CD pipeline in action. Click "Run Pipeline" to see the automated workflow.
-            </p>
-            <DevOpsPipelineVisualizer />
-          </div>
-
-          <div>
-            <h3 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>Infrastructure Topology</h3>
-            <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
-              Explore a typical cloud infrastructure setup. Click nodes for details and "Show Traffic" to visualize data flow.
-            </p>
-            <InfrastructureTopology />
-          </div>
-
-          <div style={{ marginTop: '60px' }}>
-            <h3 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>Live Infrastructure Monitoring</h3>
-            <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
-              Real-time metrics dashboard showing system health, performance, and key DevOps indicators.
-            </p>
-            <LiveMetricsDashboard />
-          </div>
-
-          <div style={{ marginTop: '60px' }}>
-            <h3 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>Technology Stack Explorer</h3>
-            <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
-              Build and explore different technology combinations. Try the presets or create your own stack.
-            </p>
-            <TechStackBuilder />
-          </div>
-        </InteractiveSection>
-
-        <ProjectsSection id="projects" aria-labelledby="projects-title">
-          <AboutTitle id="projects-title">Featured DevOps Projects</AboutTitle>
-          <ProjectGrid>
-            {projects.map((project, index) => (
-              <ProjectCard key={project.title}>
-                <ProjectInfo>
-                  <ProjectTitle>{project.title}</ProjectTitle>
-                  <ProjectDescription>{project.description}</ProjectDescription>
-                  <TechStack>
-                    {project.technologies.map((tech) => (
-                      <TechTag key={tech}>{tech}</TechTag>
-                    ))}
-                  </TechStack>
-                </ProjectInfo>
-              </ProjectCard>
-            ))}
-          </ProjectGrid>
-        </ProjectsSection>
 
         <StatsSection aria-labelledby="stats-title">
           <h2 id="stats-title" style={{ gridColumn: '1 / -1', textAlign: 'center', marginBottom: '20px' }}>
@@ -428,10 +354,6 @@ export default function HomePage() {
             duration={2800}
           />
         </StatsSection>
-
-        <div id="contact">
-          <ModernContact />
-        </div>
       </main>
       <Footer />
     </>

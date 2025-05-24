@@ -23,6 +23,7 @@
     "maath": "^0.10.8",
     "next": "^14.1.1",
     "next-pwa": "^5.6.0",
+    "next-router-events": "^2.1.0",
     "next-seo": "^6.8.0",
     "openai": "^4.103.0",
     "react": "^18.2.0",

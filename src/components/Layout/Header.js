@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useRouter } from 'next/router';
 
 const HeaderBar = styled.header`
   position: fixed;
@@ -151,6 +152,7 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const router = useRouter();
 
   // Debug log to see if theme is working
   console.log('Current theme:', theme);
@@ -164,27 +166,36 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navigateToPage = (path) => {
+    router.push(path);
+    setMobileOpen(false);
+  };
+
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
+    if (router.pathname !== '/') {
+      router.push(`/#${sectionId}`);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
     }
-    setMobileOpen(false); // Close mobile menu after clicking
+    setMobileOpen(false);
   };
 
   return (
     <HeaderBar scrolled={scrolled}>
       <Container>
-        <Logo onClick={() => scrollToSection('home')}>CANEPRO</Logo>
+        <Logo onClick={() => navigateToPage('/')}>CANEPRO</Logo>
         
         <Nav isOpen={mobileOpen}>
-          <NavLink onClick={() => scrollToSection('about')}>About</NavLink>
+          <NavLink onClick={() => navigateToPage('/about')}>About</NavLink>
           <NavLink onClick={() => scrollToSection('technologies')}>Tech Stack</NavLink>
-          <NavLink onClick={() => scrollToSection('projects')}>Projects</NavLink>
-          <NavLink onClick={() => scrollToSection('contact')}>Contact</NavLink>
+          <NavLink onClick={() => navigateToPage('/projects')}>Projects</NavLink>
+          <NavLink onClick={() => navigateToPage('/contact')}>Contact</NavLink>
           <NavLink 
             href="https://www.linkedin.com/in/vincent-mogah/" 
             target="_blank" 
