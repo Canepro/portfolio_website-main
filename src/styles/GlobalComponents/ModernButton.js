@@ -8,7 +8,9 @@ const shimmer = `
   }
 `;
 
-export const ModernButton = styled(motion.button)`
+export const ModernButton = styled(motion.button).withConfig({
+  shouldForwardProp: (prop) => !['primary', 'secondary'].includes(prop),
+})`
   ${shimmer}
   
   position: relative;

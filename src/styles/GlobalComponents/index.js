@@ -166,7 +166,9 @@ export const SecondaryBtn = styled.button`
   }
 `
 
-export const ButtonBack = styled.div`
+export const ButtonBack = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['alt', 'form', 'disabled'].includes(prop),
+})`
   width: ${({ alt }) => alt ? '150px' : '262px'};
   height: ${({ alt }) => alt ? '52px' : '64px'};
   border-radius: 50px;
@@ -199,7 +201,9 @@ export const ButtonBack = styled.div`
   }
 `
 
-export const ButtonFront = styled.button`
+export const ButtonFront = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['alt', 'disabled'].includes(prop),
+})`
   border: none;
   border-radius: 50px;
   color: #fff;
@@ -245,7 +249,9 @@ export const ButtonFront = styled.button`
   }
 `
 
-export const LinkContainer = styled.div`
+export const LinkContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['large'].includes(prop),
+})`
   margin-left: ${({ large }) => large ? '24px' : '16px'};
   transition: 0.3s ease;
   justify-content: center;
@@ -267,7 +273,9 @@ export const LinkContainer = styled.div`
   }
 `
 
-export const LinkIconImg = styled.div`
+export const LinkIconImg = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['large', 'nav'].includes(prop),
+})`
   display: flex;  
   height: ${({ large }) => large ? '32px' : '24px'};
 

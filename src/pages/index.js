@@ -36,15 +36,16 @@ const Home = () => {
 
       // Set the livechat script ref variable to null
       livechatScript.current = null;
-    };
-  }, []);
+    };  }, []);
+
   return (
     <Layout>
       <Section grid>
         <ModernHero />
         <BgAnimation />
-      </Section><Projects />
-      <Technologies />
+      </Section>
+      <ModernProjects />
+      <ModernTechnologies />
       <Timeline />
       <Accomplishments />
     </Layout>
