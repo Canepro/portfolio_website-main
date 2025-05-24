@@ -1,10 +1,12 @@
 import React from 'react';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
+import Three3DBackground from '../components/3D/Three3DBackground';
 
 const Home = () => {
   return (
     <Layout>
+      <Three3DBackground />
       <Section grid>
         <div style={{ padding: '2rem', textAlign: 'center' }}>
           <h1 style={{ 
