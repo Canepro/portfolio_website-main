@@ -33,17 +33,36 @@ const Container = styled.div`
 `;
 
 const Logo = styled.a`
-  font-size: 1.8rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.accent1}, ${({ theme }) => theme.colors.button});
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, ${({ theme }) => theme.colors.accent1}, #EF4444, ${({ theme }) => theme.colors.button});
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-decoration: none;
-  letter-spacing: -0.5px;
-  transition: transform 0.2s ease;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: all 0.3s ease;
+  position: relative;
   
   &:hover {
     transform: scale(1.05);
+    letter-spacing: 3px;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, ${({ theme }) => theme.colors.accent1}, #EF4444);
+    transition: width 0.3s ease;
+  }
+  
+  &:hover::after {
+    width: 100%;
   }
 `;
 
@@ -159,7 +178,7 @@ const Header = () => {
   return (
     <HeaderBar scrolled={scrolled}>
       <Container>
-        <Logo onClick={() => scrollToSection('home')}>VM</Logo>
+        <Logo onClick={() => scrollToSection('home')}>CANEPRO</Logo>
         
         <Nav isOpen={mobileOpen}>
           <NavLink onClick={() => scrollToSection('about')}>About</NavLink>

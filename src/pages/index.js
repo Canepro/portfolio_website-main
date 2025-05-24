@@ -17,14 +17,13 @@ import LiveMetricsDashboard from '../components/Interactive/LiveMetricsDashboard
 import TechStackBuilder from '../components/Interactive/TechStackBuilder';
 
 const HeroSection = styled.section`
-  height: 60vh; /* Reduced from 100vh */
+  height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 0 20px;
-  background: linear-gradient(135deg, ${({ theme }) => theme.colors.background1}00, ${({ theme }) => theme.colors.background2}22);
   position: relative;
   
   &::before {
@@ -34,8 +33,10 @@ const HeroSection = styled.section`
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 30% 70%, ${({ theme }) => theme.colors.accent1}11, transparent 50%),
-                radial-gradient(circle at 70% 30%, ${({ theme }) => theme.colors.button}11, transparent 50%);
+    background: 
+      radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 70% 60%, rgba(239, 68, 68, 0.08) 0%, transparent 50%);
+    pointer-events: none;
   }
   
   > * {

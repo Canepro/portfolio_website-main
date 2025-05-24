@@ -15,11 +15,12 @@ export const lightTheme = {
   fonts: commonFonts,
   colors: {
     primary1: "hsl(210, 40%, 98%)",
-    background1: "#FFFFFF",
-    accent1: "hsl(220, 90%, 56%)", // Better blue
-    button: "hsl(220, 90%, 56%)",
-    background2: "hsl(220, 14%, 96%)", // Softer grey
+    background1: "#fafafa",
+    accent1: "hsl(220, 90%, 60%)",
+    button: "hsl(220, 90%, 60%)",
+    background2: "hsl(220, 14%, 96%)",
     text: "#1a202c",
+    accent2: "#EF4444", // Added red accent
   },
   breakpoints: commonBreakpoints,
 };
@@ -28,11 +29,12 @@ export const darkTheme = {
   fonts: commonFonts,
   colors: {
     primary1: "hsl(210, 40%, 98%)",
-    background1: "#0f172a", // Richer dark blue
-    accent1: "hsl(220, 90%, 70%)", // Brighter for dark mode
+    background1: "#0a0a0f",
+    accent1: "hsl(220, 90%, 70%)",
     button: "hsl(220, 90%, 70%)",
-    background2: "hsl(220, 19%, 18%)", // Better contrast
+    background2: "hsl(220, 19%, 12%)",
     text: "#f1f5f9",
+    accent2: "#EF4444", // Added red accent
   },
   breakpoints: commonBreakpoints,
 };
