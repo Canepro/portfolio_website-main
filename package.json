@@ -11,6 +11,7 @@
     "@babel/runtime": "^7.24.0",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
+    "critters": "^0.0.23",
     "framer-motion": "^11.1.7",
     "gsap": "^3.13.0",
     "lottie-react": "^2.4.0",
