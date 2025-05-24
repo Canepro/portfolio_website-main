@@ -2,11 +2,13 @@ import React from 'react';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
 import Three3DBackground from '../components/3D/Three3DBackground';
+import ChatBot from '../components/AI/ChatBot';
 
 const Home = () => {
   return (
     <Layout>
       <Three3DBackground />
+      <ChatBot />
       <Section grid>
         <div style={{ padding: '2rem', textAlign: 'center' }}>
           <h1 style={{ 
