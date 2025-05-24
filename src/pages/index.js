@@ -3,6 +3,7 @@ import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
 import Three3DBackground from '../components/3D/Three3DBackground';
 import ChatBot from '../components/AI/ChatBot';
+import ModernContact from '../components/Contact/ModernContact';
 
 const Home = () => {
   return (
@@ -35,6 +36,9 @@ const Home = () => {
           </div>
         </div>
       </Section>
+      <main style={{ position: 'relative', zIndex: 1 }}>
+        <ModernContact />
+      </main>
     </Layout>
   );
 };
