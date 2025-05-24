@@ -4,11 +4,9 @@ const nextConfig = {
   swcMinify: true,
   compiler: {
     styledComponents: true,
-  },
-  experimental: {
+  },  experimental: {
     // Enable modern bundling optimizations
     optimizeCss: true,
-    legacyBrowsers: false,
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Handle Three.js and related modules

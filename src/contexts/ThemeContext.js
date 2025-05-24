@@ -41,6 +41,13 @@ export const themes = {
       },
     },
     
+    // Typography
+    fonts: {
+      main: 'Space Grotesk, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      title: 'Space Grotesk, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      code: 'Fira Code, Monaco, Consolas, monospace',
+    },
+    
     // Glassmorphism
     glass: {
       background: 'rgba(255, 255, 255, 0.1)',
@@ -75,6 +82,13 @@ export const themes = {
         secondary: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
         accent: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
       },
+    },
+    
+    // Typography
+    fonts: {
+      main: 'Space Grotesk, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      title: 'Space Grotesk, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      code: 'Fira Code, Monaco, Consolas, monospace',
     },
     
     // Glassmorphism for dark mode
