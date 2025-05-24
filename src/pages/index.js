@@ -12,7 +12,7 @@ import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 
 const HeroSection = styled.section`
-  height: 100vh;
+  height: 60vh; /* Reduced from 100vh */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -76,6 +76,7 @@ const TechnologiesSection = styled.section`
   background: linear-gradient(135deg, ${({ theme }) => theme.colors.background2}, ${({ theme }) => theme.colors.background1}22);
   padding: 100px 20px;
   position: relative;
+  text-align: center; /* Center the title */
   
   &::before {
     content: '';
@@ -217,7 +218,7 @@ export default function HomePage() {
       <ChatBot />
       <Header />
       <main style={{ position: 'relative', zIndex: 1, paddingTop: '70px' }} role="main">
-        <HeroSection>
+        <HeroSection id="home">
           <TypewriterEffect 
             texts={[
               "DevOps Engineer", 
@@ -235,7 +236,7 @@ export default function HomePage() {
           </HeroSubtitle>
         </HeroSection>
 
-        <AboutSection aria-labelledby="about-title">
+        <AboutSection id="about" aria-labelledby="about-title">
           <AboutTitle id="about-title">About Vincent Mogah</AboutTitle>
           <AboutText>
             I'm Vincent Mogah, a dedicated DevOps Engineer with expertise in cloud infrastructure, 
@@ -249,8 +250,8 @@ export default function HomePage() {
           </AboutText>
         </AboutSection>
 
-        <TechnologiesSection aria-labelledby="tech-title">
-          <AboutTitle id="tech-title" style={{ color: 'inherit' }}>Core Technologies & Tools</AboutTitle>
+        <TechnologiesSection id="technologies" aria-labelledby="tech-title">
+          <AboutTitle id="tech-title">Core Technologies & Tools</AboutTitle>
           <TechGrid>
             {technologies.map((tech, index) => (
               <TechCard key={tech.name}>
@@ -261,7 +262,7 @@ export default function HomePage() {
           </TechGrid>
         </TechnologiesSection>
 
-        <ProjectsSection aria-labelledby="projects-title">
+        <ProjectsSection id="projects" aria-labelledby="projects-title">
           <AboutTitle id="projects-title">Featured DevOps Projects</AboutTitle>
           <ProjectGrid>
             {projects.map((project, index) => (
@@ -310,7 +311,9 @@ export default function HomePage() {
           />
         </StatsSection>
 
-        <ModernContact />
+        <div id="contact">
+          <ModernContact />
+        </div>
       </main>
       <Footer />
     </>

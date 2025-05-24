@@ -73,6 +73,7 @@ const NavLink = styled.a`
   font-size: 1rem;
   position: relative;
   transition: all 0.2s ease;
+  cursor: pointer; /* Add cursor pointer */
   
   &:hover {
     color: ${({ theme }) => theme.colors.accent1};
@@ -141,16 +142,27 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+    setMobileOpen(false); // Close mobile menu after clicking
+  };
+
   return (
     <HeaderBar scrolled={scrolled}>
       <Container>
-        <Logo href="/">VM</Logo>
+        <Logo onClick={() => scrollToSection('home')}>VM</Logo>
         
         <Nav isOpen={mobileOpen}>
-          <NavLink href="#about">About</NavLink>
-          <NavLink href="#technologies">Tech Stack</NavLink>
-          <NavLink href="#projects">Projects</NavLink>
-          <NavLink href="#contact">Contact</NavLink>
+          <NavLink onClick={() => scrollToSection('about')}>About</NavLink>
+          <NavLink onClick={() => scrollToSection('technologies')}>Tech Stack</NavLink>
+          <NavLink onClick={() => scrollToSection('projects')}>Projects</NavLink>
+          <NavLink onClick={() => scrollToSection('contact')}>Contact</NavLink>
           <NavLink 
             href="https://www.linkedin.com/in/vincent-mogah/" 
             target="_blank" 

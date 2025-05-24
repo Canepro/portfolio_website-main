@@ -94,6 +94,16 @@ const FooterBottom = styled.div`
 `;
 
 const Footer = () => {
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <FooterContainer>
       <FooterContent>
@@ -121,7 +131,7 @@ const Footer = () => {
               🔗
             </SocialLink>
             <SocialLink 
-              href="mailto:vincent@example.com"
+              href="mailto:vincent.mogah@example.com"
               title="Email"
             >
               📧
@@ -130,19 +140,19 @@ const Footer = () => {
         </FooterSection>
         
         <FooterSection>
-          <FooterTitle>Services</FooterTitle>
-          <FooterLink href="#services">Cloud Infrastructure</FooterLink>
-          <FooterLink href="#services">CI/CD Pipelines</FooterLink>
-          <FooterLink href="#services">Container Orchestration</FooterLink>
-          <FooterLink href="#services">DevOps Consulting</FooterLink>
+          <FooterTitle>Quick Links</FooterTitle>
+          <FooterLink onClick={() => scrollToSection('about')}>About Me</FooterLink>
+          <FooterLink onClick={() => scrollToSection('technologies')}>Technologies</FooterLink>
+          <FooterLink onClick={() => scrollToSection('projects')}>Projects</FooterLink>
+          <FooterLink onClick={() => scrollToSection('contact')}>Contact</FooterLink>
         </FooterSection>
         
         <FooterSection>
           <FooterTitle>Technologies</FooterTitle>
-          <FooterLink href="#technologies">Azure & AWS</FooterLink>
-          <FooterLink href="#technologies">Docker & Kubernetes</FooterLink>
-          <FooterLink href="#technologies">Terraform & IaC</FooterLink>
-          <FooterLink href="#technologies">Jenkins & Azure DevOps</FooterLink>
+          <FooterLink onClick={() => scrollToSection('technologies')}>Azure & AWS</FooterLink>
+          <FooterLink onClick={() => scrollToSection('technologies')}>Docker & Kubernetes</FooterLink>
+          <FooterLink onClick={() => scrollToSection('technologies')}>Terraform & IaC</FooterLink>
+          <FooterLink onClick={() => scrollToSection('technologies')}>Jenkins & Azure DevOps</FooterLink>
         </FooterSection>
       </FooterContent>
       

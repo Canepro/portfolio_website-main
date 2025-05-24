@@ -162,17 +162,37 @@ const ModernContact = () => {
     setIsSubmitting(true);
     setStatus(null);
     
-    // Simulate form submission
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Here you would typically send the data to your backend
-      console.log('Form submitted:', formData);
-      
-      setStatus({ type: 'success', message: 'Thank you! Your message has been sent successfully.' });
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      // Option 1: Using Formspree (free service)
+      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      });
+
+      if (response.ok) {
+        setStatus({ type: 'success', message: 'Thank you! Your message has been sent successfully. I\'ll get back to you soon!' });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        throw new Error('Failed to send message');
+      }
+
+      // Alternative: mailto fallback
+      // const mailtoLink = `mailto:vincent.mogah@example.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`From: ${formData.name} (${formData.email})\n\n${formData.message}`)}`;
+      // window.location.href = mailtoLink;
+
     } catch (error) {
-      setStatus({ type: 'error', message: 'Sorry, there was an error sending your message. Please try again.' });
+      setStatus({ 
+        type: 'error', 
+        message: 'Sorry, there was an error sending your message. Please try emailing me directly at vincent.mogah@example.com' 
+      });
     } finally {
       setIsSubmitting(false);
     }
