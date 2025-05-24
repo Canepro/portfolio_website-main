@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Text, Box, Sphere, Cylinder } from '@react-three/drei';
+import { Text, Box, Sphere } from '@react-three/drei';
 
 const VisualizerContainer = styled.div`
   width: 100%;
@@ -79,9 +79,10 @@ const DataFlow = ({ from, to, isActive }) => {
   useFrame((state) => {
     if (groupRef.current && isActive) {
       groupRef.current.children.forEach((child, index) => {
-        child.position.x = from[0] + (to[0] - from[0]) * ((state.clock.elapsedTime + index) % 1);
-        child.position.y = from[1] + (to[1] - from[1]) * ((state.clock.elapsedTime + index) % 1);
-        child.position.z = from[2] + (to[2] - from[2]) * ((state.clock.elapsedTime + index) % 1);
+        const progress = ((state.clock.elapsedTime * 0.5 + index * 0.2) % 1);
+        child.position.x = from[0] + (to[0] - from[0]) * progress;
+        child.position.y = from[1] + (to[1] - from[1]) * progress;
+        child.position.z = from[2] + (to[2] - from[2]) * progress;
       });
     }
   });

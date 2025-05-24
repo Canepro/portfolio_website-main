@@ -11,6 +11,7 @@ import InstallPrompt from '../components/PWA/InstallPrompt';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
 import DevOpsPipelineVisualizer from '../components/Interactive/DevOpsPipelineVisualizer';
+import InfrastructureTopology from '../components/Interactive/InfrastructureTopology';
 import SkillRadarChart from '../components/Interactive/SkillRadarChart';
 
 const HeroSection = styled.section`
@@ -278,11 +279,23 @@ export default function HomePage() {
         </TechnologiesSection>
 
         <InteractiveSection>
-          <AboutTitle>DevOps Pipeline Demonstration</AboutTitle>
-          <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
-            Watch an interactive CI/CD pipeline in action. Click "Run Pipeline" to see the automated workflow.
-          </p>
-          <DevOpsPipelineVisualizer />
+          <AboutTitle>DevOps Infrastructure Showcase</AboutTitle>
+          
+          <div style={{ marginBottom: '60px' }}>
+            <h3 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>CI/CD Pipeline Demonstration</h3>
+            <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
+              Watch an interactive CI/CD pipeline in action. Click "Run Pipeline" to see the automated workflow.
+            </p>
+            <DevOpsPipelineVisualizer />
+          </div>
+
+          <div>
+            <h3 style={{ marginBottom: '20px', fontSize: '1.5rem' }}>Infrastructure Topology</h3>
+            <p style={{ fontSize: '1.1rem', marginBottom: '40px', color: 'inherit' }}>
+              Explore a typical cloud infrastructure setup. Click nodes for details and "Show Traffic" to visualize data flow.
+            </p>
+            <InfrastructureTopology />
+          </div>
         </InteractiveSection>
 
         <ProjectsSection id="projects" aria-labelledby="projects-title">
