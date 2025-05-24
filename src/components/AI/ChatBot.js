@@ -107,15 +107,17 @@ const ChatBot = () => {
     const msg = userMessage.toLowerCase();
     
     if (msg.includes('skill') || msg.includes('technology')) {
-      return "Vincent specializes in React, Next.js, Node.js, Python, and modern web development. He's also experienced with 3D graphics, AI integration, and full-stack development!";
+      return "Vincent specializes in Azure, AWS, Docker, Kubernetes, Terraform, and CI/CD pipelines. He's experienced with cloud architecture, infrastructure automation, and DevOps best practices!";
     } else if (msg.includes('project') || msg.includes('work')) {
-      return "Vincent has worked on various projects including portfolio websites, e-commerce platforms, and AI-powered applications. Check out his project showcase for detailed examples!";
+      return "Vincent has worked on cloud infrastructure automation, CI/CD pipeline optimization, and container orchestration platforms. Check out his project showcase for detailed examples of his DevOps work!";
     } else if (msg.includes('contact') || msg.includes('hire')) {
-      return "You can reach Vincent through the contact form below, or connect with him on LinkedIn. He's always open to discussing new opportunities!";
-    } else if (msg.includes('experience')) {
-      return "Vincent has several years of experience in full-stack development, with a focus on modern JavaScript frameworks and emerging technologies like AI and 3D graphics.";
+      return "You can reach Vincent through the contact form below, or connect with him on LinkedIn. He's always open to discussing cloud infrastructure and DevOps opportunities!";
+    } else if (msg.includes('experience') || msg.includes('devops') || msg.includes('cloud')) {
+      return "Vincent has 5+ years of experience in DevOps and cloud engineering, with expertise in Azure, infrastructure automation, containerization, and building scalable deployment pipelines.";
+    } else if (msg.includes('azure') || msg.includes('aws')) {
+      return "Vincent has extensive experience with both Azure and AWS cloud platforms, including infrastructure as code, serverless computing, and enterprise-scale deployments.";
     } else {
-      return "That's an interesting question! Feel free to ask me about Vincent's skills, projects, experience, or how to get in touch with him.";
+      return "That's an interesting question! Feel free to ask me about Vincent's DevOps skills, cloud projects, infrastructure experience, or how to get in touch with him.";
     }
   };
 

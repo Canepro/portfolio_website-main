@@ -1,7 +1,7 @@
 {
-  "name": "Modern Portfolio - Professional Web Developer",
-  "short_name": "Portfolio",
-  "description": "Professional portfolio showcasing modern web development projects with React, Next.js, and cutting-edge technologies.",
+  "name": "Vincent's Portfolio - DevOps/Cloud Engineer",
+  "short_name": "Vincent DevOps",
+  "description": "Professional portfolio showcasing DevOps engineering, cloud architecture, and infrastructure automation expertise",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",

@@ -163,31 +163,31 @@ const StatsSection = styled.section`
 
 export default function HomePage() {
   const technologies = [
-    { name: "React", icon: "⚛️" },
-    { name: "Next.js", icon: "🔺" },
-    { name: "Node.js", icon: "🟢" },
-    { name: "Python", icon: "🐍" },
-    { name: "JavaScript", icon: "🟨" },
-    { name: "TypeScript", icon: "🔷" },
-    { name: "Three.js", icon: "🎲" },
-    { name: "AI/ML", icon: "🤖" },
+    { name: "Azure", icon: "☁️" },
+    { name: "AWS", icon: "🔶" },
+    { name: "Docker", icon: "🐳" },
+    { name: "Kubernetes", icon: "⚙️" },
+    { name: "Terraform", icon: "🏗️" },
+    { name: "Jenkins", icon: "🔧" },
+    { name: "Git/GitHub", icon: "🔀" },
+    { name: "Linux", icon: "🐧" },
   ];
 
   const projects = [
     {
-      title: "Modern Portfolio Website",
-      description: "A cutting-edge portfolio featuring 3D graphics, AI chatbot, and advanced animations. Built with Next.js, Three.js, and modern web technologies.",
-      technologies: ["Next.js", "Three.js", "React", "GSAP", "Styled Components"]
+      title: "Cloud Infrastructure Automation",
+      description: "Designed and implemented scalable cloud infrastructure using Terraform and Azure Resource Manager. Automated deployment pipelines with 99.9% uptime and reduced infrastructure costs by 30%.",
+      technologies: ["Azure", "Terraform", "ARM Templates", "PowerShell", "Azure DevOps"]
     },
     {
-      title: "AI-Powered Dashboard",
-      description: "Interactive dashboard with machine learning insights, real-time data visualization, and intelligent recommendations for business analytics.",
-      technologies: ["React", "Python", "TensorFlow", "D3.js", "FastAPI"]
+      title: "CI/CD Pipeline Optimization",
+      description: "Built comprehensive CI/CD pipelines using Azure DevOps and Jenkins. Reduced deployment time from hours to minutes and implemented automated testing and security scanning.",
+      technologies: ["Azure DevOps", "Jenkins", "Docker", "SonarQube", "YAML"]
     },
     {
-      title: "E-Commerce Platform",
-      description: "Full-stack e-commerce solution with payment integration, inventory management, and customer analytics. Optimized for performance and SEO.",
-      technologies: ["Next.js", "Node.js", "MongoDB", "Stripe", "Redis"]
+      title: "Container Orchestration Platform",
+      description: "Deployed and managed Kubernetes clusters on Azure AKS. Implemented monitoring, logging, and auto-scaling for containerized applications serving millions of users.",
+      technologies: ["Kubernetes", "Azure AKS", "Helm", "Prometheus", "Grafana"]
     }
   ];
 
@@ -200,10 +200,10 @@ export default function HomePage() {
         <HeroSection>
           <TypewriterEffect 
             texts={[
-              "Full Stack Developer", 
-              "AI Enthusiast", 
-              "3D Graphics Explorer",
-              "Modern Web Architect"
+              "DevOps Engineer", 
+              "Cloud Architect", 
+              "Infrastructure Automation",
+              "CI/CD Specialist"
             ]}
             size="2.8rem"
             speed={100}
@@ -211,20 +211,21 @@ export default function HomePage() {
             pauseTime={2000}
           />
           <HeroSubtitle>
-            Crafting innovative digital experiences with cutting-edge technology
+            Building scalable cloud infrastructure and automating deployment pipelines
           </HeroSubtitle>
         </HeroSection>
 
         <AboutSection>
           <AboutTitle>About Me</AboutTitle>
           <AboutText>
-            I'm Vincent, a passionate full-stack developer with expertise in modern web technologies, 
-            AI integration, and 3D graphics. I love creating innovative digital experiences that 
-            combine cutting-edge technology with intuitive design.
+            I'm Vincent, a passionate DevOps/Cloud Engineer specializing in Azure cloud services, 
+            infrastructure automation, and CI/CD pipeline optimization. I love creating robust, 
+            scalable cloud solutions that enable teams to deploy faster and more reliably.
           </AboutText>
           <AboutText>
-            With a strong foundation in both frontend and backend development, I specialize in 
-            React ecosystem, Node.js, Python, and emerging technologies like WebGL and machine learning.
+            With extensive experience in cloud platforms, containerization, and infrastructure as code, 
+            I help organizations modernize their deployment processes and achieve operational excellence 
+            through automation and best practices.
           </AboutText>
         </AboutSection>
 
@@ -261,26 +262,26 @@ export default function HomePage() {
 
         <StatsSection>
           <AnimatedCounter 
-            end={50} 
-            label="Projects Completed" 
+            end={25} 
+            label="Cloud Projects Deployed" 
             suffix="+"
             duration={2500}
           />
           <AnimatedCounter 
-            end={3} 
+            end={5} 
             label="Years Experience" 
             suffix="+"
             duration={2000}
           />
           <AnimatedCounter 
-            end={25} 
+            end={15} 
             label="Technologies Mastered" 
             suffix="+"
             duration={3000}
           />
           <AnimatedCounter 
-            end={100} 
-            label="Client Satisfaction" 
+            end={99} 
+            label="Infrastructure Uptime" 
             suffix="%"
             duration={2800}
           />
