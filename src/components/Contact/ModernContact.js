@@ -229,7 +229,7 @@ const ModernContact = () => {
             name="message"
             value={formData.message}
             onChange={handleChange}
-            placeholder="Tell me about your project or idea..."
+            placeholder="Tell me about your DevOps/Cloud infrastructure needs..."
             required
           />
         </FormGroup>

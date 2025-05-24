@@ -169,30 +169,30 @@ export default function HomePage() {
     { name: "Kubernetes", icon: "⚙️" },
     { name: "Terraform", icon: "🏗️" },
     { name: "Jenkins", icon: "🔧" },
-    { name: "Git/GitHub", icon: "🔀" },
+    { name: "Python", icon: "🐍" },
     { name: "Linux", icon: "🐧" },
   ];
 
   const projects = [
     {
-      title: "Cloud Infrastructure Automation",
-      description: "Designed and implemented scalable cloud infrastructure using Terraform and Azure Resource Manager. Automated deployment pipelines with 99.9% uptime and reduced infrastructure costs by 30%.",
-      technologies: ["Azure", "Terraform", "ARM Templates", "PowerShell", "Azure DevOps"]
+      title: "Azure Cloud Infrastructure",
+      description: "Designed and implemented scalable cloud infrastructure solutions using Azure services. Automated deployment processes and optimized resource utilization for enterprise workloads.",
+      technologies: ["Azure", "ARM Templates", "PowerShell", "Azure DevOps", "Monitoring"]
     },
     {
-      title: "CI/CD Pipeline Optimization",
-      description: "Built comprehensive CI/CD pipelines using Azure DevOps and Jenkins. Reduced deployment time from hours to minutes and implemented automated testing and security scanning.",
-      technologies: ["Azure DevOps", "Jenkins", "Docker", "SonarQube", "YAML"]
+      title: "CI/CD Pipeline Automation",
+      description: "Built comprehensive continuous integration and deployment pipelines using modern DevOps tools. Reduced deployment time and improved code quality through automated testing.",
+      technologies: ["Jenkins", "Azure DevOps", "Docker", "Git", "YAML"]
     },
     {
-      title: "Container Orchestration Platform",
-      description: "Deployed and managed Kubernetes clusters on Azure AKS. Implemented monitoring, logging, and auto-scaling for containerized applications serving millions of users.",
-      technologies: ["Kubernetes", "Azure AKS", "Helm", "Prometheus", "Grafana"]
+      title: "Container Orchestration",
+      description: "Implemented containerization strategies and orchestrated applications using Kubernetes. Managed microservices architecture with automated scaling and monitoring.",
+      technologies: ["Docker", "Kubernetes", "Helm", "Prometheus", "Grafana"]
     }
   ];
 
   return (
-    <Layout>
+    <>
       <Three3DBackground />
       <ChatBot />
       
@@ -201,9 +201,9 @@ export default function HomePage() {
           <TypewriterEffect 
             texts={[
               "DevOps Engineer", 
-              "Cloud Architect", 
-              "Infrastructure Automation",
-              "CI/CD Specialist"
+              "Cloud Infrastructure Specialist", 
+              "Automation Expert",
+              "CI/CD Pipeline Architect"
             ]}
             size="2.8rem"
             speed={100}
@@ -211,26 +211,26 @@ export default function HomePage() {
             pauseTime={2000}
           />
           <HeroSubtitle>
-            Building scalable cloud infrastructure and automating deployment pipelines
+            Transforming infrastructure through automation and cloud excellence
           </HeroSubtitle>
         </HeroSection>
 
         <AboutSection>
-          <AboutTitle>About Me</AboutTitle>
+          <AboutTitle>About Vincent Mogah</AboutTitle>
           <AboutText>
-            I'm Vincent, a passionate DevOps/Cloud Engineer specializing in Azure cloud services, 
-            infrastructure automation, and CI/CD pipeline optimization. I love creating robust, 
-            scalable cloud solutions that enable teams to deploy faster and more reliably.
+            I'm Vincent Mogah, a dedicated DevOps Engineer with expertise in cloud infrastructure, 
+            automation, and continuous integration/deployment. I specialize in designing robust, 
+            scalable solutions that bridge the gap between development and operations teams.
           </AboutText>
           <AboutText>
-            With extensive experience in cloud platforms, containerization, and infrastructure as code, 
-            I help organizations modernize their deployment processes and achieve operational excellence 
-            through automation and best practices.
+            With hands-on experience in Azure, AWS, containerization, and infrastructure as code, 
+            I help organizations streamline their deployment processes, improve system reliability, 
+            and achieve operational excellence through modern DevOps practices.
           </AboutText>
         </AboutSection>
 
         <TechnologiesSection>
-          <AboutTitle style={{ color: 'inherit' }}>Technologies I Work With</AboutTitle>
+          <AboutTitle style={{ color: 'inherit' }}>Core Technologies & Tools</AboutTitle>
           <TechGrid>
             {technologies.map((tech, index) => (
               <TechCard key={tech.name}>
@@ -242,7 +242,7 @@ export default function HomePage() {
         </TechnologiesSection>
 
         <ProjectsSection>
-          <AboutTitle>Featured Projects</AboutTitle>
+          <AboutTitle>Featured DevOps Projects</AboutTitle>
           <ProjectGrid>
             {projects.map((project, index) => (
               <ProjectCard key={project.title}>
@@ -262,34 +262,34 @@ export default function HomePage() {
 
         <StatsSection>
           <AnimatedCounter 
-            end={25} 
-            label="Cloud Projects Deployed" 
+            end={20} 
+            label="Infrastructure Projects" 
             suffix="+"
             duration={2500}
           />
           <AnimatedCounter 
-            end={5} 
-            label="Years Experience" 
+            end={3} 
+            label="Years DevOps Experience" 
             suffix="+"
             duration={2000}
           />
           <AnimatedCounter 
-            end={15} 
+            end={12} 
             label="Technologies Mastered" 
             suffix="+"
             duration={3000}
           />
           <AnimatedCounter 
             end={99} 
-            label="Infrastructure Uptime" 
-            suffix="%"
+            label="System Uptime" 
+            suffix=".9%"
             duration={2800}
           />
         </StatsSection>
 
         <ModernContact />
       </main>
-    </Layout>
+    </>
   );
-};
+}
 

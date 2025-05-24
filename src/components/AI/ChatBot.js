@@ -107,17 +107,19 @@ const ChatBot = () => {
     const msg = userMessage.toLowerCase();
     
     if (msg.includes('skill') || msg.includes('technology')) {
-      return "Vincent specializes in Azure, AWS, Docker, Kubernetes, Terraform, and CI/CD pipelines. He's experienced with cloud architecture, infrastructure automation, and DevOps best practices!";
-    } else if (msg.includes('project') || msg.includes('work')) {
-      return "Vincent has worked on cloud infrastructure automation, CI/CD pipeline optimization, and container orchestration platforms. Check out his project showcase for detailed examples of his DevOps work!";
-    } else if (msg.includes('contact') || msg.includes('hire')) {
-      return "You can reach Vincent through the contact form below, or connect with him on LinkedIn. He's always open to discussing cloud infrastructure and DevOps opportunities!";
-    } else if (msg.includes('experience') || msg.includes('devops') || msg.includes('cloud')) {
-      return "Vincent has 5+ years of experience in DevOps and cloud engineering, with expertise in Azure, infrastructure automation, containerization, and building scalable deployment pipelines.";
-    } else if (msg.includes('azure') || msg.includes('aws')) {
-      return "Vincent has extensive experience with both Azure and AWS cloud platforms, including infrastructure as code, serverless computing, and enterprise-scale deployments.";
+      return "Vincent specializes in Azure, AWS, Docker, Kubernetes, Terraform, Jenkins, and Python. He has extensive experience with cloud infrastructure, CI/CD pipelines, and DevOps automation!";
+    } else if (msg.includes('project') || msg.includes('work') || msg.includes('experience')) {
+      return "Vincent has worked on cloud infrastructure projects, CI/CD pipeline automation, and container orchestration. He's experienced in designing scalable solutions and implementing DevOps best practices!";
+    } else if (msg.includes('contact') || msg.includes('hire') || msg.includes('linkedin')) {
+      return "You can connect with Vincent on LinkedIn at linkedin.com/in/vincent-mogah/ or use the contact form below. He's always interested in discussing DevOps and cloud infrastructure opportunities!";
+    } else if (msg.includes('azure') || msg.includes('cloud')) {
+      return "Vincent has strong expertise in Azure cloud services, including infrastructure design, resource management, and automation. He's also familiar with AWS and multi-cloud strategies.";
+    } else if (msg.includes('devops') || msg.includes('automation')) {
+      return "Vincent specializes in DevOps practices including CI/CD pipeline development, infrastructure automation, containerization, and monitoring. He helps teams improve deployment efficiency and system reliability.";
+    } else if (msg.includes('docker') || msg.includes('kubernetes')) {
+      return "Vincent has hands-on experience with containerization using Docker and orchestration with Kubernetes. He's implemented container strategies for microservices and scalable applications.";
     } else {
-      return "That's an interesting question! Feel free to ask me about Vincent's DevOps skills, cloud projects, infrastructure experience, or how to get in touch with him.";
+      return "Hi! I can tell you about Vincent's DevOps expertise, cloud projects, automation skills, or help you get in touch. What would you like to know?";
     }
   };
 
