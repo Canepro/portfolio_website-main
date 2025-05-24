@@ -1,7 +1,9 @@
+import React from 'react';
 import { ThemeProvider } from '../contexts/ThemeContext';
 import Theme from '../styles/theme';
+import '../styles/globals.css'; // if you have global CSS
 
-export default function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider>
       <Theme>
@@ -10,4 +12,5 @@ export default function App({ Component, pageProps }) {
     </ThemeProvider>
   );
 }
- 
+
+export default MyApp;

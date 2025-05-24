@@ -157,59 +157,22 @@ export const themes = {
 
 // Theme Provider Component
 export const ThemeProvider = ({ children }) => {
-  const [isDark, setIsDark] = useState(false);
-  const [currentTheme, setCurrentTheme] = useState(themes.light);
+  const [isDark, setIsDark] = useState(true);
+  const [currentTheme, setCurrentTheme] = useState('dark');
 
-  // Initialize theme from localStorage or system preference
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('portfolio-theme');
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    const shouldUseDark = savedTheme === 'dark' || (!savedTheme && systemDark);
-    setIsDark(shouldUseDark);
-    setCurrentTheme(shouldUseDark ? themes.dark : themes.light);
-    
-    // Apply theme class to body
-    document.body.classList.toggle('dark-theme', shouldUseDark);
-    document.body.classList.toggle('light-theme', !shouldUseDark);
-  }, []);
-
-  // Theme toggle function
   const toggleTheme = () => {
-    const newIsDark = !isDark;
-    setIsDark(newIsDark);
-    setCurrentTheme(newIsDark ? themes.dark : themes.light);
-    
-    // Save to localStorage
-    localStorage.setItem('portfolio-theme', newIsDark ? 'dark' : 'light');
-    
-    // Apply theme class to body
-    document.body.classList.toggle('dark-theme', newIsDark);
-    document.body.classList.toggle('light-theme', !newIsDark);
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setCurrentTheme(newTheme);
+    setIsDark(newTheme === 'dark');
   };
 
-  // Listen to system theme changes
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e) => {
-      const savedTheme = localStorage.getItem('portfolio-theme');
-      if (!savedTheme) {
-        setIsDark(e.matches);
-        setCurrentTheme(e.matches ? themes.dark : themes.light);
-        document.body.classList.toggle('dark-theme', e.matches);
-        document.body.classList.toggle('light-theme', !e.matches);
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  const theme = themes[currentTheme];
 
   const value = {
-    theme: currentTheme,
+    theme,
     isDark,
-    toggleTheme,
-    themes,
+    currentTheme,
+    toggleTheme
   };
 
   return (

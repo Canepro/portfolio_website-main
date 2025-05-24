@@ -1,31 +1,19 @@
 // Component Restoration Script - Gradually add back Phase 2 features
 
-// Step 1: Add Theme System
+// Step 1: Add Theme System (missing function)
 export const addThemeSystem = () => {
-  const appJsWithTheme = `import Theme from '../styles/theme';
+  const appJsWithTheme = `// Add to imports:
 import { ThemeProvider } from '../contexts/ThemeContext';
+import Theme from '../styles/theme';
 
-export default function App({ Component, pageProps }) {
-  return (
-    <ThemeProvider>
-      <Theme>
-        <Component {...pageProps} />
-      </Theme>
-    </ThemeProvider>
-  );
-}`;
+// Wrap App with providers:
+<ThemeProvider>
+  <Theme>
+    {/* existing content */}
+  </Theme>
+</ThemeProvider>`;
 
-  const indexJsWithTheme = `// Add to imports:
-import { useTheme } from '../contexts/ThemeContext';
-import ThemeToggle from '../components/ThemeToggle/ThemeToggle';
-
-// Add to component:
-const { theme, isDark } = useTheme();
-
-// Add ThemeToggle to render:
-<ThemeToggle />`;
-
-  return { appJsWithTheme, indexJsWithTheme };
+  return { appJsWithTheme };
 };
 
 // Step 2: Add Loading Screen
