@@ -1,8 +1,8 @@
 import Accomplishments from '../components/Accomplishments/Accomplishments';
 import BgAnimation from '../components/BackgroundAnimation/BackgroundAnimation';
 import ModernHero from '../components/Hero/ModernHero';
-import Projects from '../components/Projects/Projects';
-import Technologies from '../components/Technologies/Technologies';
+import ModernProjects from '../components/Projects/ModernProjects';
+import ModernTechnologies from '../components/Technologies/ModernTechnologies';
 import Timeline from '../components/TimeLine/TimeLine';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
