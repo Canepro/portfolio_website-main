@@ -6,12 +6,16 @@ import ModernTechnologies from '../components/Technologies/ModernTechnologies';
 import ModernContact from '../components/Contact/ModernContact';
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle';
 import AnimatedBackground from '../components/ThreeBackground/ThreeBackground';
+import ModernNavigation from '../components/Navigation/ModernNavigation';
+import LoadingScreen, { useLoading } from '../components/Loading/LoadingScreen';
 import Timeline from '../components/TimeLine/TimeLine';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
 import React, { useEffect, useRef } from 'react';
 
 const Home = () => {
+  const { isLoading, progress, loadingText } = useLoading();
+  
   // Define a ref variable to store the livechat script
   const livechatScript = useRef(null);
 
@@ -40,19 +44,40 @@ const Home = () => {
       // Set the livechat script ref variable to null
       livechatScript.current = null;
     };  }, []);  return (
-    <Layout>
-      <AnimatedBackground />
-      <ThemeToggle />
-      <Section grid>
-        <ModernHero />
-        <BgAnimation />
-      </Section>
-      <ModernProjects />
-      <ModernTechnologies />
-      <Timeline />
-      <Accomplishments />
-      <ModernContact />
-    </Layout>
+    <>
+      <LoadingScreen 
+        isLoading={isLoading} 
+        progress={progress} 
+        loadingText={loadingText} 
+      />
+      
+      {!isLoading && (
+        <Layout>
+          <AnimatedBackground />
+          <ModernNavigation />
+          <ThemeToggle />
+          <Section grid id="home">
+            <ModernHero />
+            <BgAnimation />
+          </Section>
+          <div id="projects">
+            <ModernProjects />
+          </div>
+          <div id="skills">
+            <ModernTechnologies />
+          </div>
+          <div id="experience">
+            <Timeline />
+          </div>
+          <div id="about">
+            <Accomplishments />
+          </div>
+          <div id="contact">
+            <ModernContact />
+          </div>
+        </Layout>
+      )}
+    </>
   );
 };
 
