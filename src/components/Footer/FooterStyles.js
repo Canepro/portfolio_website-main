@@ -157,7 +157,6 @@ export const LinkTitle = styled.h4`
 		margin-bottom: 8px;
 	}
 `
-// check out the above code and fix for errors
 export const SocialIcons = styled.a`
 transition: 0.3s ease;
 color: white;
@@ -264,8 +263,9 @@ export const LinkTitle3 = styled.h4`
 	color: rgba(255, 255, 255, 0.4);
 	margin-bottom: 16px;
 
- 
-
-
-//q: What is the problem with this code?
+	@media ${props => props.theme.breakpoints.sm} {
+		font-size: 10px;
+		line-height: 12px;
+		margin-bottom: 8px;
+	}
 `
