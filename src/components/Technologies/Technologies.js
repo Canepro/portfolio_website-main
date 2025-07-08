@@ -18,7 +18,7 @@ const Technologies = () =>  (
         <ListContainer>
           <ListTitle>Front-End</ListTitle>
           <ListParagraph style={{ listStyleType: 'disc' }}>
-            Experiece with <br />
+            Experience with <br />
             React.js <br />
             HTML 5 <br />
             CSS3 <br />

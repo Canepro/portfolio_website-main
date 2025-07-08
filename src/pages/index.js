@@ -31,8 +31,10 @@ const Home = () => {
 
     // Return a cleanup function to unload the livechat script on unmount
     return () => {
-      // Remove the script element from the document head
-      document.head.removeChild(livechatScript.current);
+      // Remove the script element from the document head if it exists
+      if (livechatScript.current && document.head.contains(livechatScript.current)) {
+        document.head.removeChild(livechatScript.current);
+      }
 
       // Set the livechat script ref variable to null
       livechatScript.current = null;
