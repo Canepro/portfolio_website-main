@@ -1,14 +1,13 @@
 // src/components/Technologies/Technologies.js
 
 import React from 'react';
-
-// Direct path imports to fix the build error
-import { DiReact } from 'react-icons/di/index.js';
-import { DiTerminal } from 'react-icons/di/index.js';
-import { DiMicrosoft } from 'react-icons/di/index.js';
-
 import { Section, SectionDivider, SectionText, SectionTitle } from '../../styles/GlobalComponents';
 import { List, ListContainer, ListItem, ListParagraph, ListTitle } from './TechnologiesStyles';
+
+// Import the local SVG icon components
+import MicrosoftIcon from './icons/MicrosoftIcon';
+import TerminalIcon from './icons/TerminalIcon';
+import ReactIcon from './icons/ReactIcon';
 
 const Technologies = () => (
   <Section id="tech">
@@ -20,7 +19,7 @@ const Technologies = () => (
     <List>
       <ListItem>
         <picture>
-          <DiMicrosoft size="3rem" />
+          <MicrosoftIcon />
         </picture>
         <ListContainer>
           <ListTitle>Cloud & Architecture</ListTitle>
@@ -29,7 +28,7 @@ const Technologies = () => (
       </ListItem>
       <ListItem>
         <picture>
-          <DiTerminal size="3rem" />
+          <TerminalIcon />
         </picture>
         <ListContainer>
           <ListTitle>DevOps & Containers</ListTitle>
@@ -38,7 +37,7 @@ const Technologies = () => (
       </ListItem>
       <ListItem>
         <picture>
-          <DiReact size="3rem" />
+          <ReactIcon />
         </picture>
         <ListContainer>
           <ListTitle>Front-End & Languages</ListTitle>
