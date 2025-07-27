@@ -2,12 +2,12 @@
 
 import React from 'react';
 // Corrected imports are below
-import { DiReact, DiTerminal } from 'react-icons/di';
-import { SiAzure, SiAws, SiKubernetes, SiDocker, SiPodman, SiTerraform, SiGithubactions, SiPython, SiJavascript, SiGit, SiHtml5, SiCss3 } from 'react-icons/si';
+import { DiReact, DiTerminal, DiMicrosoft } from 'react-icons/di';
+import { SiAws, SiKubernetes, SiDocker, SiPodman, SiTerraform, SiGithubactions, SiPython, SiJavascript, SiGit, SiHtml5, SiCss3 } from 'react-icons/si';
 import { Section, SectionDivider, SectionText, SectionTitle } from '../../styles/GlobalComponents';
 import { List, ListContainer, ListItem, ListParagraph, ListTitle } from './TechnologiesStyles';
 
-const Technologies = () =>  (
+const Technologies = () => (
   <Section id="tech">
     <SectionDivider divider />
     <SectionTitle>Tech Stack</SectionTitle>
@@ -17,8 +17,8 @@ const Technologies = () =>  (
     <List>
       <ListItem>
         <picture>
-          {/* Corrected the icon component name here */}
-          <SiAzure size="3rem" />
+          {/* Using the standard Microsoft icon as a reliable replacement for Azure */}
+          <DiMicrosoft size="3rem" />
         </picture>
         <ListContainer>
           <ListTitle>Cloud & Architecture</ListTitle>
