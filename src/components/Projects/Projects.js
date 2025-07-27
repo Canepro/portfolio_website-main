@@ -1,3 +1,5 @@
+// src/components/Projects/Projects.js
+
 import React from 'react';
 
 import { BlogCard, CardInfo, ExternalLinks, GridContainer, HeaderThree, Hr, Tag, TagList, TitleContent, UtilityList, Img } from './ProjectsStyles';
@@ -27,8 +29,15 @@ const Projects = () => (
               </TagList>
             </div>
             <UtilityList>
-              <ExternalLinks href={p.visit}>Code</ExternalLinks>
-              <ExternalLinks href={p.source}>Source</ExternalLinks>
+              {/* If visit and source are the same, only show one link to the source code */}
+              {p.visit === p.source ? (
+                <ExternalLinks href={p.source}>Source Code</ExternalLinks>
+              ) : (
+                <>
+                  <ExternalLinks href={p.visit}>Live Site</ExternalLinks>
+                  <ExternalLinks href={p.source}>Source Code</ExternalLinks>
+                </>
+              )}
             </UtilityList>
           </BlogCard>
         );
