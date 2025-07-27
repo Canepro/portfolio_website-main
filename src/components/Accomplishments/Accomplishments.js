@@ -1,47 +1,33 @@
+// src/components/Accomplishments/Accomplishments.js
+
 import React from 'react';
-
 import { Section, SectionDivider, SectionTitle } from '../../styles/GlobalComponents';
-import { Box, Boxes, BoxNum, BoxText } from './AccomplishmentsStyles';
+import { Box, Boxes, BoxNum, BoxText, BoxLink } from './AccomplishmentsStyles';
 
-const data = [
-  { number: 6, text: 'Open Source Projects'},
-  { number: 6, text: 'Certifications', },
-  { number: 1, text: 'Github Followers', },
-  { number: 10, text: 'Github Stars', }
-];
+const Accomplishments = ({ stats }) => {
+  // The "Certifications" box has been removed for a cleaner look.
+  const data = [
+    { number: stats.repos, text: 'Open Source Projects', link: 'https://github.com/canepro?tab=repositories' },
+    { number: stats.followers, text: 'Github Followers', link: 'https://github.com/canepro?tab=followers' },
+    { number: stats.stars, text: 'Github Stars', link: 'https://github.com/canepro?tab=stars' }
+  ];
 
-const Accomplishments = () => (
-  <Section>
-    <SectionTitle>Personal Achievements</SectionTitle>
-    <Boxes>
-      {data.map((card, index) => (
-        <Box key={index}>
-          {card.text === 'Open Source Projects' ? (
-            <a href="https://github.com/canepro?tab=repositories" target="_blank" rel="noopener noreferrer">
+  return (
+    <Section>
+      <SectionTitle>Personal Achievements</SectionTitle>
+      <Boxes>
+        {data.map((card, index) => (
+          <BoxLink href={card.link} key={index} target="_blank" rel="noopener noreferrer">
+            <Box>
               <BoxNum>{`${card.number}+`}</BoxNum>
               <BoxText>{card.text}</BoxText>
-            </a>
-          ) : card.text === 'Certifications' ? (
-            <a href="https://www.credly.com/users/vincent-mogah" target="_blank" rel="noopener noreferrer">
-              <BoxNum>{`${card.number}+`}</BoxNum>
-              <BoxText>{card.text}</BoxText>
-            </a>
-          ) : card.text === 'Github Followers' ? (
-            <a href="https://github.com/canepro?tab=followers" target="_blank" rel="noopener noreferrer">
-              <BoxNum>{`${card.number}+`}</BoxNum>
-              <BoxText>{card.text}</BoxText>
-            </a>
-          ) : (
-            <a href="https://github.com/canepro?tab=stars" target="_blank" rel="noopener noreferrer">
-              <BoxNum>{`${card.number}+`}</BoxNum>
-              <BoxText>{card.text}</BoxText>
-            </a>
-          )}
-        </Box>
-      ))}
-    </Boxes>
-    <SectionDivider/>
-  </Section>
-);
+            </Box>
+          </BoxLink>
+        ))}
+      </Boxes>
+      <SectionDivider/>
+    </Section>
+  );
+};
 
 export default Accomplishments;

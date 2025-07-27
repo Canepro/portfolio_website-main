@@ -78,3 +78,14 @@ export const BoxText = styled.p`
     line-height: 18px;
   }
 `;
+
+export const BoxLink = styled.a`
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.03);
+    cursor: pointer;
+  }
+`;

@@ -37,30 +37,36 @@ export const certifications = [
     name: 'Microsoft Certified: DevOps Engineer Expert',
     issuer: 'Microsoft',
     date: 'Aug 2023',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
   {
     name: 'Microsoft Certified: Azure Administrator Associate',
     issuer: 'Microsoft',
     date: 'Dec 2022',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
   {
     name: 'AWS Certified Cloud Practitioner',
     issuer: 'Amazon Web Services',
     date: 'Nov 2021',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
   {
     name: 'ITIL 4 Foundation Certificate',
     issuer: 'PeopleCert',
     date: 'Apr 2025 (Expires)',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
   {
     name: 'Microsoft Certified: Azure AI Fundamentals',
     issuer: 'Microsoft',
     date: 'Dec 2021',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
   {
     name: 'freeCodeCamp: Responsive Web Design',
     issuer: 'freeCodeCamp',
     date: 'Feb 2022',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
 ];
