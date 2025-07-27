@@ -22,10 +22,45 @@ export const projects = [
 ];
 
 export const TimeLineData = [
-  { year: 2015, text: 'Started my career as an IT Regional Support Officer.' },
-  { year: 2019, text: 'Advanced to Technical Support Engineer (Stage II).' },
+  { year: 2015, text: 'Started my career in IT technical support.' },
+  { year: 2019, text: 'Advanced to a Tier 2 Technical Support Engineer role.' },
   { year: 2020, text: 'Promoted to Technical Lead, managing and mentoring teams.' },
-  { year: 2021, text: 'Began my journey into DevOps and cloud engineering.' },
-  { year: 2022, text: 'Expanded my expertise into Front-End Development.' },
-  { year: 2023, text: 'Improving my DevOps and Cloud skills while working at Rocket.Chat.' },
+  { year: 2021, text: 'Began my professional journey into DevOps and cloud engineering.' },
+  { year: 2022, text: 'Expanded my expertise into Front-End Development with React.' },
+  { year: 2023, text: 'Deepened my skills in cloud-native technologies and automation.' },
+  { year: 2024, text: 'Focused on container orchestration with Kubernetes and advanced IaC.' },
+  { year: 2025, text: 'Currently expanding my skills in AI-driven DevOps and security.' },
+];
+
+export const certifications = [
+  {
+    name: 'Microsoft Certified: DevOps Engineer Expert',
+    issuer: 'Microsoft',
+    date: 'Aug 2023',
+  },
+  {
+    name: 'Microsoft Certified: Azure Administrator Associate',
+    issuer: 'Microsoft',
+    date: 'Dec 2022',
+  },
+  {
+    name: 'AWS Certified Cloud Practitioner',
+    issuer: 'Amazon Web Services',
+    date: 'Nov 2021',
+  },
+  {
+    name: 'ITIL 4 Foundation Certificate',
+    issuer: 'PeopleCert',
+    date: 'Apr 2025 (Expires)',
+  },
+  {
+    name: 'Microsoft Certified: Azure AI Fundamentals',
+    issuer: 'Microsoft',
+    date: 'Dec 2021',
+  },
+  {
+    name: 'freeCodeCamp: Responsive Web Design',
+    issuer: 'freeCodeCamp',
+    date: 'Feb 2022',
+  },
 ];
