@@ -1,9 +1,12 @@
 // src/components/Technologies/Technologies.js
 
 import React from 'react';
-// Corrected imports are below
-import { DiReact, DiTerminal, DiMicrosoft } from 'react-icons/di';
-import { SiAws, SiKubernetes, SiDocker, SiPodman, SiTerraform, SiGithubactions, SiPython, SiJavascript, SiGit, SiHtml5, SiCss3 } from 'react-icons/si';
+
+// Direct path imports to fix the build error
+import { DiReact } from 'react-icons/di/index.js';
+import { DiTerminal } from 'react-icons/di/index.js';
+import { DiMicrosoft } from 'react-icons/di/index.js';
+
 import { Section, SectionDivider, SectionText, SectionTitle } from '../../styles/GlobalComponents';
 import { List, ListContainer, ListItem, ListParagraph, ListTitle } from './TechnologiesStyles';
 
@@ -17,7 +20,6 @@ const Technologies = () => (
     <List>
       <ListItem>
         <picture>
-          {/* Using the standard Microsoft icon as a reliable replacement for Azure */}
           <DiMicrosoft size="3rem" />
         </picture>
         <ListContainer>
