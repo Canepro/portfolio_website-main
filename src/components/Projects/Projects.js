@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-import { BlogCard, CardInfo, ExternalLinks, GridContainer, HeaderThree, Hr, Tag, TagList, TitleContent, UtilityList } from './ProjectsStyles';
+import { BlogCard, CardInfo, ExternalLinks, GridContainer, HeaderThree, Hr, Tag, TagList, TitleContent, UtilityList, ImageWrapper } from './ProjectsStyles';
 import { Section, SectionDivider, SectionTitle } from '../../styles/GlobalComponents';
 import { projects } from '../../constants/constants';
 
@@ -15,7 +15,16 @@ const Projects = () => (
       {projects.map((p, i) => {
         return (
           <BlogCard key={i}>
-          <Image src={p.image} alt={`${p.title} thumbnail`} width={800} height={450} style={{ width: '100%', height: 'auto' }} />
+          <ImageWrapper>
+            <Image
+              src={p.image}
+              alt={`${p.title} thumbnail`}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
+              style={{ objectFit: 'cover' }}
+              priority={i === 0}
+            />
+          </ImageWrapper>
             <TitleContent>
               <HeaderThree title={true}>{p.title}</HeaderThree>
               <Hr />
