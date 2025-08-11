@@ -2,10 +2,6 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
-
-# Install ca-certificates for SSL
-RUN apk add --no-cache ca-certificates
-
 COPY package*.json ./
 RUN npm ci
 COPY . .
@@ -16,9 +12,6 @@ FROM node:20-alpine
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
-
-# Install ca-certificates for runtime
-RUN apk add --no-cache ca-certificates
 
 # Only runtime deps
 COPY --from=build /app/package*.json ./
