@@ -29,27 +29,53 @@ const Home = ({ githubStats }) => {
   );
 };
 
-// This function runs at build time to fetch your live GitHub data
+// This function runs at build time to fetch your live GitHub data with resiliency
 export async function getStaticProps() {
-  const userResponse = await fetch('https://api.github.com/users/Canepro');
-  const user = await userResponse.json();
+  try {
+    const headers = process.env.GITHUB_TOKEN
+      ? { Authorization: `token ${process.env.GITHUB_TOKEN}` }
+      : undefined;
 
-  const reposResponse = await fetch('https://api.github.com/users/Canepro/repos');
-  const repos = await reposResponse.json();
+    const [userResponse, reposResponse] = await Promise.all([
+      fetch('https://api.github.com/users/Canepro', { headers }),
+      fetch('https://api.github.com/users/Canepro/repos?per_page=100', { headers }),
+    ]);
 
-  const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+    if (!userResponse.ok || !reposResponse.ok) {
+      throw new Error('GitHub API responded with a non-200 status');
+    }
 
-  return {
-    props: {
-      githubStats: {
-        followers: user.followers,
-        stars: totalStars,
-        repos: user.public_repos,
+    const [user, repos] = await Promise.all([
+      userResponse.json(),
+      reposResponse.json(),
+    ]);
+
+    const totalStars = Array.isArray(repos)
+      ? repos.reduce((acc, repo) => acc + (repo.stargazers_count || 0), 0)
+      : 0;
+
+    return {
+      props: {
+        githubStats: {
+          followers: user.followers || 0,
+          stars: totalStars,
+          repos: user.public_repos || 0,
+        },
       },
-    },
-    // Re-build the page every 24 hours to keep stats fresh
-    revalidate: 86400,
-  };
+      revalidate: 86400,
+    };
+  } catch (error) {
+    return {
+      props: {
+        githubStats: {
+          followers: 0,
+          stars: 0,
+          repos: 0,
+        },
+      },
+      revalidate: 86400,
+    };
+  }
 }
 
 export default Home;

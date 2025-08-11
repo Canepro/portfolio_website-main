@@ -69,7 +69,7 @@ portfolio_website-main/
 │   │   ├── BackgroundAnimation/
 │   │   └── Accomplishments/
 │   └── layout/           # Layout components
-├── .babelrc              # Babel configuration
+├── next.config.js        # Next configuration (styled-components enabled)
 ├── package.json          # Dependencies and scripts
 └── README.md            # This file
 ```
@@ -82,7 +82,7 @@ This project is configured for deployment on Netlify with automatic builds from 
 
 - **Build Command**: `yarn build`
 - **Publish Directory**: `.next`
-- **Plugin**: `@netlify/plugin-nextjs`
+- Note: No custom Netlify Next.js plugin is required for Next 14; default build works.
 
 ### Manual Deployment
 
@@ -101,16 +101,7 @@ This project is configured for deployment on Netlify with automatic builds from 
 
 **Problem**: Build fails with error `"Failed to resolve '@babel/runtime/regenerator'"`
 
-**Solution**: This issue was resolved in v1.1.0 by adding the missing dependency:
-```json
-{
-  "dependencies": {
-    "@babel/runtime": "^7.24.0"
-  }
-}
-```
-
-**Root Cause**: Custom Babel configuration requires `@babel/runtime` for regenerator polyfills.
+**Solution**: Ensure `@babel/runtime` is installed (already present in `package.json`). No `.babelrc` is used; Next handles styled-components via `next.config.js`.
 
 #### Development Server Issues
 

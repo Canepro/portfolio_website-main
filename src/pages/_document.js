@@ -32,6 +32,8 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en-GB">
         <Head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
           <link
             href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
@@ -40,23 +42,6 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script
-            type="text/javascript"
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function(w, d, s, u) {
-                  w.RocketChat = function(c) { w.RocketChat._.push(c) };
-                  w.RocketChat._ = [];
-                  w.RocketChat.url = u;
-                  var h = d.getElementsByTagName(s)[0],
-                    j = d.createElement(s);
-                  j.async = true;
-                  j.src = 'https://canepros.rocket.chat/livechat/rocketchat-livechat.min.js?_=201903270000';
-                  h.parentNode.insertBefore(j, h);
-                })(window, document, 'script', 'https://canepros.rocket.chat/livechat');
-              `,
-            }}
-          />
         </body>
       </Html>
     );
