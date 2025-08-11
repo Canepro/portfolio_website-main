@@ -142,3 +142,27 @@ For questions or collaboration opportunities, please reach out through the conta
 ## 📋 Changelog
 
 See [CHANGELOG.md](./CHANGELOG.md) for a detailed history of changes and releases.
+
+## Local Development with Containers (Podman or Docker)
+
+The Makefile auto-detects **Podman** (preferred) or **Docker**.
+
+Build & run:
+```bash
+make build
+make run
+```
+
+Stop & logs:
+
+```bash
+make stop
+make logs
+```
+
+Image push (optional):
+
+```bash
+podman login ghcr.io   # or docker login ghcr.io
+make push
+```
