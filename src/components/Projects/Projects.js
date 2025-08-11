@@ -1,8 +1,9 @@
 // src/components/Projects/Projects.js
 
 import React from 'react';
+import Image from 'next/image';
 
-import { BlogCard, CardInfo, ExternalLinks, GridContainer, HeaderThree, Hr, Tag, TagList, TitleContent, UtilityList, Img } from './ProjectsStyles';
+import { BlogCard, CardInfo, ExternalLinks, GridContainer, HeaderThree, Hr, Tag, TagList, TitleContent, UtilityList } from './ProjectsStyles';
 import { Section, SectionDivider, SectionTitle } from '../../styles/GlobalComponents';
 import { projects } from '../../constants/constants';
 
@@ -14,7 +15,7 @@ const Projects = () => (
       {projects.map((p, i) => {
         return (
           <BlogCard key={i}>
-          <Img src={p.image} />
+          <Image src={p.image} alt={`${p.title} thumbnail`} width={800} height={450} style={{ width: '100%', height: 'auto' }} />
             <TitleContent>
               <HeaderThree title={true}>{p.title}</HeaderThree>
               <Hr />
@@ -29,13 +30,12 @@ const Projects = () => (
               </TagList>
             </div>
             <UtilityList>
-              {/* If visit and source are the same, only show one link to the source code */}
               {p.visit === p.source ? (
-                <ExternalLinks href={p.source}>Source Code</ExternalLinks>
+                <ExternalLinks href={p.source} target="_blank" rel="noopener noreferrer">Source Code</ExternalLinks>
               ) : (
                 <>
-                  <ExternalLinks href={p.visit}>Live Site</ExternalLinks>
-                  <ExternalLinks href={p.source}>Source Code</ExternalLinks>
+                  <ExternalLinks href={p.visit} target="_blank" rel="noopener noreferrer">Live Site</ExternalLinks>
+                  <ExternalLinks href={p.source} target="_blank" rel="noopener noreferrer">Source Code</ExternalLinks>
                 </>
               )}
             </UtilityList>
