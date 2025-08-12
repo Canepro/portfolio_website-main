@@ -1,47 +1,72 @@
+// src/constants/constants.js
+
 export const projects = [
   {
+    title: 'Rocket.Chat Log Analyzer',
+    description: "A tool designed to parse and analyze Rocket.Chat log files. It identifies common errors (like memory or LDAP issues) and provides actionable solutions to help administrators troubleshoot more efficiently.",
+    image: '/images/rocketchat-analyzer.png',
+    tags: ['Python', 'Regex', 'Log Parsing'],
+    source: 'https://github.com/Canepro/rocketchat-log-analyzer',
+    visit: 'https://github.com/Canepro/rocketchat-log-analyzer', // Since no live site, this points to the repo
+    id: 0,
+  },
+  {
     title: 'Personal Portfolio',
-    description: "Using Next.js, JavaScript to build my first personal portfolio.",
-      image: '/images/6.png',
-      tags: ['Next.js', 'JavaScript'],
+    description: "My personal portfolio website built with Next.js and styled-components to showcase my skills, experience, and projects in a modern, responsive design.",
+    image: '/images/6.png',
+    tags: ['Next.js', 'React', 'JavaScript'],
     source: 'https://github.com/Canepro/portfolio_website-main',
     visit: 'https://quirky-bell-385b8d.netlify.app/',
-    id: 0,
-  },  {
-    title: 'E-Commerce',
-    description:"While building it you're going to learn many advanced React & JavaScript topics, as well as how to use Stripe for card transactions. On top of that, at the end of the video, you will have this unique and complex webshop app that you will be able to add to your portfolio. And trust me, e-commerce applications are impressive.",
-    image: '/images/2.png',
-    tags: ['React', 'JavaScript'],
-    source: 'https://github.com/Canepro/ecommerce_web_shop',
-    visit: 'https://canepro-ecommerce.netlify.app/',
     id: 1,
-  },  {
-    title: 'WebRTC App',
-    description: "This is a code repository for the corresponding YouTube video. In this tutorial, we're going to build and deploy a React Video Chat Application using WebRTC.",
-      image: '/images/3.jpg',
-      tags: ['React', 'WebRTC'],
-    source: 'https://github.com/Canepro/webrtc-video-chat',
-    visit: 'https://canepro-webrtc-chat.netlify.app/',
-    id: 2,
-  },  {
-    title: 'Unichat',
-    description: "This is a code repository for the corresponding video tutorial. In this video, we will create a full Realtime Chat Application",
-    image: '/images/4.jpg',
-    tags: ['React', 'ChatEngine', 'Firebase'],
-    source: 'https://github.com/Canepro/unichat-app',
-    visit: 'https://canepro-unichat.netlify.app/',
-    id: 3,
   },
 ];
 
 export const TimeLineData = [
-  { year: 2015, text: 'Worked with Heritage Bank as an IT Regional Support Officer.', },
-  { year: 2019, text: 'Worked with Tek-Experts as a Technical Support Engineer (Stage II).', },
-  { year: 2019, text: 'Got my Managing Microsoft 365 Identity & Services (MS 100)', },
-  { year: 2020, text: 'Became a TECHNICAL LEAD at Tek-Experts.', },
-  { year: 2020, text: 'Joined Crossover for Work as an L1 Technical Support Engineer.', },
-  { year: 2021, text: 'Started my DevOps journey', },
-  { year: 2022, text: 'Started my Front-End Development journey', },
-  { year: 2022, text: 'Also Started working with a tech start-up, Rocket.Chat as A Technical Support Analyst', },
-  { year: 2023, text: 'Still working with Rocket.Chat, while improving my DevOps and Cloud skills', },
+  { year: 2015, text: 'Started my career in IT technical support.' },
+  { year: 2019, text: 'Advanced to a Tier 2 Technical Support Engineer role.' },
+  { year: 2020, text: 'Promoted to Technical Lead, managing and mentoring teams.' },
+  { year: 2021, text: 'Began my professional journey into DevOps and cloud engineering.' },
+  { year: 2022, text: 'Expanded my expertise into Front-End Development with React.' },
+  { year: 2023, text: 'Deepened my skills in cloud-native technologies and automation.' },
+  { year: 2024, text: 'Focused on container orchestration with Kubernetes and advanced IaC.' },
+  { year: 2025, text: 'Currently expanding my skills in AI-driven DevOps and security.' },
+];
+
+export const certifications = [
+  {
+    name: 'Microsoft Certified: DevOps Engineer Expert',
+    issuer: 'Microsoft',
+    date: 'Aug 2023',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure Administrator Associate',
+    issuer: 'Microsoft',
+    date: 'Dec 2022',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'AWS Certified Cloud Practitioner',
+    issuer: 'Amazon Web Services',
+    date: 'Nov 2021',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'ITIL 4 Foundation Certificate',
+    issuer: 'PeopleCert',
+    date: 'Apr 2025 (Expires)',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure AI Fundamentals',
+    issuer: 'Microsoft',
+    date: 'Dec 2021',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'freeCodeCamp: Responsive Web Design',
+    issuer: 'freeCodeCamp',
+    date: 'Feb 2022',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
 ];

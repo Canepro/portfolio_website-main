@@ -1,36 +1,31 @@
-import React from 'react'
-import { AiFillPhone, AiOutlineMail } from 'react-icons/ai'
-import { FaLocationArrow } from "react-icons/fa"
+// src/components/NavDropDown/index.js
 
+import React from 'react'
+import { AiFillLinkedin, AiOutlineMail } from 'react-icons/ai'
+import { FaRocketchat } from "react-icons/fa"
 import { DropDownContainer, DropDownIcon, DropDownItem, DropDownItemDesc, DropDownItemTitle, DropDownTextContainer } from './NavDropDown'
 
 const NavDropDown = (props) => (
   <DropDownContainer active={props.isOpen}>
-    <DropDownItem href="#" target="_blank" rel="noreferrer">
-      <DropDownIcon>
-        <AiFillPhone/>
-      </DropDownIcon>
-      <DropDownTextContainer>
-        <DropDownItemTitle>Phone</DropDownItemTitle>
-        <DropDownItemDesc>Let's get together and have a chat?'</DropDownItemDesc>
-      </DropDownTextContainer>
-    </DropDownItem>
-    <DropDownItem href="#" target="_blank" rel="noreferrer">
-      <DropDownIcon>
-      <AiOutlineMail/>
-      </DropDownIcon>
+    <DropDownItem href="mailto:mogah.vincent@hotmail.com" target="_blank" rel="noreferrer">
+      <DropDownIcon><AiOutlineMail/></DropDownIcon>
       <DropDownTextContainer>
         <DropDownItemTitle>Email</DropDownItemTitle>
-        <DropDownItemDesc>If you want to talk jus send a message and I'll get back</DropDownItemDesc>
+        <DropDownItemDesc>Send a message and I'll get back to you.</DropDownItemDesc>
+      </DropDownTextContainer>
+    </DropDownItem>
+    <DropDownItem href="https://www.linkedin.com/in/vincent-mogah/" target="_blank" rel="noreferrer">
+      <DropDownIcon><AiFillLinkedin/></DropDownIcon>
+      <DropDownTextContainer>
+        <DropDownItemTitle>LinkedIn</DropDownItemTitle>
+        <DropDownItemDesc>Let's connect on a professional level.</DropDownItemDesc>
       </DropDownTextContainer>
     </DropDownItem>
     <DropDownItem href="#" target="_blank" rel="noreferrer">
-      <DropDownIcon>
-      <FaLocationArrow/>
-      </DropDownIcon>
+      <DropDownIcon><FaRocketchat/></DropDownIcon>
       <DropDownTextContainer>
-        <DropDownItemTitle>Address</DropDownItemTitle>
-        <DropDownItemDesc>1405, Angelus Dr, Florissant. Mo</DropDownItemDesc>
+        <DropDownItemTitle>Rocket.Chat</DropDownItemTitle>
+        <DropDownItemDesc>@vincent.mogah</DropDownItemDesc>
       </DropDownTextContainer>
     </DropDownItem>
   </DropDownContainer>

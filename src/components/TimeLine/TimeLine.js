@@ -32,8 +32,8 @@ const Timeline = () => {
     }
   }
 
-  // snap back to beginning of scroll when window is resized  
-  // avoids a bug where content is covered up if coming from smaller screen
+  // snap back to beginning of scroll when window is resized
+  // avoids a bug where content is covered up if coming from a smaller screen
   useEffect(() => {
     const handleResize = () => {
       scroll(carouselRef.current, 0);
@@ -46,13 +46,7 @@ const Timeline = () => {
     <Section id="about">
       <SectionTitle>About Me</SectionTitle>
       <SectionText>
-          I am a DevOps Engineer, Front-End Web Developer, and Cloud Solutions Architect with over 5 years of experience in providing technical support to clients at a Tier 2 level. 
-          <br /><br />
-          I have extensive experience in Cloud Administrations (Microsoft Azure and AWS) and Front-End Web Development (HTML, CSS and React.js). 
-          <br /><br />
-          I possess excellent client-facing skills, natural problem-solving and analytical skills, and the ability to contribute to the development of best practices, procedures, and policies within a company. 
-          <br /><br />
-          My colleagues would describe me as resourceful, patient, and optimistic. I see setbacks as opportunities to learn and grow, and I always strive to find creative solutions to problems. For example, I was commended by my previous team manager and colleagues for developing a knowledge base and incorporating it into the team's group chat for easy accessibility, reference, and usage. This improved the team's KPI and performance.
+          I am dedicated to continuous improvement and am currently deepening my expertise in advanced cloud architectures, AI-driven DevOps, and modern React features. My colleagues would describe me as resourceful, patient, and optimistic. I see setbacks as opportunities to learn and grow, and I always strive to find creative solutions to problems.
       </SectionText>
       <CarouselContainer ref={carouselRef} onScroll={handleScroll}>
         <>

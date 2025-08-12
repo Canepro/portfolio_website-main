@@ -1,3 +1,5 @@
+// src/pages/index.js
+
 import Accomplishments from '../components/Accomplishments/Accomplishments';
 import BgAnimation from '../components/BackgroundAnimation/BackgroundAnimation';
 import Hero from '../components/Hero/Hero';
@@ -6,53 +8,74 @@ import Technologies from '../components/Technologies/Technologies';
 import Timeline from '../components/TimeLine/TimeLine';
 import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
-import React, { useEffect, useRef } from 'react';
+// 1. Import the new Certifications component
+import Certifications from '../components/Certifications/Certifications';
 
-const Home = () => {
-  // Define a ref variable to store the livechat script
-  const livechatScript = useRef(null);
-
-  // Use an effect hook to load and unload the livechat script on mount and unmount
-  useEffect(() => {
-    // Create a script element
-    const script = document.createElement('script');
-
-    // Set the source and attributes of the script
-    script.src =
-      'https://canepros.rocket.chat/livechat/rocketchat-livechat.min.js?_=201903270000';
-    script.async = true;
-    script.id = 'livechat-script';
-
-    // Append the script to the document head
-    document.head.appendChild(script);
-
-    // Set the livechat script ref variable to the script element
-    livechatScript.current = script;
-
-    // Return a cleanup function to unload the livechat script on unmount
-    return () => {
-      // Remove the script element from the document head if it exists
-      if (livechatScript.current && document.head.contains(livechatScript.current)) {
-        document.head.removeChild(livechatScript.current);
-      }
-
-      // Set the livechat script ref variable to null
-      livechatScript.current = null;
-    };
-  }, []);
-
+// ... (keep the Home component and getStaticProps function as they are)
+const Home = ({ githubStats }) => {
   return (
     <Layout>
       <Section grid>
         <Hero />
         <BgAnimation />
-      </Section>      <Projects />
+      </Section>
+      <Projects />
       <Technologies />
       <Timeline />
-      <Accomplishments />
+      {/* 2. Add the new Certifications component here */}
+      <Certifications />
+      <Accomplishments stats={githubStats} />
     </Layout>
   );
 };
 
-export default Home;
+// This function runs at build time to fetch your live GitHub data with resiliency
+export async function getStaticProps() {
+  try {
+    const headers = process.env.GITHUB_TOKEN
+      ? { Authorization: `token ${process.env.GITHUB_TOKEN}` }
+      : undefined;
 
+    const [userResponse, reposResponse] = await Promise.all([
+      fetch('https://api.github.com/users/Canepro', { headers }),
+      fetch('https://api.github.com/users/Canepro/repos?per_page=100', { headers }),
+    ]);
+
+    if (!userResponse.ok || !reposResponse.ok) {
+      throw new Error('GitHub API responded with a non-200 status');
+    }
+
+    const [user, repos] = await Promise.all([
+      userResponse.json(),
+      reposResponse.json(),
+    ]);
+
+    const totalStars = Array.isArray(repos)
+      ? repos.reduce((acc, repo) => acc + (repo.stargazers_count || 0), 0)
+      : 0;
+
+    return {
+      props: {
+        githubStats: {
+          followers: user.followers || 0,
+          stars: totalStars,
+          repos: user.public_repos || 0,
+        },
+      },
+      revalidate: 86400,
+    };
+  } catch (error) {
+    return {
+      props: {
+        githubStats: {
+          followers: 0,
+          stars: 0,
+          repos: 0,
+        },
+      },
+      revalidate: 86400,
+    };
+  }
+}
+
+export default Home;
