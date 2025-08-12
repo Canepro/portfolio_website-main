@@ -19,6 +19,33 @@ export const projects = [
     visit: 'https://quirky-bell-385b8d.netlify.app/',
     id: 1,
   },
+  {
+    title: 'Dockerized Portfolio App',
+    description: 'Built a production-grade Docker image for my Next.js portfolio and ran it with an engine-agnostic Makefile (Podman/Docker).',
+    image: '/images/docker-portfolio.png',
+    tags: ['Docker', 'Podman', 'Next.js'],
+    source: 'https://github.com/Canepro/portfolio_website-main/blob/main/Dockerfile',
+    visit: 'https://github.com/Canepro/portfolio_website-main',
+    id: 2
+  },
+  {
+    title: 'CI Pipeline with GitHub Actions',
+    description: 'Automated builds on every push/PR with caching and concurrency to keep the app production-ready.',
+    image: '/images/gha-ci.png',
+    tags: ['GitHub Actions', 'CI', 'YAML'],
+    source: 'https://github.com/Canepro/portfolio_website-main/blob/main/.github/workflows/ci.yml',
+    visit: 'https://github.com/Canepro/portfolio_website-main/actions',
+    id: 3
+  },
+  {
+    title: 'Terraform: Azure Hello Cloud',
+    description: 'Provisioned an Azure Resource Group and Storage Account using Terraform to demonstrate Infrastructure as Code (IaC).',
+    image: '/images/tf-azure.png',
+    tags: ['Terraform', 'Azure', 'IaC'],
+    source: 'https://github.com/Canepro/tf-hello-azure',
+    visit: 'https://github.com/Canepro/tf-hello-azure',
+    id: 4
+  }
 ];
 
 export const TimeLineData = [
