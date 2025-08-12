@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    name: Build (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 20]
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f yarn.lock ]; then
+            corepack enable
+            yarn install --frozen-lockfile
+          else
+            npm install
+          fi
+      - name: Build
+        run: npm run build
+      - name: Verify build output
+        run: |
+          echo "Workspace:" && pwd
+          echo "Root contents:" && ls -la
+          echo ".next contents:" && (ls -la .next || true)
+      - name: Upload build artifact
+        if: ${{ success() && hashFiles('.next/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build-${{ matrix.node }}
+          path: .next/**
+          if-no-files-found: warn
+          retention-days: 7
