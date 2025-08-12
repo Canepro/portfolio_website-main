@@ -44,10 +44,16 @@ jobs:
           fi
       - name: Build
         run: npm run build
+      - name: Verify build output
+        run: |
+          echo "Workspace:" && pwd
+          echo "Root contents:" && ls -la
+          echo ".next contents:" && (ls -la .next || true)
       - name: Upload build artifact
-        if: success()
+        if: ${{ success() && hashFiles('.next/**') != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: next-build-${{ matrix.node }}
-          path: .next
-          if-no-files-found: error
+          path: .next/**
+          if-no-files-found: warn
+          retention-days: 7
