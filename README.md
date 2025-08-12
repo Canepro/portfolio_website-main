@@ -93,6 +93,52 @@ This project is configured for deployment on Netlify with automatic builds from 
 
 2. Deploy the `.next` directory to your hosting provider
 
+### Containerized Deployment (Docker or Podman)
+
+You can run this app as a production container using Docker or Podman. The image runs as a non-root user and exposes port 3000 with a basic healthcheck.
+
+- Environment variables used at runtime:
+  - `PORT` (default: `3000`)
+  - `NODE_ENV=production`
+  - `NEXT_TELEMETRY_DISABLED=1`
+
+Build the image:
+
+```bash
+# Docker
+docker build --pull -t ghcr.io/canepro/portfolio:dev .
+
+# Podman
+podman build --pull -t ghcr.io/canepro/portfolio:dev .
+```
+
+Run the container:
+
+```bash
+# Docker
+docker run --rm \
+  -e NODE_ENV=production \
+  -e NEXT_TELEMETRY_DISABLED=1 \
+  -p 3000:3000 \
+  --name portfolio \
+  ghcr.io/canepro/portfolio:dev
+
+# Podman
+podman run --rm \
+  -e NODE_ENV=production \
+  -e NEXT_TELEMETRY_DISABLED=1 \
+  -p 3000:3000 \
+  --name portfolio \
+  ghcr.io/canepro/portfolio:dev
+```
+
+Push to GHCR (optional):
+
+```bash
+docker login ghcr.io         # or: podman login ghcr.io
+docker push ghcr.io/canepro/portfolio:dev
+```
+
 ## 🔧 Troubleshooting
 
 ### Common Issues
@@ -119,7 +165,7 @@ This project is configured for deployment on Netlify with automatic builds from 
 
 **Problem**: Styles not loading correctly in production
 
-**Solution**: The project includes proper Babel configuration for styled-components SSR in `.babelrc`
+**Solution**: Styled-components SSR is enabled via `next.config.js` (`compiler.styledComponents: true`). No `.babelrc` is required.
 
 ## 📝 Contributing
 
@@ -145,24 +191,22 @@ See [CHANGELOG.md](./CHANGELOG.md) for a detailed history of changes and release
 
 ## Local Development with Containers (Podman or Docker)
 
-The Makefile auto-detects **Podman** (preferred) or **Docker**.
+The `Makefile` auto-detects **Podman** (preferred) or **Docker**.
 
-Build & run:
-```bash
-make build
-make run
-```
+- Build and run:
+  ```bash
+  make build
+  make run
+  ```
 
-Stop & logs:
+- Stop and view logs:
+  ```bash
+  make stop
+  make logs
+  ```
 
-```bash
-make stop
-make logs
-```
-
-Image push (optional):
-
-```bash
-podman login ghcr.io   # or docker login ghcr.io
-make push
-```
+- Push image to GHCR (optional):
+  ```bash
+  podman login ghcr.io   # or: docker login ghcr.io
+  make push
+  ```
