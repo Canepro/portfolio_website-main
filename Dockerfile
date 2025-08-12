@@ -11,6 +11,7 @@ RUN npm run build
 FROM node:20-alpine
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
 WORKDIR /app
 
 # Only runtime deps
@@ -22,6 +23,7 @@ COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
 COPY --from=build /app/next.config.js ./
 
+USER node
 EXPOSE 3000
 
 # Basic healthcheck (works for Podman or Docker)

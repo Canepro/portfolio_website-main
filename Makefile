@@ -11,10 +11,10 @@ info:
 	@$(ENGINE) version
 
 build:
-	$(ENGINE) build -t $(IMAGE) .
+	$(ENGINE) build --pull -t $(IMAGE) .
 
 run:
-	$(ENGINE) run --rm -p $(PORT):3000 --name $(NAME) $(IMAGE)
+	$(ENGINE) run --rm -e NODE_ENV=production -e NEXT_TELEMETRY_DISABLED=1 -p $(PORT):3000 --name $(NAME) $(IMAGE)
 
 stop:
 	-$(ENGINE) stop $(NAME) || true
