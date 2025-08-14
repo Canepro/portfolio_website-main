@@ -1,58 +1,37 @@
 // src/components/Projects/Projects.js
 
 import React from 'react';
-import Image from 'next/image';
-
-import { BlogCard, CardInfo, ExternalLinks, GridContainer, HeaderThree, Hr, Tag, TagList, TitleContent, UtilityList, ImageWrapper } from './ProjectsStyles';
+import Link from 'next/link';
+import ProjectCard from './ProjectCard';
+import { GridContainer } from './ProjectsStyles';
 import { Section, SectionDivider, SectionTitle } from '../../styles/GlobalComponents';
+import { SectionText } from '../../styles/GlobalComponents';
+import Button from '../../styles/GlobalComponents/Button';
 import { projects } from '../../constants/constants';
 
-const Projects = () => (
-  <Section nopadding id="projects">
-    <SectionDivider />
-    <SectionTitle main>Projects</SectionTitle>
-    <GridContainer>
-      {projects.map((p, i) => {
-        return (
-          <BlogCard key={i}>
-          <ImageWrapper>
-            <Image
-              src={p.image}
-              alt={`${p.title} thumbnail`}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
-              style={{ objectFit: 'cover' }}
-              priority={i === 0}
-            />
-          </ImageWrapper>
-            <TitleContent>
-              <HeaderThree title={true}>{p.title}</HeaderThree>
-              <Hr />
-            </TitleContent>
-            <CardInfo className="card-info">{p.description}</CardInfo>
-            <div>
-              <TitleContent>Stack</TitleContent>
-              <TagList>
-                {p.tags.map((t, i) => {
-                  return <Tag key={i}>{t}</Tag>;
-                })}
-              </TagList>
-            </div>
-            <UtilityList>
-              {p.visit === p.source ? (
-                <ExternalLinks href={p.source} target="_blank" rel="noopener noreferrer">Source Code</ExternalLinks>
-              ) : (
-                <>
-                  <ExternalLinks href={p.visit} target="_blank" rel="noopener noreferrer">Live Site</ExternalLinks>
-                  <ExternalLinks href={p.source} target="_blank" rel="noopener noreferrer">Source Code</ExternalLinks>
-                </>
-              )}
-            </UtilityList>
-          </BlogCard>
-        );
-      })}
-    </GridContainer>
-  </Section>
-);
+const Projects = () => {
+  // Only show featured projects on homepage
+  const featuredProjects = projects.filter(p => p.featured).slice(0, 3);
+  
+  return (
+    <Section nopadding id="projects">
+      <SectionDivider />
+      <SectionTitle main>Featured Projects</SectionTitle>
+      <SectionText>
+        Showcasing my best work across DevOps, Cloud, and Frontend development
+      </SectionText>
+      <GridContainer>
+        {featuredProjects.map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+      </GridContainer>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+        <Link href="/projects" passHref legacyBehavior>
+          <Button as="a">View All Projects</Button>
+        </Link>
+      </div>
+    </Section>
+  );
+};
 
 export default Projects;

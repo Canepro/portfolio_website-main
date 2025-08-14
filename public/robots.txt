@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://portfolio.canepro.me
+
+# Sitemaps
+Sitemap: https://portfolio.canepro.me/sitemap.xml

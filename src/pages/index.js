@@ -10,22 +10,34 @@ import { Layout } from '../layout/Layout';
 import { Section } from '../styles/GlobalComponents';
 // 1. Import the new Certifications component
 import Certifications from '../components/Certifications/Certifications';
+import SEO from '../components/SEO/SEO';
+import { personStructuredData, websiteStructuredData } from '../lib/structuredData';
 
 // ... (keep the Home component and getStaticProps function as they are)
 const Home = ({ githubStats }) => {
+  const combinedStructuredData = [personStructuredData, websiteStructuredData];
+
   return (
-    <Layout>
-      <Section grid>
-        <Hero />
-        <BgAnimation />
-      </Section>
-      <Projects />
-      <Technologies />
-      <Timeline />
-      {/* 2. Add the new Certifications component here */}
-      <Certifications />
-      <Accomplishments stats={githubStats} />
-    </Layout>
+    <>
+      <SEO
+        title="Vincent Mogah - DevOps Engineer & Frontend Developer"
+        description="Professional portfolio of Vincent Mogah, a multifaceted DevOps Engineer, Cloud Architect, and Frontend Developer specializing in Microsoft Azure, AWS, and React.js development."
+        canonical="https://portfolio.canepro.me"
+        structuredData={combinedStructuredData}
+      />
+      <Layout>
+        <Section grid>
+          <Hero />
+          <BgAnimation />
+        </Section>
+        <Projects />
+        <Technologies />
+        <Timeline />
+        {/* 2. Add the new Certifications component here */}
+        <Certifications />
+        <Accomplishments stats={githubStats} />
+      </Layout>
+    </>
   );
 };
 

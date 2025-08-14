@@ -112,3 +112,21 @@ export const ImageWrapper = styled.div`
   width: 100%;
   aspect-ratio: 16 / 9;
 `;
+
+export const CategoryBadge = styled.span`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 12px;
+  background: ${props => props.featured 
+    ? 'linear-gradient(270deg, #F46737 0%, #945DD6 100%)' 
+    : 'rgba(0, 0, 0, 0.75)'};
+  backdrop-filter: blur(4px);
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
