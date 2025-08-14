@@ -2,7 +2,7 @@
 
 > A modern, responsive portfolio website built with Next.js and React
 
-### 🌐 [Live Site](https://quirky-bell-385b8d.netlify.app/)
+### 🌐 [Live Site](https://portfolio.canepro.me/)
 
 ![Portfolio Website](https://db3pap006files.storage.live.com/y4mJbxekblyRayOVyfrhAlqx9b9m2SCQ5vgPqCsbh_YDRw2HOYC8frX1wsBkWRrkgTKDqELxTtQmbj0gGMjNF9zZsuQSPnjS7EorGfGp1mdFDC7xPMkHH-3gluRJ-zeqJlCL_41iLvSnA0wQ5IgNVyjdF3DaUZkWwOSbntlwDO-eUK38pvoxbDgmhjqITouXWsw?width=1900&height=926&cropmode=none)
 
@@ -10,13 +10,31 @@
 
 This repository contains the source code for my professional portfolio website - serving as both an online resume and digital business card. The site showcases my projects, skills, and professional accomplishments with a modern, interactive design.
 
+### ✨ Features
+
+- 🎨 Modern, responsive design with smooth animations
+- 📊 Real-time GitHub statistics integration
+- 🚀 Optimized performance with Next.js SSG/ISR
+- 🎯 Project showcase with categorization
+- 📱 Mobile-first responsive layout
+- 🔧 Containerized deployment support
+- 🤖 CI/CD pipeline with GitHub Actions
+- 💬 Rocket.Chat live chat integration
+
 ## 🚀 Tech Stack
 
-- **Framework**: [Next.js 14.1.1](https://nextjs.org/) - React framework with SSR/SSG capabilities
+- **Framework**: [Next.js 14.2.30](https://nextjs.org/) - React framework with SSR/SSG capabilities
 - **Frontend**: [React 18.2.0](https://reactjs.org/) - Component-based UI library
 - **Styling**: [Styled-components 5.3.0](https://styled-components.com/) - CSS-in-JS styling solution
 - **Icons**: [React Icons 4.2.0](https://react-icons.github.io/react-icons/) - Icon library
 - **Deployment**: [Netlify](https://netlify.com) - Static site hosting and CI/CD
+
+## 🚦 Quick Links
+
+- 📝 [Development Roadmap](./docs/TODO.md)
+- 🏗️ [Architecture Documentation](./docs/ARCHITECTURE.md)
+- 🚀 [Deployment Guide](./docs/DEPLOYMENT.md)
+- 📋 [Changelog](./CHANGELOG.md)
 
 ## 🛠️ Installation & Setup
 
@@ -63,15 +81,38 @@ This repository contains the source code for my professional portfolio website -
 ```
 portfolio_website-main/
 ├── public/                 # Static assets
+│   └── images/            # Project images and icons
 ├── src/
 │   ├── components/        # Reusable React components
-│   │   ├── Header/
+│   │   ├── Accomplishments/
 │   │   ├── BackgroundAnimation/
-│   │   └── Accomplishments/
-│   └── layout/           # Layout components
-├── next.config.js        # Next configuration (styled-components enabled)
-├── package.json          # Dependencies and scripts
-└── README.md            # This file
+│   │   ├── Certifications/
+│   │   ├── Footer/
+│   │   ├── Header/
+│   │   ├── Hero/
+│   │   ├── Projects/
+│   │   ├── Technologies/
+│   │   └── TimeLine/
+│   ├── constants/        # Project data and constants
+│   ├── layout/           # Layout components
+│   ├── pages/            # Next.js pages
+│   │   ├── api/          # API routes
+│   │   ├── _app.js       # Custom App component
+│   │   ├── _document.js  # Custom Document component
+│   │   └── index.js      # Homepage
+│   ├── styles/           # Global styles and theme
+│   └── themes/           # Theme configuration
+├── docs/                  # Documentation
+│   ├── ARCHITECTURE.md
+│   ├── DEPLOYMENT.md
+│   └── TODO.md           # Development roadmap
+├── .github/
+│   └── workflows/        # GitHub Actions CI/CD
+├── Dockerfile            # Container configuration
+├── Makefile             # Container operations
+├── next.config.js       # Next.js configuration
+├── package.json         # Dependencies and scripts
+└── README.md           # This file
 ```
 
 ## 🚀 Deployment
@@ -80,7 +121,7 @@ This project is configured for deployment on Netlify with automatic builds from 
 
 ### Netlify Configuration
 
-- **Build Command**: `yarn build`
+- **Build Command**: `npm run build`
 - **Publish Directory**: `.next`
 - Note: No custom Netlify Next.js plugin is required for Next 14; default build works.
 
@@ -181,7 +222,7 @@ This project is for portfolio purposes. All rights reserved.
 
 ## 📞 Contact
 
-For questions or collaboration opportunities, please reach out through the contact form on the [live site](https://quirky-bell-385b8d.netlify.app/).
+For questions or collaboration opportunities, please reach out through the contact form on the [live site](https://portfolio.canepro.me/).
 
 ---
 
