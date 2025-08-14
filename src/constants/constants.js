@@ -2,59 +2,81 @@
 
 export const projects = [
   {
-    title: 'Rocket.Chat Log Analyzer',
-    description: "A tool designed to parse and analyze Rocket.Chat log files. It identifies common errors (like memory or LDAP issues) and provides actionable solutions to help administrators troubleshoot more efficiently.",
-    image: '/images/rocketchat-analyzer.png',
-    tags: ['Python', 'Regex', 'Log Parsing'],
+    title: 'Containerized Chat Platform with Observability Stack',
+    description: 'Designed, deployed, and configured a self-hosted Rocket.Chat environment with a production-grade observability stack using Podman Compose, Traefik, Prometheus, and Grafana. Enabled secure routing, real-time metrics, and modular orchestration.',
+    image: '/images/chat-observability.png',
+    tags: ['Podman', 'Traefik', 'Prometheus', 'Grafana', 'MongoDB'],
     category: 'DevOps',
     featured: true,
-    source: 'https://github.com/Canepro/rocketchat-log-analyzer',
-    visit: 'https://github.com/Canepro/rocketchat-log-analyzer', // Since no live site, this points to the repo
-    id: 0,
-  },
-  {
-    title: 'Personal Portfolio',
-    description: "My personal portfolio website built with Next.js and styled-components to showcase my skills, experience, and projects in a modern, responsive design.",
-    image: '/images/6.png',
-    tags: ['Next.js', 'React', 'JavaScript'],
-    category: 'Frontend',
-    featured: true,
-    source: 'https://github.com/Canepro/portfolio_website-main',
-    visit: 'https://portfolio.canepro.me/',
-    id: 1,
+    source: 'https://github.com/Canepro/rocketchat-observability',
+    visit: 'https://github.com/Canepro/rocketchat-observability',
+    id: 0
   },
   {
     title: 'Dockerized Portfolio App',
-    description: 'Built a production-grade Docker image for my Next.js portfolio and ran it with an engine-agnostic Makefile (Podman/Docker).',
+    description: 'Built a production-grade Docker image for my Next.js portfolio site with a multi-stage build and an engine-agnostic Makefile supporting both Podman and Docker.',
     image: '/images/docker-portfolio.png',
     tags: ['Docker', 'Podman', 'Next.js'],
     category: 'DevOps',
     featured: true,
     source: 'https://github.com/Canepro/portfolio_website-main/blob/main/Dockerfile',
-    visit: 'https://github.com/Canepro/portfolio_website-main',
-    id: 2
+    visit: 'https://portfolio.canepro.me/',
+    id: 1
   },
   {
     title: 'CI Pipeline with GitHub Actions',
-    description: 'Automated builds on every push/PR with caching and concurrency to keep the app production-ready.',
+    description: 'Implemented a CI workflow to build the portfolio on every push/PR, ensuring it remains production-ready and preventing build errors from reaching production.',
     image: '/images/gha-ci.png',
     tags: ['GitHub Actions', 'CI', 'YAML'],
     category: 'DevOps',
     featured: false,
     source: 'https://github.com/Canepro/portfolio_website-main/blob/main/.github/workflows/ci.yml',
     visit: 'https://github.com/Canepro/portfolio_website-main/actions',
-    id: 3
+    id: 2
   },
   {
     title: 'Terraform: Azure Hello Cloud',
-    description: 'Provisioned an Azure Resource Group and Storage Account using Terraform to demonstrate Infrastructure as Code (IaC).',
+    description: 'Provisioned an Azure Resource Group and Storage Account using Terraform to showcase Infrastructure as Code (IaC) principles in a cloud environment.',
     image: '/images/tf-azure.png',
     tags: ['Terraform', 'Azure', 'IaC'],
     category: 'Cloud',
-    featured: false,
+    featured: true,
     source: 'https://github.com/Canepro/tf-hello-azure',
     visit: 'https://github.com/Canepro/tf-hello-azure',
+    id: 3
+  },
+  {
+    title: 'Rocket.Chat Local Development Stack',
+    description: 'Built a modular Rocket.Chat local development environment using Podman and Docker Compose, enabling isolated testing, quick resets, and controlled upgrades.',
+    image: '/images/rocketchat-local.png',
+    tags: ['Podman', 'Docker Compose', 'MongoDB', 'Traefik'],
+    category: 'DevOps',
+    featured: false,
+    source: 'https://github.com/Canepro/rocketchat-local-dev',
+    visit: 'https://github.com/Canepro/rocketchat-local-dev',
     id: 4
+  },
+  {
+    title: 'Rocket.Chat Troubleshooting Tool',
+    description: 'Created scripts and automation tools to parse, analyze, and visualize Rocket.Chat logs for faster troubleshooting and root cause analysis.',
+    image: '/images/rc-troubleshooting.png',
+    tags: ['PowerShell', 'Python', 'Automation', 'Logs'],
+    category: 'DevOps',
+    featured: false,
+    source: 'https://github.com/Canepro/rocketchat-log-analyzer',
+    visit: 'https://github.com/Canepro/rocketchat-log-analyzer',
+    id: 5
+  },
+  {
+    title: 'Rocket.Chat Log Analysis Web App',
+    description: 'Developed a Python-based web dashboard for real-time log analysis, providing error trends, message flow metrics, and filtering capabilities.',
+    image: '/images/log-analysis-dashboard.png',
+    tags: ['Python', 'Flask', 'JavaScript', 'Charts.js'],
+    category: 'Backend',
+    featured: false,
+    source: 'https://github.com/Canepro/rocketchat-log-dashboard',
+    visit: 'https://github.com/Canepro/rocketchat-log-dashboard',
+    id: 6
   }
 ];
 
