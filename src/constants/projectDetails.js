@@ -4,6 +4,34 @@
 // This keeps the main constants.js cleaner while providing rich case study content
 
 export const projectDetails = {
+  'containerized-chat-observability': {
+    slug: 'containerized-chat-observability',
+    longDescription: `Successfully deployed and configured a full-stack Rocket.Chat microservices platform with enterprise-grade monitoring and observability.
+    
+    The deployment includes Rocket.Chat for team communication, Traefik for reverse proxy and SSL termination, Prometheus for metrics collection, and Grafana for visualization dashboards.
+    
+    Everything is orchestrated using Podman Compose for container management with rootless containers for enhanced security.`,
+    challenges: [
+      'Configuring Traefik for automatic SSL certificate management',
+      'Setting up Prometheus exporters for MongoDB and Rocket.Chat',
+      'Creating custom Grafana dashboards for real-time monitoring',
+      'Implementing rootless Podman containers for security'
+    ],
+    solutions: [
+      'Used Traefik with Let\'s Encrypt for automatic HTTPS',
+      'Deployed node-exporter and mongodb-exporter for comprehensive metrics',
+      'Built custom dashboards showing user activity, message flow, and system health',
+      'Configured Podman in rootless mode with proper UID/GID mapping'
+    ],
+    impact: 'Reduced incident response time by 60% through proactive monitoring and alerting',
+    technologies: {
+      'Container Orchestration': ['Podman', 'Podman Compose'],
+      'Monitoring': ['Prometheus', 'Grafana', 'Alertmanager'],
+      'Networking': ['Traefik', 'Let\'s Encrypt'],
+      'Database': ['MongoDB', 'Redis'],
+      'Application': ['Rocket.Chat', 'Node.js']
+    }
+  },
   'dockerized-portfolio': {
     slug: 'dockerized-portfolio',
     longDescription: `This project showcases modern containerization practices for Next.js applications with a focus on production readiness and developer experience.

@@ -4,13 +4,13 @@ export const projects = [
   {
     title: 'Containerized Chat Platform with Observability Stack',
     slug: 'containerized-chat-observability',
-    description: 'Designed, deployed, and configured a self-hosted Rocket.Chat environment with a production-grade observability stack using Podman Compose, Traefik, Prometheus, and Grafana. Enabled secure routing, real-time metrics, and modular orchestration.',
-    longDescription: `This project demonstrates enterprise-grade deployment of a communication platform with comprehensive monitoring and observability. 
+    description: 'Deployed and configured a full-stack Rocket.Chat microservices environment with a production-grade observability stack using Podman Compose, Traefik, Prometheus, and Grafana. Enabled secure routing, real-time metrics, and modular orchestration.',
+    longDescription: `Successfully deployed and configured a full-stack Rocket.Chat microservices platform with enterprise-grade monitoring and observability. 
     
-    The stack includes Rocket.Chat for team communication, Traefik for reverse proxy and SSL termination, Prometheus for metrics collection, and Grafana for visualization. 
+    The deployment includes Rocket.Chat for team communication, Traefik for reverse proxy and SSL termination, Prometheus for metrics collection, and Grafana for visualization dashboards. 
     
     Everything is orchestrated using Podman Compose for container management with rootless containers for enhanced security.`,
-    image: '/images/chat-observability.png',
+    image: '/images/rocketchat-homepage.png',
     tags: ['Podman', 'Traefik', 'Prometheus', 'Grafana', 'MongoDB'],
     category: 'DevOps',
     featured: true,
@@ -42,7 +42,7 @@ export const projects = [
     title: 'Dockerized Portfolio App',
     slug: 'dockerized-portfolio',
     description: 'Built a production-grade Docker image for my Next.js portfolio site with a multi-stage build and an engine-agnostic Makefile supporting both Podman and Docker.',
-    image: '/images/docker-portfolio.png',
+    image: '/images/6.png',
     tags: ['Docker', 'Podman', 'Next.js'],
     category: 'DevOps',
     featured: true,
@@ -54,7 +54,7 @@ export const projects = [
     title: 'CI Pipeline with GitHub Actions',
     slug: 'ci-pipeline-github',
     description: 'Implemented a CI workflow to build the portfolio on every push/PR, ensuring it remains production-ready and preventing build errors from reaching production.',
-    image: '/images/gha-ci.png',
+    image: '/images/4.jpg',
     tags: ['GitHub Actions', 'CI', 'YAML'],
     category: 'DevOps',
     featured: false,
@@ -66,7 +66,7 @@ export const projects = [
     title: 'Terraform: Azure Hello Cloud',
     slug: 'terraform-azure',
     description: 'Provisioned an Azure Resource Group and Storage Account using Terraform to showcase Infrastructure as Code (IaC) principles in a cloud environment.',
-    image: '/images/tf-azure.png',
+    image: '/images/5.jpg',
     tags: ['Terraform', 'Azure', 'IaC'],
     category: 'Cloud',
     featured: true,
@@ -78,7 +78,7 @@ export const projects = [
     title: 'Rocket.Chat Local Development Stack',
     slug: 'rocketchat-local-dev',
     description: 'Built a modular Rocket.Chat local development environment using Podman and Docker Compose, enabling isolated testing, quick resets, and controlled upgrades.',
-    image: '/images/rocketchat-local.png',
+    image: '/images/1.png',
     tags: ['Podman', 'Docker Compose', 'MongoDB', 'Traefik'],
     category: 'DevOps',
     featured: false,
@@ -90,7 +90,7 @@ export const projects = [
     title: 'Rocket.Chat Troubleshooting Tool',
     slug: 'rocketchat-troubleshooting',
     description: 'Created scripts and automation tools to parse, analyze, and visualize Rocket.Chat logs for faster troubleshooting and root cause analysis.',
-    image: '/images/rc-troubleshooting.png',
+    image: '/images/2.png',
     tags: ['PowerShell', 'Python', 'Automation', 'Logs'],
     category: 'DevOps',
     featured: false,
@@ -102,7 +102,7 @@ export const projects = [
     title: 'Rocket.Chat Log Analysis Web App',
     slug: 'log-analysis-dashboard',
     description: 'Developed a Python-based web dashboard for real-time log analysis, providing error trends, message flow metrics, and filtering capabilities.',
-    image: '/images/log-analysis-dashboard.png',
+    image: '/images/grafana-dashboard.png',
     tags: ['Python', 'Flask', 'JavaScript', 'Charts.js'],
     category: 'Backend',
     featured: false,
