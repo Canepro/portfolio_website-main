@@ -23,6 +23,14 @@ export const BlogCard = styled.div`
   text-align: center;
   width: 400px;
   overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 5px 5px 30px rgba(80, 78, 78, 0.7);
+  }
+  
   @media ${(props) => props.theme.breakpoints.sm} {
     width: 100%;
   }
