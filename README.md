@@ -139,7 +139,7 @@ This project is configured for deployment on Netlify with automatic builds from 
 
 ### Containerized Deployment (Docker or Podman)
 
-You can run this app as a production container using Docker or Podman. The image runs as a non-root user and exposes port 3000 with a basic healthcheck.
+You can run this app as a production container using Docker or Podman. The image runs as a non-root user and exposes port 3000 with a basic healthcheck. Build context is optimized via `.dockerignore`.
 
 - Environment variables used at runtime:
   - `PORT` (default: `3000`)

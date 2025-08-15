@@ -14,7 +14,11 @@ build:
 	$(ENGINE) build --pull -t $(IMAGE) .
 
 run:
-	$(ENGINE) run --rm -e NODE_ENV=production -e NEXT_TELEMETRY_DISABLED=1 -p $(PORT):3000 --name $(NAME) $(IMAGE)
+	$(ENGINE) run --rm \
+		-e NODE_ENV=production \
+		-e NEXT_TELEMETRY_DISABLED=1 \
+		-p $(PORT):3000 \
+		--name $(NAME) $(IMAGE)
 
 stop:
 	-$(ENGINE) stop $(NAME) || true
