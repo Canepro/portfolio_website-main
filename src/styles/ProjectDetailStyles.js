@@ -116,7 +116,7 @@ export const SectionTitle = styled.h2`
 export const Description = styled.div`
   font-size: 18px;
   line-height: 32px;
-  color: rgba(255, 255, 255, 0.75);
+  color: ${(props) => props.theme.colors.textSecondary};
   white-space: pre-line;
 
   @media ${(props) => props.theme.breakpoints.sm} {
