@@ -35,9 +35,11 @@ export const Div1 = styled.div`
 export const Div2 = styled.div`
   grid-area: 1 / 2 / 2 / 4;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 1.25rem;
   @media ${(props) => props.theme.breakpoints.sm} {
     grid-area: 2 / 2 / 3 / 5;
+    gap: 0.75rem;
   }
 `;
 export const Div3 = styled.div`
@@ -55,10 +57,10 @@ export const Div3 = styled.div`
 export const NavLink = styled.a`
   font-size: 2rem;
   line-height: 32px;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: rgba(255, 255, 255, 0.9);
   transition: 0.4s ease;
   &:hover {
-    color: ${({ theme }) => theme.colors.text};
+    color: #fff;
     opacity: 1;
     cursor: pointer;
   }
