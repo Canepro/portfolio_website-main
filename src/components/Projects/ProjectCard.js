@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { 
   BlogCard, 
   CardInfo, 
-  ExternalLinks, 
   HeaderThree, 
   Hr, 
   Tag, 
@@ -18,6 +17,7 @@ import {
   ViewDetailsButton,
   SkeletonOverlay
 } from './ProjectsStyles';
+import { Button } from '../ui/button';
 
 const ProjectCard = ({ project, index }) => {
   const [loaded, setLoaded] = useState(false);
@@ -59,19 +59,15 @@ const ProjectCard = ({ project, index }) => {
       </div>
       
       <UtilityList>
-        {project.visit === project.source ? (
-          <ExternalLinks href={project.source} target="_blank" rel="noopener noreferrer">
-            Source Code
-          </ExternalLinks>
-        ) : (
-          <>
-            <ExternalLinks href={project.visit} target="_blank" rel="noopener noreferrer">
-              Live Site
-            </ExternalLinks>
-            <ExternalLinks href={project.source} target="_blank" rel="noopener noreferrer">
-              Source Code
-            </ExternalLinks>
-          </>
+        {project.visit && (
+          <Link href={project.visit} target="_blank" rel="noopener noreferrer">
+            <Button size="sm">Live Site</Button>
+          </Link>
+        )}
+        {project.source && (
+          <Link href={project.source} target="_blank" rel="noopener noreferrer">
+            <Button size="sm" variant="secondary">Source Code</Button>
+          </Link>
         )}
       </UtilityList>
     </BlogCard>
