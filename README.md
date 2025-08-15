@@ -75,6 +75,7 @@ This repository contains the source code for my professional portfolio website -
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Starts development server on localhost:3000 |
+| `npm run dev:3001` | Starts development server on port 3001 (useful if HMR cache is stuck) |
 | `npm run build` | Creates optimized production build |
 | `npm start` | Starts production server (requires build first) |
 

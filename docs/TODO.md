@@ -219,7 +219,7 @@ The portfolio website is live and functional with recent improvements including:
 ## 🏗️ Technical Debt
 
 ### Code Quality
-- [ ] Remove unused `/api/hello` endpoint
+- [x] Remove unused `/api/hello` endpoint
 - [ ] Refactor large components into smaller ones
 - [ ] Extract magic numbers to constants
 - [ ] Improve error boundaries
