@@ -185,6 +185,9 @@ export default ProjectDetailPage;
 
 // Generate static paths for all projects
 export async function getStaticPaths() {
+  // Import projects here to ensure it's available in static context
+  const { projects } = require('../../constants/constants');
+  
   const paths = projects.map((project) => ({
     params: { slug: project.slug },
   }));
@@ -198,6 +201,10 @@ export async function getStaticPaths() {
 // Generate static props for each project
 export async function getStaticProps({ params }) {
   const { slug } = params;
+  
+  // Import projects and projectDetails here to ensure they're available in static context
+  const { projects } = require('../../constants/constants');
+  const { projectDetails } = require('../../constants/projectDetails');
   
   // Find the project by slug
   const project = projects.find((p) => p.slug === slug);
