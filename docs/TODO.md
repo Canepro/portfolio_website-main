@@ -26,7 +26,7 @@ The portfolio website is live and functional with recent improvements including:
 - [ ] Commit all changes to feature branch
 - [ ] Create PR and merge to main
 - [ ] Verify Netlify auto-deployment
-- [ ] Tag current state as stable checkpoint
+- [x] Tag current state as stable checkpoint (`stable-2025-08-15-ui-baseline`)
 
 ### 2️⃣ **Quick Fixes** (This Week)
 - [ ] Fix React hooks warnings in development
@@ -80,6 +80,11 @@ The portfolio website is live and functional with recent improvements including:
 - Fixed project images to use actual screenshots
 - Updated Rocket.Chat project description (deployment vs design)
 - Fixed README.md with correct live site URLs
+
+**UI/UX Baseline Improvements**
+- Dark/Light theme toggle wired via CSS variables
+- Styled-components theme connected to CSS variables (buttons, text, backgrounds)
+- Theme toggle moved to bottom-left to avoid overlap with Rocket.Chat widget
 
 **Current Status:** Production-ready portfolio with professional features
 
