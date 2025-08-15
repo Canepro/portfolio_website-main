@@ -42,7 +42,7 @@ export const PageDescription = styled.p`
   font-size: 24px;
   line-height: 40px;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.75);
+  color: ${(props) => props.theme.colors.textSecondary};
   margin-bottom: 48px;
 
   @media ${(props) => props.theme.breakpoints.md} {
