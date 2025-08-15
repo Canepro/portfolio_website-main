@@ -43,6 +43,7 @@ export const ProjectImage = styled.div`
   overflow: hidden;
   margin-bottom: 32px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background: ${({ theme }) => theme.colors.card};
 
   @media ${(props) => props.theme.breakpoints.sm} {
     height: 250px;

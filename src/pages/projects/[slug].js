@@ -4,6 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SkeletonOverlay } from '../../components/Projects/ProjectsStyles';
 import { Layout } from '../../layout/Layout';
 import { projects } from '../../constants/constants';
 import { projectDetails } from '../../constants/projectDetails';
@@ -77,6 +78,7 @@ const ProjectDetailPage = () => {
 
           <ProjectHero>
             <ProjectImage>
+              <SkeletonOverlay />
               <Image
                 src={project.image}
                 alt={project.title}

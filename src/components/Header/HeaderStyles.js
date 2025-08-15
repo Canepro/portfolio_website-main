@@ -55,15 +55,16 @@ export const Div3 = styled.div`
 export const NavLink = styled.a`
   font-size: 2rem;
   line-height: 32px;
-  color: rgba(255, 255, 255, 0.75);
+  color: ${({ theme }) => theme.colors.textSecondary};
   transition: 0.4s ease;
   &:hover {
-    color: #fff;
+    color: ${({ theme }) => theme.colors.text};
     opacity: 1;
     cursor: pointer;
   }
   @media ${(props) => props.theme.breakpoints.sm} {
     padding: 0.5rem;
+    font-size: 1.6rem;
   }
 `;
 
