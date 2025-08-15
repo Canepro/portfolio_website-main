@@ -7,6 +7,12 @@ export const LeftSection = styled.div`
   padding-right: 0;
   position: relative;
   z-index: 1; /* keep content above background animation */
+  
+  /* Laptop-only tweak (~1400px) to reduce vertical padding in hero */
+  @media (min-width: 1280px) and (max-width: 1500px) {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
   @media ${(props) => props.theme.breakpoints.sm} {
     width: 80%;
     display: flex;
@@ -103,7 +109,7 @@ export const BackgroundGraphics = styled.div`
   width: 50%;
   height: 100%;
   pointer-events: none;
-  opacity: 0.15; /* slightly more visible */
+  opacity: 0.25; /* even more pop per request */
   z-index: 0;
 
   &::before {
