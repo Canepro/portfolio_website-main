@@ -65,7 +65,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         ref={ref}
         style={combinedStyles}
-        className={className}
         {...props}
       />
     );

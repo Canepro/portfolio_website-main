@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SkeletonOverlay } from '../../components/Projects/ProjectsStyles';
 import { Layout } from '../../layout/Layout';
-import { projects } from '../../constants/constants';
 import { projectDetails } from '../../constants/projectDetails';
 import SEO from '../../components/SEO/SEO';
 import { projectStructuredData } from '../../lib/structuredData';
@@ -203,9 +202,7 @@ export async function getStaticProps({ params }) {
   const { slug } = params;
   
   // Import projects and projectDetails here to ensure they're available in static context
-  const { projects } = require('../../constants/constants');
   const { projects } = await import('../../constants/constants');
-  const { projectDetails } = await import('../../constants/projectDetails');
   
   // Find the project by slug
   const project = projects.find((p) => p.slug === slug);
