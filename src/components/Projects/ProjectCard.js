@@ -18,9 +18,9 @@ import {
   ViewDetailsButton
 } from './ProjectsStyles';
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, index }) => {
   return (
-    <BlogCard>
+    <BlogCard className={`hover-lift animate-scaleIn delay-${(index % 5 + 1) * 100}`}>
       <Link href={`/projects/${project.slug}`} passHref legacyBehavior>
         <a style={{ textDecoration: 'none', color: 'inherit' }}>
           <ImageWrapper>
@@ -34,12 +34,12 @@ const ProjectCard = ({ project }) => {
             {project.featured && <CategoryBadge featured>Featured</CategoryBadge>}
             {project.category && <CategoryBadge>{project.category}</CategoryBadge>}
           </ImageWrapper>
-          
+
           <TitleContent>
             <HeaderThree title={true}>{project.title}</HeaderThree>
             <Hr />
           </TitleContent>
-          
+
           <CardInfo className="card-info">{project.description}</CardInfo>
         </a>
       </Link>

@@ -80,8 +80,8 @@ const ProjectsPage = () => {
 
         {filteredProjects.length > 0 ? (
           <ProjectsGrid>
-            {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+            {filteredProjects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
             ))}
           </ProjectsGrid>
         ) : (

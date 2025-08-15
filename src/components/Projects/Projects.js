@@ -21,8 +21,8 @@ const Projects = () => {
         Showcasing my best work across DevOps, Cloud, and Frontend development
       </SectionText>
       <GridContainer>
-        {featuredProjects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+        {featuredProjects.map((project, index) => (
+          <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </GridContainer>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
