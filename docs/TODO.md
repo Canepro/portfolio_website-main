@@ -26,6 +26,7 @@ The portfolio website is live and functional with recent improvements including:
 - [ ] Commit all changes to feature branch
 - [ ] Create PR and merge to main
 - [ ] Verify Netlify auto-deployment
+- [ ] Tag current state as stable checkpoint
 
 ### 2️⃣ **Quick Fixes** (This Week)
 - [ ] Fix React hooks warnings in development
@@ -36,7 +37,7 @@ The portfolio website is live and functional with recent improvements including:
 
 ### 3️⃣ **Enhancements** (Next Week)
 - [ ] Add loading skeleton screens for better UX
-- [ ] Implement dark/light theme toggle
+- [ ] Implement dark/light theme toggle (CSS variables wired to styled-components theme)
 - [ ] Add smooth scroll animations
 - [ ] Create a contact form with email integration
 - [ ] Add testimonials section
@@ -87,6 +88,10 @@ The portfolio website is live and functional with recent improvements including:
   - [ ] Investigate invalid hook calls in development
   - [ ] Check for duplicate React instances
   - [ ] Ensure proper component structure
+- [ ] **Dark/Light Theme Toggle Bug**
+  - [ ] Toggle button switches state but base styled-components theme remains dark
+  - [ ] Decide on approach: fully CSS variables or ThemeProvider switch
+  - [ ] Ensure persistence and SSR-safe behavior
 - [ ] **Deploy to Production**
   - [ ] Push changes to main branch
   - [ ] Verify Netlify deployment
@@ -123,7 +128,7 @@ The portfolio website is live and functional with recent improvements including:
 ### 🟢 Nice to Have (Future Enhancements)
 
 #### User Experience
-- [ ] Dark/light theme toggle with system preference detection
+- [ ] Dark/light theme toggle with system preference detection (SSR-safe)
 - [ ] Smooth scroll with offset for fixed header
 - [ ] Keyboard navigation support
 - [ ] Add breadcrumbs for navigation
