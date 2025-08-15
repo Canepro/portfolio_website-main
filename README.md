@@ -75,6 +75,7 @@ This repository contains the source code for my professional portfolio website -
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Starts development server on localhost:3000 |
+| `npm run dev:3001` | Starts development server on port 3001 (useful if HMR cache is stuck) |
 | `npm run build` | Creates optimized production build |
 | `npm start` | Starts production server (requires build first) |
 
@@ -138,7 +139,7 @@ This project is configured for deployment on Netlify with automatic builds from 
 
 ### Containerized Deployment (Docker or Podman)
 
-You can run this app as a production container using Docker or Podman. The image runs as a non-root user and exposes port 3000 with a basic healthcheck.
+You can run this app as a production container using Docker or Podman. The image runs as a non-root user and exposes port 3000 with a basic healthcheck. Build context is optimized via `.dockerignore`.
 
 - Environment variables used at runtime:
   - `PORT` (default: `3000`)

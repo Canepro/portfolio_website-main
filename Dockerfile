@@ -3,7 +3,7 @@ FROM node:20-alpine AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund
 COPY . .
 RUN npm run build
 
@@ -16,7 +16,7 @@ WORKDIR /app
 
 # Only runtime deps
 COPY --from=build /app/package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --no-audit --no-fund
 
 # App artifacts
 COPY --from=build /app/.next ./.next

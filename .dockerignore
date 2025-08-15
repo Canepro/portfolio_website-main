@@ -1,14 +1,22 @@
+# Node
 node_modules
-npm-debug.log
-.next/cache
-.next/standalone
+npm-debug.log*
+yarn-error.log*
+
+# Next.js
+.next
+.turbo
+out
+
+# VCS/CI
 .git
-.gitignore
+.github
+
+# OS/Editor
 .DS_Store
-.env
-.env.local
-yarn.lock
-*.log
-tmp
+*.swp
+
+# Tests/coverage
 coverage
-dist
+__tests__/**
+__snapshots__/**
