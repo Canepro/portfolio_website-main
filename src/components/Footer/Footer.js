@@ -11,13 +11,13 @@ const Footer = () => (
     <LinkList>
       <LinkColumn>
         <LinkTitle>Get In Touch</LinkTitle>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-          <Button variant="outline" size="sm" asChild>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '1rem', width: '220px' }}>
+          <Button variant="outline" size="sm" asChild style={{ width: '100%' }}>
             <a href="mailto:mogah.vincent@hotmail.com">
               📧 Send Email
             </a>
           </Button>
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="outline" size="sm" asChild style={{ width: '100%' }}>
             <a href="https://www.linkedin.com/in/vincent-mogah/" target="_blank" rel="noopener noreferrer">
               💼 LinkedIn
             </a>
@@ -26,7 +26,7 @@ const Footer = () => (
       </LinkColumn>
       <LinkColumn>
         <LinkTitle>Quick Links</LinkTitle>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
           <Button variant="ghost" size="sm" asChild>
             <a href="/#projects">Projects</a>
           </Button>

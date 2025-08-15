@@ -8,8 +8,9 @@ import { Button } from '../ui/button';
 const Hero = () => (
   <Section row>
     <LeftSection className="animate-fadeIn">
-      <SectionTitle main center className="animate-slideInLeft delay-100">
-        Welcome<br />
+      <SectionTitle main className="animate-slideInLeft delay-100" style={{ letterSpacing: '-0.5px' }}>
+        Welcome
+        <br />
         I am Vincent Mogah
       </SectionTitle>
       <SectionText className="animate-slideInLeft delay-200">
