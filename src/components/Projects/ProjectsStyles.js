@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 export const GridContainer = styled.section`
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 padding: 3rem;
 place-items: center;
 column-gap: 2rem;
@@ -19,7 +19,9 @@ row-gap: 3rem;
 `
 export const BlogCard = styled.div`
   border-radius: 10px;
-  box-shadow: 3px 3px 20px rgba(80, 78, 78, 0.5);
+  background: ${({ theme }) => theme.colors.card};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.35);
   text-align: center;
   width: 400px;
   overflow: hidden;
@@ -28,7 +30,8 @@ export const BlogCard = styled.div`
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 5px 5px 30px rgba(80, 78, 78, 0.7);
+    background: ${({ theme }) => theme.colors.cardHover};
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.5);
   }
   
   @media ${(props) => props.theme.breakpoints.sm} {
@@ -46,7 +49,7 @@ export const TitleContent = styled.div`
 export const HeaderThree = styled.h3`
   font-weight: 500;
   letter-spacing: 2px;
-  color: #9cc9e3;
+  color: ${({ theme }) => theme.colors.text};
   padding: .5rem 0;
   font-size: ${(props) => props.title ? '3rem' : '2rem'};
 `;
@@ -56,7 +59,7 @@ export const Hr = styled.hr`
   height: 3px;
   margin: 20px auto;
   border: 0;
-  background: #d0bb57;
+  background: ${({ theme }) => theme.colors.gradient};
 `;
 
 export const Intro = styled.div`
@@ -73,7 +76,7 @@ export const Intro = styled.div`
 export const CardInfo = styled.p`
   width: 100%;
   padding: 0 50px;
-  color: #e4e6e7;
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-style: 2rem;
   line-height: 24px;
   text-align: justify;
@@ -93,15 +96,15 @@ export const UtilityList = styled.ul`
 `;
 
 export const ExternalLinks = styled.a`
-color:#d4c0c0;
+color:#fff;
 font-size: 1.6rem;
 padding:1rem 1.5rem;
-background: #6b3030;
+background: ${({ theme }) => theme.colors.gradientSecondary};
 border-radius: 15px;
-transition: 0.5s;
+transition: 0.3s ease;
+text-decoration: none;
 &:hover{
-  background: #801414;
-
+  transform: translateY(-2px);
 }
 `;
 
@@ -111,7 +114,7 @@ justify-content: space-around;
 padding: 2rem;
 `
 export const Tag = styled.li`
-color: #d8bfbf;
+color: ${({ theme }) => theme.colors.textSecondary};
 font-size: 1.5rem;
 `
 
@@ -127,8 +130,8 @@ export const CategoryBadge = styled.span`
   right: 12px;
   padding: 6px 12px;
   background: ${props => props.featured 
-    ? 'linear-gradient(270deg, #F46737 0%, #945DD6 100%)' 
-    : 'rgba(0, 0, 0, 0.75)'};
+    ? props.theme.colors.gradientSecondary 
+    : 'rgba(0, 0, 0, 0.6)'};
   backdrop-filter: blur(4px);
   border-radius: 16px;
   font-size: 12px;
@@ -137,4 +140,17 @@ export const CategoryBadge = styled.span`
   z-index: 1;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+`;
+
+export const SkeletonOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.18) 37%, rgba(255,255,255,0.08) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  @keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: 0 0; }
+  }
 `;
