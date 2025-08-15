@@ -23,11 +23,13 @@ This repository contains the source code for my professional portfolio website -
 
 ## 🚀 Tech Stack
 
-- **Framework**: [Next.js 14.2.30](https://nextjs.org/) - React framework with SSR/SSG capabilities
-- **Frontend**: [React 18.2.0](https://reactjs.org/) - Component-based UI library
-- **Styling**: [Styled-components 5.3.0](https://styled-components.com/) - CSS-in-JS styling solution
-- **Icons**: [React Icons 4.2.0](https://react-icons.github.io/react-icons/) - Icon library
-- **Deployment**: [Netlify](https://netlify.com) - Static site hosting and CI/CD
+- **Framework**: [Next.js 14.2.30](https://nextjs.org/) – React framework with SSR/SSG
+- **Frontend**: [React 18.3.1](https://reactjs.org/) – Component-based UI library
+- **Styling**: [styled-components 5.3.0](https://styled-components.com/) – CSS‑in‑JS (themes bridged to CSS variables)
+- **UI Primitives**: shadcn/ui (Button, Badge, Card, Skeleton – adapted to inline styles)
+- **Types**: Partial TypeScript (components in `src/components/ui/*.tsx`, types in `src/types/*`)
+- **Icons**: [React Icons 4.2.0](https://react-icons.github.io/react-icons/) – Icon library
+- **Deployment**: [Netlify](https://netlify.com) – CI/CD and hosting
 
 ## 🚦 Quick Links
 
@@ -201,6 +203,10 @@ docker push ghcr.io/canepro/portfolio:dev
    npm install
    ```
 2. Check Node.js version (requires 16.x or higher)
+3. If dev port is busy or HMR acts up, run on a clean port:
+   ```bash
+   npm run dev -- -p 3001
+   ```
 
 #### Styled-components SSR Issues
 

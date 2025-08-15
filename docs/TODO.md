@@ -17,22 +17,24 @@ The portfolio website is live and functional with recent improvements including:
 - ✅ **Individual Project Detail Pages** (August 14, 2025)
 - ✅ **7 Professional Projects Added** (August 14, 2025)
 - ✅ Fixed project images and descriptions
- - ✅ Hero modernization (animated background, larger headline/copy, dual CTAs side‑by‑side)
- - ✅ Increased dark‑theme text contrast
- - ✅ Footer quick links/contact buttons polished
- - ✅ Featured Projects shows up to 4 cards on large screens (equal heights)
+  - ✅ Hero modernization (gradient name, gradient primary button, larger headline/copy, dual CTAs side‑by‑side)
+  - ✅ Decorative background graphics refined; opacity tuned for visibility (now 0.25)
+  - ✅ Laptop width (1280–1500px) hero padding reduced for balance
+  - ✅ Increased dark‑theme text contrast
+  - ✅ Footer quick links/contact buttons polished
+  - ✅ Featured Projects shows up to 4 cards on large screens (equal heights)
 
 ## 🚀 What's Next - Priority Order
 
 ### 1️⃣ **Immediate Actions** (Today)
-- [ ] Test production build locally: `npm run build && npm start`
-- [ ] Fix any build errors if they occur
-- [ ] Commit all changes to feature branch
-- [ ] Create PR and merge to main
-- [ ] Verify Netlify auto-deployment
+- [x] Test production build locally: `npm run build && npm start`
+- [x] Fix dev instability by using a clean port when needed: `npm run dev -- -p 3001`
+- [x] Commit all changes to feature branch
+- [x] Create PR and merge to main
+- [x] Verify Netlify auto-deployment
 - [x] Tag state as stable checkpoint (`stable-2025-08-15-ui-baseline`)
 - [x] Tag new UI/UX baseline after 2-up layout + skeletons (`stable-2025-08-15-ui-ux-v2`)
- - [ ] Tag current hero+animation baseline as stable (`stable-2025-08-15-hero-anim`)
+- [x] Tag current hero+animation baseline as stable (`stable-2025-08-15-hero-anim`)
 
 ### 2️⃣ **Quick Fixes** (This Week)
 - [ ] Fix React hooks warnings in development
