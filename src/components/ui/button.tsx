@@ -1,5 +1,4 @@
 import * as React from "react";
-import { cn } from "../../lib/utils";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,33 +7,65 @@ export interface ButtonProps
   asChild?: boolean;
 }
 
-const base =
-  "inline-flex items-center justify-center rounded-md font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none text-decoration-none";
-
-const variants: Record<string, string> = {
-  default:
-    "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5",
-  secondary:
-    "bg-gradient-to-r from-gray-600 to-gray-700 text-white hover:from-gray-700 hover:to-gray-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5",
-  outline:
-    "border-2 border-blue-500 bg-transparent text-blue-600 hover:bg-blue-500 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-gray-900 shadow-md hover:shadow-lg transform hover:-translate-y-0.5",
-  ghost:
-    "bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100",
+const baseStyles = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: '6px',
+  fontWeight: '500',
+  transition: 'all 0.3s ease',
+  cursor: 'pointer',
+  border: 'none',
+  textDecoration: 'none',
+  outline: 'none',
 };
 
-const sizes: Record<string, string> = {
-  sm: "h-9 px-4 text-sm font-medium",
-  md: "h-11 px-6 text-base font-medium", 
-  lg: "h-12 px-8 text-lg font-medium",
+const variantStyles = {
+  default: {
+    background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+    color: 'white',
+    boxShadow: '0 4px 14px 0 rgba(59, 130, 246, 0.4)',
+  },
+  secondary: {
+    background: 'linear-gradient(135deg, #6b7280, #4b5563)',
+    color: 'white',
+    boxShadow: '0 4px 14px 0 rgba(107, 114, 128, 0.4)',
+  },
+  outline: {
+    background: 'transparent',
+    border: '2px solid #3b82f6',
+    color: '#3b82f6',
+    boxShadow: '0 2px 8px 0 rgba(59, 130, 246, 0.2)',
+  },
+  ghost: {
+    background: 'transparent',
+    color: '#6b7280',
+    border: 'none',
+  },
+};
+
+const sizeStyles = {
+  sm: { height: '36px', padding: '0 16px', fontSize: '14px' },
+  md: { height: '44px', padding: '0 24px', fontSize: '16px' },
+  lg: { height: '48px', padding: '0 32px', fontSize: '18px' },
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "md", asChild = false, ...props }, ref) => {
+  ({ className, variant = "default", size = "md", asChild = false, style, ...props }, ref) => {
     const Comp = asChild ? "span" : "button";
+    
+    const combinedStyles = {
+      ...baseStyles,
+      ...variantStyles[variant],
+      ...sizeStyles[size],
+      ...style,
+    };
+    
     return (
       <Comp
         ref={ref}
-        className={cn(base, variants[variant], sizes[size], className)}
+        style={combinedStyles}
+        className={className}
         {...props}
       />
     );

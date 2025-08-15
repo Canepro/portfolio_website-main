@@ -34,7 +34,7 @@ const ProjectCard = ({ project, index }) => {
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
               style={{ objectFit: 'cover' }}
-              onLoadingComplete={() => setLoaded(true)}
+              onLoad={() => setLoaded(true)}
             />
             {project.featured && (
               <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 1 }}>
@@ -49,7 +49,7 @@ const ProjectCard = ({ project, index }) => {
           </ImageWrapper>
 
           <TitleContent>
-            <HeaderThree title={true}>{project.title}</HeaderThree>
+            <HeaderThree title="true">{project.title}</HeaderThree>
             <Hr />
           </TitleContent>
 
