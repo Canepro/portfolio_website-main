@@ -6,7 +6,7 @@ import ProjectCard from './ProjectCard';
 import { GridContainer } from './ProjectsStyles';
 import { Section, SectionDivider, SectionTitle } from '../../styles/GlobalComponents';
 import { SectionText } from '../../styles/GlobalComponents';
-import Button from '../../styles/GlobalComponents/Button';
+import { Button } from '../ui/button';
 import { projects } from '../../constants/constants';
 
 const Projects = () => {
@@ -31,9 +31,11 @@ const Projects = () => {
         ))}
       </GridContainer>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
-        <Link href="/projects" passHref legacyBehavior>
-          <Button as="a">View All Projects</Button>
-        </Link>
+        <Button size="lg" variant="outline" asChild>
+          <Link href="/projects">
+            View All Projects →
+          </Link>
+        </Button>
       </div>
     </Section>
   );
