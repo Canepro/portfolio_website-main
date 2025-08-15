@@ -14,7 +14,7 @@ import {
   UtilityList, 
   ImageWrapper,
   CategoryBadge,
-  ViewDetailsButton,
+  ExternalLinks,
   SkeletonOverlay
 } from './ProjectsStyles';
 // Using existing styled link buttons for stability
