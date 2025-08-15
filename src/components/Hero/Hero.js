@@ -14,7 +14,7 @@ const Hero = () => (
         <br />
         I am Vincent Mogah
       </SectionTitle>
-      <SectionText className="animate-slideInLeft delay-200" style={{ maxWidth: '760px' }}>
+      <SectionText className="animate-slideInLeft delay-200" style={{ maxWidth: '820px', fontSize: '24px', lineHeight: '38px' }}>
         I am a multifaceted DevOps Engineer, Cloud Architect, and Front-End Developer based in the UK. My passion lies in bridging the gap between robust infrastructure and intuitive user experiences. I design, deploy, and manage scalable solutions on Microsoft Azure and AWS, craft responsive web applications with React.js, and am keenly interested in the potential of AI to drive innovation and process improvement.
       </SectionText>
       <div className="animate-scaleIn delay-300" style={{ display: 'flex', gap: '1rem', flexWrap: 'nowrap', alignItems: 'center', marginTop: '1rem' }}>
