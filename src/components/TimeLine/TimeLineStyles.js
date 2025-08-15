@@ -134,6 +134,9 @@ export const CarouselItemImg = styled.svg`
   margin-left: 21px;
   -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
   width: 100%;
+  pointer-events: none;
+  position: relative;
+  z-index: 0;
 
   @media ${props => props.theme.breakpoints.md} {
     margin-left: 16px;

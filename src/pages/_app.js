@@ -1,11 +1,20 @@
 import Theme from '../styles/theme';
 import Script from 'next/script';
+import dynamic from 'next/dynamic';
+import '../styles/GlobalStyles.css';
+
+// Dynamically import theme toggle to avoid SSR issues
+const SimpleThemeToggle = dynamic(
+  () => import('../components/ThemeToggle/SimpleThemeToggle'),
+  { ssr: false }
+);
 
 export default function App({ Component, pageProps }) {
   return (
     <>
       <Theme>
         <Component {...pageProps} />
+        <SimpleThemeToggle />
       </Theme>
       <Script
         id="rocket-chat"

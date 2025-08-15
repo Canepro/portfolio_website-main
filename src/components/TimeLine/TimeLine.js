@@ -45,8 +45,8 @@ const Timeline = () => {
   return (
     <Section id="about">
       <SectionTitle>About Me</SectionTitle>
-      <SectionText>
-          I am dedicated to continuous improvement and am currently deepening my expertise in advanced cloud architectures, AI-driven DevOps, and modern React features. My colleagues would describe me as resourceful, patient, and optimistic. I see setbacks as opportunities to learn and grow, and I always strive to find creative solutions to problems.
+      <SectionText style={{ maxWidth: '720px', textAlign: 'left', margin: '0' }}>
+        I’m an infrastructure‑focused engineer who loves clean UI. I design and run scalable systems, automate cloud operations, and build front‑ends that are fast and accessible. I’m relentlessly curious, calm under pressure, and I treat every problem as a chance to learn and improve.
       </SectionText>
       <CarouselContainer ref={carouselRef} onScroll={handleScroll}>
         <>

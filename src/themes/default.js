@@ -4,13 +4,20 @@ export default {
     title: "Space Grotesk, sans-serif",
     main: "Space Grotesk, sans-serif"
   },
-  // Colors for layout
+  // Colors now use CSS variables that change with theme
   colors: {
-    primary1: "hsl(204,23.8%,95.9%)",
-    background1: "#0F1624",
-    accent1: "hsl(34.9,98.6%,72.9%)",
-    button: "hsl(205.1,100%,36.1%)",
-    background2: "hsl(232.7,27.3%,23.7%)",
+    primary1: "var(--color-text-primary)",
+    background1: "var(--color-bg-primary)",
+    background2: "var(--color-bg-secondary)",
+    accent1: "var(--color-accent)",
+    button: "var(--color-accent)",
+    text: "var(--color-text-primary)",
+    textSecondary: "var(--color-text-secondary)",
+    card: "var(--color-card-bg)",
+    cardHover: "var(--color-card-hover)",
+    border: "var(--color-border)",
+    gradient: "var(--gradient-primary)",
+    gradientSecondary: "var(--gradient-secondary)",
   },
   // Breakpoints for responsive design
   breakpoints: {
