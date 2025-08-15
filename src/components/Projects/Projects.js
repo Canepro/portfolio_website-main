@@ -13,14 +13,14 @@ const Projects = () => {
   // Show up to 4 projects on homepage (prefer featured; backfill with others)
   const featured = projects.filter(p => p.featured);
   const nonFeatured = projects.filter(p => !p.featured);
-  const featuredProjects = [...featured.slice(0, 2)];
-  if (featuredProjects.length < 2) {
-    featuredProjects.push(...nonFeatured.slice(0, 2 - featuredProjects.length));
+  const featuredProjects = [...featured.slice(0, 4)];
+  if (featuredProjects.length < 4) {
+    featuredProjects.push(...nonFeatured.slice(0, 4 - featuredProjects.length));
   }
   
   return (
-    <Section nopadding id="projects">
-      <SectionDivider />
+    <Section id="projects" style={{ marginTop: '24px' }}>
+      <SectionDivider divider />
       <SectionTitle main>Featured Projects</SectionTitle>
       <SectionText>
         Showcasing my best work across DevOps, Cloud, and Frontend development

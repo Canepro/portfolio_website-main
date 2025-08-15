@@ -29,7 +29,7 @@ export const SectionTitle = styled.h2`
   font-weight: 800;
   font-size: ${(props) => props.main ? '56px' : '44px'};
   line-height: ${(props) => props.main ? '64px' : '48px'};
-  width: max-content;
+  width: 100%;
   max-width: 100%;
   color: ${props => props.theme.colors.text};
   margin-bottom: 12px;
@@ -60,7 +60,7 @@ export const SectionText = styled.p`
   font-weight: 300;
   padding-bottom: 2.8rem;
   color: ${props => props.theme.colors.textSecondary};
-  text-align: center;
+  text-align: left;
 
   @media ${(props) => props.theme.breakpoints.md} {
     max-width: 670px;

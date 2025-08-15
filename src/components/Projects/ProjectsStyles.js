@@ -7,18 +7,20 @@ display: grid;
 grid-template-columns: repeat(2, minmax(0, 1fr));
 gap: 2rem;
 align-items: stretch;
-padding: 3rem;
-place-items: center;
+padding: 2rem 0;
+place-items: stretch;
 column-gap: 2rem;
-row-gap: 3rem;
+row-gap: 2.5rem;
+@media ${(props) => props.theme.breakpoints.lg} {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 @media ${(props) => props.theme.breakpoints.md} {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 @media ${(props) => props.theme.breakpoints.sm} {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-  padding-bottom: 0;
+  padding: 1.5rem 0;
 }
 
 `

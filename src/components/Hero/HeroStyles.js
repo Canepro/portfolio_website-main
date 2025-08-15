@@ -3,6 +3,8 @@ import styled from 'styled-components';
 export const LeftSection = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.colors.text};
+  max-width: 720px;
+  padding-right: 24px;
   @media ${(props) => props.theme.breakpoints.sm} {
     width: 80%;
     display: flex;

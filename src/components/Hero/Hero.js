@@ -6,7 +6,7 @@ import { LeftSection } from './HeroStyles';
 import { Button } from '../ui/button';
 
 const Hero = () => (
-  <Section row nopadding>
+  <Section row>
     <LeftSection className="animate-fadeIn">
       <SectionTitle main center className="animate-slideInLeft delay-100">
         Welcome<br />
@@ -15,7 +15,7 @@ const Hero = () => (
       <SectionText className="animate-slideInLeft delay-200">
         I am a multifaceted DevOps Engineer, Cloud Architect, and Front-End Developer based in the UK. My passion lies in bridging the gap between robust infrastructure and intuitive user experiences. I design, deploy, and manage scalable solutions on Microsoft Azure and AWS, craft responsive web applications with React.js, and am keenly interested in the potential of AI to drive innovation and process improvement.
       </SectionText>
-      <div className="animate-scaleIn delay-300" style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginTop: '2rem', justifyContent: 'center' }}>
+      <div className="animate-scaleIn delay-300" style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap', marginTop: '1.5rem' }}>
         <Button size="lg" asChild>
           <a href="https://www.linkedin.com/in/vincent-mogah/" target="_blank" rel="noopener noreferrer">
             Connect on LinkedIn
