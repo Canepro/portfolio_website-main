@@ -1,8 +1,8 @@
 // src/components/Projects/ProjectCard.js
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import OptimizedImage from '../OptimizedImage/OptimizedImage';
 import { 
   BlogCard, 
   CardInfo, 
@@ -13,14 +13,12 @@ import {
   TitleContent, 
   UtilityList, 
   ImageWrapper,
-  CategoryBadge,
-  SkeletonOverlay
+  CategoryBadge
 } from './ProjectsStyles';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 
 const ProjectCard = ({ project, index }) => {
-  const [loaded, setLoaded] = useState(false);
 
   return (
     <BlogCard
@@ -30,14 +28,13 @@ const ProjectCard = ({ project, index }) => {
       <Link href={`/projects/${project.slug}`} passHref legacyBehavior>
         <a style={{ textDecoration: 'none', color: 'inherit' }}>
           <ImageWrapper>
-            {!loaded && <SkeletonOverlay />}
-            <Image
+            <OptimizedImage
               src={project.image}
               alt={`${project.title} thumbnail`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
-              style={{ objectFit: 'cover' }}
-              onLoad={() => setLoaded(true)}
+              priority={index < 4}
+              enableHover={false}
             />
             {project.featured && (
               <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 1 }}>
