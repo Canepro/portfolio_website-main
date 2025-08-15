@@ -23,7 +23,10 @@ const ProjectCard = ({ project, index }) => {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <BlogCard className={`hover-lift animate-scaleIn delay-${(index % 5 + 1) * 100}`}>
+    <BlogCard
+      className="hover-lift animate-scaleIn"
+      delay={(index % 5 + 1) * 100}
+    >
       <Link href={`/projects/${project.slug}`} passHref legacyBehavior>
         <a style={{ textDecoration: 'none', color: 'inherit' }}>
           <ImageWrapper>
