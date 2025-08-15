@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const LeftSection = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.colors.text};
-  max-width: 960px;
-  padding-right: 24px;
+  max-width: 1040px;
+  padding-right: 0;
   position: relative;
   z-index: 1; /* keep content above background animation */
   @media ${(props) => props.theme.breakpoints.sm} {

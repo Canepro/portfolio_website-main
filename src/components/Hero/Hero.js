@@ -7,17 +7,17 @@ import BgAnimation from '../BackgroundAnimation/BackgroundAnimation';
 import { Button } from '../ui/button';
 
 const Hero = () => (
-  <Section row style={{ position: 'relative', overflow: 'hidden' }}>
+  <Section row style={{ position: 'relative', overflow: 'hidden', alignItems: 'center', minHeight: '72vh' }}>
     <LeftSection className="animate-fadeIn">
-      <SectionTitle main className="animate-slideInLeft delay-100" style={{ letterSpacing: '-0.5px', marginBottom: '1rem' }}>
+      <SectionTitle main className="animate-slideInLeft delay-100" style={{ letterSpacing: '-0.5px', marginBottom: '1.25rem' }}>
         Welcome
         <br />
         I am Vincent Mogah
       </SectionTitle>
-      <SectionText className="animate-slideInLeft delay-200" style={{ maxWidth: '820px', fontSize: '24px', lineHeight: '38px' }}>
+      <SectionText className="animate-slideInLeft delay-200" style={{ maxWidth: '880px', fontSize: '23px', lineHeight: '36px' }}>
         I am a multifaceted DevOps Engineer, Cloud Architect, and Front-End Developer based in the UK. My passion lies in bridging the gap between robust infrastructure and intuitive user experiences. I design, deploy, and manage scalable solutions on Microsoft Azure and AWS, craft responsive web applications with React.js, and am keenly interested in the potential of AI to drive innovation and process improvement.
       </SectionText>
-      <div className="animate-scaleIn delay-300" style={{ display: 'flex', gap: '1rem', flexWrap: 'nowrap', alignItems: 'center', marginTop: '1rem' }}>
+      <div className="animate-scaleIn delay-300" style={{ display: 'flex', gap: '1rem', flexWrap: 'nowrap', alignItems: 'center', marginTop: '1.25rem' }}>
         <Button size="lg" asChild>
           <a href="https://www.linkedin.com/in/vincent-mogah/" target="_blank" rel="noopener noreferrer">
             Connect on LinkedIn
