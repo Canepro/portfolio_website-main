@@ -1,7 +1,6 @@
 // src/pages/projects/[slug].js
 
 import React from 'react';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SkeletonOverlay } from '../../components/Projects/ProjectsStyles';
@@ -35,15 +34,11 @@ import {
 } from '../../styles/ProjectDetailStyles';
 import { Button } from '../../components/ui/button';
 
-const ProjectDetailPage = () => {
-  const router = useRouter();
-  const { slug } = router.query;
+const ProjectDetailPage = ({ project, slug }) => {
+  // Get project details
+  const details = projectDetails[slug] || {};
 
-  // Find the project by slug
-  const project = projects.find(p => p.slug === slug);
-  const details = projectDetails[slug];
-
-  // Handle project not found
+  // Handle project not found (shouldn't happen with getStaticPaths, but good fallback)
   if (!project) {
     return (
       <Layout>
@@ -187,3 +182,37 @@ const ProjectDetailPage = () => {
 };
 
 export default ProjectDetailPage;
+
+// Generate static paths for all projects
+export async function getStaticPaths() {
+  const paths = projects.map((project) => ({
+    params: { slug: project.slug },
+  }));
+
+  return {
+    paths,
+    fallback: false, // Return 404 for unknown slugs
+  };
+}
+
+// Generate static props for each project
+export async function getStaticProps({ params }) {
+  const { slug } = params;
+  
+  // Find the project by slug
+  const project = projects.find((p) => p.slug === slug);
+  
+  if (!project) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      project,
+      slug,
+    },
+    revalidate: 60, // Revalidate every minute
+  };
+}
