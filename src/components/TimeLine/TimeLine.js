@@ -40,6 +40,11 @@ const Timeline = () => {
     }
 
     window.addEventListener('resize', handleResize);
+    
+    // Cleanup function to remove event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
