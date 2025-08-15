@@ -26,7 +26,8 @@ The portfolio website is live and functional with recent improvements including:
 - [ ] Commit all changes to feature branch
 - [ ] Create PR and merge to main
 - [ ] Verify Netlify auto-deployment
-- [x] Tag current state as stable checkpoint (`stable-2025-08-15-ui-baseline`)
+- [x] Tag state as stable checkpoint (`stable-2025-08-15-ui-baseline`)
+- [x] Tag new UI/UX baseline after 2-up layout + skeletons (`stable-2025-08-15-ui-ux-v2`)
 
 ### 2️⃣ **Quick Fixes** (This Week)
 - [ ] Fix React hooks warnings in development
@@ -85,6 +86,20 @@ The portfolio website is live and functional with recent improvements including:
 - Dark/Light theme toggle wired via CSS variables
 - Styled-components theme connected to CSS variables (buttons, text, backgrounds)
 - Theme toggle moved to bottom-left to avoid overlap with Rocket.Chat widget
+- Featured Projects switched to 2-up balanced layout on homepage
+- Equal-height project cards; consistent bottom-aligned actions
+- Skeleton loaders for project cards and project detail hero
+- Light mode typography made theme-safe (headings/text always visible)
+
+### 🧭 Upcoming Modernization Plan (UI Stack)
+- [ ] Add Tailwind CSS (PostCSS config, base layers) without breaking styled-components
+- [ ] Configure Tailwind to read existing CSS variables for dark/light
+- [ ] Install shadcn/ui and scaffold primitives (Button, Card, Badge, Skeleton)
+- [ ] Replace homepage buttons/links/badges with shadcn/ui versions
+- [ ] Add TypeScript (tsconfig, strict), create `types/project.d.ts`
+- [ ] Migrate `src/constants/constants.js` and `projectDetails.js` to TS
+- [ ] Convert `ProjectCard`, `/projects` pages to TS incrementally
+- [ ] Add ESLint + Prettier config for TS + Tailwind
 
 **Current Status:** Production-ready portfolio with professional features
 
