@@ -4,7 +4,7 @@
 
 ### 🌐 [Live Site](https://portfolio.canepro.me/)
 
-![Portfolio Website](https://db3pap006files.storage.live.com/y4mJbxekblyRayOVyfrhAlqx9b9m2SCQ5vgPqCsbh_YDRw2HOYC8frX1wsBkWRrkgTKDqELxTtQmbj0gGMjNF9zZsuQSPnjS7EorGfGp1mdFDC7xPMkHH-3gluRJ-zeqJlCL_41iLvSnA0wQ5IgNVyjdF3DaUZkWwOSbntlwDO-eUK38pvoxbDgmhjqITouXWsw?width=1900&height=926&cropmode=none)
+![Portfolio Website](https://github.com/Canepro/portfolio_website-main/blob/main/public/images/6.png?raw=true)
 
 ## 📋 Overview
 
