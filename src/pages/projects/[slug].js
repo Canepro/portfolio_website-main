@@ -204,7 +204,8 @@ export async function getStaticProps({ params }) {
   
   // Import projects and projectDetails here to ensure they're available in static context
   const { projects } = require('../../constants/constants');
-  const { projectDetails } = require('../../constants/projectDetails');
+  const { projects } = await import('../../constants/constants');
+  const { projectDetails } = await import('../../constants/projectDetails');
   
   // Find the project by slug
   const project = projects.find((p) => p.slug === slug);
