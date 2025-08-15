@@ -3,9 +3,9 @@ import styled from 'styled-components'
 export const Section = styled.section`
   display: ${(props) => props.grid ? "grid" : "flex" };
   flex-direction: ${(props) => props.row ? "row" : "column" };
-  padding: ${(props) => props.nopadding ? "0" : "32px 48px 0" } ;
+  padding: ${(props) => props.nopadding ? "0" : "24px 32px 0" } ;
   margin: 0 auto;
-  max-width: 1040px;
+  max-width: 980px;
   box-sizing: content-box;
   position: relative;
   overflow: hidden;
@@ -27,13 +27,13 @@ export const Section = styled.section`
 
 export const SectionTitle = styled.h2`
   font-weight: 800;
-  font-size: ${(props) => props.main ? '65px' : '56px'};
-  line-height: ${(props) => props.main ? '72px' : '56px'};
+  font-size: ${(props) => props.main ? '56px' : '44px'};
+  line-height: ${(props) => props.main ? '64px' : '48px'};
   width: max-content;
   max-width: 100%;
   color: ${props => props.theme.colors.text};
-  margin-bottom: 16px;
-  padding: ${(props) => props.main ? '58px 0 16px' : '0'};
+  margin-bottom: 12px;
+  padding: ${(props) => props.main ? '40px 0 8px' : '0'};
 
   @media ${props => props.theme.breakpoints.md}{
     font-size: ${(props) => props.main ? '56px' : '48px'};
@@ -55,10 +55,10 @@ export const SectionTitle = styled.h2`
 
 export const SectionText = styled.p`
   max-width: 800px;
-  font-size: 24px;
-  line-height: 40px;
+  font-size: 20px;
+  line-height: 34px;
   font-weight: 300;
-  padding-bottom: 3.6rem;
+  padding-bottom: 2.8rem;
   color: ${props => props.theme.colors.textSecondary};
   text-align: center;
 

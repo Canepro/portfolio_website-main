@@ -83,10 +83,16 @@ export const Intro = styled.div`
 
 export const CardInfo = styled.p`
   width: 100%;
-  padding: 0 50px;
+  padding: 0 32px;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-style: 2rem;
   line-height: 24px;
+  /* Clamp to keep cards equal height */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 96px;
   text-align: justify;
   @media ${(props) => props.theme.breakpoints.sm} {
     padding:.3rem
