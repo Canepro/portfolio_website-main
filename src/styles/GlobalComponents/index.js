@@ -60,6 +60,7 @@ export const SectionText = styled.p`
   font-weight: 300;
   padding-bottom: 3.6rem;
   color: ${props => props.theme.colors.textSecondary};
+  text-align: center;
 
   @media ${(props) => props.theme.breakpoints.md} {
     max-width: 670px;

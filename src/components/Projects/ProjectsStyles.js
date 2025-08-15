@@ -6,6 +6,7 @@ export const GridContainer = styled.section`
 display: grid;
 grid-template-columns: repeat(4, minmax(0, 1fr));
 gap: 2rem;
+align-items: stretch;
 padding: 3rem;
 place-items: center;
 column-gap: 2rem;
@@ -28,6 +29,9 @@ export const BlogCard = styled.div`
   box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.35);
   text-align: center;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -93,10 +97,11 @@ export const CardInfo = styled.p`
 
 export const UtilityList = styled.ul`
   list-style-type: none;
-  padding: 0;
+  padding: 0 1.5rem 1.5rem;
   display: flex;
-  justify-content: space-around;
-  margin: 2.5rem 0;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: auto; /* push to bottom for equal height cards */
 `;
 
 export const ExternalLinks = styled.a`
@@ -114,8 +119,9 @@ text-decoration: none;
 
 export const TagList = styled.ul`
 display: flex;
-justify-content: space-around;
-padding: 2rem;
+justify-content: center;
+gap: 1rem;
+padding: 1.5rem;
 `
 export const Tag = styled.li`
 color: ${({ theme }) => theme.colors.textSecondary};

@@ -49,7 +49,7 @@ const ProjectCard = ({ project, index }) => {
         </a>
       </Link>
       
-      <div>
+      <div style={{ marginTop: 'auto' }}>
         <TitleContent>Stack</TitleContent>
         <TagList>
           {project.tags.map((tag, i) => (
