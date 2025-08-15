@@ -4,7 +4,9 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import styled from 'styled-components';
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['enableHover'].includes(prop),
+})`
   position: relative;
   overflow: hidden;
   border-radius: 10px;
@@ -16,7 +18,9 @@ const ImageContainer = styled.div`
   }
 `;
 
-const BlurOverlay = styled.div`
+const BlurOverlay = styled.div.withConfig({
+  shouldForwardProp: (prop) => !['loading'].includes(prop),
+})`
   position: absolute;
   top: 0;
   left: 0;
@@ -47,7 +51,9 @@ const BlurOverlay = styled.div`
   }
 `;
 
-const StyledImage = styled(Image)`
+const StyledImage = styled(Image).withConfig({
+  shouldForwardProp: (prop) => !['loaded'].includes(prop),
+})`
   transition: filter 0.3s ease;
   filter: ${props => props.loaded ? 'blur(0px)' : 'blur(8px)'};
 `;
