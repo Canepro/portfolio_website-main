@@ -53,9 +53,7 @@ export const ProjectImage = styled.div`
 export const ProjectTitle = styled.h1`
   font-size: 48px;
   font-weight: 800;
-  background: linear-gradient(121.57deg, #FFFFFF 18.77%, rgba(255, 255, 255, 0.66) 60.15%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: ${({ theme }) => theme.colors.text};
   margin-bottom: 16px;
 
   @media ${(props) => props.theme.breakpoints.md} {

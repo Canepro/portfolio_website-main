@@ -4,11 +4,15 @@ import styled from 'styled-components';
 
 export const GridContainer = styled.section`
 display: grid;
-grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+grid-template-columns: repeat(4, minmax(0, 1fr));
+gap: 2rem;
 padding: 3rem;
 place-items: center;
 column-gap: 2rem;
 row-gap: 3rem;
+@media ${(props) => props.theme.breakpoints.md} {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 @media ${(props) => props.theme.breakpoints.sm} {
   display: flex;
   flex-direction: column;
@@ -23,7 +27,7 @@ export const BlogCard = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.35);
   text-align: center;
-  width: 400px;
+  width: 100%;
   overflow: hidden;
   transition: all 0.3s ease;
   cursor: pointer;

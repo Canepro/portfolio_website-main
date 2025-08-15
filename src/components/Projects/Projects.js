@@ -10,8 +10,13 @@ import Button from '../../styles/GlobalComponents/Button';
 import { projects } from '../../constants/constants';
 
 const Projects = () => {
-  // Only show featured projects on homepage
-  const featuredProjects = projects.filter(p => p.featured).slice(0, 3);
+  // Show up to 4 projects on homepage (prefer featured; backfill with others)
+  const featured = projects.filter(p => p.featured);
+  const nonFeatured = projects.filter(p => !p.featured);
+  const featuredProjects = [...featured.slice(0, 4)];
+  if (featuredProjects.length < 4) {
+    featuredProjects.push(...nonFeatured.slice(0, 4 - featuredProjects.length));
+  }
   
   return (
     <Section nopadding id="projects">
