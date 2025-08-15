@@ -29,11 +29,11 @@ import {
   TechList,
   TechItem,
   ProjectLinks,
-  LinkButton,
   ImpactBox,
   TagList,
   Tag
 } from '../../styles/ProjectDetailStyles';
+import { Button } from '../../components/ui/button';
 
 const ProjectDetailPage = () => {
   const router = useRouter();
@@ -165,14 +165,18 @@ const ProjectDetailPage = () => {
 
             <ProjectLinks>
               {project.visit && (
-                <LinkButton href={project.visit} target="_blank" rel="noopener noreferrer" primary>
-                  View Live Project →
-                </LinkButton>
+                <Button asChild>
+                  <a href={project.visit} target="_blank" rel="noopener noreferrer">
+                    View Live Project →
+                  </a>
+                </Button>
               )}
               {project.source && (
-                <LinkButton href={project.source} target="_blank" rel="noopener noreferrer">
-                  View Source Code →
-                </LinkButton>
+                <Button variant="outline" asChild>
+                  <a href={project.source} target="_blank" rel="noopener noreferrer">
+                    View Source Code →
+                  </a>
+                </Button>
               )}
             </ProjectLinks>
           </ProjectContent>
