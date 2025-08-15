@@ -51,7 +51,7 @@ const sizeStyles = {
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "md", asChild = false, style, ...props }, ref) => {
+  ({ variant = "default", size = "md", asChild = false, style, ...props }, ref) => {
     const Comp = asChild ? "span" : "button";
     
     const combinedStyles = {
