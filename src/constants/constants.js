@@ -35,7 +35,12 @@ export const projects = [
       'Networking': ['Traefik', 'Let\'s Encrypt'],
       'Database': ['MongoDB', 'Redis'],
       'Application': ['Rocket.Chat', 'Node.js']
-    },
+    image: '/images/rocketchat-homepage.png',
+    tags: ['Podman', 'Traefik', 'Prometheus', 'Grafana', 'MongoDB'],
+    category: 'DevOps',
+    featured: true,
+    source: 'https://github.com/Canepro/rocketchat-observability',
+    visit: 'https://github.com/Canepro/rocketchat-observability',
     id: 0
   },
   {
