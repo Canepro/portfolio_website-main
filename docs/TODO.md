@@ -17,6 +17,10 @@ The portfolio website is live and functional with recent improvements including:
 - ✅ **Individual Project Detail Pages** (August 14, 2025)
 - ✅ **7 Professional Projects Added** (August 14, 2025)
 - ✅ Fixed project images and descriptions
+ - ✅ Hero modernization (animated background, larger headline/copy, dual CTAs side‑by‑side)
+ - ✅ Increased dark‑theme text contrast
+ - ✅ Footer quick links/contact buttons polished
+ - ✅ Featured Projects shows up to 4 cards on large screens (equal heights)
 
 ## 🚀 What's Next - Priority Order
 
@@ -28,6 +32,7 @@ The portfolio website is live and functional with recent improvements including:
 - [ ] Verify Netlify auto-deployment
 - [x] Tag state as stable checkpoint (`stable-2025-08-15-ui-baseline`)
 - [x] Tag new UI/UX baseline after 2-up layout + skeletons (`stable-2025-08-15-ui-ux-v2`)
+ - [ ] Tag current hero+animation baseline as stable (`stable-2025-08-15-hero-anim`)
 
 ### 2️⃣ **Quick Fixes** (This Week)
 - [ ] Fix React hooks warnings in development
@@ -92,10 +97,9 @@ The portfolio website is live and functional with recent improvements including:
 - Light mode typography made theme-safe (headings/text always visible)
 
 ### 🧭 Upcoming Modernization Plan (UI Stack)
-- [ ] Add Tailwind CSS (PostCSS config, base layers) without breaking styled-components
-- [ ] Configure Tailwind to read existing CSS variables for dark/light
+- [ ] (Deferred) Tailwind CSS integration — staying with styled-components for now
 - [x] Install shadcn/ui and scaffold primitives (Button, Card, Badge, Skeleton) ✅ COMPLETED
-- [ ] Replace homepage buttons/links/badges with shadcn/ui versions (IN PROGRESS)
+- [x] Replace key buttons/badges with shadcn/ui variants (homepage/detail) ✅ COMPLETED
 - [ ] Add TypeScript (tsconfig, strict), create `types/project.d.ts`
 - [ ] Migrate `src/constants/constants.js` and `projectDetails.js` to TS
 - [ ] Convert `ProjectCard`, `/projects` pages to TS incrementally
