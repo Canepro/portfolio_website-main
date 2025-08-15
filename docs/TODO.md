@@ -94,8 +94,8 @@ The portfolio website is live and functional with recent improvements including:
 ### 🧭 Upcoming Modernization Plan (UI Stack)
 - [ ] Add Tailwind CSS (PostCSS config, base layers) without breaking styled-components
 - [ ] Configure Tailwind to read existing CSS variables for dark/light
-- [ ] Install shadcn/ui and scaffold primitives (Button, Card, Badge, Skeleton)
-- [ ] Replace homepage buttons/links/badges with shadcn/ui versions
+- [x] Install shadcn/ui and scaffold primitives (Button, Card, Badge, Skeleton) ✅ COMPLETED
+- [ ] Replace homepage buttons/links/badges with shadcn/ui versions (IN PROGRESS)
 - [ ] Add TypeScript (tsconfig, strict), create `types/project.d.ts`
 - [ ] Migrate `src/constants/constants.js` and `projectDetails.js` to TS
 - [ ] Convert `ProjectCard`, `/projects` pages to TS incrementally
@@ -269,7 +269,8 @@ The portfolio website is live and functional with recent improvements including:
 ## 🐛 Known Issues
 
 ### Bugs to Fix
-- [ ] **React hooks warnings in development console** (HIGH PRIORITY)
+- [x] **React hooks warnings in development console** ✅ COMPLETED
+- [x] **Element type invalid errors with shadcn/ui components** ✅ COMPLETED
 - [ ] Mobile menu doesn't close after navigation
 - [ ] Timeline component has scrolling issues on mobile
 - [x] Project images need consistent aspect ratios (Fixed with 16:9 ImageWrapper)

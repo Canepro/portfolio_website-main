@@ -15,7 +15,7 @@ const Hero = () => (
       <SectionText className="animate-slideInLeft delay-200">
         I am a multifaceted DevOps Engineer, Cloud Architect, and Front-End Developer based in the UK. My passion lies in bridging the gap between robust infrastructure and intuitive user experiences. I design, deploy, and manage scalable solutions on Microsoft Azure and AWS, craft responsive web applications with React.js, and am keenly interested in the potential of AI to drive innovation and process improvement.
       </SectionText>
-      <div className="animate-scaleIn delay-300" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+      <div className="animate-scaleIn delay-300" style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginTop: '2rem', justifyContent: 'center' }}>
         <Button size="lg" asChild>
           <a href="https://www.linkedin.com/in/vincent-mogah/" target="_blank" rel="noopener noreferrer">
             Connect on LinkedIn
@@ -23,7 +23,7 @@ const Hero = () => (
         </Button>
         <Button size="lg" variant="outline" asChild>
           <a href="/projects">
-            View My Work
+            View My Work →
           </a>
         </Button>
       </div>

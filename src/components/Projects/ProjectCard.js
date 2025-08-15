@@ -66,7 +66,7 @@ const ProjectCard = ({ project, index }) => {
         </TagList>
       </div>
       
-      <UtilityList>
+      <div style={{ padding: '0 1.5rem 1.5rem', display: 'flex', justifyContent: 'center', gap: '0.75rem', marginTop: 'auto' }}>
         {project.visit === project.source ? (
           <Button size="sm" asChild>
             <a href={project.source} target="_blank" rel="noopener noreferrer">
@@ -91,7 +91,7 @@ const ProjectCard = ({ project, index }) => {
             )}
           </>
         )}
-      </UtilityList>
+      </div>
     </BlogCard>
   );
 };

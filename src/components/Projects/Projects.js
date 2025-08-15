@@ -30,7 +30,7 @@ const Projects = () => {
           <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </GridContainer>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem', marginBottom: '2rem' }}>
         <Button size="lg" variant="outline" asChild>
           <Link href="/projects">
             View All Projects →
