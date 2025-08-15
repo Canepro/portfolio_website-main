@@ -186,7 +186,7 @@ export default ProjectDetailPage;
 // Generate static paths for all projects
 export async function getStaticPaths() {
   // Import projects here to ensure it's available in static context
-  const { projects } = require('../../constants/constants');
+  const { projects } = await import('../../constants/constants');
   
   const paths = projects.map((project) => ({
     params: { slug: project.slug },
