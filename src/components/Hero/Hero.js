@@ -3,10 +3,11 @@
 import React from 'react';
 import { Section, SectionText, SectionTitle } from '../../styles/GlobalComponents';
 import { LeftSection } from './HeroStyles';
+import BgAnimation from '../BackgroundAnimation/BackgroundAnimation';
 import { Button } from '../ui/button';
 
 const Hero = () => (
-  <Section row>
+  <Section row style={{ position: 'relative', overflow: 'hidden' }}>
     <LeftSection className="animate-fadeIn">
       <SectionTitle main className="animate-slideInLeft delay-100" style={{ letterSpacing: '-0.5px', marginBottom: '1rem' }}>
         Welcome
@@ -29,6 +30,7 @@ const Hero = () => (
         </Button>
       </div>
     </LeftSection>
+    <BgAnimation />
   </Section>
 );
 

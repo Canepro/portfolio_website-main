@@ -5,6 +5,8 @@ export const LeftSection = styled.div`
   color: ${({ theme }) => theme.colors.text};
   max-width: 720px;
   padding-right: 24px;
+  position: relative;
+  z-index: 1; /* keep content above background animation */
   @media ${(props) => props.theme.breakpoints.sm} {
     width: 80%;
     display: flex;
