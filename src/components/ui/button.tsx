@@ -3,8 +3,9 @@ import { cn } from "../../lib/utils";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "secondary" | "ghost";
+  variant?: "default" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
+  asChild?: boolean;
 }
 
 const base =
@@ -12,11 +13,13 @@ const base =
 
 const variants: Record<string, string> = {
   default:
-    "bg-[var(--color-accent)] text-white hover:brightness-110 focus:ring-[var(--color-accent)]",
+    "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
   secondary:
-    "bg-[var(--color-accent-secondary)] text-white hover:brightness-110 focus:ring-[var(--color-accent-secondary)]",
+    "bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500",
+  outline:
+    "border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-50 focus:ring-gray-500 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800",
   ghost:
-    "bg-transparent border border-[color:var(--color-border)] text-[color:var(--color-text-primary)] hover:bg-[rgba(255,255,255,0.05)]",
+    "bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500 dark:text-gray-300 dark:hover:bg-gray-800",
 };
 
 const sizes: Record<string, string> = {
@@ -26,9 +29,10 @@ const sizes: Record<string, string> = {
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "md", ...props }, ref) => {
+  ({ className, variant = "default", size = "md", asChild = false, ...props }, ref) => {
+    const Comp = asChild ? "span" : "button";
     return (
-      <button
+      <Comp
         ref={ref}
         className={cn(base, variants[variant], sizes[size], className)}
         {...props}
