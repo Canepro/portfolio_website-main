@@ -2,13 +2,14 @@
 
 import React from 'react';
 import { Section, SectionText } from '../../styles/GlobalComponents';
-import { LeftSection, HeroTitle, GradientName, ModernButton, BackgroundGraphics } from './HeroStyles';
+import { LeftSection, HeroTitle, GradientName, ModernButton, BackgroundGraphics, HeroColumn } from './HeroStyles';
 import { Button } from '../ui/button';
 
 const Hero = () => (
   <Section row style={{ position: 'relative', overflow: 'hidden', alignItems: 'center', minHeight: '72vh' }}>
     <BackgroundGraphics />
     <LeftSection className="animate-fadeIn">
+      <HeroColumn>
       <HeroTitle className="animate-slideInLeft delay-100">
         Welcome
         <br />
@@ -27,6 +28,7 @@ const Hero = () => (
           </a>
         </Button>
       </div>
+      </HeroColumn>
     </LeftSection>
   </Section>
 );

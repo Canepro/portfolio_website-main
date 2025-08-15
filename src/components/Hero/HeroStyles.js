@@ -49,11 +49,15 @@ export const HeroTitle = styled.h1`
 `;
 
 export const GradientName = styled.span`
-  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.5) 100%);
+  /* Neutral, fully-opaque gradient to avoid reduced emphasis */
+  background: linear-gradient(180deg, #e5e7eb 0%, #737373 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: inline-block;
+  white-space: nowrap; /* keep the full name on one line */
+  word-break: keep-all;
+  overflow-wrap: normal;
 `;
 
 export const ModernButton = styled.a`
@@ -99,7 +103,7 @@ export const BackgroundGraphics = styled.div`
   width: 50%;
   height: 100%;
   pointer-events: none;
-  opacity: 0.1;
+  opacity: 0.15; /* slightly more visible */
   z-index: 0;
 
   &::before {
@@ -141,5 +145,9 @@ export const BackgroundGraphics = styled.div`
   @media ${props => props.theme.breakpoints.sm} {
     display: none;
   }
+`;
+
+export const HeroColumn = styled.div`
+  max-width: 768px; /* ~max-w-3xl to avoid name wrapping */
 `;
 
