@@ -14,10 +14,10 @@ import {
   UtilityList, 
   ImageWrapper,
   CategoryBadge,
-  ExternalLinks,
   SkeletonOverlay
 } from './ProjectsStyles';
-// Using existing styled link buttons for stability
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
 
 const ProjectCard = ({ project, index }) => {
   const [loaded, setLoaded] = useState(false);
@@ -36,8 +36,16 @@ const ProjectCard = ({ project, index }) => {
               style={{ objectFit: 'cover' }}
               onLoadingComplete={() => setLoaded(true)}
             />
-            {project.featured && <CategoryBadge featured>Featured</CategoryBadge>}
-            {project.category && <CategoryBadge>{project.category}</CategoryBadge>}
+            {project.featured && (
+              <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 1 }}>
+                <Badge variant="default">Featured</Badge>
+              </div>
+            )}
+            {project.category && !project.featured && (
+              <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 1 }}>
+                <Badge variant="secondary">{project.category}</Badge>
+              </div>
+            )}
           </ImageWrapper>
 
           <TitleContent>
@@ -60,20 +68,26 @@ const ProjectCard = ({ project, index }) => {
       
       <UtilityList>
         {project.visit === project.source ? (
-          <ExternalLinks href={project.source} target="_blank" rel="noopener noreferrer">
-            Source Code
-          </ExternalLinks>
+          <Button size="sm" asChild>
+            <a href={project.source} target="_blank" rel="noopener noreferrer">
+              Source Code
+            </a>
+          </Button>
         ) : (
           <>
             {project.visit && (
-              <ExternalLinks href={project.visit} target="_blank" rel="noopener noreferrer">
-                Live Site
-              </ExternalLinks>
+              <Button size="sm" asChild>
+                <a href={project.visit} target="_blank" rel="noopener noreferrer">
+                  Live Site
+                </a>
+              </Button>
             )}
             {project.source && (
-              <ExternalLinks href={project.source} target="_blank" rel="noopener noreferrer">
-                Source Code
-              </ExternalLinks>
+              <Button size="sm" variant="outline" asChild>
+                <a href={project.source} target="_blank" rel="noopener noreferrer">
+                  Source Code
+                </a>
+              </Button>
             )}
           </>
         )}
