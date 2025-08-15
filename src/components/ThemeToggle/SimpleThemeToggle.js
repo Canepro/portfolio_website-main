@@ -1,7 +1,6 @@
 // src/components/ThemeToggle/SimpleThemeToggle.js
 
 import React, { useEffect, useState } from 'react';
-import { BsSunFill, BsMoonFill } from 'react-icons/bs';
 
 const SimpleThemeToggle = () => {
   const [mounted, setMounted] = useState(false);
@@ -35,13 +34,15 @@ const SimpleThemeToggle = () => {
   if (!mounted) return null;
 
   return (
-    <button 
+    <button
       className="theme-toggle"
       onClick={toggleTheme}
       aria-label="Toggle theme"
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >
-      {isDark ? <BsSunFill /> : <BsMoonFill />}
+      <span style={{ fontSize: 22, lineHeight: 1 }}>
+        {isDark ? '☀️' : '🌙'}
+      </span>
     </button>
   );
 };

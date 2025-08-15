@@ -130,7 +130,7 @@ body.light-theme {
 .theme-toggle {
   position: fixed;
   bottom: 2rem;
-  right: 2rem;
+  left: 2rem; /* moved to bottom-left to avoid Rocket.Chat bubble */
   width: 56px;
   height: 56px;
   border-radius: 50%;
