@@ -37,7 +37,7 @@ Source code for my professional portfolio website. It showcases projects, skills
 - Architecture: `docs/ARCHITECTURE.md`
 - Deployment: `docs/DEPLOYMENT.md`
 - Changelog: `CHANGELOG.md`
-- Contributing: `CONTRIBUTING.md`
+- Contributing: `.github/CONTRIBUTING.md`
 
 ## Installation & Setup
 
