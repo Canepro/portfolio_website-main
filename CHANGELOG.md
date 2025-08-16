@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented here. Dates are in YYYY-MM-DD.
 
+## v1.1.1 - 2025-08-16
+
+### Added
+- Comprehensive troubleshooting documentation in `docs/DEPLOYMENT.md`
+- Contact form troubleshooting guide with SMTP configuration examples
+- Development issues section covering common problems and solutions
+- Known issues documentation with workarounds
+
+### Changed
+- Updated README.md with troubleshooting section
+- Enhanced deployment documentation with Netlify environment variable examples
+- Improved contact form documentation with current status notes
+
+---
+
 ## v1.1.0 - 2025-08-16
 
 ### Changed

@@ -101,6 +101,26 @@ Environment variables:
 
 The contact form at `/contact` posts to `/api/contact`. Configure the SMTP env vars above to deliver messages to your inbox. Without configuration, the API returns `500: Email not configured`.
 
+**Note**: Contact form requires proper SMTP configuration to function. See `docs/DEPLOYMENT.md` for troubleshooting.
+
+## Troubleshooting
+
+### Common Issues
+
+**Contact form returns 500 error:**
+- Check SMTP environment variables are set correctly
+- Verify email credentials and port settings
+- See `docs/DEPLOYMENT.md` for detailed troubleshooting
+
+**Development warnings:**
+- "Invalid hook call" warnings in development are known and don't affect production
+- Clear cache with `rm -rf .next` if needed
+- Use `npm run dev:3001` for alternative port
+
+**Port conflicts:**
+- Kill existing processes or use `npm run dev:3001`
+- See `docs/DEPLOYMENT.md` for detailed solutions
+
 ## Project Structure
 
 ```text
