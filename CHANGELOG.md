@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented here. Dates are in YYYY-MM-DD.
 
-## 2025-08-16
+## v1.1.0 - 2025-08-16
 
 ### Changed
 - Header accessibility: ARIA attributes, Escape to close mobile menu, overlay dialog semantics
