@@ -1,8 +1,9 @@
-// src/components/Projects/ProjectCard.js
+// src/components/Projects/ProjectCard.tsx
 
 import React from 'react';
 import Link from 'next/link';
 import OptimizedImage from '../OptimizedImage/OptimizedImage';
+import { ProjectCardProps } from '../../types/components';
 import { 
   BlogCard, 
   CardInfo, 
@@ -17,8 +18,7 @@ import {
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 
-const ProjectCard = ({ project, index }) => {
-
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   return (
     <BlogCard
       className="hover-lift animate-scaleIn"

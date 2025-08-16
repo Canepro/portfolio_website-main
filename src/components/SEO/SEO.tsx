@@ -1,6 +1,15 @@
-// src/components/SEO/SEO.js
+// src/components/SEO/SEO.tsx
 
 import Head from 'next/head';
+import { SEOProps } from '../../types/components';
+
+interface ExtendedSEOProps extends SEOProps {
+  canonical?: string;
+  ogType?: 'website' | 'article';
+  twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
+  noIndex?: boolean;
+  structuredData?: Record<string, any> | null;
+}
 
 const SEO = ({
   title = "Vincent Mogah - DevOps Engineer & Frontend Developer",
@@ -13,7 +22,7 @@ const SEO = ({
   author = "Vincent Mogah",
   noIndex = false,
   structuredData = null
-}) => {
+}: ExtendedSEOProps) => {
   const siteTitle = "Vincent Mogah Portfolio";
   const fullTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
 

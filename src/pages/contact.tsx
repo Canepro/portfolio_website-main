@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Layout } from '../layout/Layout';
 import SEO from '../components/SEO/SEO';
 import { Button } from '../components/ui/button';
+import { ContactFormData } from '../types/components';
 
-const ContactPage = () => {
-  const [status, setStatus] = useState('idle');
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
-  const onChange = (e) => {
+interface ContactForm {
+  name: string;
+  email: string;
+  message: string;
+}
+
+const ContactPage: React.FC = () => {
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [form, setForm] = useState<ContactForm>({ name: '', email: '', message: '' });
+
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('loading');
     try {
@@ -108,5 +117,3 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
-
-
