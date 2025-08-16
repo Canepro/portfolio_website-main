@@ -184,7 +184,7 @@ export default ProjectDetailPage;
 
 // Generate static paths for all projects
 export async function getStaticPaths() {
-  // Import projects here to ensure it's available in static context
+  // Import TS constants (Next can import TS in pages)
   const { projects } = await import('../../constants/constants');
   
   const paths = projects.map((project) => ({
@@ -201,7 +201,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const { slug } = params;
   
-  // Import projects and projectDetails here to ensure they're available in static context
+  // Import TS source
   const { projects } = await import('../../constants/constants');
   
   // Find the project by slug

@@ -7,9 +7,10 @@ This project follows a standard Next.js pages router layout with a component-dri
 - `src/pages` – Next.js pages, including `_app.js` and `_document.js` for app/document customization
 - `src/components` – Reusable UI components
 - `src/layout` – Page layout wrappers (header, footer, etc.)
-- `src/styles` – Global CSS and theme provider
+- `src/styles` – Global CSS and theme provider (CSS variables + styled-components)
 - `src/themes` – Theme configuration consumed by styled-components
 - `public/` – Static assets and images
+ - `src/constants` – Typed project/catalog data (`constants.ts`, `projectDetails.ts`)
 
 ## Styling
 
@@ -19,7 +20,9 @@ This project follows a standard Next.js pages router layout with a component-dri
 
 - Optimized images using `next/image` wrapper (`OptimizedImage`) with lightweight blur SVG placeholders.
 - ISR is used for the home page and project detail pages for incremental updates.
+- Sitemap is generated server-side at request time (`/sitemap.xml`) to include all project slugs.
 
 ## Accessibility
 
 - Header navigation supports keyboard and ARIA labeling; mobile overlay is a dialog and closes via Escape.
+- Form elements are labeled and provide status messages for success/error in `/contact`.

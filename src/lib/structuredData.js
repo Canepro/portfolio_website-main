@@ -68,7 +68,7 @@ export const portfolioStructuredData = {
   },
   "url": "https://portfolio.canepro.me",
   "dateCreated": "2024",
-  "dateModified": "2025-08-14",
+  "dateModified": new Date().toISOString().slice(0, 10),
   "keywords": "DevOps, Cloud Architecture, Frontend Development, React, Next.js, Azure, AWS",
   "inLanguage": "en-GB"
 };

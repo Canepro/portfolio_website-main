@@ -1,9 +1,6 @@
-// src/constants/projectDetails.js
+import type { ProjectDetail } from '../types/project';
 
-// Additional detailed information for each project
-// This keeps the main constants.js cleaner while providing rich case study content
-
-export const projectDetails = {
+export const projectDetails: Record<string, ProjectDetail> = {
   'containerized-chat-observability': {
     slug: 'containerized-chat-observability',
     longDescription: `Successfully deployed and configured a full-stack Rocket.Chat microservices platform with enterprise-grade monitoring and observability.
@@ -18,7 +15,7 @@ export const projectDetails = {
       'Implementing rootless Podman containers for security'
     ],
     solutions: [
-      'Used Traefik with Let\'s Encrypt for automatic HTTPS',
+      "Used Traefik with Let's Encrypt for automatic HTTPS",
       'Deployed node-exporter and mongodb-exporter for comprehensive metrics',
       'Built custom dashboards showing user activity, message flow, and system health',
       'Configured Podman in rootless mode with proper UID/GID mapping'
@@ -27,7 +24,7 @@ export const projectDetails = {
     technologies: {
       'Container Orchestration': ['Podman', 'Podman Compose'],
       'Monitoring': ['Prometheus', 'Grafana', 'Alertmanager'],
-      'Networking': ['Traefik', 'Let\'s Encrypt'],
+      'Networking': ["Traefik", "Let's Encrypt"],
       'Database': ['MongoDB', 'Redis'],
       'Application': ['Rocket.Chat', 'Node.js']
     }
@@ -195,3 +192,5 @@ export const projectDetails = {
     }
   }
 };
+
+

@@ -2,22 +2,34 @@
 
 const EXTERNAL_DATA_URL = 'https://portfolio.canepro.me';
 
-function generateSiteMap() {
+function generateSiteMap(projects = []) {
+  const now = new Date().toISOString();
+
+  const staticUrls = [
+    { loc: `${EXTERNAL_DATA_URL}`, priority: '1.0' },
+    { loc: `${EXTERNAL_DATA_URL}/projects`, priority: '0.8' },
+    { loc: `${EXTERNAL_DATA_URL}/contact`, priority: '0.6' },
+  ];
+
+  const projectUrls = projects.map((p) => ({
+    loc: `${EXTERNAL_DATA_URL}/projects/${p.slug}`,
+    priority: '0.7',
+  }));
+
+  const allUrls = [...staticUrls, ...projectUrls]
+    .map(
+      ({ loc, priority }) => `
+     <url>
+       <loc>${loc}</loc>
+       <lastmod>${now}</lastmod>
+       <changefreq>weekly</changefreq>
+       <priority>${priority}</priority>
+     </url>`
+    )
+    .join('');
+
   return `<?xml version="1.0" encoding="UTF-8"?>
-   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-     <!-- Main pages -->
-     <url>
-       <loc>${EXTERNAL_DATA_URL}</loc>
-       <lastmod>${new Date().toISOString()}</lastmod>
-       <changefreq>weekly</changefreq>
-       <priority>1.0</priority>
-     </url>
-     <url>
-       <loc>${EXTERNAL_DATA_URL}/projects</loc>
-       <lastmod>${new Date().toISOString()}</lastmod>
-       <changefreq>weekly</changefreq>
-       <priority>0.8</priority>
-     </url>
+   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${allUrls}
    </urlset>
  `;
 }
@@ -27,8 +39,9 @@ function SiteMap() {
 }
 
 export async function getServerSideProps({ res }) {
-  // We generate the XML sitemap with the data
-  const sitemap = generateSiteMap();
+  // Dynamically import projects for sitemap generation
+  const { projects } = await import('../constants/constants');
+  const sitemap = generateSiteMap(projects);
 
   res.setHeader('Content-Type', 'text/xml');
   // We send the XML to the browser

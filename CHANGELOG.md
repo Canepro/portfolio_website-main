@@ -5,6 +5,14 @@ All notable changes to this project will be documented here. Dates are in YYYY-M
 ## v1.1.0 - 2025-08-16
 
 ### Changed
+### Added
+- Contact page at `/contact` with email delivery via `/api/contact` (requires SMTP envs)
+- Google Analytics integration gated by `NEXT_PUBLIC_GA_ID`
+- Dynamic sitemap includes all project detail pages and `/contact`
+
+### Fixed
+- Projects card description CSS typo (`font-style` -> `font-size`)
+- Default Open Graph image now points to an existing asset
 - Header accessibility: ARIA attributes, Escape to close mobile menu, overlay dialog semantics
 - Social links: open in new tabs with rel security; added accessible labels
 - OptimizedImage: browser-safe base64 fallback (no Node Buffer)

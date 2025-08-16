@@ -12,8 +12,7 @@ import {
   TagList, 
   TitleContent, 
   UtilityList, 
-  ImageWrapper,
-  CategoryBadge
+  ImageWrapper
 } from './ProjectsStyles';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
