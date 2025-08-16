@@ -1,6 +1,7 @@
-// src/styles/ProjectsPageStyles.js
+// src/styles/ProjectsPageStyles.ts
 
 import styled from 'styled-components';
+import { CategoryButtonProps } from '../types/styled-components';
 
 export const PageContainer = styled.div`
   max-width: 1280px;
@@ -94,7 +95,7 @@ export const CategoryFilter = styled.div`
   flex-wrap: wrap;
 `;
 
-export const CategoryButton = styled.button`
+export const CategoryButton = styled.button<CategoryButtonProps>`
   padding: 10px 20px;
   font-size: 16px;
   font-weight: 500;

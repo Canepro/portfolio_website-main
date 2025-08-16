@@ -1,5 +1,7 @@
-// src/pages/index.js
+// src/pages/index.tsx
 
+import React from 'react';
+import { GetStaticProps } from 'next';
 import Accomplishments from '../components/Accomplishments/Accomplishments';
 import BgAnimation from '../components/BackgroundAnimation/BackgroundAnimation';
 import Hero from '../components/Hero/Hero';
@@ -12,9 +14,9 @@ import { Section } from '../styles/GlobalComponents';
 import Certifications from '../components/Certifications/Certifications';
 import SEO from '../components/SEO/SEO';
 import { personStructuredData, websiteStructuredData } from '../lib/structuredData';
+import { HomePageProps, GitHubStats } from '../types/pages';
 
-// ... (keep the Home component and getStaticProps function as they are)
-const Home = ({ githubStats }) => {
+const Home: React.FC<HomePageProps> = ({ githubStats }) => {
   const combinedStructuredData = [personStructuredData, websiteStructuredData];
 
   return (
@@ -42,7 +44,7 @@ const Home = ({ githubStats }) => {
 };
 
 // This function runs at build time to fetch your live GitHub data with resiliency
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   try {
     const headers = process.env.GITHUB_TOKEN
       ? { Authorization: `token ${process.env.GITHUB_TOKEN}` }

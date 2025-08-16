@@ -1,6 +1,15 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
+import { 
+  SectionProps, 
+  SectionTitleProps, 
+  SectionDividerProps, 
+  ButtonBackProps, 
+  ButtonFrontProps, 
+  LinkContainerProps, 
+  LinkIconImgProps 
+} from '../../types/styled-components';
 
-export const Section = styled.section`
+export const Section = styled.section<SectionProps>`
   display: ${(props) => props.grid ? "grid" : "flex" };
   flex-direction: ${(props) => props.row ? "row" : "column" };
   padding: ${(props) => props.nopadding ? "0" : "32px 48px 0" } ;
@@ -25,7 +34,7 @@ export const Section = styled.section`
   }
 `
 
-export const SectionTitle = styled.h2`
+export const SectionTitle = styled.h2<SectionTitleProps>`
   font-weight: 800;
   font-size: ${(props) => props.main ? '80px' : '48px'};
   line-height: ${(props) => props.main ? '88px' : '54px'};
@@ -74,7 +83,7 @@ export const SectionText = styled.p`
   }
 `
 
-export const SectionDivider = styled.div`
+export const SectionDivider = styled.div<SectionDividerProps>`
 
   width: 64px;
   height: 6px;
@@ -164,7 +173,7 @@ export const SecondaryBtn = styled.button`
   }
 `
 
-export const ButtonBack = styled.div`
+export const ButtonBack = styled.div<ButtonBackProps>`
   width: ${({ alt }) => alt ? '150px' : '262px'};
   height: ${({ alt }) => alt ? '52px' : '64px'};
   border-radius: 50px;
@@ -197,7 +206,7 @@ export const ButtonBack = styled.div`
   }
 `
 
-export const ButtonFront = styled.button`
+export const ButtonFront = styled.button<ButtonFrontProps>`
   border: none;
   border-radius: 50px;
   color: #fff;
@@ -243,7 +252,7 @@ export const ButtonFront = styled.button`
   }
 `
 
-export const LinkContainer = styled.div`
+export const LinkContainer = styled.div<LinkContainerProps>`
   margin-left: ${({ large }) => large ? '24px' : '16px'};
   transition: 0.3s ease;
   justify-content: center;
@@ -265,7 +274,7 @@ export const LinkContainer = styled.div`
   }
 `
 
-export const LinkIconImg = styled.div`
+export const LinkIconImg = styled.div<LinkIconImgProps>`
   display: flex;  
   height: ${({ large }) => large ? '32px' : '24px'};
 

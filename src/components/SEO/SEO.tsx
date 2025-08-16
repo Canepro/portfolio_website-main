@@ -1,8 +1,10 @@
-// src/components/SEO/SEO.js
+// src/components/SEO/SEO.tsx
 
+import React from 'react';
 import Head from 'next/head';
+import { SEOProps } from '../../types/seo';
 
-const SEO = ({
+const SEO: React.FC<SEOProps> = ({
   title = "Vincent Mogah - DevOps Engineer & Frontend Developer",
   description = "Professional portfolio of Vincent Mogah, a multifaceted DevOps Engineer, Cloud Architect, and Frontend Developer specializing in Microsoft Azure, AWS, and React.js development.",
   canonical = "https://portfolio.canepro.me",
@@ -62,7 +64,9 @@ const SEO = ({
       {structuredData && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{ 
+            __html: JSON.stringify(Array.isArray(structuredData) ? structuredData : structuredData) 
+          }}
         />
       )}
     </Head>

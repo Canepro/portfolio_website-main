@@ -1,10 +1,11 @@
-// src/pages/projects/index.js
+// src/pages/projects/index.tsx
 
 import React, { useState, useMemo } from 'react';
 import { Layout } from '../../layout/Layout';
 import { projects, projectCategories } from '../../constants/constants';
 import ProjectCard from '../../components/Projects/ProjectCard';
 import SEO from '../../components/SEO/SEO';
+import { Project } from '../../types/project';
 import { 
   PageContainer, 
   PageTitle, 
@@ -17,12 +18,12 @@ import {
   NoResults
 } from '../../styles/ProjectsPageStyles';
 
-const ProjectsPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+const ProjectsPage: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   // Filter projects based on search and category
-  const filteredProjects = useMemo(() => {
+  const filteredProjects = useMemo((): Project[] => {
     return projects.filter(project => {
       const matchesSearch = searchTerm === '' || 
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
