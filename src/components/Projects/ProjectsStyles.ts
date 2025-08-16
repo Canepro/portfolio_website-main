@@ -3,28 +3,32 @@ import styled from 'styled-components';
 // Image styles handled via next/image inline style; retained for reference
 
 export const GridContainer = styled.section`
-display: grid;
-grid-template-columns: repeat(2, minmax(0, 1fr));
-gap: 2rem;
-align-items: stretch;
-padding: 2rem 0;
-place-items: stretch;
-column-gap: 2rem;
-row-gap: 2.5rem;
-@media ${(props) => props.theme.breakpoints.lg} {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-@media ${(props) => props.theme.breakpoints.md} {
+  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-@media ${(props) => props.theme.breakpoints.sm} {
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem 0;
+  gap: 2rem;
+  align-items: stretch;
+  padding: 2rem 0;
+  place-items: stretch;
+  column-gap: 2rem;
+  row-gap: 2.5rem;
+  @media ${(props) => props.theme.breakpoints.lg} {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  @media ${(props) => props.theme.breakpoints.md} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media ${(props) => props.theme.breakpoints.sm} {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+  }
+`;
+
+interface BlogCardProps {
+  delay?: number;
 }
 
-`
-export const BlogCard = styled.div`
+export const BlogCard = styled.div<BlogCardProps>`
   border-radius: 10px;
   background: ${({ theme }) => theme.colors.card};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -48,15 +52,18 @@ export const BlogCard = styled.div`
     width: 100%;
   }
 `;
+
 export const TitleContent = styled.div`
   text-align: center;
   z-index: 20;
   width: 100%;
-
 `;
 
+interface HeaderThreeProps {
+  title?: string;
+}
 
-export const HeaderThree = styled.h3`
+export const HeaderThree = styled.h3<HeaderThreeProps>`
   font-weight: 500;
   letter-spacing: 2px;
   color: ${({ theme }) => theme.colors.text};
@@ -82,7 +89,6 @@ export const Intro = styled.div`
   line-height: 18px;
 `;
 
-
 export const CardInfo = styled.p`
   width: 100%;
   padding: 0 32px;
@@ -97,11 +103,9 @@ export const CardInfo = styled.p`
   min-height: 96px;
   text-align: justify;
   @media ${(props) => props.theme.breakpoints.sm} {
-    padding:.3rem
-  
-}
+    padding: .3rem;
+  }
 `;
-
 
 export const UtilityList = styled.ul`
   list-style-type: none;
@@ -113,28 +117,29 @@ export const UtilityList = styled.ul`
 `;
 
 export const ExternalLinks = styled.a`
-color:#fff;
-font-size: 1.6rem;
-padding:1rem 1.5rem;
-background: ${({ theme }) => theme.colors.gradientSecondary};
-border-radius: 15px;
-transition: 0.3s ease;
-text-decoration: none;
-&:hover{
-  transform: translateY(-2px);
-}
+  color: #fff;
+  font-size: 1.6rem;
+  padding: 1rem 1.5rem;
+  background: ${({ theme }) => theme.colors.gradientSecondary};
+  border-radius: 15px;
+  transition: 0.3s ease;
+  text-decoration: none;
+  &:hover {
+    transform: translateY(-2px);
+  }
 `;
 
 export const TagList = styled.ul`
-display: flex;
-justify-content: center;
-gap: 1rem;
-padding: 1.5rem;
-`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem;
+`;
+
 export const Tag = styled.li`
-color: ${({ theme }) => theme.colors.textSecondary};
-font-size: 1.5rem;
-`
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 1.5rem;
+`;
 
 export const ImageWrapper = styled.div`
   position: relative;
@@ -142,7 +147,11 @@ export const ImageWrapper = styled.div`
   aspect-ratio: 16 / 9;
 `;
 
-export const CategoryBadge = styled.span`
+interface CategoryBadgeProps {
+  featured?: boolean;
+}
+
+export const CategoryBadge = styled.span<CategoryBadgeProps>`
   position: absolute;
   top: 12px;
   right: 12px;

@@ -1,12 +1,16 @@
-// src/components/OptimizedImage/OptimizedImage.js
+// src/components/OptimizedImage/OptimizedImage.tsx
 
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React, { useState, CSSProperties } from 'react';
+import Image, { ImageProps } from 'next/image';
 import styled from 'styled-components';
+
+interface ImageContainerProps {
+  enableHover?: boolean;
+}
 
 const ImageContainer = styled.div.withConfig({
   shouldForwardProp: (prop) => !['enableHover'].includes(prop),
-})`
+})<ImageContainerProps>`
   position: relative;
   overflow: hidden;
   border-radius: 10px;
@@ -18,9 +22,13 @@ const ImageContainer = styled.div.withConfig({
   }
 `;
 
+interface BlurOverlayProps {
+  loading?: boolean;
+}
+
 const BlurOverlay = styled.div.withConfig({
   shouldForwardProp: (prop) => !['loading'].includes(prop),
-})`
+})<BlurOverlayProps>`
   position: absolute;
   top: 0;
   left: 0;
@@ -51,20 +59,24 @@ const BlurOverlay = styled.div.withConfig({
   }
 `;
 
+interface StyledImageProps {
+  loaded?: boolean;
+}
+
 const StyledImage = styled(Image).withConfig({
   shouldForwardProp: (prop) => !['loaded'].includes(prop),
-})`
+})<StyledImageProps>`
   transition: filter 0.3s ease;
   filter: ${props => props.loaded ? 'blur(0px)' : 'blur(8px)'};
 `;
 
 // Generate a simple geometric blur placeholder
-const toBase64 = (str) =>
+const toBase64 = (str: string): string =>
   typeof window === 'undefined'
     ? Buffer.from(str).toString('base64')
     : btoa(unescape(encodeURIComponent(str)));
 
-const generateBlurDataURL = (width = 400, height = 300) => {
+const generateBlurDataURL = (width: number = 400, height: number = 300): string => {
   // Create a simple SVG with geometric pattern
   const svg = `
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
@@ -86,7 +98,21 @@ const generateBlurDataURL = (width = 400, height = 300) => {
   return `data:image/svg+xml;base64,${base64}`;
 };
 
-const OptimizedImage = ({
+interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'onError' | 'placeholder'> {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  fill?: boolean;
+  priority?: boolean;
+  sizes?: string;
+  className?: string;
+  enableHover?: boolean;
+  placeholder?: boolean;
+  style?: CSSProperties;
+}
+
+const OptimizedImage: React.FC<OptimizedImageProps> = ({
   src,
   alt,
   width,
@@ -97,6 +123,7 @@ const OptimizedImage = ({
   className = "",
   enableHover = true,
   placeholder = true,
+  style,
   ...props
 }) => {
   const [loaded, setLoaded] = useState(false);
@@ -132,7 +159,7 @@ const OptimizedImage = ({
         quality={85}
         style={{
           objectFit: 'cover',
-          ...props.style
+          ...style
         }}
         {...props}
       />
