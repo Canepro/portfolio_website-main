@@ -10,6 +10,10 @@ export interface Project {
   source?: string;
   visit?: string;
   id: number;
+  challenges?: string[];
+  solutions?: string[];
+  impact?: string;
+  technologies?: Record<string, string[]>;
 }
 
 export interface ProjectDetail {

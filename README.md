@@ -21,6 +21,9 @@ Source code for my professional portfolio website. It showcases projects, skills
 - Containerized deployment
 - CI/CD with GitHub Actions
 - Optional Rocket.Chat live chat (controlled via `NEXT_PUBLIC_RC_ENABLED=1`)
+- Optional Google Analytics (set `NEXT_PUBLIC_GA_ID`)
+- Optional contact form with email delivery via SMTP
+- Dynamic sitemap including all project detail pages
 
 ## Tech Stack
 
@@ -80,6 +83,23 @@ Open `http://localhost:3000`
 - `npm run dev:3001` – Start dev server on port 3001
 - `npm run build` – Production build
 - `npm start` – Start production server
+
+## Configuration
+
+Environment variables:
+
+- `NEXT_PUBLIC_GA_ID` (optional): Google Analytics Measurement ID (e.g. `G-XXXXXXX`)
+- `NEXT_PUBLIC_RC_ENABLED` (optional): set to `1` to enable Rocket.Chat widget
+- Contact email (optional): configure to enable `/contact` form
+  - `CONTACT_SMTP_HOST`
+  - `CONTACT_SMTP_PORT` (e.g. `587` or `465`)
+  - `CONTACT_SMTP_USER`
+  - `CONTACT_SMTP_PASS`
+  - `CONTACT_TO` (optional fallback recipient; defaults to site owner email)
+
+## Contact page
+
+The contact form at `/contact` posts to `/api/contact`. Configure the SMTP env vars above to deliver messages to your inbox. Without configuration, the API returns `500: Email not configured`.
 
 ## Project Structure
 

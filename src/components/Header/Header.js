@@ -42,6 +42,11 @@ const Header = () =>  {
           </Link>
         </li>
         <li>
+          <Link href="/contact" passHref legacyBehavior>
+            <NavLink onClick={closeMenu}>Contact</NavLink>
+          </Link>
+        </li>
+        <li>
           <NavLink href="/#tech" onClick={closeMenu}>Technologies</NavLink>
         </li>        
         <li>
@@ -84,6 +89,11 @@ const Header = () =>  {
             <MobileMenuItem>
               <Link href="/projects" passHref legacyBehavior>
                 <MobileNavLink onClick={closeMenu}>Projects</MobileNavLink>
+              </Link>
+            </MobileMenuItem>
+            <MobileMenuItem>
+              <Link href="/contact" passHref legacyBehavior>
+                <MobileNavLink onClick={closeMenu}>Contact</MobileNavLink>
               </Link>
             </MobileMenuItem>
             <MobileMenuItem>

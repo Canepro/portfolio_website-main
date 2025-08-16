@@ -87,7 +87,7 @@ export const CardInfo = styled.p`
   width: 100%;
   padding: 0 32px;
   color: ${({ theme }) => theme.colors.textSecondary};
-  font-style: 2rem;
+  font-size: 2rem;
   line-height: 24px;
   /* Clamp to keep cards equal height */
   display: -webkit-box;

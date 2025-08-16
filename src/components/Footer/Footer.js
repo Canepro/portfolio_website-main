@@ -36,6 +36,9 @@ const Footer = () => (
           <Button variant="ghost" size="sm" asChild>
             <a href="/#about">About</a>
           </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="/contact">Contact</a>
+          </Button>
         </div>
       </LinkColumn>
     </LinkList>

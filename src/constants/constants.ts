@@ -1,6 +1,6 @@
-// src/constants/constants.js
+import type { Project } from '../types/project';
 
-export const projects = [
+export const projects: Project[] = [
   {
     title: 'Containerized Chat Platform with Observability Stack',
     slug: 'containerized-chat-observability',
@@ -23,7 +23,7 @@ export const projects = [
       'Implementing rootless Podman containers for security'
     ],
     solutions: [
-      'Used Traefik with Let\'s Encrypt for automatic HTTPS',
+      "Used Traefik with Let's Encrypt for automatic HTTPS",
       'Deployed node-exporter and mongodb-exporter for comprehensive metrics',
       'Built custom dashboards showing user activity, message flow, and system health',
       'Configured Podman in rootless mode with proper UID/GID mapping'
@@ -32,7 +32,7 @@ export const projects = [
     technologies: {
       'Container Orchestration': ['Podman', 'Podman Compose'],
       'Monitoring': ['Prometheus', 'Grafana', 'Alertmanager'],
-      'Networking': ['Traefik', 'Let\'s Encrypt'],
+      'Networking': ["Traefik", "Let's Encrypt"],
       'Database': ['MongoDB', 'Redis'],
       'Application': ['Rocket.Chat', 'Node.js']
     },
@@ -112,8 +112,9 @@ export const projects = [
   }
 ];
 
-// Project categories for filtering
-export const projectCategories = [
+export type ProjectCategoryValue = 'all' | 'DevOps' | 'Frontend' | 'Cloud' | 'Backend';
+
+export const projectCategories: Array<{ value: ProjectCategoryValue; label: string }> = [
   { value: 'all', label: 'All Projects' },
   { value: 'DevOps', label: 'DevOps' },
   { value: 'Frontend', label: 'Frontend' },
@@ -121,7 +122,7 @@ export const projectCategories = [
   { value: 'Backend', label: 'Backend' },
 ];
 
-export const TimeLineData = [
+export const TimeLineData: Array<{ year: number; text: string }> = [
   { year: 2015, text: 'Started my career in IT technical support.' },
   { year: 2019, text: 'Advanced to a Tier 2 Technical Support Engineer role.' },
   { year: 2020, text: 'Promoted to Technical Lead, managing and mentoring teams.' },
@@ -132,7 +133,9 @@ export const TimeLineData = [
   { year: 2025, text: 'Currently expanding my skills in AI-driven DevOps and security.' },
 ];
 
-export const certifications = [
+export interface Certification { name: string; issuer: string; date: string; link: string }
+
+export const certifications: Certification[] = [
   {
     name: 'Microsoft Certified: DevOps Engineer Expert',
     issuer: 'Microsoft',
@@ -170,3 +173,5 @@ export const certifications = [
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
 ];
+
+
