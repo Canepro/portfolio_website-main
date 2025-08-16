@@ -2,17 +2,18 @@ import Link from 'next/link';
 import React, { useState, useCallback, useEffect } from 'react';
 import { AiFillGithub, AiFillInstagram, AiFillLinkedin, AiFillTwitterCircle } from 'react-icons/ai';
 import { DiCssdeck } from 'react-icons/di';
+import { HeaderProps } from '../../types/components';
 
 import { Container, Div1, Div2, Div3, NavLink, SocialIcons, Span, MobileMenuButton, MobileMenuOverlay, MobileMenuPanel, MobileMenuList, MobileMenuItem, MobileNavLink } from './HeaderStyles';
 
-const Header = () =>  {
-  const [menuOpen, setMenuOpen] = useState(false);
+const Header: React.FC<HeaderProps> = () => {
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   const toggleMenu = useCallback(() => setMenuOpen((v) => !v), []);
 
   useEffect(() => {
-    const onKeyDown = (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         closeMenu();
       }
@@ -22,6 +23,14 @@ const Header = () =>  {
     }
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [menuOpen, closeMenu]);
+
+  const handleOverlayClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    closeMenu();
+  }, [closeMenu]);
+
+  const handlePanelClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  }, []);
 
   return (
     <Container>
@@ -78,8 +87,8 @@ const Header = () =>  {
       </Div3>
 
       {/* Mobile overlay */}
-      <MobileMenuOverlay open={menuOpen} onClick={closeMenu}>
-        <MobileMenuPanel id="mobile-menu" role="dialog" aria-modal="true" open={menuOpen} onClick={(e) => e.stopPropagation()}>
+      <MobileMenuOverlay open={menuOpen} onClick={handleOverlayClick}>
+        <MobileMenuPanel id="mobile-menu" role="dialog" aria-modal="true" open={menuOpen} onClick={handlePanelClick}>
           <MobileMenuList>
             <MobileMenuItem>
               <Link href="/" passHref legacyBehavior>
@@ -107,6 +116,6 @@ const Header = () =>  {
       </MobileMenuOverlay>
     </Container>
   );
-}
+};
 
 export default Header;

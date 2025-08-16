@@ -2,9 +2,17 @@
 
 import React from 'react';
 import Head from 'next/head';
-import { SEOProps } from '../../types/seo';
+import { SEOProps } from '../../types/components';
 
-const SEO: React.FC<SEOProps> = ({
+interface ExtendedSEOProps extends SEOProps {
+  canonical?: string;
+  ogType?: 'website' | 'article';
+  twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
+  noIndex?: boolean;
+  structuredData?: Record<string, any> | Record<string, any>[] | null;
+}
+
+const SEO: React.FC<ExtendedSEOProps> = ({
   title = "Vincent Mogah - DevOps Engineer & Frontend Developer",
   description = "Professional portfolio of Vincent Mogah, a multifaceted DevOps Engineer, Cloud Architect, and Frontend Developer specializing in Microsoft Azure, AWS, and React.js development.",
   canonical = "https://portfolio.canepro.me",

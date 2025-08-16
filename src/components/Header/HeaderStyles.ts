@@ -26,7 +26,6 @@ export const Container = styled.div`
 
 export const Span = styled.span`
   font-size: 2rem;
-
 `;
 
 export const Div1 = styled.div`
@@ -38,6 +37,7 @@ export const Div1 = styled.div`
     grid-area: 1 / 1 / 2 / 3;
   }
 `;
+
 export const Div2 = styled.div`
   grid-area: 1 / 2 / 2 / 4;
   display: flex;
@@ -49,6 +49,7 @@ export const Div2 = styled.div`
     display: none; /* Hide desktop nav on small screens */
   }
 `;
+
 export const Div3 = styled.div`
   grid-area: 1 / 5 / 2 / 6;
   display: flex;
@@ -77,14 +78,13 @@ export const NavLink = styled.a`
   }
 `;
 
-/// DropDown Contact
+// DropDown Contact
 export const ContactDropDown = styled.button`
   border: none;
   display: flex;
   position: relative;
   background: none;
   font-size: 1.7rem;
-
   line-height: 32px;
   color: rgba(255, 255, 255, 0.75);
   cursor: pointer;
@@ -105,7 +105,11 @@ export const ContactDropDown = styled.button`
   }
 `;
 
-export const NavProductsIcon = styled(IoIosArrowDropdown)`
+interface NavProductsIconProps {
+  isOpen?: boolean;
+}
+
+export const NavProductsIcon = styled(IoIosArrowDropdown)<NavProductsIconProps>`
   margin-left: 8px;
   display: flex;
   align-self: center;
@@ -123,21 +127,18 @@ export const NavProductsIcon = styled(IoIosArrowDropdown)`
   }
 `;
 
-
 // Social Icons 
-
 export const SocialIcons = styled.a`
-transition: 0.3s ease;
-color: white;
-border-radius: 50px;
+  transition: 0.3s ease;
+  color: white;
+  border-radius: 50px;
   padding: 8px;
-&:hover {
+  &:hover {
     background-color: #212d45;
     transform: scale(1.2);
     cursor: pointer;
-    
   }
-`
+`;
 
 // Mobile navigation
 export const MobileMenuButton = styled.button`
@@ -163,7 +164,11 @@ export const MobileMenuButton = styled.button`
   }
 `;
 
-export const MobileMenuOverlay = styled.div`
+interface MobileMenuProps {
+  open: boolean;
+}
+
+export const MobileMenuOverlay = styled.div<MobileMenuProps>`
   position: fixed;
   inset: 0;
   z-index: 60;
@@ -174,7 +179,7 @@ export const MobileMenuOverlay = styled.div`
   transition: opacity 0.2s ease, visibility 0.2s ease;
 `;
 
-export const MobileMenuPanel = styled.div`
+export const MobileMenuPanel = styled.div<MobileMenuProps>`
   position: absolute;
   top: 72px;
   right: 16px;

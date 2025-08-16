@@ -1,12 +1,13 @@
-// src/components/Footer/Footer.js
+// src/components/Footer/Footer.tsx
 
 import React from 'react';
 import { AiFillGithub, AiFillTwitterCircle, AiFillLinkedin } from 'react-icons/ai';
 import { SocialIcons } from '../Header/HeaderStyles';
+import { FooterProps } from '../../types/components';
 import { CompanyContainer, FooterWrapper, LinkColumn, LinkItem, LinkList, LinkTitle, Slogan, SocialContainer, SocialIconsContainer } from './FooterStyles';
 import { Button } from '../ui/button';
 
-const Footer = () => (
+const Footer: React.FC<FooterProps> = () => (
   <FooterWrapper>
     <LinkList>
       <LinkColumn>

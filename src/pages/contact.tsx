@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Layout } from '../layout/Layout';
 import SEO from '../components/SEO/SEO';
 import { Button } from '../components/ui/button';
+import { ContactFormData } from '../types/components';
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
@@ -116,5 +117,3 @@ const ContactPage: React.FC = () => {
 };
 
 export default ContactPage;
-
-
