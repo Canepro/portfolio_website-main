@@ -1,0 +1,14 @@
+  chore/disable-github-pages                      [m f70dbc2 [gone] chore: disable GitHub Pages by removing Pages deploy workflow
+  chore/fix-portfolio-issues                      [m b53b4ea style(projects): enforce uniform 16:9 thumbnails with next/image cover fit
+  copilot/fix-0921e3e1-5369-4aec-b40c-9f3f571cdc56[m ee7be10 [gone] docs: add Docker/Podman build/run instructions and clarify styled-components SSR
+  copilot/fix-78bedfa3-2935-4eab-867f-ef995bf30afb[m cd253ae [gone] chore(ci): resolve merge drift by removing yarn.lock (use npm lockfile)
+  copilot/fix-8c5c1304-756b-4e2f-8acd-7d1344075214[m e5134a3 [gone] chore(projects): resolve merge drift by removing yarn.lock (use npm lockfile)
+* [32mfeature/mobile-navigation                       [m 52ac93a Merge pull request #41 from Canepro/fix/timeline-useEffect-cleanup
+  fix/hero-tweak-layout                           [m 83081e4 feat(hero): rebalance layout — wider content, centered vertically; reduce bg animation width for breathing room
+  fix/react-hooks-warnings                        [m 4e5e689 fix(styled-components): prevent boolean props from being forwarded to DOM elements
+  fix/timeline-useEffect-cleanup                  [m 78ea802 fix(timeline): add cleanup function to useEffect to prevent memory leaks
+  main                                            [m 52ac93a Merge pull request #41 from Canepro/fix/timeline-useEffect-cleanup
+  pr-27                                           [m a8332e9 [gone] chore(deps): resolve dependabot PR #27 by upgrading next to 14.2.30 and switching to npm lockfile
+  pr-30                                           [m 760739e content(projects): add new project cards
+  pr-31                                           [m ba4303c feat(container): finalize Dockerfile to exact specification
+  pr-32                                           [m 5d82d23 ci: add GitHub Actions build pipeline

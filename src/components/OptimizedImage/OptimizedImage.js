@@ -59,6 +59,11 @@ const StyledImage = styled(Image).withConfig({
 `;
 
 // Generate a simple geometric blur placeholder
+const toBase64 = (str) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : btoa(unescape(encodeURIComponent(str)));
+
 const generateBlurDataURL = (width = 400, height = 300) => {
   // Create a simple SVG with geometric pattern
   const svg = `
@@ -77,7 +82,7 @@ const generateBlurDataURL = (width = 400, height = 300) => {
     </svg>
   `;
   
-  const base64 = Buffer.from(svg).toString('base64');
+  const base64 = toBase64(svg);
   return `data:image/svg+xml;base64,${base64}`;
 };
 

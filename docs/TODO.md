@@ -37,8 +37,11 @@ The portfolio website is live and functional with recent improvements including:
 - [x] Tag current hero+animation baseline as stable (`stable-2025-08-15-hero-anim`)
 
 ### 2️⃣ **Quick Fixes** (This Week)
-- [ ] Fix React hooks warnings in development
-- [ ] Add actual project screenshots to replace placeholder images
+- [x] Fix React hooks warnings in development
+- [x] Add actual project screenshots to replace placeholder images
+- [x] Fix styled-components boolean prop warnings
+- [x] Fix useEffect cleanup in TimeLine component
+- [ ] Fix mobile menu not closing after navigation
 - [ ] Test social media previews with Open Graph debuggers
 - [ ] Submit sitemap to Google Search Console
 - [ ] Add Google Analytics or Plausible Analytics

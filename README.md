@@ -20,6 +20,7 @@ This repository contains the source code for my professional portfolio website -
 - 🔧 Containerized deployment support
 - 🤖 CI/CD pipeline with GitHub Actions
 - 💬 Rocket.Chat live chat integration
+  - Controlled via `NEXT_PUBLIC_RC_ENABLED=1` in environment to enable/disable
 
 ## 🚀 Tech Stack
 
@@ -44,6 +45,7 @@ This repository contains the source code for my professional portfolio website -
 
 - Node.js 16.x or higher
 - npm or yarn package manager
+ - Optional: set `NEXT_PUBLIC_RC_ENABLED=1` to enable Rocket.Chat in dev
 
 ### Quick Start
 
@@ -65,6 +67,11 @@ This repository contains the source code for my professional portfolio website -
    npm run dev
    # or
    yarn dev
+   ```
+
+   To test with Rocket.Chat enabled:
+   ```bash
+   NEXT_PUBLIC_RC_ENABLED=1 npm run dev
    ```
 
 4. **Open in browser**
