@@ -1,5 +1,8 @@
 # Portfolio Website - Development Roadmap
+## Housekeeping
 
+- Move troubleshooting content out of README to `docs/TROUBLESHOOTING.md`
+- Consolidate docs with clear navigation from README
 ## 📌 Current Status
 Last Updated: August 14, 2025
 
