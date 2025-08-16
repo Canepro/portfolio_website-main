@@ -172,10 +172,6 @@ export const MobileMenuOverlay = styled.div`
   opacity: ${({ open }) => (open ? 1 : 0)};
   visibility: ${({ open }) => (open ? 'visible' : 'hidden')};
   transition: opacity 0.2s ease, visibility 0.2s ease;
-
-  @media ${(props) => props.theme.breakpoints.md} {
-    display: none;
-  }
 `;
 
 export const MobileMenuPanel = styled.div`
@@ -193,10 +189,6 @@ export const MobileMenuPanel = styled.div`
   opacity: ${({ open }) => (open ? 1 : 0)};
   transition: transform 0.18s ease, opacity 0.18s ease;
   overflow: hidden;
-
-  @media ${(props) => props.theme.breakpoints.md} {
-    display: none;
-  }
 `;
 
 export const MobileMenuList = styled.ul`

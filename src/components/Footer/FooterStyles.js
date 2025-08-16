@@ -116,7 +116,7 @@ export const SocialContainer = styled.div`
 export const LinkList = styled.ul`
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: grid;
-	grid-template-columns: repeat(3, minmax(85px, 220px));
+	grid-template-columns: repeat(3, minmax(85px, 1fr));
 	gap: 40px;
   padding: 40px 0 28px;
 
@@ -126,20 +126,21 @@ export const LinkList = styled.ul`
 
 	@media ${props => props.theme.breakpoints.md} {
 		width: 100%;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		padding: 32px 0 16px;
 		gap: 16px;
 	}
 	@media ${props => props.theme.breakpoints.sm} {
 		width: 100%;
-		padding: 32px 4px 16px;
-		gap: 5px;
+		grid-template-columns: 1fr;
+		padding: 24px 0 12px;
+		gap: 12px;
 	}
 `
 
 export const LinkColumn = styled.div`
 	display: flex;
 	flex-direction: column;
-	max-width: 220px;
 	width: 100%;
 `
 export const LinkTitle = styled.h4`
