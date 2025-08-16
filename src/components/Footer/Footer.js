@@ -44,9 +44,9 @@ const Footer = () => (
         <Slogan>Constant and never-ending progress...</Slogan>
       </CompanyContainer>
       <SocialContainer>
-        <SocialIcons href="https://github.com/Canepro"><AiFillGithub size="3rem" /></SocialIcons>
-        <SocialIcons href="https://www.linkedin.com/in/vincent-mogah/"><AiFillLinkedin size="3rem" /></SocialIcons>
-        <SocialIcons href="https://twitter.com/Canepro"><AiFillTwitterCircle size="3rem" /></SocialIcons>
+        <SocialIcons href="https://github.com/Canepro" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile"><AiFillGithub size="3rem" aria-hidden="true" /></SocialIcons>
+        <SocialIcons href="https://www.linkedin.com/in/vincent-mogah/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile"><AiFillLinkedin size="3rem" aria-hidden="true" /></SocialIcons>
+        <SocialIcons href="https://twitter.com/Canepro" target="_blank" rel="noopener noreferrer" aria-label="Twitter profile"><AiFillTwitterCircle size="3rem" aria-hidden="true" /></SocialIcons>
       </SocialContainer>
     </SocialIconsContainer>
   </FooterWrapper>

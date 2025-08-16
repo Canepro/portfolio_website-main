@@ -1,6 +1,19 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented here. Dates are in YYYY-MM-DD.
+
+## 2025-08-16
+
+### Changed
+- Header accessibility: ARIA attributes, Escape to close mobile menu, overlay dialog semantics
+- Social links: open in new tabs with rel security; added accessible labels
+- OptimizedImage: browser-safe base64 fallback (no Node Buffer)
+- App: Rocket.Chat script is env-gated via `NEXT_PUBLIC_RC_ENABLED`
+- Document: fonts preconnect uses `crossOrigin="anonymous"`
+- Performance: header `backdrop-filter` hints compositor via `will-change`
+- Footer: mobile grid responsiveness improved
+
+---
 
 ## 2025-08-15
 
