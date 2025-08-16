@@ -98,7 +98,7 @@ const generateBlurDataURL = (width: number = 400, height: number = 300): string 
   return `data:image/svg+xml;base64,${base64}`;
 };
 
-interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'onError'> {
+interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'onError' | 'placeholder'> {
   src: string;
   alt: string;
   width?: number;
