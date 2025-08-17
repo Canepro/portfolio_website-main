@@ -1,6 +1,7 @@
-// src/pages/projects/[slug].js
+// src/pages/projects/[slug].tsx
 
 import React from 'react';
+import { GetStaticProps, GetStaticPaths } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SkeletonOverlay } from '../../components/Projects/ProjectsStyles';
@@ -8,6 +9,7 @@ import { Layout } from '../../layout/Layout';
 import { projectDetails } from '../../constants/projectDetails';
 import SEO from '../../components/SEO/SEO';
 import { projectStructuredData } from '../../lib/structuredData';
+import { Project, ProjectDetail } from '../../types/project';
 import {
   ProjectDetailContainer,
   BackButton,
@@ -33,7 +35,12 @@ import {
 } from '../../styles/ProjectDetailStyles';
 import { Button } from '../../components/ui/button';
 
-const ProjectDetailPage = ({ project, slug }) => {
+interface ProjectDetailPageProps {
+  project: Project;
+  slug: string;
+}
+
+const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, slug }) => {
   // Get project details
   const details = projectDetails[slug] || {};
 
@@ -183,7 +190,7 @@ const ProjectDetailPage = ({ project, slug }) => {
 export default ProjectDetailPage;
 
 // Generate static paths for all projects
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths = async () => {
   // Import TS constants (Next can import TS in pages)
   const { projects } = await import('../../constants/constants');
   
@@ -198,16 +205,17 @@ export async function getStaticPaths() {
 }
 
 // Generate static props for each project
-export async function getStaticProps({ params }) {
-  const { slug } = params;
+export const getStaticProps: GetStaticProps<ProjectDetailPageProps> = async ({ params }) => {
+  const { slug } = params!;
+  const slugString = Array.isArray(slug) ? slug[0] : slug;
   
   // Import TS source
   const { projects } = await import('../../constants/constants');
   
   // Find the project by slug
-  const project = projects.find((p) => p.slug === slug);
+  const project = projects.find((p) => p.slug === slugString);
   
-  if (!project) {
+  if (!project || !slugString) {
     return {
       notFound: true,
     };
@@ -216,7 +224,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       project,
-      slug,
+      slug: slugString,
     },
     revalidate: 60, // Revalidate every minute
   };

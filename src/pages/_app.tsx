@@ -1,3 +1,4 @@
+import { AppProps } from 'next/app';
 import Theme from '../styles/theme';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
@@ -9,7 +10,7 @@ const SimpleThemeToggle = dynamic(
   { ssr: false }
 );
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Theme>

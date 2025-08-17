@@ -1,6 +1,7 @@
-// src/styles/ProjectDetailStyles.js
+// src/styles/ProjectDetailStyles.ts
 
 import styled from 'styled-components';
+import { CategoryBadgeProps, LinkButtonProps } from '../types/styled-components';
 
 export const ProjectDetailContainer = styled.div`
   max-width: 1200px;
@@ -72,7 +73,7 @@ export const ProjectMeta = styled.div`
   flex-wrap: wrap;
 `;
 
-export const CategoryBadge = styled.span`
+export const CategoryBadge = styled.span<CategoryBadgeProps>`
   display: inline-block;
   padding: 8px 16px;
   background: ${props => props.featured 
@@ -209,7 +210,7 @@ export const ProjectLinks = styled.div`
   }
 `;
 
-export const LinkButton = styled.a`
+export const LinkButton = styled.a<LinkButtonProps>`
   display: inline-flex;
   align-items: center;
   padding: 12px 24px;

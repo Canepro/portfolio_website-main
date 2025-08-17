@@ -1,5 +1,6 @@
 // src/components/SEO/SEO.tsx
 
+import React from 'react';
 import Head from 'next/head';
 import { SEOProps } from '../../types/components';
 
@@ -8,10 +9,10 @@ interface ExtendedSEOProps extends SEOProps {
   ogType?: 'website' | 'article';
   twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
   noIndex?: boolean;
-  structuredData?: Record<string, any> | null;
+  structuredData?: Record<string, any> | Record<string, any>[] | null;
 }
 
-const SEO = ({
+const SEO: React.FC<ExtendedSEOProps> = ({
   title = "Vincent Mogah - DevOps Engineer & Frontend Developer",
   description = "Professional portfolio of Vincent Mogah, a multifaceted DevOps Engineer, Cloud Architect, and Frontend Developer specializing in Microsoft Azure, AWS, and React.js development.",
   canonical = "https://portfolio.canepro.me",
@@ -22,7 +23,7 @@ const SEO = ({
   author = "Vincent Mogah",
   noIndex = false,
   structuredData = null
-}: ExtendedSEOProps) => {
+}) => {
   const siteTitle = "Vincent Mogah Portfolio";
   const fullTitle = title.includes(siteTitle) ? title : `${title} | ${siteTitle}`;
 
@@ -71,7 +72,9 @@ const SEO = ({
       {structuredData && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{ 
+            __html: JSON.stringify(Array.isArray(structuredData) ? structuredData : structuredData) 
+          }}
         />
       )}
     </Head>
