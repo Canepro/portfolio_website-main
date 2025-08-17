@@ -1,4 +1,10 @@
 // TypeScript interfaces for styled components props
+import 'styled-components';
+import { Theme } from '../themes/default';
+
+declare module 'styled-components' {
+  export interface DefaultTheme extends Theme {}
+}
 
 export interface SectionProps {
   grid?: boolean;

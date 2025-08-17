@@ -1,8 +1,8 @@
-// src/components/ThemeToggle/SimpleThemeToggle.js
+// src/components/ThemeToggle/SimpleThemeToggle.tsx
 
 import React, { useEffect, useState } from 'react';
 
-const SimpleThemeToggle = () => {
+const SimpleThemeToggle: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(true);
 

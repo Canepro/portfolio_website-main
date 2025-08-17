@@ -19,23 +19,7 @@ const Hero: React.FC = () => (
         I am a multifaceted DevOps Engineer, Cloud Architect, and Front-End Developer based in the UK. My passion lies in bridging the gap between robust infrastructure and intuitive user experiences. I design, deploy, and manage scalable solutions on Microsoft Azure and AWS, craft responsive web applications with React.js, and am keenly interested in the potential of AI to drive innovation and process improvement.
       </SectionText>
       <div className="animate-scaleIn delay-300" style={{ display: 'flex', gap: '1rem', flexWrap: 'nowrap', alignItems: 'center', marginTop: '1.25rem' }}>
-        <ModernButton
-          href="/projects"
-          style={{
-            background: 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)',
-            padding: '1rem 2rem',
-            borderRadius: '50px',
-            border: 'none',
-            color: 'white',
-            fontSize: '1.1rem',
-            fontWeight: '600',
-            textDecoration: 'none',
-            display: 'inline-block',
-            transition: 'all 0.3s ease',
-            cursor: 'pointer',
-            boxShadow: '0 4px 15px rgba(0, 219, 216, 0.3)'
-          }}
-        >
+        <ModernButton href="/projects">
           View My Work
         </ModernButton>
         <Button variant="outline" size="lg" asChild>

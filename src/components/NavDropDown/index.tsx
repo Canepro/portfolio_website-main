@@ -1,11 +1,15 @@
-// src/components/NavDropDown/index.js
+// src/components/NavDropDown/index.tsx
 
 import React from 'react'
 import { AiFillLinkedin, AiOutlineMail } from 'react-icons/ai'
 import { FaRocketchat } from "react-icons/fa"
 import { DropDownContainer, DropDownIcon, DropDownItem, DropDownItemDesc, DropDownItemTitle, DropDownTextContainer } from './NavDropDown'
 
-const NavDropDown = (props) => (
+interface NavDropDownProps {
+  isOpen?: boolean;
+}
+
+const NavDropDown: React.FC<NavDropDownProps> = (props) => (
   <DropDownContainer active={props.isOpen}>
     <DropDownItem href="mailto:mogah.vincent@hotmail.com" target="_blank" rel="noreferrer">
       <DropDownIcon><AiOutlineMail/></DropDownIcon>

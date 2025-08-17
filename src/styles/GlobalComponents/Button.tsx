@@ -2,7 +2,15 @@ import React from 'react'
 
 import { ButtonBack, ButtonFront } from './index'
 
-const Button = (props) => (
+interface ButtonProps {
+  alt?: boolean;
+  form?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
+  children?: React.ReactNode;
+}
+
+const Button: React.FC<ButtonProps> = (props) => (
   <ButtonBack alt={props.alt} form={props.form} disabled={props.disabled}>{props.children}
     <ButtonFront alt={props.alt} onClick={props.onClick} disabled={props.disabled}>{props.children}</ButtonFront>
   </ButtonBack>
