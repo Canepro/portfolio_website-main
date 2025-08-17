@@ -47,3 +47,22 @@ export interface CategoryBadgeProps {
 export interface LinkButtonProps {
   primary?: boolean;
 }
+
+// TimeLine component props
+export interface CarouselMobileScrollNodeProps {
+  final?: boolean;
+}
+
+export interface CarouselItemProps {
+  active?: number;
+  index?: number;
+}
+
+export interface CarouselButtonProps {
+  active?: number;
+  index?: number;
+}
+
+export interface CarouselButtonDotProps {
+  active?: number;
+}

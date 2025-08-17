@@ -1,11 +1,11 @@
-// src/components/Certifications/Certifications.js
+// src/components/Certifications/Certifications.tsx
 
 import React from 'react';
 import { Section, SectionDivider, SectionTitle } from '../../styles/GlobalComponents';
 import { Box, Boxes, BoxTitle, BoxText, BoxLink } from './CertificationsStyles';
 import { certifications } from '../../constants/constants';
 
-const Certifications = () => (
+const Certifications: React.FC = () => (
   <Section>
     <SectionTitle>Licenses & Certifications</SectionTitle>
     <Boxes>

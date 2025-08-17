@@ -6,15 +6,17 @@ import { TimeLineData } from '../../constants/constants';
 
 const TOTAL_CAROUSEL_COUNT = TimeLineData.length;
 
-const Timeline = () => {
-  const [activeItem, setActiveItem] = useState(0);
-  const carouselRef = useRef();
+const Timeline: React.FC = () => {
+  const [activeItem, setActiveItem] = useState<number>(0);
+  const carouselRef = useRef<HTMLUListElement>(null);
 
-  const scroll = (node, left) => {
-    return node.scrollTo({ left, behavior: 'smooth' });
+  const scroll = (node: HTMLUListElement | null, left: number): void => {
+    if (node) {
+      node.scrollTo({ left, behavior: 'smooth' });
+    }
   }
 
-  const handleClick = (e, i) => {
+  const handleClick = (e: React.MouseEvent<HTMLElement>, i: number): void => {
     e.preventDefault();
 
     if (carouselRef.current) {
@@ -24,7 +26,7 @@ const Timeline = () => {
     }
   }
 
-  const handleScroll = () => {
+  const handleScroll = (): void => {
     if (carouselRef.current) {
       const index = Math.round((carouselRef.current.scrollLeft / (carouselRef.current.scrollWidth * 0.7)) * TimeLineData.length);
 
@@ -35,7 +37,7 @@ const Timeline = () => {
   // snap back to beginning of scroll when window is resized
   // avoids a bug where content is covered up if coming from a smaller screen
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = (): void => {
       scroll(carouselRef.current, 0);
     }
 
@@ -51,7 +53,7 @@ const Timeline = () => {
     <Section id="about">
       <SectionTitle>About Me</SectionTitle>
       <SectionText style={{ maxWidth: '720px', textAlign: 'left', margin: '0' }}>
-        I’m an infrastructure‑focused engineer who loves clean UI. I design and run scalable systems, automate cloud operations, and build front‑ends that are fast and accessible. I’m relentlessly curious, calm under pressure, and I treat every problem as a chance to learn and improve.
+        I'm an infrastructure‑focused engineer who loves clean UI. I design and run scalable systems, automate cloud operations, and build front‑ends that are fast and accessible. I'm relentlessly curious, calm under pressure, and I treat every problem as a chance to learn and improve.
       </SectionText>
       <CarouselContainer ref={carouselRef} onScroll={handleScroll}>
         <>
