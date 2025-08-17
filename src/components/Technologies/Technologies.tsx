@@ -1,4 +1,4 @@
-// src/components/Technologies/Technologies.js
+// src/components/Technologies/Technologies.tsx
 
 import React from 'react';
 import { Section, SectionDivider, SectionText, SectionTitle } from '../../styles/GlobalComponents';
@@ -9,7 +9,7 @@ import MicrosoftIcon from './icons/MicrosoftIcon';
 import TerminalIcon from './icons/TerminalIcon';
 import ReactIcon from './icons/ReactIcon';
 
-const Technologies = () => (
+const Technologies: React.FC = () => (
   <Section id="tech">
     <SectionDivider divider />
     <SectionTitle>Tech Stack</SectionTitle>

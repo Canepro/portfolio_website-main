@@ -1,4 +1,4 @@
-// src/components/Projects/Projects.js
+// src/components/Projects/Projects.tsx
 
 import React from 'react';
 import Link from 'next/link';
@@ -8,12 +8,13 @@ import { Section, SectionDivider, SectionTitle } from '../../styles/GlobalCompon
 import { SectionText } from '../../styles/GlobalComponents';
 import { Button } from '../ui/button';
 import { projects } from '../../constants/constants';
+import type { Project } from '../../types/project';
 
-const Projects = () => {
+const Projects: React.FC = () => {
   // Show up to 4 projects on homepage (prefer featured; backfill with others)
-  const featured = projects.filter(p => p.featured);
-  const nonFeatured = projects.filter(p => !p.featured);
-  const featuredProjects = [...featured.slice(0, 4)];
+  const featured: Project[] = projects.filter(p => p.featured);
+  const nonFeatured: Project[] = projects.filter(p => !p.featured);
+  const featuredProjects: Project[] = [...featured.slice(0, 4)];
   if (featuredProjects.length < 4) {
     featuredProjects.push(...nonFeatured.slice(0, 4 - featuredProjects.length));
   }

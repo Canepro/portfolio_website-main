@@ -29,9 +29,10 @@ Source code for my professional portfolio website. It showcases projects, skills
 
 - Framework: Next.js 14.2.30
 - UI: React 18.3.1
+- Language: TypeScript 5.9.2 (full component migration completed)
 - Styling: styled-components 5.3.0
 - UI primitives: shadcn-inspired primitives (inline styles)
-- Partial TypeScript for UI components and types
+- Type definitions: Comprehensive TypeScript interfaces for components and pages
 - Icons: react-icons
 
 ## Quick Links
@@ -113,8 +114,7 @@ The contact form at `/contact` posts to `/api/contact`. Configure the SMTP env v
 - See `docs/DEPLOYMENT.md` for detailed troubleshooting
 
 **Development warnings:**
-- "Invalid hook call" warnings in development are known and don't affect production
-- Clear cache with `rm -rf .next` if needed
+- Clear cache with `rm -rf .next` if needed after major changes
 - Use `npm run dev:3001` for alternative port
 
 **Port conflicts:**
@@ -128,16 +128,18 @@ portfolio_website-main/
 ├── public/
 │   └── images/
 ├── src/
-│   ├── components/
-│   ├── constants/
-│   ├── layout/
-│   ├── pages/
-│   ├── styles/
-│   └── themes/
+│   ├── components/          # TypeScript React components
+│   ├── constants/          # TypeScript data definitions  
+│   ├── layout/            # Layout components (TypeScript)
+│   ├── pages/             # Next.js pages (TypeScript)
+│   ├── styles/            # Styled components & global CSS
+│   ├── themes/            # Theme configuration
+│   └── types/             # TypeScript type definitions
 ├── docs/
 ├── Dockerfile
 ├── next.config.js
 ├── package.json
+├── tsconfig.json          # TypeScript configuration
 └── README.md
 ```
 

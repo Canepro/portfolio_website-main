@@ -1,10 +1,15 @@
-// src/components/Accomplishments/Accomplishments.js
+// src/components/Accomplishments/Accomplishments.tsx
 
 import React from 'react';
 import { Section, SectionDivider, SectionTitle } from '../../styles/GlobalComponents';
 import { Box, Boxes, BoxNum, BoxText, BoxLink } from './AccomplishmentsStyles';
+import { GitHubStats } from '../../types/pages';
 
-const Accomplishments = ({ stats }) => {
+interface AccomplishmentsProps {
+  stats: GitHubStats;
+}
+
+const Accomplishments: React.FC<AccomplishmentsProps> = ({ stats }) => {
   // The "Certifications" box has been removed for a cleaner look.
   const data = [
     { number: stats.repos, text: 'Open Source Projects', link: 'https://github.com/canepro?tab=repositories' },
