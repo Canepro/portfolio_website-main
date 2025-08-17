@@ -1,4 +1,31 @@
-export default {
+export interface Theme {
+  fonts: {
+    title: string;
+    main: string;
+  };
+  colors: {
+    primary1: string;
+    background1: string;
+    background2: string;
+    accent1: string;
+    button: string;
+    text: string;
+    textSecondary: string;
+    card: string;
+    cardHover: string;
+    border: string;
+    gradient: string;
+    gradientSecondary: string;
+  };
+  breakpoints: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+  };
+}
+
+const theme: Theme = {
   // Temp fonts
   fonts: {
     title: "Space Grotesk, sans-serif",
@@ -27,3 +54,5 @@ export default {
     xl: 'screen and (max-width: 1280px)'
   },
 }
+
+export default theme;

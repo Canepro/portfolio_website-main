@@ -1,6 +1,10 @@
 import styled from 'styled-components'
 
-export const DropDownContainer = styled.div`
+interface DropDownContainerProps {
+  active?: boolean;
+}
+
+export const DropDownContainer = styled.div<DropDownContainerProps>`
   position: absolute;
   display: flex;
   flex-direction: column;
