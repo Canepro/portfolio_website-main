@@ -2,13 +2,14 @@
 
 import React, { useState, useMemo } from 'react';
 import { Layout } from '../../layout/Layout';
-import { projects, projectCategories } from '../../constants/constants';
+import projectsData from '../../data/projects';
+import { projectCategories } from '../../constants/constants';
 import ProjectCard from '../../components/Projects/ProjectCard';
 import SEO from '../../components/SEO/SEO';
 import { Project } from '../../types/project';
-import { 
-  PageContainer, 
-  PageTitle, 
+import {
+  PageContainer,
+  PageTitle,
   PageDescription,
   FilterContainer,
   SearchBar,
@@ -18,20 +19,42 @@ import {
   NoResults
 } from '../../styles/ProjectsPageStyles';
 
+// Adapter function to convert new project structure to old component structure
+const adaptProjectData = (newProject: typeof projectsData[0]): Project => ({
+  id: parseInt(newProject.id.split('-').pop() || '0'),
+  title: newProject.title,
+  slug: newProject.id,
+  description: newProject.short,
+  longDescription: newProject.short,
+  image: `/images/projects/${newProject.id}.png`, // Default image path
+  tags: newProject.tech,
+  category: newProject.tech.includes('Terraform') ? 'Cloud' :
+            newProject.tech.includes('Docker') || newProject.tech.includes('Podman') ? 'DevOps' : 'Backend',
+  featured: newProject.id === 'rocketchat-observability', // Feature the observability project
+  source: newProject.repo,
+  visit: newProject.demoUrl || newProject.repo,
+  challenges: [],
+  solutions: [],
+  technologies: {}
+});
+
 const ProjectsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
+  // Convert new project data to old format
+  const projects: Project[] = projectsData.map(adaptProjectData);
+
   // Filter projects based on search and category
   const filteredProjects = useMemo((): Project[] => {
     return projects.filter(project => {
-      const matchesSearch = searchTerm === '' || 
+      const matchesSearch = searchTerm === '' ||
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-      
+
       const matchesCategory = selectedCategory === 'all' || project.category === selectedCategory;
-      
+
       return matchesSearch && matchesCategory;
     });
   }, [searchTerm, selectedCategory]);
