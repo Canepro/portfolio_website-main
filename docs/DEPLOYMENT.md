@@ -35,8 +35,7 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX  # Google Analytics Measurement ID
 #### Feature Flags (Optional)
 
 ```bash
-NEXT_PUBLIC_RC_ENABLED=1  # Enable Rocket.Chat widget
-NEXT_PUBLIC_RC_URL=https://canepros.rocket.chat/livechat
+NEXT_PUBLIC_RC_ENABLED=1  # Enable Rocket.Chat livechat widget
 ```
 
 ### Netlify Configuration

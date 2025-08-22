@@ -71,7 +71,7 @@ npm run dev
 yarn dev
 ```
 
-To enable Rocket.Chat locally:
+To enable Rocket.Chat livechat locally:
 
 ```bash
 NEXT_PUBLIC_RC_ENABLED=1 npm run dev
@@ -107,14 +107,14 @@ The contact form at `/contact` posts to `/api/contact`. Configure the SMTP env v
 
 **Note**: Contact form requires proper SMTP configuration to function. See `docs/DEPLOYMENT.md` for troubleshooting.
 
-Exact SMTP block for production (Netlify or environment) as requested:
+SMTP example block (set your own values):
 
 ```bash
 CONTACT_SMTP_HOST=
 CONTACT_SMTP_PORT=
-CONTACT_SMTP_USER=canepro
-CONTACT_SMTP_PASS=True
-CONTACT_TO=mogah.vincent@hotmail.com
+CONTACT_SMTP_USER=
+CONTACT_SMTP_PASS=
+CONTACT_TO=you@example.com
 ```
 
 ## Troubleshooting
