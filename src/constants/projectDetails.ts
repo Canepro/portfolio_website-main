@@ -144,28 +144,36 @@ export const projectDetails: Record<string, ProjectDetail> = {
   },
   'rocketchat-local-dev': {
     slug: 'rocketchat-local-dev',
-    longDescription: `Local Rocket.Chat development stack with MongoDB and Redis using Docker/Podman Compose.
+    longDescription: `Local Rocket.Chat development stack with MongoDB, Redis, and Traefik. One-command startup with automatic engine detection (Docker or Podman).
 
-    Quick start
+    Quick start (one command)
     1) git clone --depth 1 https://github.com/Canepro/rocketchat-local-dev.git
     2) cd rocketchat-local-dev
-    3) docker compose up -d   # or: podman-compose up -d
-    4) Open Rocket.Chat at http://localhost:3000
+    3) ./up.sh
+
+    What it does
+    - Creates .env from .env.example if missing
+    - Detects Docker or Podman automatically
+    - Starts all services and initializes MongoDB replica set
 
     Ports/URLs
-    - Rocket.Chat: http://localhost:3000
-    - MongoDB: localhost:27017
+    - Rocket.Chat: http://localhost:8080 (via Traefik)
+    - Traefik Dashboard (dev only): http://localhost:8081
+
+    Common tasks
+    - Stop/remove: ./down.sh
+    - Upgrade images: edit .env (e.g. ROCKETCHAT_IMAGE=rocketchat/rocket.chat:7.x) then ./upgrade.sh
 
     Notes & limitations
-    - Local/dev use only; not production-hardened.
-    - Data persistence may require named volumes; see repo docs.
-    - If Traefik is enabled, review routes before exposing externally.
+    - Local/dev only; not production-hardened.
+    - Keep customizations in .env; TRAEFIK_HTTP_PORT controls external port.
+    - Avoid exposing extra container ports beyond Traefik.
 
     Enhancements (suggestions)
-    - Add CI to run compose-lint and basic health checks.
-    - Provide seed data and sample users for faster testing.
-    - Add Makefile with convenience targets (up/down/logs/reset).
-    - Document upgrade/rollback strategy for Rocket.Chat versions.
+    - CI: compose-lint + basic health checks for services.
+    - Seed data/sample users for quick demos.
+    - Add a short demo GIF showing first-run onboarding.
+    - Document backup/restore for MongoDB volume.
 
     Badges (recommended)
     - compose-lint: https://github.com/Canepro/rocketchat-local-dev/actions/workflows/compose-lint.yml/badge.svg`,

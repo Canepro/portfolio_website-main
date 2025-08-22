@@ -1,48 +1,43 @@
 Summary
-- Adds a contact page and email API, optional Google Analytics, dynamic sitemap coverage, and small fixes. Migrates project constants to TypeScript. Updates docs accordingly.
+- Update project metadata/content for Rocket.Chat and Terraform projects to ensure accurate, concise, and attractive portfolio entries.
 
-What changed
-- Contact
-  - New page: `/contact`
-  - New API: `/api/contact` (Nodemailer SMTP)
-- Analytics
-  - GA snippet gated by NEXT_PUBLIC_GA_ID in `_app.js`
-- SEO
-  - `sitemap.xml` now includes `/projects/[slug]` and `/contact`
-  - Default OG image points to an existing asset
-- Data & Types
-  - Migrated `src/constants/constants.ts` and `projectDetails.ts`
-  - Expanded `src/types/project.d.ts`
-- Fixes/Cleanup
-  - font-style -> font-size in project card description
-  - Removed unused ThemeToggle + useDarkMode
-  - Stray file cleanup
-- Docs
-  - Updated README.md, docs/DEPLOYMENT.md, docs/ARCHITECTURE.md, CHANGELOG.md
+QA checklist
+- [ ] Site builds successfully
+- [ ] TypeScript types preserved (no new ts errors)
+- [ ] No structural changes made (only data/content files)
 
-Deployment (Netlify)
-- Set env vars in Site settings → Build & deploy → Environment:
-  - NEXT_PUBLIC_GA_ID (optional)
-  - CONTACT_SMTP_HOST, CONTACT_SMTP_PORT, CONTACT_SMTP_USER, CONTACT_SMTP_PASS, CONTACT_TO (optional)
-  - NEXT_PUBLIC_RC_ENABLED (optional)
-- Ensure Node 18+ (set `NODE_VERSION` if needed)
+Changed files
+- `src/constants/constants.ts`
+- `src/constants/projectDetails.ts`
 
-How to test
-- Local build: `npm ci && npm run build && npm start`
-- Dev: `npm run dev` (or `npm run dev:3001`)
-- Verify pages: `/`, `/projects`, `/projects/[slug]`, `/contact`, `/sitemap.xml`
-- Contact form: set SMTP envs, submit form, expect 200 and email delivered
-- Analytics: set NEXT_PUBLIC_GA_ID, confirm gtag loads (Network tab)
+Project summaries
+- rocketchat-observability: Refreshed title, slug, image, and concise description; added quick-start, ports, notes, badges, and enhancements.
+- rocketchat-local-dev: Clarified local dev purpose, tags, and image; added quick-start, ports, notes, badges, and enhancements.
+- tf-hello-azure: Updated description, image, and guidance; added quick-start, notes with placeholders, and enhancements.
 
-Security
-- Contact API returns 500 if SMTP is not configured; no secrets sent to the client
-- Analytics loads only when GA ID is present
+Details per project
+1) Rocket.Chat — Observability Stack (`rocketchat-observability`)
+   - Title/tagline: Complete Rocket.Chat observability demo with Prometheus, Grafana, exporters, and Traefik
+   - Quick start: clone → cp env.example → make demo-up → open Grafana at `/grafana`
+   - URLs: Grafana `/grafana`, Prometheus `/prometheus`, Traefik dashboard optional `:8080`
+   - Notes: local/demo use, set `DOMAIN`, don’t expose dashboards without auth
+   - Badges: compose-lint
+   - Enhancements: demo GIF, CI to validate provisioning, cloud VM guide, enable auth
 
-Risks
-- Low; features are gated by env vars
+2) Rocket.Chat Local Development Stack (`rocketchat-local-dev`)
+   - Tagline: Local Rocket.Chat dev stack with MongoDB/Redis using Docker/Podman Compose
+   - Quick start: clone → compose up → open `http://localhost:3000`
+   - Ports: Rocket.Chat `:3000`, MongoDB `:27017`
+   - Notes: local/dev only, persistence via volumes, review Traefik if enabled
+   - Badges: compose-lint
+   - Enhancements: CI health checks, seed data, Makefile targets, upgrade docs
 
-Checklist
-- [ ] Preview deploy opens and pages render
-- [ ] Contact form works with SMTP envs
-- [ ] Sitemap lists all projects + /contact
-- [ ] Docs read cleanly
+3) Terraform: Azure Hello Cloud (`terraform-azure`)
+   - Tagline: Minimal Terraform example that provisions Azure RG + Storage Account
+   - Quick start: clone → `az login` + select subscription → `terraform init && apply`
+   - Notes: placeholders `<AZURE_SUBSCRIPTION_ID>`, no secrets; intended for learning; destroy on cleanup
+   - Enhancements: add CI (fmt/validate/plan), add vnet/key vault examples, cost/tagging notes, terraform-docs
+
+Notes
+- Only data/content updated; no component, routing, or structural changes.
+- Images: used existing assets `chat-observability.png`, `rocketchat-local.png`, and `tf-azure.png`.

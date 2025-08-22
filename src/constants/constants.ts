@@ -73,8 +73,8 @@ export const projects: Project[] = [
   {
     title: 'Rocket.Chat Local Development Stack',
     slug: 'rocketchat-local-dev',
-    description: 'Local Rocket.Chat dev stack with MongoDB and Redis using Docker/Podman Compose for quick setup and resets.',
-    image: '/images/rocketchat-local.png',
+    description: 'Local Rocket.Chat stack with MongoDB, Redis, and Traefik via one-command script (Docker/Podman).',
+    image: '/images/rocketchat-homepage.png',
     tags: ['Docker Compose', 'Podman', 'MongoDB', 'Redis', 'Traefik'],
     category: 'DevOps',
     featured: false,
