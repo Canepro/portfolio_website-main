@@ -14,6 +14,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 WORKDIR /app
 
+# Runtime utilities needed by healthcheck
+RUN apk add --no-cache curl
+
 # Only runtime deps
 COPY --from=build /app/package*.json ./
 RUN npm ci --omit=dev --no-audit --no-fund
@@ -27,6 +30,6 @@ USER node
 EXPOSE 3000
 
 # Basic healthcheck (works for Podman or Docker)
-HEALTHCHECK --interval=30s --timeout=3s --start-period=15s CMD wget -qO- http://localhost:3000/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=15s CMD curl -fsS http://localhost:3000/ || exit 1
 
 CMD ["npm","start"]
