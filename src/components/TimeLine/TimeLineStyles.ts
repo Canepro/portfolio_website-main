@@ -3,12 +3,13 @@ import { CarouselMobileScrollNodeProps, CarouselItemProps, CarouselButtonProps, 
 
 export const CarouselContainer = styled.ul`
   max-width: 1040px;
-  background: #0F1624;
+  background: transparent;
   padding: 0rem;
   list-style:none;
   display: flex;
   justify-content: space-between; 
   /* overflow-x: hidden; */
+  gap: 16px;
 
   margin-left: 32px;
   &:first-of-type{
@@ -40,35 +41,38 @@ export const CarouselMobileScrollNode = styled.div<CarouselMobileScrollNodeProps
 `
 
 export const CarouselItem = styled.div<CarouselItemProps>`
-background: #0F1624;
-border-radius: 3px;
-max-width: 196px;
+background: ${({ theme }) => theme.colors.card};
+border: 1px solid ${({ theme }) => theme.colors.border};
+border-radius: 12px;
+max-width: 220px;
+padding: 16px;
+transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
 z-index: 0;
 
 &:hover {
-  background-color: rgba(245, 245, 245, 0.8);
-  border: none;
+  background: ${({ theme }) => theme.colors.cardHover};
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
   cursor: pointer;
-  opacity: 0.8;
   z-index: 1;
-  }
+}
 
 @media ${props => props.theme.breakpoints.lg} {
   margin-left: 16px;
-  min-width: 120px;
-  background: #0E131F;
-  padding: 4px;
+  min-width: 160px;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 12px;
   align-content: start;
   scroll-snap-align: start;
-  border-radius: 3px;
+  border-radius: 12px;
   overflow: visible;
   position: relative;
   height: fit-content;
   }
 
   @media ${props => props.theme.breakpoints.md} {
-    max-width: 124px;
-    margin-left: 32px;
+    max-width: 180px;
+    margin-left: 24px;
 
     &:first-of-type{
       margin-left: 0;
@@ -77,24 +81,17 @@ z-index: 0;
 
   @media ${props => props.theme.breakpoints.sm} {
     margin-left: 16px;
-    min-width: 120px;
-    background: #0E131F;
-    padding: 4px;
+    min-width: 160px;
+    background: ${({ theme }) => theme.colors.card};
+    padding: 12px;
     align-content: start;
     scroll-snap-align: start;
-    border-radius: 3px;
+    border-radius: 12px;
     overflow: visible;
     position: relative;
     height: fit-content;
 
-    ${(props) => props.active === props.index ? `opacity: 1` : `opacity: 0.5`};
-
-      &:hover {
-      background-color: #f5f5f5;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      z-index: 1;
-    }
+    ${(props) => props.active === props.index ? `opacity: 1; box-shadow: 0 0 0 2px var(--color-accent); border-color: var(--color-accent);` : `opacity: 0.75`};
   }
 `
 export const CarouselItemTitle = styled.h4`
@@ -103,15 +100,8 @@ export const CarouselItemTitle = styled.h4`
   line-height: 32px;
   letter-spacing: 0.02em;
   display: flex;
-  /* This gradient is different due to the size of the Title container, it must transition sooner to be visible on the text */
-  background: linear-gradient(121.57deg, #FFFFFF 10%, rgba(255, 255, 255, 0.66) 30.15%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: ${({ theme }) => theme.colors.text};
   margin-bottom: 8px;
-
-  &:hover {
-    color: black;
-  }
 
 @media ${props => props.theme.breakpoints.lg} {
   font-size: 20px;
@@ -152,7 +142,7 @@ export const CarouselItemText = styled.p`
   font-size: 14px;
   line-height: 22px;
   letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.75);
+  color: ${({ theme }) => theme.colors.textSecondary};
   padding-right: 16px;
 
 @media ${props => props.theme.breakpoints.lg} {
@@ -217,7 +207,7 @@ export const CarouselButton = styled.button<CarouselButtonProps>`
 `
 
 export const CarouselButtonDot = styled.div<CarouselButtonDotProps>`
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.text};
   border-radius: 10px;
   margin: auto;
   width: 3px;
