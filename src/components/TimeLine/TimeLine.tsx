@@ -4,7 +4,29 @@ import { Calendar, CheckCircle, ChevronLeft, ChevronRight, ChevronDown } from 'l
 import { Section, SectionDivider, SectionText, SectionTitle } from '../../styles/GlobalComponents';
 import { TimeLineData, projects } from '../../constants/constants';
 import { Card } from '../ui/card';
-import { Badge } from '../ui/badge';
+import {
+  TimelineWrapper,
+  TimelineNavigationButton,
+  TimelineContainer,
+  TimelineCardsWrapper,
+  TimelineCard,
+  TimelineDot,
+  TimelineCardContent,
+  TimelineCardHeader,
+  TimelineBadge,
+  TimelineCardTitle,
+  TimelineCardText,
+  TimelineChevron,
+  TimelineExpandedContent,
+  TimelineExpandedInner,
+  TimelineHighlightsTitle,
+  TimelineHighlightList,
+  TimelineHighlightItem,
+  TimelineHighlightIcon,
+  TimelineHighlightText,
+  TimelinePagination,
+  TimelinePaginationDot,
+} from './TimeLineStyles';
 
 type Highlight = { title: string; done?: boolean };
 type YearHighlights = Record<number, Highlight[]>;
@@ -27,8 +49,6 @@ const yearHighlights: YearHighlights = {
   ],
 };
 
-const height = 480;
-
 const Timeline: React.FC = () => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -38,6 +58,13 @@ const Timeline: React.FC = () => {
 
   const items = TimeLineData.map((t) => ({ year: t.year, text: t.text }));
 
+  const getHighlights = (year: number, text: string): Highlight[] => {
+    const fromMap = yearHighlights[year];
+    if (fromMap && fromMap.length > 0) return fromMap;
+    // Fallback: show the year text as a single highlight
+    return text ? [{ title: text, done: true }] : [];
+  };
+
   useEffect(() => {
     if (!carouselRef.current || !headerRef.current) return;
     const total = carouselRef.current.getBoundingClientRect().height;
@@ -45,6 +72,28 @@ const Timeline: React.FC = () => {
     const available = total - head - 110;
     setExpandedHeight(Math.max(available, 80));
   }, []);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        next();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const currentItem = items[currentIndex];
+        if (getHighlights(currentItem.year, currentItem.text).length > 0) {
+          toggleExpand(currentIndex);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, expandedIndex]);
 
   const toggleExpand = (index: number) => {
     if (index === currentIndex) setExpandedIndex(expandedIndex === index ? null : index);
@@ -54,8 +103,14 @@ const Timeline: React.FC = () => {
     setCurrentIndex((p) => (p === items.length - 1 ? 0 : p + 1));
     setExpandedIndex(null);
   };
+  
   const prev = () => {
     setCurrentIndex((p) => (p === 0 ? items.length - 1 : p - 1));
+    setExpandedIndex(null);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
     setExpandedIndex(null);
   };
 
@@ -77,82 +132,124 @@ const Timeline: React.FC = () => {
         I'm an infrastructure‑focused engineer who loves clean UI. I design and run scalable systems, automate cloud operations, and build front‑ends that are fast and accessible.
       </SectionText>
 
-      <div className="timeline-wrapper" style={{ position: 'relative', marginTop: 24 }}>
-        <button onClick={prev} aria-label="Previous" style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 20, border: 'none', background: 'var(--color-card-bg)', padding: 8, borderRadius: 999, boxShadow: 'var(--shadow-sm)', cursor: 'pointer' }}>
+      <TimelineWrapper>
+        <TimelineNavigationButton 
+          onClick={prev} 
+          aria-label="Previous timeline item"
+          className="prev"
+        >
           <ChevronLeft width={20} height={20} />
-        </button>
-        <button onClick={next} aria-label="Next" style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', zIndex: 20, border: 'none', background: 'var(--color-card-bg)', padding: 8, borderRadius: 999, boxShadow: 'var(--shadow-sm)', cursor: 'pointer' }}>
+        </TimelineNavigationButton>
+        
+        <TimelineNavigationButton 
+          onClick={next} 
+          aria-label="Next timeline item"
+          className="next"
+        >
           <ChevronRight width={20} height={20} />
-        </button>
+        </TimelineNavigationButton>
 
-        <div style={{ position: 'absolute', left: 0, right: 0, top: '50%', height: 2, background: 'color-mix(in srgb, var(--color-accent) 25%, transparent)' }} />
-
-        <div ref={carouselRef} style={{ position: 'relative', overflow: 'hidden', height }}>
-          <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+        <TimelineContainer ref={carouselRef}>
+          <TimelineCardsWrapper>
             {items.map((item, index) => (
-              <motion.div
+              <TimelineCard
                 key={index}
-                className="timeline-card"
                 variants={cardVariants}
                 initial="inactive"
                 animate={index === currentIndex ? 'active' : 'inactive'}
-                style={{ position: 'absolute', width: 260, marginInline: 16, x: `${Math.round((index - currentIndex) * 300)}px`, willChange: 'transform', transform: 'translateZ(0)' }}
+                style={{ x: `${Math.round((index - currentIndex) * 340)}px` }}
                 drag="x"
                 dragConstraints={{ left: -50, right: 50 }}
                 dragElastic={0.12}
                 onDragEnd={(e, info) => handleDragEnd(e, info, index)}
+                role="region"
+                aria-label={`Timeline item ${index + 1} of ${items.length}`}
               >
-                <motion.div
+                <TimelineDot
+                  $isActive={index === currentIndex}
                   variants={cardVariants}
                   initial="inactive"
                   animate={index === currentIndex ? 'active' : 'inactive'}
-                  style={{ position: 'absolute', left: '50%', top: -12, width: 16, height: 16, borderRadius: 999, transform: 'translateX(-50%)', zIndex: 10, background: index === currentIndex ? 'var(--color-accent)' : 'transparent', border: index === currentIndex ? 'none' : '2px solid var(--color-accent)' }}
                 />
 
-                <motion.div layout style={{ width: '100%' }} transition={{ duration: 0.25 }}>
+                <TimelineCardContent layout transition={{ duration: 0.25 }}>
                   <Card style={{ overflow: 'hidden', border: '1px solid var(--color-border)', background: 'var(--color-card-bg)', boxShadow: 'var(--shadow-md)' }}>
-                    <div ref={index === 0 ? headerRef : null} style={{ padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', cursor: index === currentIndex ? 'pointer' as const : 'default' }} onClick={() => toggleExpand(index)}>
-                      <Badge style={{ fontSize: 12, padding: '4px 10px', background: 'color-mix(in srgb, var(--color-accent) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--color-accent) 35%, transparent)', marginBottom: 8 }}>
+                    <TimelineCardHeader 
+                      ref={index === 0 ? headerRef : null}
+                      $isClickable={getHighlights(item.year, item.text).length > 0 && index === currentIndex}
+                      onClick={() => getHighlights(item.year, item.text).length > 0 && toggleExpand(index)}
+                      role={getHighlights(item.year, item.text).length > 0 ? 'button' : undefined}
+                      tabIndex={getHighlights(item.year, item.text).length > 0 && index === currentIndex ? 0 : -1}
+                      aria-expanded={expandedIndex === index}
+                      aria-controls={getHighlights(item.year, item.text).length > 0 ? `timeline-highlights-${index}` : undefined}
+                    >
+                      <TimelineBadge>
                         <Calendar width={14} height={14} style={{ marginRight: 6 }} />
                         {item.year}
-                      </Badge>
-                      <h3 style={{ fontSize: 20, fontWeight: 700, color: 'var(--color-text-primary)', margin: 0 }}>{item.year} Milestones</h3>
-                      <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', marginTop: 4 }}>{item.text}</p>
-                      <motion.div animate={{ rotate: expandedIndex === index ? 180 : 0, opacity: index === currentIndex ? 1 : 0.5 }} transition={{ duration: 0.25 }}>
-                        <ChevronDown width={18} height={18} style={{ color: 'var(--color-text-secondary)', marginTop: 8 }} />
-                      </motion.div>
-                    </div>
+                      </TimelineBadge>
+                      <TimelineCardTitle>{item.year} Milestones</TimelineCardTitle>
+                      <TimelineCardText>{item.text}</TimelineCardText>
+                      {getHighlights(item.year, item.text).length > 0 && (
+                        <TimelineChevron 
+                          animate={{ 
+                            rotate: expandedIndex === index ? 180 : 0, 
+                            opacity: index === currentIndex ? 1 : 0.5 
+                          }} 
+                          transition={{ duration: 0.25 }}
+                        >
+                          <ChevronDown width={18} height={18} />
+                        </TimelineChevron>
+                      )}
+                    </TimelineCardHeader>
 
                     <AnimatePresence>
-                      {expandedIndex === index && index === currentIndex && (
-                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: expandedHeight, opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} style={{ overflowY: 'auto' }}>
-                          <div style={{ padding: '8px 20px 20px', borderTop: '1px solid color-mix(in srgb, var(--color-border) 60%, transparent)' }}>
-                            <h4 style={{ fontSize: 13, fontWeight: 600, margin: '6px 0 10px', color: 'var(--color-text-primary)', textAlign: 'center' }}>Highlights</h4>
-                            <ul style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 8, listStyle: 'none', padding: 0, margin: 0 }}>
-                              {(yearHighlights[item.year] || []).map((h, i) => (
-                                <motion.li key={i} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2, delay: i * 0.05 }} style={{ display: 'flex', alignItems: 'flex-start' }}>
-                                  <CheckCircle width={16} height={16} style={{ marginRight: 8, color: h.done ? '#10B981' : 'var(--color-text-secondary)' }} />
-                                  <span style={{ fontSize: 13, color: 'var(--color-text-secondary)' }}>{h.title}</span>
-                                </motion.li>
+                      {expandedIndex === index && index === currentIndex && getHighlights(item.year, item.text).length > 0 && (
+                        <TimelineExpandedContent
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: expandedHeight, opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          id={`timeline-highlights-${index}`}
+                        >
+                          <TimelineExpandedInner>
+                            <TimelineHighlightsTitle>Highlights</TimelineHighlightsTitle>
+                            <TimelineHighlightList>
+                              {getHighlights(item.year, item.text).map((h, i) => (
+                                <TimelineHighlightItem 
+                                  key={i} 
+                                  initial={{ opacity: 0, x: -12 }} 
+                                  animate={{ opacity: 1, x: 0 }} 
+                                  transition={{ duration: 0.2, delay: i * 0.05 }}
+                                >
+                                  <TimelineHighlightIcon width={16} height={16} $isDone={h.done || false} />
+                                  <TimelineHighlightText>{h.title}</TimelineHighlightText>
+                                </TimelineHighlightItem>
                               ))}
-                            </ul>
-                          </div>
-                        </motion.div>
+                            </TimelineHighlightList>
+                          </TimelineExpandedInner>
+                        </TimelineExpandedContent>
                       )}
                     </AnimatePresence>
                   </Card>
-                </motion.div>
-              </motion.div>
+                </TimelineCardContent>
+              </TimelineCard>
             ))}
-          </div>
-        </div>
+          </TimelineCardsWrapper>
+        </TimelineContainer>
 
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16, gap: 8 }}>
+        <TimelinePagination role="tablist" aria-label="Timeline navigation">
           {items.map((_, i) => (
-            <button key={i} onClick={() => { setCurrentIndex(i); setExpandedIndex(null); }} aria-label={`Go to slide ${i + 1}`} style={{ width: 10, height: 10, borderRadius: 999, background: i === currentIndex ? 'var(--color-accent)' : 'color-mix(in srgb, var(--color-accent) 30%, transparent)', border: 'none', cursor: 'pointer' }} />
+            <TimelinePaginationDot
+              key={i}
+              $isActive={i === currentIndex}
+              onClick={() => goToSlide(i)}
+              aria-label={`Go to timeline item ${i + 1}`}
+              role="tab"
+              aria-selected={i === currentIndex}
+            />
           ))}
-        </div>
-      </div>
+        </TimelinePagination>
+      </TimelineWrapper>
 
       <SectionDivider />
     </Section>
