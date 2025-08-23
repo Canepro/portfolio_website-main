@@ -1,168 +1,198 @@
-# Personal Portfolio
+# Portfolio Website
 
-> A modern, responsive portfolio website built with Next.js and React
+> Modern, responsive portfolio built with Next.js, TypeScript, and styled-components
 
-## Live Site
+[![Live Site](https://img.shields.io/badge/Live%20Site-View%20Portfolio-blue?style=for-the-badge&logo=vercel)](https://portfolio.canepro.me)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2.30-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18.3.1-blue?style=flat&logo=react)](https://reactjs.org/)
 
-- [`https://portfolio.canepro.me`](https://portfolio.canepro.me)
+<div align="center">
+  <img src="https://github.com/Canepro/portfolio_website-main/blob/main/public/images/6.png?raw=true" alt="Portfolio Preview" width="800" />
+</div>
 
-![Portfolio Website](https://github.com/Canepro/portfolio_website-main/blob/main/public/images/6.png?raw=true)
+## ✨ Features
 
-## Overview
+- **Modern Design** - Clean, responsive layout with smooth animations
+- **TypeScript** - 100% type-safe with comprehensive interfaces
+- **Performance** - Optimized with Next.js Image, ISR, and code splitting
+- **Accessibility** - ARIA labels, keyboard navigation, screen reader support
+- **SEO Optimized** - Meta tags, structured data, dynamic sitemap
+- **Real-time Stats** - GitHub statistics with incremental static regeneration
+- **Contact Form** - Email delivery via SMTP with rate limiting
+- **Live Chat** - Optional Rocket.Chat integration
+- **Container Ready** - Docker support with health checks
+- **CI/CD** - Automated deployment with GitHub Actions
 
-Source code for my professional portfolio website. It showcases projects, skills, and accomplishments with a focus on performance, accessibility, and responsive design.
+## 🛠️ Tech Stack
 
-## Features
+| Category | Technology |
+|----------|------------|
+| **Framework** | Next.js 14.2.30 |
+| **Language** | TypeScript 5.9.2 |
+| **UI Library** | React 18.3.1 |
+| **Styling** | styled-components 5.3.0 |
+| **UI Components** | shadcn-inspired primitives |
+| **Icons** | react-icons, lucide-react |
+| **Animations** | framer-motion |
+| **Deployment** | Netlify |
+| **CI/CD** | GitHub Actions |
 
-- Modern, responsive design with smooth animations
-- Real-time GitHub statistics (SSG/ISR)
-- Project showcase with categories
-- Mobile-first layout
-- Containerized deployment
-- CI/CD with GitHub Actions
-- Optional Rocket.Chat live chat (controlled via `NEXT_PUBLIC_RC_ENABLED=1` and `NEXT_PUBLIC_RC_URL`)
-- Optional Google Analytics (set `NEXT_PUBLIC_GA_ID`)
-- Optional contact form with email delivery via SMTP
-- Dynamic sitemap including all project detail pages
+## 🚀 Quick Start
 
-## Tech Stack
+### Prerequisites
 
-- Framework: Next.js 14.2.30
-- UI: React 18.3.1
-- Language: TypeScript 5.9.2 (✅ Complete migration - all React components)
-- Styling: styled-components 5.3.0
-- UI primitives: shadcn-inspired primitives (inline styles)
-- Type definitions: Comprehensive TypeScript interfaces for components, pages, and styled components
-- Build: Zero TypeScript compilation errors with strict mode enabled
-- Icons: react-icons
+- Node.js 18+ (recommended 20)
+- npm or yarn
 
-## Quick Links
-
-- Development Roadmap: `docs/TODO.md`
-- Architecture: `docs/ARCHITECTURE.md`
-- Deployment: `docs/DEPLOYMENT.md`
-- Changelog: `CHANGELOG.md`
-- Contributing: `CONTRIBUTING.md`
-
-## Installation & Setup
-
-Prerequisites: Node.js 18+ (recommended 20) and npm or yarn.
-
-1. Clone
+### Installation
 
 ```bash
+# Clone the repository
 git clone https://github.com/Canepro/portfolio_website-main.git
 cd portfolio_website-main
-```
 
-1. Install
-
-```bash
+# Install dependencies
 npm install
-# or
-yarn install
-```
 
-1. Start dev server
-
-```bash
+# Start development server
 npm run dev
-# or
-yarn dev
 ```
 
-To enable Rocket.Chat livechat locally:
+Open [http://localhost:3000](http://localhost:3000) to view the site.
+
+### Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server (port 3000) |
+| `npm run dev:3001` | Start development server (port 3001) |
+| `npm run build` | Create production build |
+| `npm start` | Start production server |
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory:
 
 ```bash
-NEXT_PUBLIC_RC_ENABLED=1 npm run dev
+# Analytics (Optional)
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+
+# Rocket.Chat Live Chat (Optional)
+NEXT_PUBLIC_RC_ENABLED=1
+NEXT_PUBLIC_RC_URL=https://your-instance.rocket.chat/livechat
+
+# Contact Form (Optional)
+CONTACT_SMTP_HOST=your-smtp-host
+CONTACT_SMTP_PORT=587
+CONTACT_SMTP_USER=your-username
+CONTACT_SMTP_PASS=your-password
+CONTACT_TO=recipient@example.com
+
+# GitHub API (Optional - increases rate limits)
+GITHUB_TOKEN=your-github-token
 ```
 
-Open `http://localhost:3000`
+### Features
 
-## Scripts
+- **Contact Form**: Configure SMTP settings to enable email delivery
+- **Live Chat**: Set `NEXT_PUBLIC_RC_ENABLED=1` to enable Rocket.Chat widget
+- **Analytics**: Add Google Analytics ID for tracking
+- **GitHub Stats**: Include token for higher API rate limits
 
-- `npm run dev` – Start dev server (port 3000)
-- `npm run dev:3001` – Start dev server on port 3001
-- `npm run build` – Production build
-- `npm start` – Start production server
+## 📁 Project Structure
 
-## Configuration
-
-Environment variables:
-
-- `NEXT_PUBLIC_GA_ID` (optional): Google Analytics Measurement ID (e.g. `G-XXXXXXX`)
-- `NEXT_PUBLIC_RC_ENABLED` (optional): set to `1` to enable Rocket.Chat widget
-- `NEXT_PUBLIC_RC_URL` (optional): Livechat base URL, e.g. `https://canepros.rocket.chat/livechat`
-- Contact email (optional): configure to enable `/contact` form
-  - `CONTACT_SMTP_HOST`
-  - `CONTACT_SMTP_PORT` (e.g. `587` or `465`)
-  - `CONTACT_SMTP_USER`
-  - `CONTACT_SMTP_PASS`
-  - `CONTACT_TO` (optional fallback recipient; defaults to site owner email)
-- `GITHUB_TOKEN` (optional): increases GitHub API rate limits for build-time stats
-
-## Contact page
-
-The contact form at `/contact` posts to `/api/contact`. Configure the SMTP env vars above to deliver messages to your inbox. Without configuration, the API returns `500: Email not configured`.
-
-**Note**: Contact form requires proper SMTP configuration to function. See `docs/DEPLOYMENT.md` for troubleshooting.
-
-SMTP example block (set your own values):
-
-```bash
-CONTACT_SMTP_HOST=
-CONTACT_SMTP_PORT=
-CONTACT_SMTP_USER=
-CONTACT_SMTP_PASS=
-CONTACT_TO=you@example.com
 ```
-
-## Troubleshooting
-
-### Common Issues
-
-**Contact form returns 500 error:**
-
-- Check SMTP environment variables are set correctly
-- Verify email credentials and port settings
-- See `docs/DEPLOYMENT.md` for detailed troubleshooting
-
-**Development warnings:**
-
-- Clear cache with `rm -rf .next` if needed after major changes
-- Use `npm run dev:3001` for alternative port
-
-**Port conflicts:**
-
-- Kill existing processes or use `npm run dev:3001`
-- See `docs/DEPLOYMENT.md` for detailed solutions
-
-## Project Structure
-
-```text
 portfolio_website-main/
-├── public/
-│   └── images/
+├── public/                 # Static assets
+│   └── images/            # Project images and screenshots
 ├── src/
-│   ├── components/          # TypeScript React components (.tsx/.ts)
-│   ├── constants/          # TypeScript data definitions (.ts)
-│   ├── layout/            # Layout components (TypeScript .ts)
-│   ├── pages/             # Next.js pages (TypeScript .tsx)
-│   ├── styles/            # Styled components & global CSS (.ts/.tsx)
-│   ├── themes/            # Theme configuration (.ts)
-│   └── types/             # TypeScript type definitions (.d.ts)
-├── docs/
-├── Dockerfile
-├── next.config.js
-├── package.json
-├── tsconfig.json          # TypeScript configuration
-└── README.md
+│   ├── components/        # React components (.tsx)
+│   │   ├── Hero/         # Hero section
+│   │   ├── Projects/     # Project showcase
+│   │   ├── TimeLine/     # Career timeline
+│   │   ├── Technologies/ # Skills display
+│   │   └── ui/           # Reusable UI components
+│   ├── constants/        # Data definitions (.ts)
+│   ├── layout/          # Layout components
+│   ├── pages/           # Next.js pages (.tsx)
+│   ├── styles/          # Global styles and themes
+│   ├── themes/          # Theme configuration
+│   └── types/           # TypeScript definitions (.d.ts)
+├── docs/                # Documentation
+├── Dockerfile           # Container configuration
+└── netlify.toml        # Deployment configuration
 ```
 
-## License
+## 🎨 Design System
+
+- **Typography**: Modern, readable fonts with proper hierarchy
+- **Colors**: Dark/light theme support with CSS variables
+- **Components**: Consistent design patterns with shadcn inspiration
+- **Animations**: Smooth transitions using framer-motion
+- **Responsive**: Mobile-first approach with breakpoint system
+
+## 📚 Documentation
+
+- **[Architecture](docs/ARCHITECTURE.md)** - Technical architecture and TypeScript integration
+- **[Deployment](docs/DEPLOYMENT.md)** - Deployment guide and troubleshooting
+- **[Development Roadmap](docs/TODO.md)** - Current status and future plans
+- **[Changelog](CHANGELOG.md)** - Version history and updates
+
+## 🔧 Development
+
+### TypeScript
+
+The project is fully migrated to TypeScript with:
+- Strict type checking enabled
+- Comprehensive type definitions
+- Zero compilation errors
+- Enhanced developer experience
+
+### Styling
+
+- **styled-components** for component styling
+- **CSS variables** for theme switching
+- **Global styles** for consistent design
+- **Responsive design** with mobile-first approach
+
+### Performance
+
+- **Image optimization** with Next.js Image component
+- **Code splitting** for optimal bundle sizes
+- **Incremental Static Regeneration** for dynamic content
+- **Lighthouse score** > 95
+
+## 🚀 Deployment
+
+The site is automatically deployed to Netlify from the main branch. See [Deployment Guide](docs/DEPLOYMENT.md) for detailed configuration.
+
+### Production Checklist
+
+- [ ] TypeScript compilation passes
+- [ ] All pages build successfully
+- [ ] Environment variables configured
+- [ ] Performance metrics meet targets
+- [ ] Accessibility standards met
+- [ ] SEO optimization complete
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines and contribution process.
+
+## 📄 License
 
 This project is for portfolio purposes. All rights reserved.
 
-## Contact
+---
 
-For questions or collaboration, see the contact options on the live site.
+<div align="center">
+  <p>Built with ❤️ using Next.js and TypeScript</p>
+  <p>
+    <a href="https://portfolio.canepro.me">Live Site</a> •
+    <a href="https://github.com/Canepro/portfolio_website-main/issues">Issues</a> •
+    <a href="https://github.com/Canepro/portfolio_website-main/pulls">Pull Requests</a>
+  </p>
+</div>

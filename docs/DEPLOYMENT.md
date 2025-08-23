@@ -1,170 +1,194 @@
 # Deployment Guide
 
-This document covers deployment strategies, troubleshooting, and environment configuration for the portfolio website.
+> Comprehensive deployment guide for the portfolio website
 
-## Overview
+## 📋 Overview
 
-The portfolio website is deployed on Netlify with automatic deployments from the main branch. It uses Netlify's Next.js runtime (serverless functions + edge) rather than static export to support the contact API route and server-rendered sitemap.
+This portfolio website is deployed on **Netlify** with automatic deployments from the main branch. It uses Netlify's Next.js runtime (serverless functions + edge) to support dynamic features like the contact API route and server-rendered sitemap.
 
-## Environment Configuration
+## 🚀 Quick Deploy
 
-### Required Environment Variables
+### Netlify (Recommended)
 
-The following environment variables should be configured in your deployment platform:
+1. **Connect Repository**
+   - Fork or connect your GitHub repository to Netlify
+   - Enable automatic deployments from the main branch
 
-#### Contact Form (Optional)
+2. **Configure Build Settings**
+   ```bash
+   Build command: npm run build
+   Publish directory: .next (auto-managed by Next.js runtime)
+   Node version: 20
+   ```
 
-Configure these to enable the contact form at `/contact`:
+3. **Set Environment Variables** (see Configuration section below)
+
+4. **Deploy**
+   - Netlify will automatically build and deploy your site
+   - Custom domain can be configured in Site Settings
+
+### Alternative: Manual Deployment
 
 ```bash
-CONTACT_SMTP_HOST=
-CONTACT_SMTP_PORT=
-CONTACT_SMTP_USER=canepro
-CONTACT_SMTP_PASS=True
-CONTACT_TO=mogah.vincent@hotmail.com
+# Build the project
+npm run build
+
+# Deploy to your preferred platform
+# (Vercel, Railway, DigitalOcean, etc.)
 ```
 
-**Note**: Without SMTP configuration, the contact form will return `500: Email not configured`.
+## ⚙️ Configuration
 
-#### Analytics (Optional)
+### Environment Variables
+
+Configure these in your deployment platform's environment settings:
+
+#### Required for Contact Form
 
 ```bash
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX  # Google Analytics Measurement ID
+# SMTP Configuration
+CONTACT_SMTP_HOST=your-smtp-provider.com
+CONTACT_SMTP_PORT=587                    # 587 for TLS, 465 for SSL
+CONTACT_SMTP_USER=your-username
+CONTACT_SMTP_PASS=your-password
+CONTACT_TO=recipient@example.com         # Fallback recipient
 ```
 
-#### Feature Flags (Optional)
+#### Optional Features
 
 ```bash
-NEXT_PUBLIC_RC_ENABLED=1  # Enable Rocket.Chat livechat widget
+# Analytics
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX          # Google Analytics
+
+# Live Chat
+NEXT_PUBLIC_RC_ENABLED=1                # Enable Rocket.Chat
+NEXT_PUBLIC_RC_URL=https://your-instance.rocket.chat/livechat
+
+# GitHub API (increases rate limits)
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
 ```
 
 ### Netlify Configuration
 
-1. **Site Settings** → **Build & deploy** → **Environment variables**
-2. Add the environment variables listed above as needed
-3. Commit `netlify.toml` with the Next.js runtime plugin and Node version configuration
-4. **Build Settings**:
-   - Build command: `npm run build`
-   - Publish directory: auto-managed by the Next runtime
-   - Node version: `20`
+Create a `netlify.toml` file in your project root:
 
-## Build Configuration
+```toml
+[build]
+  command = "npm run build"
+  publish = ".next"
 
-### TypeScript Build Process
+[build.environment]
+  NODE_VERSION = "20"
 
-Since the complete TypeScript migration (v1.2.0), the build process includes:
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
-1. **TypeScript Compilation**: All components compiled with zero errors
-2. **Type Checking**: Strict mode enabled with comprehensive type validation
-3. **Static Generation**: All 12 pages generated successfully
-4. **Bundle Optimization**: Tree-shaking and code splitting applied
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
 
-### Build Verification Commands
+## 🔧 Build Process
+
+### TypeScript Compilation
+
+The build process includes comprehensive type checking:
 
 ```bash
-# Type checking
+# Type checking (runs automatically during build)
 npx tsc --noEmit
 
 # Production build
 npm run build
 
-# Local production test
+# Verify build output
 npm start
 ```
 
-## Troubleshooting
+### Build Verification
+
+| Check | Command | Expected Result |
+|-------|---------|-----------------|
+| TypeScript | `npx tsc --noEmit` | No errors |
+| Build | `npm run build` | Success with 12 pages |
+| Production | `npm start` | Server starts on port 3000 |
+
+## 🐛 Troubleshooting
 
 ### Common Issues
 
 #### Contact Form Errors
 
-**Issue**: Contact form returns 500 error
-**Solutions**:
+**Problem**: Contact form returns 500 error
 
+**Solutions**:
 1. Verify SMTP environment variables are set correctly
-2. Check email credentials and port settings (587 for TLS, 465 for SSL)
-3. Ensure `CONTACT_TO` email is valid
-4. Test SMTP settings with a simple email client first
+2. Check email credentials and port settings
+3. Test SMTP settings with a simple email client
+4. Ensure `CONTACT_TO` email is valid
+
+**Debug Steps**:
+```bash
+# Check environment variables
+echo $CONTACT_SMTP_HOST
+echo $CONTACT_SMTP_PORT
+
+# Test SMTP connection
+telnet $CONTACT_SMTP_HOST $CONTACT_SMTP_PORT
+```
 
 #### Build Failures
 
-**Issue**: TypeScript compilation errors
-**Solutions**:
+**Problem**: TypeScript compilation errors
 
+**Solutions**:
 1. Run `npx tsc --noEmit` to identify type errors
 2. Check for missing type definitions in `src/types/`
 3. Verify all components have proper interfaces
 4. Ensure styled components have typed props
 
-**Issue**: Next.js build fails
-**Solutions**:
+**Problem**: Next.js build fails
 
-1. Clear `.next` cache: `rm -rf .next`
+**Solutions**:
+1. Clear cache: `rm -rf .next`
 2. Reinstall dependencies: `rm -rf node_modules && npm install`
 3. Check for syntax errors in pages
 4. Verify all imports are correctly typed
 
 #### Development Issues
 
-**Issue**: React hook warnings (legacy issue, fixed in v1.2.0)
+**Problem**: Port conflicts
+
 **Solutions**:
+```bash
+# Use alternative port
+npm run dev:3001
 
-- ✅ **Fixed**: Complete TypeScript migration resolved all hook warnings
-- Use proper component typing with `React.FC`
-- Ensure proper hook usage within function components
+# Kill existing processes (macOS/Linux)
+pkill -f node
 
-**Issue**: Port conflicts
+# Kill existing processes (Windows)
+taskkill /f /im node.exe
+
+# Check port usage
+netstat -tulpn | grep :3000
+```
+
+**Problem**: React hook warnings
+
+**Status**: ✅ **Fixed** - Complete TypeScript migration resolved all hook warnings
+
+### Performance Issues
+
+**Problem**: Slow build times
+
 **Solutions**:
-
-1. Use alternative port: `npm run dev:3001`
-2. Kill existing processes: `pkill -f node` (macOS/Linux) or `taskkill /f /im node.exe` (Windows)
-3. Check for processes using port 3000: `netstat -tulpn | grep :3000`
-
-#### Performance Issues
-
-**Issue**: Slow build times
-**Solutions**:
-
 1. Enable Next.js SWC compiler (enabled by default)
 2. Use `npm run build` instead of `npm run dev` for production testing
 3. Consider incremental builds for large projects
 
-### Development Environment Issues
-
-#### TypeScript IntelliSense Not Working
-
-**Solutions**:
-
-1. Restart TypeScript server in VS Code: `Ctrl+Shift+P` → "TypeScript: Restart TS Server"
-2. Check `tsconfig.json` configuration
-3. Ensure all type definitions are properly imported
-4. Verify workspace is opened at project root
-
-#### Styled Components Not Typed
-
-**Solutions**:
-
-1. Check that styled component files use `.ts` extension
-2. Verify prop interfaces are defined in `src/types/styled-components.d.ts`
-3. Apply interfaces to styled components: `styled.div<InterfaceName>`
-4. Restart TypeScript server after adding new interfaces
-
-## Production Checklist
-
-Before deploying to production:
-
-- [ ] **TypeScript Compilation**: `npx tsc --noEmit` passes
-- [ ] **Build Success**: `npm run build` completes without errors
-- [ ] **All Pages Generate**: pages build successfully; dynamic routes and API functions deployed
-- [ ] **Environment Variables**: All required env vars configured
-- [ ] **Contact Form**: Test with proper SMTP settings (if enabled)
-- [ ] **Performance**: Lighthouse score > 90
-- [ ] **Accessibility**: No accessibility violations
-- [ ] **SEO**: Meta tags and structured data present
-- [ ] **Links**: All internal/external links working
-- [ ] **Images**: All project images loading correctly
-
-## Monitoring
+## 📊 Monitoring
 
 ### Build Monitoring
 
@@ -180,54 +204,121 @@ Before deploying to production:
 
 ### Performance Benchmarks
 
-Target metrics for production:
+| Metric | Target | Current |
+|--------|--------|---------|
+| First Contentful Paint | < 1.5s | ✅ |
+| Time to Interactive | < 3.5s | ✅ |
+| Cumulative Layout Shift | < 0.1 | ✅ |
+| Lighthouse Score | > 95 | ✅ |
 
-- **First Contentful Paint**: < 1.5s
-- **Time to Interactive**: < 3.5s
-- **Cumulative Layout Shift**: < 0.1
-- **Lighthouse Score**: > 95
+## 🔄 Rollback Procedures
 
-## Rollback Procedures
+### Immediate Rollback
 
-If issues occur in production:
-
-1. **Immediate Rollback**:
-   - Go to Netlify dashboard
+1. **Netlify Dashboard**
    - Navigate to "Deploys"
    - Click "Publish deploy" on previous stable version
 
-2. **Fix and Redeploy**:
-   - Create hotfix branch from main
-   - Apply necessary fixes
-   - Verify TypeScript compilation and build
-   - Create PR and merge to main
-   - Verify automatic deployment
+2. **Git Rollback**
+   ```bash
+   # Revert to previous commit
+   git revert HEAD
+   git push origin main
+   ```
 
-## Support
+### Fix and Redeploy
 
-### Log Analysis
+1. Create hotfix branch
+   ```bash
+   git checkout -b hotfix/issue-description
+   ```
 
-**Netlify Build Logs**:
+2. Apply fixes and verify
+   ```bash
+   npm run build
+   npm start
+   ```
 
-- Access via Netlify dashboard → Site → Deploys → Build log
-- Look for TypeScript errors, dependency issues, or build failures
+3. Deploy
+   ```bash
+   git push origin hotfix/issue-description
+   # Create PR and merge to main
+   ```
 
-**Browser Console**:
+## 📋 Production Checklist
 
-- Check for JavaScript errors in production
-- Monitor network requests for failed API calls
-- Verify styled-components theme application
+Before deploying to production:
 
-### Contact Support
+- [ ] **TypeScript Compilation**: `npx tsc --noEmit` passes
+- [ ] **Build Success**: `npm run build` completes without errors
+- [ ] **All Pages Generate**: 12 pages build successfully
+- [ ] **Environment Variables**: All required env vars configured
+- [ ] **Contact Form**: Test with proper SMTP settings (if enabled)
+- [ ] **Performance**: Lighthouse score > 90
+- [ ] **Accessibility**: No accessibility violations
+- [ ] **SEO**: Meta tags and structured data present
+- [ ] **Links**: All internal/external links working
+- [ ] **Images**: All project images loading correctly
 
-For deployment issues:
+## 🛠️ Development Environment
 
-1. Check this troubleshooting guide first
-2. Review Netlify build logs for specific errors
-3. Ensure TypeScript compilation passes locally
-4. Open GitHub issue with reproduction steps if needed
+### Local Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+### TypeScript Development
+
+- **IntelliSense**: Full TypeScript support in VS Code
+- **Type Checking**: Real-time error detection
+- **Auto-completion**: Enhanced developer experience
+
+### Styled Components
+
+- **Theme Integration**: CSS variables for theme switching
+- **Type Safety**: Proper prop typing for all components
+- **SSR Support**: Server-side rendering enabled
+
+## 📞 Support
+
+### Getting Help
+
+1. **Check Documentation**: Review this guide and other docs
+2. **Build Logs**: Check Netlify build logs for specific errors
+3. **Local Testing**: Verify TypeScript compilation passes locally
+4. **GitHub Issues**: Open issue with reproduction steps
+
+### Useful Commands
+
+```bash
+# Type checking
+npx tsc --noEmit
+
+# Production build
+npm run build
+
+# Local production test
+npm start
+
+# Clear cache
+rm -rf .next
+
+# Reinstall dependencies
+rm -rf node_modules && npm install
+```
 
 ---
 
-**Last Updated**: January 2025
+**Last Updated**: January 2025  
 **Next Review**: February 2025
