@@ -2,16 +2,12 @@ import type { Project } from '../types/project';
 
 export const projects: Project[] = [
   {
-    title: 'Containerized Chat Platform with Observability Stack',
-    slug: 'containerized-chat-observability',
-    description: 'Deployed and configured a full-stack Rocket.Chat microservices environment with a production-grade observability stack using Podman Compose, Traefik, Prometheus, and Grafana. Enabled secure routing, real-time metrics, and modular orchestration.',
-    longDescription: `Successfully deployed and configured a full-stack Rocket.Chat microservices platform with enterprise-grade monitoring and observability. 
-    
-    The deployment includes Rocket.Chat for team communication, Traefik for reverse proxy and SSL termination, Prometheus for metrics collection, and Grafana for visualization dashboards. 
-    
-    Everything is orchestrated using Podman Compose for container management with rootless containers for enhanced security.`,
-    image: '/images/rocketchat-homepage.png',
-    tags: ['Podman', 'Traefik', 'Prometheus', 'Grafana', 'MongoDB'],
+    title: 'Rocket.Chat — Observability Stack',
+    slug: 'rocketchat-observability',
+    description: 'Complete Rocket.Chat observability demo with Prometheus, Grafana, exporters, and Traefik.',
+    longDescription: `Complete observability demo for Rocket.Chat with Prometheus, Grafana, exporters, and Traefik routing.`,
+    image: '/images/chat-observability.png',
+    tags: ['Rocket.Chat', 'Prometheus', 'Grafana', 'Traefik', 'MongoDB'],
     category: 'DevOps',
     featured: true,
     source: 'https://github.com/Canepro/rocketchat-observability',
@@ -65,9 +61,9 @@ export const projects: Project[] = [
   {
     title: 'Terraform: Azure Hello Cloud',
     slug: 'terraform-azure',
-    description: 'Provisioned an Azure Resource Group and Storage Account using Terraform to showcase Infrastructure as Code (IaC) principles in a cloud environment.',
-    image: '/images/5.jpg',
-    tags: ['Terraform', 'Azure', 'IaC'],
+    description: 'Minimal Terraform example that provisions an Azure Resource Group and Storage Account.',
+    image: '/images/tf-azure.png',
+    tags: ['Terraform', 'Azure', 'IaC', 'Storage Account'],
     category: 'Cloud',
     featured: true,
     source: 'https://github.com/Canepro/tf-hello-azure',
@@ -77,9 +73,9 @@ export const projects: Project[] = [
   {
     title: 'Rocket.Chat Local Development Stack',
     slug: 'rocketchat-local-dev',
-    description: 'Built a modular Rocket.Chat local development environment using Podman and Docker Compose, enabling isolated testing, quick resets, and controlled upgrades.',
-    image: '/images/1.png',
-    tags: ['Podman', 'Docker Compose', 'MongoDB', 'Traefik'],
+    description: 'Local Rocket.Chat stack with MongoDB, Redis, and Traefik via one-command script (Docker/Podman).',
+    image: '/images/rocketchat-homepage.png',
+    tags: ['Docker Compose', 'Podman', 'MongoDB', 'Redis', 'Traefik'],
     category: 'DevOps',
     featured: false,
     source: 'https://github.com/Canepro/rocketchat-local-dev',

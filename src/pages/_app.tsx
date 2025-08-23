@@ -26,13 +26,14 @@ export default function App({ Component, pageProps }: AppProps) {
               (function(w, d, s, u) {
                 w.RocketChat = function(c) { w.RocketChat._.push(c) };
                 w.RocketChat._ = [];
-                w.RocketChat.url = u;
+                var rcUrl = u || '${process.env.NEXT_PUBLIC_RC_URL || 'https://canepros.rocket.chat/livechat'}';
+                w.RocketChat.url = rcUrl;
                 var h = d.getElementsByTagName(s)[0],
                   j = d.createElement(s);
                 j.async = true;
-                j.src = 'https://canepros.rocket.chat/livechat/rocketchat-livechat.min.js?_=201903270000';
+                j.src = rcUrl.replace(/\/$/, '') + '/rocketchat-livechat.min.js';
                 h.parentNode.insertBefore(j, h);
-              })(window, document, 'script', 'https://canepros.rocket.chat/livechat');
+              })(window, document, 'script', '${process.env.NEXT_PUBLIC_RC_URL || 'https://canepros.rocket.chat/livechat'}');
             `,
           }}
         />

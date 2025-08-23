@@ -1,32 +1,53 @@
 import type { ProjectDetail } from '../types/project';
 
 export const projectDetails: Record<string, ProjectDetail> = {
-  'containerized-chat-observability': {
-    slug: 'containerized-chat-observability',
-    longDescription: `Successfully deployed and configured a full-stack Rocket.Chat microservices platform with enterprise-grade monitoring and observability.
-    
-    The deployment includes Rocket.Chat for team communication, Traefik for reverse proxy and SSL termination, Prometheus for metrics collection, and Grafana for visualization dashboards.
-    
-    Everything is orchestrated using Podman Compose for container management with rootless containers for enhanced security.`,
+  'rocketchat-observability': {
+    slug: 'rocketchat-observability',
+    longDescription: `Complete Rocket.Chat observability demo environment with Prometheus, Grafana, exporters, and Traefik.
+
+    Quick start
+    1) git clone --depth 1 https://github.com/Canepro/rocketchat-observability.git
+    2) cd rocketchat-observability
+    3) cp env.example .env  (set DOMAIN to your host, e.g. localhost)
+    4) make demo-up
+    5) Open Grafana at http://localhost/grafana and Prometheus at http://localhost/prometheus
+
+    Ports/URLs
+    - Grafana: http://localhost/grafana
+    - Prometheus: http://localhost/prometheus
+    - Traefik Dashboard (optional if enabled): http://localhost:8080
+
+    Notes & limitations
+    - Designed for local/lab use; not hardened for production.
+    - Set DOMAIN in .env to avoid Traefik 404 routing issues.
+    - Do not expose Traefik or Grafana publicly without authentication.
+
+    Enhancements (suggestions)
+    - Add a short GIF showcasing the Grafana dashboard navigation.
+    - Add CI to validate dashboard provisioning and exporter readiness.
+    - Provide a guide for deploying the stack to a cloud VM or test cluster.
+    - Optional: enable basic auth for Traefik/Grafana when exposing externally.
+
+    Badges (recommended)
+    - compose-lint: https://github.com/Canepro/rocketchat-observability/actions/workflows/compose-lint.yml/badge.svg`,
     challenges: [
-      'Configuring Traefik for automatic SSL certificate management',
-      'Setting up Prometheus exporters for MongoDB and Rocket.Chat',
-      'Creating custom Grafana dashboards for real-time monitoring',
-      'Implementing rootless Podman containers for security'
+      'Configuring Traefik routes and path-based services',
+      'Setting up exporters for Rocket.Chat and MongoDB',
+      'Provisioning Grafana dashboards automatically',
+      'Ensuring compatibility with Docker and Podman'
     ],
     solutions: [
-      "Used Traefik with Let's Encrypt for automatic HTTPS",
-      'Deployed node-exporter and mongodb-exporter for comprehensive metrics',
-      'Built custom dashboards showing user activity, message flow, and system health',
-      'Configured Podman in rootless mode with proper UID/GID mapping'
+      'Traefik file provider routing with path-based services',
+      'Node and MongoDB exporters integrated into the compose stack',
+      'Grafana provisioning with pre-baked dashboards',
+      'Documented support for Podman and Docker engines'
     ],
-    impact: 'Reduced incident response time by 60% through proactive monitoring and alerting',
+    impact: 'Improved monitoring visibility and accelerated troubleshooting for Rocket.Chat environments',
     technologies: {
-      'Container Orchestration': ['Podman', 'Podman Compose'],
+      'Orchestration': ['Docker Compose', 'Podman Compose'],
       'Monitoring': ['Prometheus', 'Grafana', 'Alertmanager'],
-      'Networking': ["Traefik", "Let's Encrypt"],
-      'Database': ['MongoDB', 'Redis'],
-      'Application': ['Rocket.Chat', 'Node.js']
+      'Routing': ['Traefik'],
+      'Services': ['Rocket.Chat', 'MongoDB']
     }
   },
   'dockerized-portfolio': {
@@ -85,56 +106,92 @@ export const projectDetails: Record<string, ProjectDetail> = {
   },
   'terraform-azure': {
     slug: 'terraform-azure',
-    longDescription: `Infrastructure as Code implementation demonstrating Azure resource provisioning with Terraform, showcasing cloud automation best practices.
+    longDescription: `Minimal Terraform example that provisions an Azure Resource Group and Storage Account.
     
-    The project creates a complete Azure environment with proper resource naming, tagging strategies, and state management configuration.
+    Quick start
+    1) git clone --depth 1 https://github.com/Canepro/tf-hello-azure.git
+    2) cd tf-hello-azure
+    3) az login && az account set --subscription <AZURE_SUBSCRIPTION_ID>
+    4) terraform init
+    5) terraform apply -auto-approve
     
-    This serves as a foundation for larger Azure deployments with modular, reusable Terraform code.`,
+    Notes & limitations
+    - Intended for learning/demo; review before production.
+    - Use placeholders only (e.g., <AZURE_SUBSCRIPTION_ID>, <AZURE_CREDENTIALS>). Do not commit secrets.
+    - Remember to clean up: terraform destroy -auto-approve
+    
+    Enhancements (suggestions)
+    - Add GitHub Actions CI for fmt/validate/plan.
+    - Add examples for additional Azure resources (vnet, key vault).
+    - Provide cost notes and tagging strategy.
+    - Add terraform-docs generation and pre-commit hooks.`,
     challenges: [
-      'Managing Terraform state in a team environment',
-      'Implementing proper resource tagging for cost tracking',
-      'Ensuring idempotent resource creation',
-      'Handling Azure authentication securely'
+      'Managing provider authentication and subscription context',
+      'Designing consistent naming and tagging',
+      'Keeping state safe and reproducible'
     ],
     solutions: [
-      'Azure Storage backend for remote state with locking',
-      'Consistent tagging module with environment and cost center tags',
-      'Proper resource lifecycle management with create_before_destroy',
-      'Service Principal authentication with environment variables'
+      'Documented az login and subscription selection',
+      'Conventional resource naming and baseline tags',
+      'Guidance on remote state and workspaces for team use'
     ],
-    impact: 'Reduced infrastructure provisioning time from hours to minutes with consistent, repeatable deployments',
+    impact: 'Provides a simple baseline for Azure IaC and fast onboarding to Terraform',
     technologies: {
-      'IaC': ['Terraform', 'HCL', 'State management'],
-      'Cloud': ['Azure Resource Manager', 'Storage Accounts', 'Resource Groups'],
-      'Security': ['Service Principals', 'RBAC', 'Key Vault integration'],
-      'Best Practices': ['Remote state', 'Modules', 'Variables']
+      'IaC': ['Terraform'],
+      'Azure': ['Resource Group', 'Storage Account'],
+      'Auth': ['Azure CLI', 'Service Principal (optional)']
     }
   },
   'rocketchat-local-dev': {
     slug: 'rocketchat-local-dev',
-    longDescription: `Complete local development environment for Rocket.Chat that enables developers to quickly spin up, test, and debug the platform.
-    
-    The stack includes all necessary services: MongoDB for data persistence, Redis for caching, and Traefik for routing, all orchestrated with Docker Compose.
-    
-    Features include data persistence across restarts, easy version switching, and isolated networking for security.`,
+    longDescription: `Local Rocket.Chat development stack with MongoDB, Redis, and Traefik. One-command startup with automatic engine detection (Docker or Podman).
+
+    Quick start (one command)
+    1) git clone --depth 1 https://github.com/Canepro/rocketchat-local-dev.git
+    2) cd rocketchat-local-dev
+    3) ./up.sh
+
+    What it does
+    - Creates .env from .env.example if missing
+    - Detects Docker or Podman automatically
+    - Starts all services and initializes MongoDB replica set
+
+    Ports/URLs
+    - Rocket.Chat: http://localhost:8080 (via Traefik)
+    - Traefik Dashboard (dev only): http://localhost:8081
+
+    Common tasks
+    - Stop/remove: ./down.sh
+    - Upgrade images: edit .env (e.g. ROCKETCHAT_IMAGE=rocketchat/rocket.chat:7.x) then ./upgrade.sh
+
+    Notes & limitations
+    - Local/dev only; not production-hardened.
+    - Keep customizations in .env; TRAEFIK_HTTP_PORT controls external port.
+    - Avoid exposing extra container ports beyond Traefik.
+
+    Enhancements (suggestions)
+    - CI: compose-lint + basic health checks for services.
+    - Seed data/sample users for quick demos.
+    - Add a short demo GIF showing first-run onboarding.
+    - Document backup/restore for MongoDB volume.
+
+    Badges (recommended)
+    - compose-lint: https://github.com/Canepro/rocketchat-local-dev/actions/workflows/compose-lint.yml/badge.svg`,
     challenges: [
-      'Managing data persistence across container restarts',
-      'Configuring inter-service communication securely',
-      'Enabling easy version upgrades and rollbacks',
-      'Providing developer-friendly logging and debugging'
+      'Balancing simplicity with realistic service topology',
+      'Ensuring fast resets while preserving important data',
+      'Supporting both Docker and Podman engines'
     ],
     solutions: [
-      'Named volumes for MongoDB and uploads with backup scripts',
-      'Custom Docker network with service discovery',
-      'Version pinning with .env file configuration',
-      'Centralized logging with docker-compose logs aggregation'
+      'Compose files organized for easy spins and resets',
+      'Named volumes for persistence and quick cleanup options',
+      'Engine-agnostic compose usage documented'
     ],
-    impact: 'Reduced developer onboarding time from days to hours, enabling rapid feature development and testing',
+    impact: 'Accelerates local development and testing for Rocket.Chat',
     technologies: {
       'Orchestration': ['Docker Compose', 'Podman Compose'],
-      'Services': ['Rocket.Chat', 'MongoDB', 'Redis', 'Traefik'],
-      'Development': ['Hot reload', 'Debug ports', 'Volume mounts'],
-      'Networking': ['Service mesh', 'Internal DNS', 'Port mapping']
+      'Services': ['Rocket.Chat', 'MongoDB', 'Redis'],
+      'Optional': ['Traefik']
     }
   },
   'rocketchat-troubleshooting': {
