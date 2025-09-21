@@ -1,6 +1,7 @@
 import * as React from "react";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg";
   asChild?: boolean;
@@ -49,33 +50,23 @@ const sizeStyles = {
   lg: { height: '48px', padding: '0 32px', fontSize: '18px' },
 };
 
-export const Button = React.forwardRef<HTMLButtonElement | HTMLElement, ButtonProps & { children?: React.ReactNode }>(
-  ({ variant = "default", size = "md", asChild = false, style, children, ...props }, ref) => {
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ variant = "default", size = "md", asChild = false, style, ...props }, ref) => {
+    const Comp = asChild ? "span" : "button";
+    
     const combinedStyles = {
       ...baseStyles,
       ...variantStyles[variant],
       ...sizeStyles[size],
       ...style,
-    } as React.CSSProperties;
-
-    if (asChild && React.isValidElement(children)) {
-      const child = children as React.ReactElement<any>;
-      const childStyle = (child.props && child.props.style) || {};
-      return React.cloneElement(child, {
-        ref,
-        style: { ...combinedStyles, ...childStyle },
-        ...props,
-      });
-    }
-
+    };
+    
     return (
-      <button
-        ref={ref as React.Ref<HTMLButtonElement>}
+      <Comp
+        ref={ref}
         style={combinedStyles}
         {...props}
-      >
-        {children}
-      </button>
+      />
     );
   }
 );

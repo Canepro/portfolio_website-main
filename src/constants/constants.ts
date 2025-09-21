@@ -2,45 +2,16 @@ import type { Project } from '../types/project';
 
 export const projects: Project[] = [
   {
-    title: '🚀 Enterprise Kubernetes Chat Platform',
-    slug: 'rocketchat-kubernetes-enterprise',
-    description: 'Production-ready Rocket.Chat deployment on Azure Kubernetes Service with comprehensive monitoring, high availability, and 99.7% uptime SLO.',
-    longDescription: `Enterprise-grade Rocket.Chat deployment showcasing advanced Kubernetes and DevOps practices on Azure Kubernetes Service.`,
-    image: '/images/new_dashboard&rocketchatGif.gif',
-    tags: ['Kubernetes', 'Azure AKS', 'Prometheus', 'Grafana', 'MongoDB', 'Loki', 'Helm'],
-    category: 'Cloud',
-    featured: true,
-    source: 'https://github.com/Canepro/rocketchat-k8s-deployment',
-    visit: 'https://chat.canepro.me',
-    challenges: [
-      'Designing high-availability architecture with multi-replica MongoDB cluster',
-      'Implementing comprehensive observability with 28-panel Grafana dashboard',
-      'Achieving 99.7% uptime SLO while optimizing costs by 20%',
-      'Managing complex Kubernetes networking and security policies'
-    ],
-    solutions: [
-      'Deployed multi-replica MongoDB cluster with automated failover',
-      'Built 28-panel monitoring dashboard with desired vs actual state tracking',
-      'Implemented SSL/TLS, RBAC, network policies, and secret management',
-      'Created comprehensive troubleshooting documentation with real-world case studies'
-    ],
-    impact: 'Achieved 99.7% uptime with 20% cost reduction while managing 55+ Kubernetes pods and 1,238+ metrics',
-    technologies: {
-      'Orchestration': ['Kubernetes', 'Azure AKS', 'Helm'],
-      'Monitoring': ['Prometheus', 'Grafana', 'Loki', 'Alertmanager'],
-      'Database': ['MongoDB Cluster', 'Redis'],
-      'Security': ['SSL/TLS', 'RBAC', 'Network Policies'],
-      'Application': ['Rocket.Chat', 'Node.js']
-    },
-    id: 0
-  },
-  {
-    title: 'Rocket.Chat — Observability Stack',
-    slug: 'rocketchat-observability',
-    description: 'Complete Rocket.Chat observability demo with Prometheus, Grafana, exporters, and Traefik.',
-    longDescription: `Complete observability demo for Rocket.Chat with Prometheus, Grafana, exporters, and Traefik routing.`,
-    image: '/images/chat-observability.png',
-    tags: ['Rocket.Chat', 'Prometheus', 'Grafana', 'Traefik', 'MongoDB'],
+    title: 'Containerized Chat Platform with Observability Stack',
+    slug: 'containerized-chat-observability',
+    description: 'Deployed and configured a full-stack Rocket.Chat microservices environment with a production-grade observability stack using Podman Compose, Traefik, Prometheus, and Grafana. Enabled secure routing, real-time metrics, and modular orchestration.',
+    longDescription: `Successfully deployed and configured a full-stack Rocket.Chat microservices platform with enterprise-grade monitoring and observability. 
+    
+    The deployment includes Rocket.Chat for team communication, Traefik for reverse proxy and SSL termination, Prometheus for metrics collection, and Grafana for visualization dashboards. 
+    
+    Everything is orchestrated using Podman Compose for container management with rootless containers for enhanced security.`,
+    image: '/images/rocketchat-homepage.png',
+    tags: ['Podman', 'Traefik', 'Prometheus', 'Grafana', 'MongoDB'],
     category: 'DevOps',
     featured: true,
     source: 'https://github.com/Canepro/rocketchat-observability',
@@ -65,7 +36,7 @@ export const projects: Project[] = [
       'Database': ['MongoDB', 'Redis'],
       'Application': ['Rocket.Chat', 'Node.js']
     },
-    id: 1
+    id: 0
   },
   {
     title: 'Dockerized Portfolio App',
@@ -77,7 +48,7 @@ export const projects: Project[] = [
     featured: true,
     source: 'https://github.com/Canepro/portfolio_website-main/blob/main/Dockerfile',
     visit: 'https://portfolio.canepro.me/',
-    id: 2
+    id: 1
   },
   {
     title: 'CI Pipeline with GitHub Actions',
@@ -89,31 +60,31 @@ export const projects: Project[] = [
     featured: false,
     source: 'https://github.com/Canepro/portfolio_website-main/blob/main/.github/workflows/ci.yml',
     visit: 'https://github.com/Canepro/portfolio_website-main/actions',
-    id: 3
+    id: 2
   },
   {
     title: 'Terraform: Azure Hello Cloud',
     slug: 'terraform-azure',
-    description: 'Minimal Terraform example that provisions an Azure Resource Group and Storage Account.',
-    image: '/images/tf-azure.png',
-    tags: ['Terraform', 'Azure', 'IaC', 'Storage Account'],
+    description: 'Provisioned an Azure Resource Group and Storage Account using Terraform to showcase Infrastructure as Code (IaC) principles in a cloud environment.',
+    image: '/images/5.jpg',
+    tags: ['Terraform', 'Azure', 'IaC'],
     category: 'Cloud',
     featured: true,
     source: 'https://github.com/Canepro/tf-hello-azure',
     visit: 'https://github.com/Canepro/tf-hello-azure',
-    id: 4
+    id: 3
   },
   {
     title: 'Rocket.Chat Local Development Stack',
     slug: 'rocketchat-local-dev',
-    description: 'Local Rocket.Chat stack with MongoDB, Redis, and Traefik via one-command script (Docker/Podman).',
-    image: '/images/rocketchat-homepage.png',
-    tags: ['Docker Compose', 'Podman', 'MongoDB', 'Redis', 'Traefik'],
+    description: 'Built a modular Rocket.Chat local development environment using Podman and Docker Compose, enabling isolated testing, quick resets, and controlled upgrades.',
+    image: '/images/1.png',
+    tags: ['Podman', 'Docker Compose', 'MongoDB', 'Traefik'],
     category: 'DevOps',
     featured: false,
     source: 'https://github.com/Canepro/rocketchat-local-dev',
     visit: 'https://github.com/Canepro/rocketchat-local-dev',
-    id: 5
+    id: 4
   },
   {
     title: 'Rocket.Chat Troubleshooting Tool',
@@ -125,7 +96,7 @@ export const projects: Project[] = [
     featured: false,
     source: 'https://github.com/Canepro/rocketchat-log-analyzer',
     visit: 'https://github.com/Canepro/rocketchat-log-analyzer',
-    id: 6
+    id: 5
   },
   {
     title: 'Rocket.Chat Log Analysis Web App',
@@ -137,7 +108,7 @@ export const projects: Project[] = [
     featured: false,
     source: 'https://github.com/Canepro/rocketchat-log-dashboard',
     visit: 'https://github.com/Canepro/rocketchat-log-dashboard',
-    id: 7
+    id: 6
   }
 ];
 

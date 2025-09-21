@@ -1,8 +1,6 @@
 // src/pages/projects/[slug].tsx
 
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -86,8 +84,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, slug }) 
                 src={project.image}
                 alt={project.title}
                 fill
-                unoptimized={project.image.endsWith('.gif')}
-                style={{ objectFit: project.image.endsWith('.gif') ? 'contain' : 'cover' }}
+                style={{ objectFit: 'cover' }}
                 priority
               />
             </ProjectImage>
@@ -114,9 +111,7 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, slug }) 
             <Section>
               <SectionTitle>Overview</SectionTitle>
               <Description>
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {fullProject.longDescription || project.description}
-                </ReactMarkdown>
+                {fullProject.longDescription || project.description}
               </Description>
             </Section>
 
