@@ -2,6 +2,39 @@ import type { Project } from '../types/project';
 
 export const projects: Project[] = [
   {
+    title: '🚀 Enterprise Kubernetes Chat Platform',
+    slug: 'rocketchat-kubernetes-enterprise',
+    description: 'Production-ready Rocket.Chat deployment on Azure Kubernetes Service with comprehensive monitoring, high availability, and 99.7% uptime SLO.',
+    longDescription: `Enterprise-grade Rocket.Chat deployment showcasing advanced Kubernetes and DevOps practices on Azure Kubernetes Service.`,
+    image: '/images/new_dashboard&rocketchatGif.gif',
+    tags: ['Kubernetes', 'Azure AKS', 'Prometheus', 'Grafana', 'MongoDB', 'Loki', 'Helm'],
+    category: 'Cloud',
+    featured: true,
+    source: 'https://github.com/Canepro/rocketchat-k8s-deployment',
+    visit: 'https://chat.canepro.me',
+    challenges: [
+      'Designing high-availability architecture with multi-replica MongoDB cluster',
+      'Implementing comprehensive observability with 28-panel Grafana dashboard',
+      'Achieving 99.7% uptime SLO while optimizing costs by 20%',
+      'Managing complex Kubernetes networking and security policies'
+    ],
+    solutions: [
+      'Deployed multi-replica MongoDB cluster with automated failover',
+      'Built 28-panel monitoring dashboard with desired vs actual state tracking',
+      'Implemented SSL/TLS, RBAC, network policies, and secret management',
+      'Created comprehensive troubleshooting documentation with real-world case studies'
+    ],
+    impact: 'Achieved 99.7% uptime with 20% cost reduction while managing 55+ Kubernetes pods and 1,238+ metrics',
+    technologies: {
+      'Orchestration': ['Kubernetes', 'Azure AKS', 'Helm'],
+      'Monitoring': ['Prometheus', 'Grafana', 'Loki', 'Alertmanager'],
+      'Database': ['MongoDB Cluster', 'Redis'],
+      'Security': ['SSL/TLS', 'RBAC', 'Network Policies'],
+      'Application': ['Rocket.Chat', 'Node.js']
+    },
+    id: 0
+  },
+  {
     title: 'Rocket.Chat — Observability Stack',
     slug: 'rocketchat-observability',
     description: 'Complete Rocket.Chat observability demo with Prometheus, Grafana, exporters, and Traefik.',
@@ -32,7 +65,7 @@ export const projects: Project[] = [
       'Database': ['MongoDB', 'Redis'],
       'Application': ['Rocket.Chat', 'Node.js']
     },
-    id: 0
+    id: 1
   },
   {
     title: 'Dockerized Portfolio App',
@@ -44,7 +77,7 @@ export const projects: Project[] = [
     featured: true,
     source: 'https://github.com/Canepro/portfolio_website-main/blob/main/Dockerfile',
     visit: 'https://portfolio.canepro.me/',
-    id: 1
+    id: 2
   },
   {
     title: 'CI Pipeline with GitHub Actions',
@@ -56,7 +89,7 @@ export const projects: Project[] = [
     featured: false,
     source: 'https://github.com/Canepro/portfolio_website-main/blob/main/.github/workflows/ci.yml',
     visit: 'https://github.com/Canepro/portfolio_website-main/actions',
-    id: 2
+    id: 3
   },
   {
     title: 'Terraform: Azure Hello Cloud',
@@ -68,7 +101,7 @@ export const projects: Project[] = [
     featured: true,
     source: 'https://github.com/Canepro/tf-hello-azure',
     visit: 'https://github.com/Canepro/tf-hello-azure',
-    id: 3
+    id: 4
   },
   {
     title: 'Rocket.Chat Local Development Stack',
@@ -80,7 +113,7 @@ export const projects: Project[] = [
     featured: false,
     source: 'https://github.com/Canepro/rocketchat-local-dev',
     visit: 'https://github.com/Canepro/rocketchat-local-dev',
-    id: 4
+    id: 5
   },
   {
     title: 'Rocket.Chat Troubleshooting Tool',
@@ -92,7 +125,7 @@ export const projects: Project[] = [
     featured: false,
     source: 'https://github.com/Canepro/rocketchat-log-analyzer',
     visit: 'https://github.com/Canepro/rocketchat-log-analyzer',
-    id: 5
+    id: 6
   },
   {
     title: 'Rocket.Chat Log Analysis Web App',
@@ -104,7 +137,7 @@ export const projects: Project[] = [
     featured: false,
     source: 'https://github.com/Canepro/rocketchat-log-dashboard',
     visit: 'https://github.com/Canepro/rocketchat-log-dashboard',
-    id: 6
+    id: 7
   }
 ];
 

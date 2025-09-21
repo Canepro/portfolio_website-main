@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented here. Dates are in YYYY-MM-DD.
 
+## v1.3.0 - 2025-09-21
+
+### Added
+- **🚀 Enterprise Kubernetes Chat Platform** - New featured project showcasing live production infrastructure
+- **Live Demo Integration** - Interactive buttons for live chat application and monitoring dashboard
+- **Markdown Rendering** - Rich project documentation with react-markdown and remark-gfm
+- **Analytics Tracking** - Demo interaction tracking for portfolio engagement metrics
+- **Production Metrics Display** - Real enterprise achievements (99.7% uptime, 20% cost reduction)
+- **Animated GIF Support** - Optimized display for dynamic project demonstrations
+
+### Enhanced
+- **Project Detail Pages** - Professional typography aligned with site theme
+- **Responsive Design** - Improved mobile experience for enterprise project showcase
+- **Visual Hierarchy** - Enhanced markdown styling with proper headings, tables, and lists
+- **Button Styling** - Gradient demo buttons with hover effects and accessibility
+
+### Infrastructure
+- **Live Production Demos** - https://chat.canepro.me (guest access) and https://grafana.chat.canepro.me
+- **Real Monitoring Data** - 55+ Kubernetes pods, 1,238+ metrics, 28-panel dashboard
+- **Enterprise Architecture** - Azure AKS, MongoDB cluster, comprehensive observability stack
+
+---
+
 ## v1.2.1 - 2025-01-17
 
 ### Updated

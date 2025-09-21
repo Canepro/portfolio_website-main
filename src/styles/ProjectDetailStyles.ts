@@ -115,14 +115,83 @@ export const SectionTitle = styled.h2`
 `;
 
 export const Description = styled.div`
-  font-size: 18px;
-  line-height: 32px;
+  font-size: 22px;
+  line-height: 36px;
   color: ${(props) => props.theme.colors.textSecondary};
-  white-space: pre-line;
+  white-space: normal;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
 
   @media ${(props) => props.theme.breakpoints.sm} {
     font-size: 16px;
     line-height: 28px;
+  }
+
+  /* Markdown content styling */
+  h2, h3, h4 {
+    color: ${(props) => props.theme.colors.text};
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+  }
+
+  h2 { font-size: 28px; }
+  h3 { font-size: 22px; }
+  h4 { font-size: 18px; }
+
+  p {
+    margin: 0.75rem 0;
+  }
+
+  a {
+    color: ${(props) => props.theme.colors.accent1};
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  ul {
+    padding-left: 1.25rem;
+    margin: 0.5rem 0 1rem;
+    list-style: disc outside;
+  }
+
+  li {
+    margin: 0.35rem 0;
+  }
+
+  code {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  th, td {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 8px 12px;
+    text-align: left;
+  }
+
+  thead th { background: rgba(255, 255, 255, 0.06); }
+  hr {
+    height: 3px;
+    width: 64px;
+    border: none;
+    background: ${(props) => props.theme.colors.gradient};
+    margin: 1.25rem 0;
+    border-radius: 6px;
   }
 `;
 
