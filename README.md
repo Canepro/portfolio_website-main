@@ -11,16 +11,30 @@
   <img src="https://github.com/Canepro/portfolio_website-main/blob/main/public/images/6.png?raw=true" alt="Portfolio Preview" width="800" />
 </div>
 
+## 🚀 Featured: Enterprise Kubernetes Project
+
+**NEW:** This portfolio now showcases a **live production enterprise Kubernetes deployment** with working demos:
+
+- **🔗 Live Chat Application**: [chat.canepro.me](https://chat.canepro.me) - Real Rocket.Chat instance
+- **📊 Live Monitoring Dashboard**: [Public Dashboard](https://grafana.chat.canepro.me/d/public-rocketchat-overview) - 28-panel production monitoring
+- **🎯 Production Metrics**: 99.7% uptime SLO, 55+ managed pods, 1,238+ metrics
+- **💰 Business Impact**: 20% cost reduction through monitoring-driven optimization
+
+*This sets the portfolio apart by demonstrating actual working enterprise infrastructure, not just code samples.*
+
 ## ✨ Features
 
+- **🚀 Live Enterprise Demos** - Working production Kubernetes infrastructure with real-time monitoring
 - **Modern Design** - Clean, responsive layout with smooth animations
 - **TypeScript** - 100% type-safe with comprehensive interfaces
 - **Performance** - Optimized with Next.js Image, ISR, and code splitting
 - **Accessibility** - ARIA labels, keyboard navigation, screen reader support
 - **SEO Optimized** - Meta tags, structured data, dynamic sitemap
+- **Interactive Projects** - Live demos, analytics tracking, and production metrics
+- **Markdown Rendering** - Rich project documentation with proper typography
 - **Real-time Stats** - GitHub statistics with incremental static regeneration
 - **Contact Form** - Email delivery via SMTP with rate limiting
-- **Live Chat** - Optional Rocket.Chat integration
+- **Live Chat** - Rocket.Chat integration with production instance
 - **Container Ready** - Docker support with health checks
 - **CI/CD** - Automated deployment with GitHub Actions
 

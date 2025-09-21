@@ -1,6 +1,138 @@
 import type { ProjectDetail } from '../types/project';
 
 export const projectDetails: Record<string, ProjectDetail> = {
+  'rocketchat-kubernetes-enterprise': {
+    slug: 'rocketchat-kubernetes-enterprise',
+    longDescription: `## 🚀 Production-Ready Enterprise Chat Platform
+
+**A comprehensive Kubernetes deployment showcasing enterprise-grade architecture, advanced DevOps practices, and production monitoring excellence.**
+
+---
+
+### ⭐ **Key Achievements**
+
+🎯 **99.7% Production Uptime SLO** - Consistently maintained in live environment  
+💰 **20% Cost Reduction** - Through intelligent monitoring and optimization  
+📊 **1,238+ Metrics** - Comprehensive observability across 55+ pods  
+📚 **5,300+ Lines** - Production troubleshooting documentation  
+
+---
+
+### 🎮 **Live Demo Access**
+
+Experience the actual production infrastructure:
+
+**🔗 Live Chat Application**  
+[https://chat.canepro.me](https://chat.canepro.me) *(Guest access enabled)*
+
+**📊 Real-Time Monitoring Dashboard**  
+[Public Dashboard](https://grafana.chat.canepro.me/d/public-rocketchat-overview) | [Kiosk Mode](https://grafana.chat.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark)
+
+---
+
+### 🏗️ **Infrastructure Architecture**
+
+**Container Orchestration**
+- **Azure Kubernetes Service** - Production-grade cluster management
+- **55+ Managed Pods** - Across multiple namespaces with auto-scaling
+- **Multi-replica deployments** - High availability and fault tolerance
+
+**Database Layer**
+- **MongoDB Replica Set** - 3-node cluster with automated failover
+- **Redis Cache** - Session management and real-time features
+- **Persistent Storage** - Azure managed disks with backup automation
+
+**Monitoring & Observability**
+- **28-Panel Grafana Dashboard** - Comprehensive system monitoring
+- **Prometheus Metrics** - 1,238+ series with custom alerts
+- **Loki Log Aggregation** - Centralized logging with Fluent Bit
+- **Desired vs Actual State Tracking** - Kubernetes workload monitoring
+
+---
+
+### 🔒 **Enterprise Security**
+
+**Network Security**
+- **SSL/TLS Automation** - cert-manager with Let's Encrypt
+- **Network Policies** - Micro-segmentation between services
+- **Ingress Controls** - Secure external access management
+
+**Access Control**
+- **RBAC Implementation** - Role-based access across namespaces  
+- **Pod Security Contexts** - Non-root containers with security policies
+- **Secret Management** - Kubernetes secrets with rotation policies
+
+---
+
+### ⚡ **Performance & Reliability**
+
+**Automated Scaling**
+- **Horizontal Pod Autoscaler** - CPU/memory-based scaling
+- **Cluster Autoscaler** - Node-level scaling for cost optimization
+- **Resource Quotas** - Guaranteed performance with limits
+
+**Disaster Recovery**
+- **Automated MongoDB Backups** - Daily snapshots with retention policies
+- **GitOps Deployments** - Infrastructure as Code with rollback capabilities
+- **Health Checks** - Comprehensive liveness and readiness probes
+
+---
+
+### 📈 **Production Metrics**
+
+| Metric | Achievement | Impact |
+|--------|-------------|---------|
+| **Uptime SLO** | 99.7% | Exceeds enterprise standards |
+| **Response Time** | <200ms | Optimal user experience |
+| **Cost Optimization** | 20% reduction | Efficient resource utilization |
+| **Monitoring Coverage** | 1,238+ metrics | Complete observability |
+| **Documentation** | 5,300+ lines | Enterprise troubleshooting |
+
+---
+
+### 🛠️ **DevOps Excellence**
+
+**CI/CD Pipeline**
+- **GitOps Workflow** - Automated deployments with ArgoCD
+- **Multi-environment** - Dev/staging/prod with promotion workflows  
+- **Automated Testing** - Integration and performance tests
+
+**Monitoring-Driven Operations**
+- **Proactive Alerting** - Slack/email notifications for anomalies
+- **Performance Optimization** - Data-driven scaling decisions
+- **Capacity Planning** - Resource trend analysis and forecasting
+
+---
+
+*This deployment demonstrates real-world production expertise in cloud-native technologies, DevOps practices, and enterprise-grade system reliability.*`,
+    challenges: [
+      'Designing resilient architecture for 99.7% uptime SLO while managing costs',
+      'Implementing comprehensive monitoring across 55+ Kubernetes pods',
+      'Creating production-ready MongoDB cluster with automated failover',
+      'Balancing security policies with operational flexibility in Kubernetes',
+      'Managing complex networking between microservices and external dependencies',
+      'Optimizing resource allocation to achieve 20% cost reduction',
+      'Building monitoring dashboard that tracks desired vs actual infrastructure state'
+    ],
+    solutions: [
+      'Deployed multi-replica MongoDB cluster with automatic failover and backup strategies',
+      'Built comprehensive monitoring stack with Prometheus, Grafana, and Loki for full observability',
+      'Implemented RBAC, network policies, and pod security contexts for enterprise-grade security',
+      'Created 28-panel Grafana dashboard with real-time monitoring and alerting',
+      'Developed automated scaling policies based on application metrics and resource usage',
+      'Established GitOps deployment pipeline with automated testing and rollback capabilities',
+      'Documented comprehensive troubleshooting procedures with real-world case studies'
+    ],
+    impact: 'Production-ready enterprise chat platform serving real users with 99.7% uptime, 20% cost optimization, and comprehensive monitoring demonstrating advanced Kubernetes and cloud-native expertise',
+    technologies: {
+      'Container Orchestration': ['Kubernetes', 'Azure AKS', 'Helm Charts', 'HPA'],
+      'Monitoring & Observability': ['Prometheus', 'Grafana', 'Loki', 'Fluent Bit', 'Alertmanager'],
+      'Database & Storage': ['MongoDB Replica Set', 'Redis', 'Azure Storage', 'Persistent Volumes'],
+      'Security & Networking': ['SSL/TLS', 'cert-manager', 'RBAC', 'Network Policies', 'Ingress'],
+      'CI/CD & GitOps': ['GitHub Actions', 'ArgoCD', 'Helm', 'Git Workflows'],
+      'Application Stack': ['Rocket.Chat', 'Node.js', 'WebRTC', 'Real-time Messaging']
+    }
+  },
   'rocketchat-observability': {
     slug: 'rocketchat-observability',
     longDescription: `Complete Rocket.Chat observability demo environment with Prometheus, Grafana, exporters, and Traefik.

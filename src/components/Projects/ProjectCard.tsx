@@ -13,19 +13,51 @@ import {
   TagList, 
   TitleContent, 
   UtilityList, 
-  ImageWrapper
+  ImageWrapper,
+  LiveDemoBadge,
+  ButtonContainer,
+  LiveChatButton,
+  DashboardButton,
+  ProjectLinkContainer,
+  BadgeContainer,
+  StackContainer,
+  LiveDemoBadgeStyled
 } from './ProjectsStyles';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
+  // Check if this is the enterprise Kubernetes project with live demos
+  const isEnterpriseProject = project.slug === 'rocketchat-kubernetes-enterprise';
+  
+  // Analytics tracking for demo interactions
+  const trackDemoAccess = (demoType: string, projectSlug: string) => {
+    if (typeof window !== 'undefined' && 'gtag' in window) {
+      (window as any).gtag('event', 'portfolio_demo_access', {
+        'demo_type': demoType,
+        'project': projectSlug,
+        'engagement_time': Date.now()
+      });
+    }
+  };
+
+  const handleLiveChatClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    trackDemoAccess('chat', project.slug);
+  };
+
+  const handleDashboardClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    trackDemoAccess('dashboard', project.slug);
+  };
+
   return (
     <BlogCard
       className="hover-lift animate-scaleIn"
       delay={(index % 5 + 1) * 100}
     >
       <Link href={`/projects/${project.slug}`} passHref legacyBehavior>
-        <a style={{ textDecoration: 'none', color: 'inherit' }}>
+        <ProjectLinkContainer>
           <ImageWrapper>
             <OptimizedImage
               src={project.image}
@@ -36,14 +68,21 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
               enableHover={false}
             />
             {project.featured && (
-              <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 1 }}>
+              <BadgeContainer>
                 <Badge variant="default">Featured</Badge>
-              </div>
+              </BadgeContainer>
             )}
             {project.category && !project.featured && (
-              <div style={{ position: 'absolute', top: '12px', right: '12px', zIndex: 1 }}>
+              <BadgeContainer>
                 <Badge variant="secondary">{project.category}</Badge>
-              </div>
+              </BadgeContainer>
+            )}
+            {isEnterpriseProject && (
+              <LiveDemoBadge>
+                <LiveDemoBadgeStyled>
+                  🚀 Live Demo
+                </LiveDemoBadgeStyled>
+              </LiveDemoBadge>
             )}
           </ImageWrapper>
 
@@ -53,26 +92,59 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
           </TitleContent>
 
           <CardInfo className="card-info">{project.description}</CardInfo>
-        </a>
+        </ProjectLinkContainer>
       </Link>
       
-      <div style={{ marginTop: 'auto' }}>
+      <StackContainer>
         <TitleContent>Stack</TitleContent>
         <TagList>
           {project.tags.map((tag, i) => (
             <Tag key={i}>{tag}</Tag>
           ))}
         </TagList>
-      </div>
+      </StackContainer>
       
-      <div style={{ padding: '0 1.5rem 1.5rem', display: 'flex', justifyContent: 'center', gap: '0.75rem', marginTop: 'auto' }}>
-        {project.visit === project.source ? (
+      <ButtonContainer>
+        {isEnterpriseProject ? (
+          // Special buttons for enterprise project with live demos
+          <>
+            <Button size="sm" asChild>
+              <LiveChatButton 
+                href="https://chat.canepro.me" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={handleLiveChatClick}
+              >
+                💬 Live Chat
+              </LiveChatButton>
+            </Button>
+            <Button size="sm" variant="outline" asChild>
+              <DashboardButton 
+                href="https://grafana.chat.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={handleDashboardClick}
+              >
+                📊 Dashboard
+              </DashboardButton>
+            </Button>
+            {project.source && (
+              <Button size="sm" variant="outline" asChild>
+                <a href={project.source} target="_blank" rel="noopener noreferrer">
+                  Source Code
+                </a>
+              </Button>
+            )}
+          </>
+        ) : project.visit === project.source ? (
+          // Standard single button for projects where visit and source are the same
           <Button size="sm" asChild>
             <a href={project.source} target="_blank" rel="noopener noreferrer">
               Source Code
             </a>
           </Button>
         ) : (
+          // Standard dual buttons for other projects
           <>
             {project.visit && (
               <Button size="sm" asChild>
@@ -90,7 +162,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
             )}
           </>
         )}
-      </div>
+      </ButtonContainer>
     </BlogCard>
   );
 };
