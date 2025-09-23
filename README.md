@@ -16,7 +16,7 @@
 **NEW:** This portfolio now showcases a **live production enterprise Kubernetes deployment** with working demos:
 
 - **🔗 Live Chat Application**: [chat.canepro.me](https://chat.canepro.me) - Real Rocket.Chat instance
-- **📊 Live Monitoring Dashboard**: [Public Dashboard](https://grafana.chat.canepro.me/d/public-rocketchat-overview) - 28-panel production monitoring
+- **📊 Live Monitoring Dashboard**: [Public Dashboard](https://grafana.canepro.me/d/public-rocketchat-overview) - 28-panel production monitoring
 - **🎯 Production Metrics**: 99.7% uptime SLO, 55+ managed pods, 1,238+ metrics
 - **💰 Business Impact**: 20% cost reduction through monitoring-driven optimization
 

@@ -26,7 +26,7 @@ Experience the actual production infrastructure:
 [https://chat.canepro.me](https://chat.canepro.me) *(Guest access enabled)*
 
 **📊 Real-Time Monitoring Dashboard**  
-[Public Dashboard](https://grafana.chat.canepro.me/d/public-rocketchat-overview) | [Kiosk Mode](https://grafana.chat.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark)
+[Public Dashboard](https://grafana.canepro.me/d/public-rocketchat-overview) | [Kiosk Mode](https://grafana.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark)
 
 ---
 

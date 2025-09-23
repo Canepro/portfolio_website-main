@@ -120,7 +120,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
             </Button>
             <Button size="sm" variant="outline" asChild>
               <DashboardButton 
-                href="https://grafana.chat.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark" 
+                href="https://grafana.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 onClick={handleDashboardClick}
