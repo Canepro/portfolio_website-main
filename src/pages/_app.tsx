@@ -2,6 +2,8 @@ import { AppProps } from 'next/app';
 import Theme from '../styles/theme';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import '../styles/GlobalStyles.css';
 
 // Dynamically import theme toggle to avoid SSR issues
@@ -11,6 +13,31 @@ const SimpleThemeToggle = dynamic(
 );
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
+  // Initialize analytics and track page views
+  useEffect(() => {
+    // Initialize analytics service
+    import('../lib/analytics').then(({ analytics }) => {
+      analytics.initializeTracking();
+      
+      // Track initial page view
+      analytics.trackPageView(router.asPath, document.title);
+    });
+
+    // Track route changes for SPA navigation
+    const handleRouteChange = (url: string) => {
+      import('../lib/analytics').then(({ analytics }) => {
+        analytics.trackPageView(url, document.title);
+      });
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.asPath, router.events]);
+
   return (
     <>
       <Theme>

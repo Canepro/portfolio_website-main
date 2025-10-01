@@ -30,25 +30,24 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   // Check if this is the enterprise Kubernetes project with live demos
   const isEnterpriseProject = project.slug === 'rocketchat-kubernetes-enterprise';
   
-  // Analytics tracking for demo interactions
-  const trackDemoAccess = (demoType: string, projectSlug: string) => {
-    if (typeof window !== 'undefined' && 'gtag' in window) {
-      (window as any).gtag('event', 'portfolio_demo_access', {
-        'demo_type': demoType,
-        'project': projectSlug,
-        'engagement_time': Date.now()
+  const handleLiveChatClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    // Use enhanced analytics service
+    if (typeof window !== 'undefined') {
+      import('../../lib/analytics').then(({ analytics }) => {
+        analytics.trackDemoAccess('chat', project.slug);
       });
     }
   };
 
-  const handleLiveChatClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    trackDemoAccess('chat', project.slug);
-  };
-
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    trackDemoAccess('dashboard', project.slug);
+    // Use enhanced analytics service
+    if (typeof window !== 'undefined') {
+      import('../../lib/analytics').then(({ analytics }) => {
+        analytics.trackDemoAccess('dashboard', project.slug);
+      });
+    }
   };
 
   return (

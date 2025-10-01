@@ -1,6 +1,6 @@
 // src/pages/projects/[slug].tsx
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { GetStaticProps, GetStaticPaths } from 'next';
@@ -45,6 +45,15 @@ interface ProjectDetailPageProps {
 const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, slug }) => {
   // Get project details
   const details = projectDetails[slug] || {};
+
+  // Track project view
+  useEffect(() => {
+    if (typeof window !== 'undefined' && project) {
+      import('../../lib/analytics').then(({ analytics }) => {
+        analytics.trackProjectView(project.slug, project.title);
+      });
+    }
+  }, [project]);
 
   // Handle project not found (shouldn't happen with getStaticPaths, but good fallback)
   if (!project) {

@@ -92,6 +92,21 @@ export default async function handler(req, res) {
              <p>${escapeHtml(safeMessage).replace(/\n/g, '<br/>')}</p>`,
     });
 
+    // Track successful contact form submission
+    try {
+      await fetch(`${req.headers.origin || process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/metrics`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          metric_type: 'contact_submission',
+          metadata: { method: 'email', timestamp: Date.now() }
+        })
+      });
+    } catch (analyticsError) {
+      // Don't fail the contact form if analytics fails
+      console.warn('Failed to track contact submission:', analyticsError);
+    }
+
     return res.status(200).json({ ok: true });
   } catch (err) {
     return res.status(500).json({ error: 'Failed to send' });
