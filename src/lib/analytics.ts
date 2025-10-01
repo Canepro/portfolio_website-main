@@ -1,23 +1,59 @@
-// src/lib/analytics.ts
-// Enhanced Analytics Service for Portfolio Metrics → Grafana Integration
+/**
+ * @fileoverview Enhanced Analytics Service for Portfolio Metrics → Grafana Integration
+ * 
+ * This service provides dual analytics tracking to demonstrate advanced DevOps monitoring skills:
+ * 1. Google Analytics integration for standard web analytics
+ * 2. Custom metrics API for Prometheus/Grafana observability stack
+ * 
+ * Key Features:
+ * - Portfolio-specific engagement tracking (demo clicks, project views)
+ * - Performance metrics collection (Core Web Vitals)
+ * - Custom business logic metrics for DevOps demonstration
+ * - Prometheus-compatible metrics export
+ * 
+ * @author Portfolio Analytics System
+ * @version 1.0.0
+ */
 
+/**
+ * Google Analytics event structure
+ * Compatible with GA4 event tracking format
+ */
 interface AnalyticsEvent {
   event_name: string;
   parameters?: Record<string, any>;
 }
 
+/**
+ * Custom metric structure for portfolio-specific tracking
+ * Feeds into /api/metrics endpoint for Prometheus scraping
+ */
 interface CustomMetric {
   metric_type: string;
   metric_value?: number;
   metadata?: Record<string, any>;
 }
 
+/**
+ * Enhanced Analytics Service for Portfolio Metrics
+ * 
+ * Provides dual-tracking system for comprehensive portfolio analytics:
+ * - Standard Google Analytics for web metrics
+ * - Custom portfolio metrics for DevOps demonstration
+ * 
+ * This showcases advanced monitoring capabilities and engineering skills
+ * through real-world implementation of observability patterns.
+ */
 class AnalyticsService {
-  private isClient: boolean;
-  private isGAEnabled: boolean;
-  private startTime: number;
-  private pageViewsSent: Set<string>;
+  private isClient: boolean;           // Client-side execution flag
+  private isGAEnabled: boolean;        // Google Analytics availability
+  private startTime: number;           // Session start timestamp
+  private pageViewsSent: Set<string>;  // Deduplication for page views
   
+  /**
+   * Initialize analytics service with environment detection
+   * Sets up tracking capabilities and session management
+   */
   constructor() {
     this.isClient = typeof window !== 'undefined';
     this.isGAEnabled = this.isClient && 'gtag' in window;
@@ -93,7 +129,16 @@ class AnalyticsService {
     );
   }
 
-  // Demo Click Tracking (enhanced existing functionality)
+  /**
+   * Track demo button clicks for portfolio engagement analysis
+   * 
+   * This method demonstrates custom business logic tracking for DevOps showcasing.
+   * Tracks when visitors interact with live demos (chat, dashboard) to measure
+   * engagement with technical demonstrations.
+   * 
+   * @param demoType - Type of demo ('chat', 'dashboard', etc.)
+   * @param projectSlug - Project identifier for the demo
+   */
   trackDemoAccess(demoType: string, projectSlug: string): void {
     this.track(
       {

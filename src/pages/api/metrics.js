@@ -1,34 +1,74 @@
-// src/pages/api/metrics.js
-// Portfolio Metrics API - Prometheus exporter for custom portfolio analytics
+/**
+ * @fileoverview Portfolio Metrics API - Prometheus Exporter
+ * 
+ * This API endpoint serves as a custom Prometheus exporter for portfolio-specific metrics.
+ * It demonstrates advanced DevOps monitoring skills by implementing:
+ * 
+ * 1. Prometheus-compatible metrics format
+ * 2. Custom business logic metrics (demo clicks, engagement)
+ * 3. Real-time metrics collection and aggregation
+ * 4. Google Analytics integration bridge
+ * 5. REST API for metrics updates from client-side
+ * 
+ * Endpoint: GET /api/metrics (Prometheus scraping)
+ * Endpoint: POST /api/metrics (Client metric updates)
+ * 
+ * Integration: Grafana Alloy scrapes this endpoint every 30s for Grafana Cloud
+ * 
+ * @author Portfolio Metrics System
+ * @version 1.0.0
+ */
 
 const { GoogleAnalyticsBridge } = require('../../lib/ga-bridge');
 
+/**
+ * In-memory metrics storage for portfolio analytics
+ * 
+ * This object stores real-time metrics that demonstrate custom business logic
+ * tracking capabilities. In a production high-traffic scenario, this would
+ * be backed by a database (Redis, InfluxDB, etc.) for persistence and scaling.
+ * 
+ * For portfolio demonstration purposes, in-memory storage showcases the
+ * Prometheus metrics format and real-time collection capabilities.
+ */
 let portfolioMetrics = {
-  // Page views
-  page_views_total: 0,
-  page_views_home: 0,
-  page_views_projects: 0,
-  page_views_contact: 0,
+  // ========================================
+  // PAGE VIEW METRICS
+  // ========================================
+  page_views_total: 0,           // Total site visits across all pages
+  page_views_home: 0,            // Home page specific visits
+  page_views_projects: 0,        // Projects page visits
+  page_views_contact: 0,         // Contact page visits
   
-  // Demo interactions
-  demo_clicks_total: 0,
-  demo_clicks_chat: 0,
-  demo_clicks_dashboard: 0,
+  // ========================================
+  // PORTFOLIO DEMONSTRATION ENGAGEMENT
+  // ========================================
+  demo_clicks_total: 0,          // Total clicks on live demo buttons
+  demo_clicks_chat: 0,           // Clicks on live chat demo (chat.canepro.me)
+  demo_clicks_dashboard: 0,      // Clicks on monitoring dashboard demo
   
-  // Engagement metrics
-  contact_form_submissions: 0,
-  project_views_total: 0,
+  // ========================================
+  // BUSINESS CONVERSION METRICS
+  // ========================================
+  contact_form_submissions: 0,   // Lead generation through contact form
+  project_views_total: 0,        // Individual project detail page views
   
-  // Performance metrics (will be updated by client-side tracking)
-  avg_page_load_time: 0,
-  bounce_rate: 0,
+  // ========================================
+  // PERFORMANCE & USER EXPERIENCE
+  // ========================================
+  avg_page_load_time: 0,         // Average page load time in milliseconds
+  bounce_rate: 0,                // Percentage of single-page sessions
   
-  // Session metrics
-  unique_visitors: new Set(), // Track unique IPs (in production, consider privacy)
-  current_active_users: 0,
+  // ========================================
+  // VISITOR ANALYTICS
+  // ========================================
+  unique_visitors: new Set(),     // Unique IP addresses (privacy-conscious tracking)
+  current_active_users: 0,       // Real-time active user count
   
-  // Last updated timestamp
-  last_updated: Date.now()
+  // ========================================
+  // SYSTEM METADATA
+  // ========================================
+  last_updated: Date.now()       // Unix timestamp of last metrics update
 };
 
 // Helper to convert metrics to Prometheus format

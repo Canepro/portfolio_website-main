@@ -31,6 +31,10 @@
 - **Accessibility** - ARIA labels, keyboard navigation, screen reader support
 - **SEO Optimized** - Meta tags, structured data, dynamic sitemap
 - **Interactive Projects** - Live demos, analytics tracking, and production metrics
+- **📊 Dual Analytics System** - Professional RUM + Custom DevOps metrics showcase
+- **🔍 Frontend Observability** - Core Web Vitals, user journeys, error monitoring
+- **⚡ Custom Metrics API** - Prometheus exporter demonstrating observability skills
+- **📈 Real-time Monitoring** - Grafana Cloud integration with persistent session tracking
 - **Markdown Rendering** - Rich project documentation with proper typography
 - **Real-time Stats** - GitHub statistics with incremental static regeneration
 - **Contact Form** - Email delivery via SMTP with rate limiting
@@ -51,6 +55,36 @@
 | **Animations** | framer-motion |
 | **Deployment** | Netlify |
 | **CI/CD** | GitHub Actions |
+| **Analytics** | Grafana Faro, Custom Prometheus Exporter |
+| **Monitoring** | Grafana Cloud, Grafana Alloy, Real User Monitoring |
+
+## 📊 Advanced Monitoring & Analytics
+
+This portfolio demonstrates enterprise-grade monitoring capabilities through a sophisticated dual analytics system showcasing real-world DevOps engineering skills.
+
+### 🎯 Dual Analytics Architecture
+
+**1. Professional Real User Monitoring (RUM)**
+- **Grafana Faro Frontend Observability** - Industry-standard user experience monitoring
+- **Core Web Vitals Tracking** - LCP, FID, CLS performance metrics
+- **Error Monitoring** - JavaScript error tracking and alerting  
+- **User Journey Analytics** - Complete session tracking with persistent storage
+
+**2. Custom DevOps Metrics Demonstration**
+- **Custom Prometheus Exporter** (`/api/metrics`) - Demonstrates observability engineering
+- **Portfolio-Specific Metrics** - Demo clicks, engagement tracking, conversion analytics
+- **Grafana Alloy Integration** - Modern metrics collection agent
+- **Grafana Cloud Dashboard** - Real-time visualization of custom business logic
+
+### 💼 Professional Value
+
+This implementation showcases:
+- **DevOps Engineering** - Custom Prometheus metrics, Grafana integration  
+- **Production Observability** - Real user monitoring, error tracking
+- **Modern Tech Stack** - Latest Grafana tools (Faro, Alloy, Cloud)
+- **Meta-Demonstration** - Portfolio monitors itself while visitors explore
+
+*The dual analytics provides both business insights and demonstrates advanced monitoring capabilities sought by DevOps organizations.*
 
 ## 🚀 Quick Start
 
