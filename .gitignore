@@ -1,34 +1,56 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.js
 
-# testing
+# Testing
 /coverage
 
-# next.js
+# Next.js
 /.next/
 /out/
 
-# production
+# Production
 /build
 
-# misc
+# Misc
 .DS_Store
-*.pem
+*.tgz
+*.tar.gz
 
-# debug
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
+# Local env files
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# vercel
+# Vercel
 .vercel
+
+# typescript
+*.tsbuildinfo
+
+# Grafana Alloy binaries and data (large files)
+alloy-linux-amd64*
+alloy-windows-amd64*
+alloy-darwin-amd64*
+*.zip
+data-alloy/
+alloy_data/
+
+# Alloy configuration (optional - uncomment if you don't want to track)
+# config.alloy
+# docker-compose.yml
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs
+*.log

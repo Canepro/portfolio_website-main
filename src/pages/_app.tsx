@@ -17,7 +17,39 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // Initialize analytics and track page views
   useEffect(() => {
-    // Initialize analytics service
+    // Initialize Faro Frontend Observability (Real User Monitoring)
+    import('@grafana/faro-web-sdk').then(({ getWebInstrumentations, initializeFaro }) => {
+      import('@grafana/faro-web-tracing').then(({ TracingInstrumentation }) => {
+        try {
+          initializeFaro({
+            url: 'https://faro-collector-prod-gb-south-1.grafana.net/collect/2020e2e525a709e9970641f056cb0fec',
+            app: {
+              name: 'Portfolio',
+              version: '1.0.0',
+              environment: 'production'
+            },
+            sessionTracking: {
+              samplingRate: 1,
+              persistent: true
+            },
+            instrumentations: [
+              // Mandatory, omits default instrumentations otherwise.
+              ...getWebInstrumentations(),
+
+              // Tracing package to get end-to-end visibility for HTTP requests.
+              new TracingInstrumentation(),
+            ],
+          });
+          console.log('✅ Faro Frontend Observability initialized');
+        } catch (error) {
+          console.warn('Faro initialization failed:', error);
+        }
+      });
+    }).catch((error) => {
+      console.warn('Faro packages not available:', error);
+    });
+
+    // Initialize custom analytics service
     import('../lib/analytics').then(({ analytics }) => {
       analytics.initializeTracking();
       
