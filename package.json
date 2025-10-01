@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.24.0",
+    "@grafana/faro-web-sdk": "^1.19.0",
+    "@grafana/faro-web-tracing": "^1.19.0",
     "framer-motion": "12.23.12",
     "lucide-react": "0.540.0",
     "next": "^14.2.32",
