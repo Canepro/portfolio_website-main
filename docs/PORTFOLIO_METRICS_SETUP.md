@@ -12,7 +12,7 @@ This guide walks you through setting up comprehensive portfolio analytics that f
 - **Dual Analytics**: Google Analytics + custom metrics collection
 - **Real-time Tracking**: Page views, demo clicks, performance metrics
 - **Grafana Cloud Dashboard**: 5-panel portfolio monitoring dashboard (free tier!)
-- **Lightweight Agent**: No need to manage Prometheus infrastructure
+- **Lightweight Alloy**: No need to manage Prometheus infrastructure
 - **Live Meta-Demo**: Your portfolio demonstrates monitoring while visitors explore it
 
 ### ☁️ Why Grafana Cloud?
@@ -84,7 +84,7 @@ ga4_active_users 8
 
 ---
 
-## ☁️ Step 2: Set Up Grafana Cloud + Agent
+## ☁️ Step 2: Set Up Grafana Cloud + Alloy
 
 > **Why Grafana Cloud?** No need to manage Prometheus locally! Grafana Cloud's free tier includes 10k metrics series and 14 days retention - perfect for portfolio monitoring.
 
@@ -107,7 +107,9 @@ ga4_active_users 8
    ```
 4. **Generate API Key**: Click "Generate API Key" for password
 
-### 2.3 Deploy Grafana Agent (Lightweight Collector)
+### 2.3 Deploy Grafana Alloy (Modern Collector)
+
+> **📢 Update**: Grafana Agent is deprecated (EOL Nov 2025). We now use **Grafana Alloy** - the modern replacement.
 
 **Choose your deployment method:**
 
@@ -117,52 +119,74 @@ Create `docker-compose.yml`:
 ```yaml
 version: '3.8'
 services:
-  grafana-agent:
-    image: grafana/agent:latest
-    container_name: portfolio-grafana-agent
+  grafana-alloy:
+    image: grafana/alloy:latest
+    container_name: portfolio-grafana-alloy
     volumes:
-      - ./agent.yml:/etc/agent/agent.yml
+      - ./config.alloy:/etc/alloy/config.alloy
     command:
-      - -config.file=/etc/agent/agent.yml
-      - -metrics.wal-directory=/tmp/agent/wal
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
     ports:
-      - "12345:12345"  # Optional: for agent UI
+      - "12345:12345"  # Optional: for Alloy UI
     restart: unless-stopped
 ```
 
-Create `agent.yml`:
-```yaml
-server:
-  http_listen_port: 12345
+Create `config.alloy`:
+```hcl
+// Grafana Alloy configuration for Portfolio Metrics
+// Note: Alloy uses HCL format (like Terraform) instead of YAML
+logging {
+  level  = "info"
+  format = "logfmt"
+}
 
-prometheus:
-  global:
-    scrape_interval: 30s
-    external_labels:
-      cluster: 'portfolio-monitoring'
-      environment: 'production'
+// Prometheus scrape configuration
+prometheus.scrape "portfolio_metrics" {
+  targets = [
+    {"__address__" = "portfolio.canepro.me:443"},
+  ]
   
-  configs:
-    - name: portfolio
-      scrape_configs:
-        - job_name: 'portfolio-metrics'
-          static_configs:
-            - targets: ['portfolio.canepro.me:443']
-          metrics_path: '/api/metrics'
-          scheme: https
-          scrape_interval: 30s
-          scrape_timeout: 10s
-      
-      remote_write:
-        - url: YOUR_REMOTE_WRITE_URL  # From step 2.2
-          basic_auth:
-            username: YOUR_USERNAME   # From step 2.2  
-            password: YOUR_API_KEY    # From step 2.2
+  forward_to      = [prometheus.remote_write.grafana_cloud.receiver]
+  job_name        = "portfolio-metrics"
+  metrics_path    = "/api/metrics"
+  scheme          = "https"
+  scrape_interval = "30s"
+  scrape_timeout  = "10s"
+}
+
+// Remote write to Grafana Cloud
+prometheus.remote_write "grafana_cloud" {
+  endpoint {
+    url = "YOUR_REMOTE_WRITE_URL"  // From step 2.2
+    
+    basic_auth {
+      username = "YOUR_USERNAME"   // From step 2.2
+      password = "YOUR_API_KEY"    // From step 2.2
+    }
+  }
+  
+  external_labels = {
+    cluster     = "portfolio-monitoring"
+    environment = "production"
+  }
+}
+
+// Optional: HTTP server for UI and metrics
+prometheus.exporter.self "alloy_metrics" { }
+
+prometheus.scrape "alloy_metrics" {
+  targets    = prometheus.exporter.self.alloy_metrics.targets
+  forward_to = [prometheus.remote_write.grafana_cloud.receiver]
+  job_name   = "alloy"
+}
 ```
 
 **Deploy**:
 ```bash
-# Replace credentials in agent.yml first!
+# Replace credentials in config.alloy first!
 docker-compose up -d
 ```
 
@@ -170,29 +194,31 @@ docker-compose up -d
 
 **Linux/macOS**:
 ```bash
-# Download agent
-curl -O -L "https://github.com/grafana/agent/releases/latest/download/agent-linux-amd64.zip"
-unzip agent-linux-amd64.zip
-chmod +x agent-linux-amd64
+# Download Alloy
+curl -O -L "https://github.com/grafana/alloy/releases/latest/download/alloy-linux-amd64.zip"
+unzip alloy-linux-amd64.zip
+chmod +x alloy-linux-amd64
 
-# Run agent
-./agent-linux-amd64 -config.file=agent.yml
+# Run Alloy
+./alloy-linux-amd64 run --server.http.listen-addr=0.0.0.0:12345 config.alloy
 ```
 
 **Windows**:
 ```powershell
-# Download from: https://github.com/grafana/agent/releases/latest
-# Extract and run: agent-windows-amd64.exe -config.file=agent.yml
+# Download from: https://github.com/grafana/alloy/releases/latest
+# Extract and run: 
+# alloy-windows-amd64.exe run --server.http.listen-addr=0.0.0.0:12345 config.alloy
 ```
 
 ### 2.4 Verify Data Collection
 
-1. **Check Agent Status**: `http://localhost:12345` (if enabled)
-2. **Check Grafana Cloud**: 
+1. **Check Alloy Status**: `http://localhost:12345` (Alloy UI)
+2. **Check Alloy logs**: `docker logs portfolio-grafana-alloy`
+3. **Check Grafana Cloud**: 
    - Go to your Grafana Cloud instance
    - **Explore** → **Prometheus** 
    - Query: `portfolio_page_views_total`
-3. **Generate test data**: Browse your portfolio to create metrics
+4. **Generate test data**: Browse your portfolio to create metrics
 
 ---
 
@@ -429,8 +455,8 @@ If you want to show this dashboard publicly (like your Kubernetes project):
 - [ ] Code deployed to production
 - [ ] `/api/metrics` endpoint accessible  
 - [ ] Grafana Cloud account created
-- [ ] Grafana Agent deployed and running
-- [ ] Agent successfully sending data to Grafana Cloud
+- [ ] Grafana Alloy deployed and running
+- [ ] Alloy successfully sending data to Grafana Cloud
 - [ ] Grafana Cloud dashboard created with 5 panels
 - [ ] Test data showing in dashboard
 - [ ] Analytics tracking demo clicks
@@ -441,7 +467,7 @@ If you want to show this dashboard publicly (like your Kubernetes project):
 **Common Issues**:
 - CORS errors: Check domain spelling in configs  
 - No metrics: Verify endpoint returns 200 status
-- Missing data: Check Grafana Agent connectivity
+- Missing data: Check Grafana Alloy connectivity
 - Dashboard errors: Verify PromQL query syntax
 - Authentication: Check Grafana Cloud credentials
 
@@ -450,11 +476,11 @@ If you want to show this dashboard publicly (like your Kubernetes project):
 # Test portfolio endpoint
 curl -I https://portfolio.canepro.me/api/metrics
 
-# Check agent status (if UI enabled)
+# Check Alloy status (if UI enabled)
 curl http://localhost:12345
 
-# Check agent logs
-docker logs portfolio-grafana-agent
+# Check Alloy logs
+docker logs portfolio-grafana-alloy
 
 # Test in Grafana Cloud Explore
 # Go to: https://yourname.grafana.net/explore
@@ -499,9 +525,9 @@ curl -I https://portfolio.canepro.me/api/metrics
 ### Issue: No Data in Grafana Cloud
 
 **Steps**:
-1. **Check Grafana Agent**: `http://localhost:12345` (if UI enabled)
+1. **Check Grafana Alloy**: `http://localhost:12345` (Alloy UI)
 2. **Test metrics endpoint**: `curl https://portfolio.canepro.me/api/metrics`
-3. **Check agent logs**: `docker logs portfolio-grafana-agent`
+3. **Check Alloy logs**: `docker logs portfolio-grafana-alloy`
 4. **Verify PromQL queries** in Grafana query editor
 5. **Check time range** (data might be outside current view)
 6. **Test in Grafana Explore**: Use Explore tab to test queries manually
@@ -525,7 +551,7 @@ curl -I https://portfolio.canepro.me/api/metrics
 **Debugging**:
 - Check browser dev tools console
 - Monitor Netlify function logs  
-- Review Grafana Agent logs (`docker logs portfolio-grafana-agent`)
+- Review Grafana Alloy logs (`docker logs portfolio-grafana-alloy`)
 - Use Grafana Cloud Explore tab for query testing
 
 **Updates**:
