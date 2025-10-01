@@ -175,8 +175,8 @@ class AnalyticsService {
       // Largest Contentful Paint (if available)
       lcp: this.getPerformanceMetric('largest-contentful-paint'),
       
-      // Time to Interactive (approximation)
-      tti: navigation.domInteractive - navigation.navigationStart,
+      // Time to Interactive (approximation using fetchStart as baseline)
+      tti: navigation.domInteractive - navigation.fetchStart,
       
       // DOM Content Loaded
       dcl: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart
