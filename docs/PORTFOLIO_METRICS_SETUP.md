@@ -11,8 +11,17 @@ This guide walks you through setting up comprehensive portfolio analytics that f
 - **Custom Metrics API**: Portfolio analytics endpoint at `/api/metrics` 
 - **Dual Analytics**: Google Analytics + custom metrics collection
 - **Real-time Tracking**: Page views, demo clicks, performance metrics
-- **Grafana Dashboard**: 5-panel portfolio monitoring dashboard
+- **Grafana Cloud Dashboard**: 5-panel portfolio monitoring dashboard (free tier!)
+- **Lightweight Agent**: No need to manage Prometheus infrastructure
 - **Live Meta-Demo**: Your portfolio demonstrates monitoring while visitors explore it
+
+### ☁️ Why Grafana Cloud?
+
+**✅ Zero Infrastructure**: No Prometheus servers to manage  
+**✅ Free Tier**: 10,000 metrics series + 14 days retention  
+**✅ Global Access**: Access your dashboard from anywhere  
+**✅ Built-in HA**: Grafana handles redundancy and scaling  
+**✅ Professional**: Cloud-native approach impresses interviewers
 
 ### 🔗 Grafana Instances (Important Distinction)
 
@@ -75,67 +84,129 @@ ga4_active_users 8
 
 ---
 
-## 📊 Step 2: Configure Prometheus Scraping
+## ☁️ Step 2: Set Up Grafana Cloud + Agent
 
-### 2.1 Update Prometheus Configuration
+> **Why Grafana Cloud?** No need to manage Prometheus locally! Grafana Cloud's free tier includes 10k metrics series and 14 days retention - perfect for portfolio monitoring.
 
-Add this job to your `prometheus.yml`:
+### 2.1 Create Grafana Cloud Account
 
+1. **Sign up**: Go to https://grafana.com/products/cloud/
+2. **Choose Free Tier**: 10,000 metrics series included
+3. **Note your details**:
+   - Organization slug (e.g., `yourname123`)
+   - Grafana URL (e.g., `https://yourname123.grafana.net/`)
+
+### 2.2 Get Prometheus Credentials
+
+1. **Navigate**: Grafana Cloud Portal → **Data Sources**
+2. **Select**: Prometheus data source
+3. **Copy credentials**:
+   ```
+   Remote Write URL: https://prometheus-prod-XX-XX-X.grafana.net/api/prom/push
+   Username: 123456
+   ```
+4. **Generate API Key**: Click "Generate API Key" for password
+
+### 2.3 Deploy Grafana Agent (Lightweight Collector)
+
+**Choose your deployment method:**
+
+#### Option A: Docker (Recommended)
+
+Create `docker-compose.yml`:
 ```yaml
-global:
-  scrape_interval: 30s
-  evaluation_interval: 30s
+version: '3.8'
+services:
+  grafana-agent:
+    image: grafana/agent:latest
+    container_name: portfolio-grafana-agent
+    volumes:
+      - ./agent.yml:/etc/agent/agent.yml
+    command:
+      - -config.file=/etc/agent/agent.yml
+      - -metrics.wal-directory=/tmp/agent/wal
+    ports:
+      - "12345:12345"  # Optional: for agent UI
+    restart: unless-stopped
+```
 
-scrape_configs:
-  # Your existing jobs here...
-  
-  # NEW: Portfolio metrics scraping
-  - job_name: 'portfolio-metrics'
-    static_configs:
-      - targets: ['portfolio.canepro.me']
-    metrics_path: '/api/metrics'
+Create `agent.yml`:
+```yaml
+server:
+  http_listen_port: 12345
+
+prometheus:
+  global:
     scrape_interval: 30s
-    scrape_timeout: 10s
-    scheme: https
+    external_labels:
+      cluster: 'portfolio-monitoring'
+      environment: 'production'
+  
+  configs:
+    - name: portfolio
+      scrape_configs:
+        - job_name: 'portfolio-metrics'
+          static_configs:
+            - targets: ['portfolio.canepro.me:443']
+          metrics_path: '/api/metrics'
+          scheme: https
+          scrape_interval: 30s
+          scrape_timeout: 10s
+      
+      remote_write:
+        - url: YOUR_REMOTE_WRITE_URL  # From step 2.2
+          basic_auth:
+            username: YOUR_USERNAME   # From step 2.2  
+            password: YOUR_API_KEY    # From step 2.2
 ```
 
-### 2.2 Restart Prometheus
-
+**Deploy**:
 ```bash
-# Restart Prometheus to pick up new config
-# (method depends on your Prometheus deployment)
-
-# Docker/Podman
-docker restart prometheus
-# or
-podman restart prometheus
-
-# Systemd
-sudo systemctl restart prometheus
-
-# Kubernetes
-kubectl rollout restart deployment/prometheus -n monitoring
+# Replace credentials in agent.yml first!
+docker-compose up -d
 ```
 
-### 2.3 Verify Prometheus Scraping
+#### Option B: Direct Installation
 
-1. **Open Prometheus UI**: `http://your-prometheus:9090`
-2. **Check Targets**: Status → Targets → Look for `portfolio-metrics`
-3. **Query Test**: Execute query `portfolio_page_views_total`
+**Linux/macOS**:
+```bash
+# Download agent
+curl -O -L "https://github.com/grafana/agent/releases/latest/download/agent-linux-amd64.zip"
+unzip agent-linux-amd64.zip
+chmod +x agent-linux-amd64
+
+# Run agent
+./agent-linux-amd64 -config.file=agent.yml
+```
+
+**Windows**:
+```powershell
+# Download from: https://github.com/grafana/agent/releases/latest
+# Extract and run: agent-windows-amd64.exe -config.file=agent.yml
+```
+
+### 2.4 Verify Data Collection
+
+1. **Check Agent Status**: `http://localhost:12345` (if enabled)
+2. **Check Grafana Cloud**: 
+   - Go to your Grafana Cloud instance
+   - **Explore** → **Prometheus** 
+   - Query: `portfolio_page_views_total`
+3. **Generate test data**: Browse your portfolio to create metrics
 
 ---
 
-## 🎨 Step 3: Create Grafana Dashboard
+## 🎨 Step 3: Create Grafana Cloud Dashboard
 
-### 3.1 Access Your Grafana Instance
+### 3.1 Access Your Grafana Cloud Instance
 
-Open: `https://canepro.grafana.net/`
+Open your Grafana Cloud URL (from Step 2.1): `https://yourname123.grafana.net/`
 
 ### 3.2 Create New Dashboard
 
 1. **Click**: "+ Create" → "Dashboard" 
 2. **Add Panel** → Select "Time series" or "Stat"
-3. **Configure Data Source**: Select your Prometheus instance
+3. **Data Source**: Should auto-select "Prometheus" (your cloud instance)
 
 ### 3.3 Panel 1: Real-time Visitors
 
@@ -356,9 +427,11 @@ If you want to show this dashboard publicly (like your Kubernetes project):
 ### 7.1 Final Checklist
 
 - [ ] Code deployed to production
-- [ ] `/api/metrics` endpoint accessible
-- [ ] Prometheus scraping portfolio metrics
-- [ ] Grafana dashboard created with 5 panels
+- [ ] `/api/metrics` endpoint accessible  
+- [ ] Grafana Cloud account created
+- [ ] Grafana Agent deployed and running
+- [ ] Agent successfully sending data to Grafana Cloud
+- [ ] Grafana Cloud dashboard created with 5 panels
 - [ ] Test data showing in dashboard
 - [ ] Analytics tracking demo clicks
 - [ ] Performance metrics displaying
@@ -366,21 +439,26 @@ If you want to show this dashboard publicly (like your Kubernetes project):
 ### 7.2 Monitor for Issues
 
 **Common Issues**:
-- CORS errors: Check domain spelling in configs
+- CORS errors: Check domain spelling in configs  
 - No metrics: Verify endpoint returns 200 status
-- Missing data: Check Prometheus targets status
+- Missing data: Check Grafana Agent connectivity
 - Dashboard errors: Verify PromQL query syntax
+- Authentication: Check Grafana Cloud credentials
 
 **Debug Commands**:
 ```bash
-# Test endpoint
+# Test portfolio endpoint
 curl -I https://portfolio.canepro.me/api/metrics
 
-# Check Prometheus config
-curl http://prometheus:9090/api/v1/targets
+# Check agent status (if UI enabled)
+curl http://localhost:12345
 
-# Test queries
-curl 'http://prometheus:9090/api/v1/query?query=portfolio_page_views_total'
+# Check agent logs
+docker logs portfolio-grafana-agent
+
+# Test in Grafana Cloud Explore
+# Go to: https://yourname.grafana.net/explore
+# Query: portfolio_page_views_total
 ```
 
 ---
@@ -418,13 +496,15 @@ ls -la src/pages/api/metrics.js
 curl -I https://portfolio.canepro.me/api/metrics
 ```
 
-### Issue: No Data in Grafana
+### Issue: No Data in Grafana Cloud
 
 **Steps**:
-1. Check Prometheus targets: `http://prometheus:9090/targets`
-2. Test metrics endpoint: `curl https://portfolio.canepro.me/api/metrics`
-3. Verify PromQL queries in Grafana query editor
-4. Check time range (data might be outside current view)
+1. **Check Grafana Agent**: `http://localhost:12345` (if UI enabled)
+2. **Test metrics endpoint**: `curl https://portfolio.canepro.me/api/metrics`
+3. **Check agent logs**: `docker logs portfolio-grafana-agent`
+4. **Verify PromQL queries** in Grafana query editor
+5. **Check time range** (data might be outside current view)
+6. **Test in Grafana Explore**: Use Explore tab to test queries manually
 
 ### Issue: Analytics Not Tracking
 
@@ -444,8 +524,9 @@ curl -I https://portfolio.canepro.me/api/metrics
 
 **Debugging**:
 - Check browser dev tools console
-- Monitor Netlify function logs
-- Review Prometheus/Grafana logs
+- Monitor Netlify function logs  
+- Review Grafana Agent logs (`docker logs portfolio-grafana-agent`)
+- Use Grafana Cloud Explore tab for query testing
 
 **Updates**:
 - Monitor GitHub issues for improvements
