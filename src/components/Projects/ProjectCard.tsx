@@ -1,38 +1,16 @@
-// src/components/Projects/ProjectCard.tsx
-
 import React from 'react';
 import Link from 'next/link';
 import OptimizedImage from '../OptimizedImage/OptimizedImage';
 import { ProjectCardProps } from '../../types/components';
-import { 
-  BlogCard, 
-  CardInfo, 
-  HeaderThree, 
-  Hr, 
-  Tag, 
-  TagList, 
-  TitleContent, 
-  UtilityList, 
-  ImageWrapper,
-  LiveDemoBadge,
-  ButtonContainer,
-  LiveChatButton,
-  DashboardButton,
-  ProjectLinkContainer,
-  BadgeContainer,
-  StackContainer,
-  LiveDemoBadgeStyled
-} from './ProjectsStyles';
-import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Github, ExternalLink, Terminal, MessageSquare, BarChart3 } from 'lucide-react';
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
-  // Check if this is the enterprise Kubernetes project with live demos
   const isEnterpriseProject = project.slug === 'rocketchat-kubernetes-enterprise';
-  
+
   const handleLiveChatClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Use enhanced analytics service
     if (typeof window !== 'undefined') {
       import('../../lib/analytics').then(({ analytics }) => {
         analytics.trackDemoAccess('chat', project.slug);
@@ -42,7 +20,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
 
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Use enhanced analytics service
     if (typeof window !== 'undefined') {
       import('../../lib/analytics').then(({ analytics }) => {
         analytics.trackDemoAccess('dashboard', project.slug);
@@ -51,118 +28,127 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   };
 
   return (
-    <BlogCard
-      className="hover-lift animate-scaleIn"
-      delay={(index % 5 + 1) * 100}
-    >
-      <Link href={`/projects/${project.slug}`} passHref legacyBehavior>
-        <ProjectLinkContainer>
-          <ImageWrapper>
-            <OptimizedImage
-              src={project.image}
-              alt={`${project.title} thumbnail`}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
-              priority={index < 4}
-              enableHover={false}
-            />
-            {project.featured && (
-              <BadgeContainer>
-                <Badge variant="default">Featured</Badge>
-              </BadgeContainer>
-            )}
-            {project.category && !project.featured && (
-              <BadgeContainer>
-                <Badge variant="secondary">{project.category}</Badge>
-              </BadgeContainer>
-            )}
-            {isEnterpriseProject && (
-              <LiveDemoBadge>
-                <LiveDemoBadgeStyled>
-                  🚀 Live Demo
-                </LiveDemoBadgeStyled>
-              </LiveDemoBadge>
-            )}
-          </ImageWrapper>
+    <div className="group relative flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+      {/* Image Section */}
+      <Link
+        href={`/projects/${project.slug}`}
+        className="relative block aspect-video overflow-hidden"
+      >
+        <OptimizedImage
+          src={project.image}
+          alt={`${project.title} thumbnail`}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
+          priority={index < 4}
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
 
-          <TitleContent>
-            <HeaderThree title="true">{project.title}</HeaderThree>
-            <Hr />
-          </TitleContent>
-
-          <CardInfo className="card-info">{project.description}</CardInfo>
-        </ProjectLinkContainer>
+        {/* Badges Overlay */}
+        <div className="absolute left-3 top-3 flex gap-2">
+          {project.featured && (
+            <Badge
+              variant="default"
+              className="bg-yellow-500 hover:bg-yellow-600 text-white border-none"
+            >
+              Featured
+            </Badge>
+          )}
+          {project.category && (
+            <Badge variant="secondary" className="bg-white/90 text-black backdrop-blur-sm">
+              {project.category}
+            </Badge>
+          )}
+        </div>
       </Link>
-      
-      <StackContainer>
-        <TitleContent>Stack</TitleContent>
-        <TagList>
-          {project.tags.map((tag, i) => (
-            <Tag key={i}>{tag}</Tag>
+
+      {/* Content Section */}
+      <div className="flex flex-1 flex-col p-5">
+        <Link href={`/projects/${project.slug}`} className="group/title">
+          <h3 className="mb-2 text-xl font-bold tracking-tight text-primary transition-colors group-hover/title:text-blue-600">
+            {project.title}
+          </h3>
+        </Link>
+
+        <p className="mb-4 line-clamp-3 text-sm text-muted-foreground">{project.description}</p>
+
+        {/* Tags */}
+        <div className="mb-6 flex flex-wrap gap-2">
+          {project.tags.slice(0, 4).map((tag, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center rounded-md bg-secondary/50 px-2 py-1 text-xs font-medium ring-1 ring-inset ring-gray-500/10"
+            >
+              {tag}
+            </span>
           ))}
-        </TagList>
-      </StackContainer>
-      
-      <ButtonContainer>
-        {isEnterpriseProject ? (
-          // Special buttons for enterprise project with live demos
-          <>
-            <Button size="sm" asChild>
-              <LiveChatButton 
-                href="https://chat.canepro.me" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                onClick={handleLiveChatClick}
-              >
-                💬 Live Chat
-              </LiveChatButton>
-            </Button>
-            <Button size="sm" variant="outline" asChild>
-              <DashboardButton 
-                href="https://grafana.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                onClick={handleDashboardClick}
-              >
-                📊 Dashboard
-              </DashboardButton>
-            </Button>
-            {project.source && (
-              <Button size="sm" variant="outline" asChild>
-                <a href={project.source} target="_blank" rel="noopener noreferrer">
-                  Source Code
+          {project.tags.length > 4 && (
+            <span className="inline-flex items-center rounded-md bg-secondary/50 px-2 py-1 text-xs font-medium text-muted-foreground">
+              +{project.tags.length - 4}
+            </span>
+          )}
+        </div>
+
+        {/* Actions Footer */}
+        <div className="mt-auto flex flex-wrap gap-2 pt-2">
+          {isEnterpriseProject ? (
+            <>
+              <Button size="sm" className="gap-2 w-full sm:w-auto" asChild>
+                <a
+                  href="https://chat.canepro.me"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleLiveChatClick}
+                >
+                  <MessageSquare className="h-4 w-4" /> Live Chat
                 </a>
               </Button>
-            )}
-          </>
-        ) : project.visit === project.source ? (
-          // Standard single button for projects where visit and source are the same
-          <Button size="sm" asChild>
-            <a href={project.source} target="_blank" rel="noopener noreferrer">
-              Source Code
-            </a>
-          </Button>
-        ) : (
-          // Standard dual buttons for other projects
-          <>
-            {project.visit && (
-              <Button size="sm" asChild>
-                <a href={project.visit} target="_blank" rel="noopener noreferrer">
-                  Live Site
+              <Button size="sm" variant="outline" className="gap-2 w-full sm:w-auto" asChild>
+                <a
+                  href="https://grafana.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleDashboardClick}
+                >
+                  <BarChart3 className="h-4 w-4" /> Dashboard
                 </a>
               </Button>
-            )}
-            {project.source && (
-              <Button size="sm" variant="outline" asChild>
-                <a href={project.source} target="_blank" rel="noopener noreferrer">
-                  Source Code
-                </a>
-              </Button>
-            )}
-          </>
-        )}
-      </ButtonContainer>
-    </BlogCard>
+              {project.source && (
+                <Button size="sm" variant="ghost" className="gap-2 ml-auto" asChild>
+                  <a href={project.source} target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4" /> Code
+                  </a>
+                </Button>
+              )}
+            </>
+          ) : (
+            <>
+              {project.visit && project.visit !== project.source && (
+                <Button size="sm" className="gap-2" asChild>
+                  <a href={project.visit} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="h-4 w-4" /> Live Demo
+                  </a>
+                </Button>
+              )}
+              {project.source && (
+                <Button
+                  size="sm"
+                  variant={
+                    project.visit && project.visit !== project.source ? 'outline' : 'default'
+                  }
+                  className="gap-2"
+                  asChild
+                >
+                  <a href={project.source} target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4" />
+                    {project.visit === project.source ? 'View Source' : 'Code'}
+                  </a>
+                </Button>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
