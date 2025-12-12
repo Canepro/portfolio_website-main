@@ -44,6 +44,21 @@ export default function App({ Component, pageProps }: AppProps) {
               );
               return;
             }
+            // Validate that faroUrl is a well-formed absolute URL (prevents runtime errors in Faro init)
+            try {
+              const parsed = new URL(faroUrl);
+              if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+                console.warn(
+                  `Faro initialization skipped: NEXT_PUBLIC_FARO_URL must be http(s) ("${faroUrl}").`
+                );
+                return;
+              }
+            } catch {
+              console.warn(
+                `Faro initialization skipped: NEXT_PUBLIC_FARO_URL is not a valid URL ("${faroUrl}").`
+              );
+              return;
+            }
             initializeFaro({
               // Grafana Cloud Frontend Observability collector endpoint
               url: faroUrl,
