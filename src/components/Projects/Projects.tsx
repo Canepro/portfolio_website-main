@@ -18,7 +18,7 @@ const Projects: React.FC = () => {
   if (featuredProjects.length < 4) {
     featuredProjects.push(...nonFeatured.slice(0, 4 - featuredProjects.length));
   }
-  
+
   return (
     <Section id="projects" style={{ marginTop: '24px' }}>
       <SectionDivider divider />
@@ -31,11 +31,9 @@ const Projects: React.FC = () => {
           <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </GridContainer>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '3rem', marginBottom: '2rem' }}>
-        <Button size="lg" variant="outline" asChild>
-          <Link href="/projects">
-            View All Projects →
-          </Link>
+      <div className="flex justify-center mt-12 mb-8">
+        <Button size="lg" variant="outline" className="text-lg px-8 py-6 h-auto" asChild>
+          <Link href="/projects">View All Projects →</Link>
         </Button>
       </div>
     </Section>

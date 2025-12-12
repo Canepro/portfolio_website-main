@@ -18,7 +18,7 @@ const ContactPage: React.FC = () => {
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
+    setForm(f => ({ ...f, [name]: value }));
   };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -99,15 +99,19 @@ const ContactPage: React.FC = () => {
               }}
             />
             <div>
-              <Button size="md" type="submit" disabled={status === 'loading'}>
+              <Button size="default" type="submit" disabled={status === 'loading'}>
                 {status === 'loading' ? 'Sending…' : 'Send Message'}
               </Button>
             </div>
             {status === 'success' && (
-              <p role="status" style={{ color: '#10B981' }}>Message sent successfully.</p>
+              <p role="status" style={{ color: '#10B981' }}>
+                Message sent successfully.
+              </p>
             )}
             {status === 'error' && (
-              <p role="status" style={{ color: '#EF4444' }}>Something went wrong. Please try again.</p>
+              <p role="status" style={{ color: '#EF4444' }}>
+                Something went wrong. Please try again.
+              </p>
             )}
           </form>
         </div>

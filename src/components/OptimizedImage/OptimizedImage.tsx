@@ -9,16 +9,18 @@ interface ImageContainerProps {
 }
 
 const ImageContainer = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['enableHover'].includes(prop),
+  shouldForwardProp: prop => !['enableHover'].includes(prop),
 })<ImageContainerProps>`
   position: relative;
   overflow: hidden;
   border-radius: 10px;
   transition: all 0.3s ease;
-  
+  width: 100%;
+  height: 100%;
+
   &:hover {
-    transform: ${props => props.enableHover ? 'translateY(-2px)' : 'none'};
-    box-shadow: ${props => props.enableHover ? '0 8px 25px rgba(0, 0, 0, 0.15)' : 'none'};
+    transform: ${props => (props.enableHover ? 'translateY(-2px)' : 'none')};
+    box-shadow: ${props => (props.enableHover ? '0 8px 25px rgba(0, 0, 0, 0.15)' : 'none')};
   }
 `;
 
@@ -27,7 +29,7 @@ interface BlurOverlayProps {
 }
 
 const BlurOverlay = styled.div.withConfig({
-  shouldForwardProp: (prop) => !['loading'].includes(prop),
+  shouldForwardProp: prop => !['loading'].includes(prop),
 })<BlurOverlayProps>`
   position: absolute;
   top: 0;
@@ -35,10 +37,10 @@ const BlurOverlay = styled.div.withConfig({
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  opacity: ${props => props.loading ? 0.7 : 0};
+  opacity: ${props => (props.loading ? 0.7 : 0)};
   transition: opacity 0.3s ease;
   z-index: 2;
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -50,12 +52,16 @@ const BlurOverlay = styled.div.withConfig({
     border: 2px solid rgba(255, 255, 255, 0.8);
     border-top: 2px solid transparent;
     border-radius: 50%;
-    animation: ${props => props.loading ? 'spin 1s linear infinite' : 'none'};
+    animation: ${props => (props.loading ? 'spin 1s linear infinite' : 'none')};
   }
-  
+
   @keyframes spin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
   }
 `;
 
@@ -64,10 +70,10 @@ interface StyledImageProps {
 }
 
 const StyledImage = styled(Image).withConfig({
-  shouldForwardProp: (prop) => !['loaded'].includes(prop),
+  shouldForwardProp: prop => !['loaded'].includes(prop),
 })<StyledImageProps>`
   transition: filter 0.3s ease;
-  filter: ${props => props.loaded ? 'blur(0px)' : 'blur(8px)'};
+  filter: ${props => (props.loaded ? 'blur(0px)' : 'blur(8px)')};
 `;
 
 // Generate a simple geometric blur placeholder
@@ -93,7 +99,7 @@ const generateBlurDataURL = (width: number = 400, height: number = 300): string 
       <rect x="10%" y="10%" width="30%" height="20%" fill="rgba(255,255,255,0.05)" rx="5"/>
     </svg>
   `;
-  
+
   const base64 = toBase64(svg);
   return `data:image/svg+xml;base64,${base64}`;
 };
@@ -119,8 +125,8 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   height,
   fill = false,
   priority = false,
-  sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
-  className = "",
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  className = '',
   enableHover = true,
   placeholder = true,
   style,
@@ -128,6 +134,10 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
 }) => {
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
+  const isGif = src.toLowerCase().endsWith('.gif');
+  const containerStyle: CSSProperties | undefined = fill
+    ? { position: 'absolute', inset: 0 }
+    : undefined;
 
   const handleLoad = () => {
     setLoaded(true);
@@ -142,7 +152,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   const blurDataURL = placeholder ? generateBlurDataURL(width, height) : undefined;
 
   return (
-    <ImageContainer enableHover={enableHover} className={className}>
+    <ImageContainer enableHover={enableHover} className={className} style={containerStyle}>
       <StyledImage
         src={src}
         alt={alt}
@@ -152,14 +162,16 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         priority={priority}
         sizes={sizes}
         loaded={loaded}
+        className={className}
         onLoad={handleLoad}
         onError={handleError}
         placeholder={placeholder ? 'blur' : 'empty'}
         blurDataURL={blurDataURL}
+        unoptimized={isGif}
         quality={85}
         style={{
           objectFit: 'cover',
-          ...style
+          ...style,
         }}
         {...props}
       />

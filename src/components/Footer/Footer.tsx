@@ -9,7 +9,6 @@ import {
   CompanyContainer,
   FooterWrapper,
   LinkColumn,
-  LinkItem,
   LinkList,
   LinkTitle,
   Slogan,
@@ -17,48 +16,43 @@ import {
   SocialIconsContainer,
 } from './FooterStyles';
 import { Button } from '../ui/button';
+import { Mail, Linkedin } from 'lucide-react';
 
 const Footer: React.FC<FooterProps> = () => (
   <FooterWrapper>
     <LinkList>
       <LinkColumn>
         <LinkTitle>Get In Touch</LinkTitle>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.75rem',
-            marginTop: '1rem',
-            width: '220px',
-          }}
-        >
-          <Button variant="outline" size="sm" asChild style={{ width: '100%' }}>
-            <a href="mailto:mogah.vincent@hotmail.com">📧 Send Email</a>
+        <div className="flex flex-col gap-3 mt-4 w-[220px]">
+          <Button variant="outline" size="sm" className="w-full gap-2" asChild>
+            <a href="mailto:mogah.vincent@hotmail.com">
+              <Mail className="h-4 w-4" /> Send Email
+            </a>
           </Button>
-          <Button variant="outline" size="sm" asChild style={{ width: '100%' }}>
+          <Button variant="outline" size="sm" className="w-full gap-2" asChild>
             <a
               href="https://www.linkedin.com/in/vincent-mogah/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              💼 LinkedIn
+              <Linkedin className="h-4 w-4" /> LinkedIn
             </a>
           </Button>
         </div>
       </LinkColumn>
       <LinkColumn>
         <LinkTitle>Quick Links</LinkTitle>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
-          <Button variant="ghost" size="sm" asChild>
+        <div className="flex flex-col gap-2 mt-4">
+          <Button variant="ghost" size="sm" className="justify-start px-2" asChild>
             <Link href="/#projects">Projects</Link>
           </Button>
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="ghost" size="sm" className="justify-start px-2" asChild>
             <Link href="/#tech">Technologies</Link>
           </Button>
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="ghost" size="sm" className="justify-start px-2" asChild>
             <Link href="/#about">About</Link>
           </Button>
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="ghost" size="sm" className="justify-start px-2" asChild>
             <Link href="/contact">Contact</Link>
           </Button>
         </div>

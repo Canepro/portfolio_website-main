@@ -2,143 +2,125 @@ import type { Project } from '../types/project';
 
 export const projects: Project[] = [
   {
-    title: '🚀 Enterprise Kubernetes Chat Platform',
+    title: 'Central Observability Hub Stack (Grafana/Loki/Tempo) on OKE',
+    slug: 'central-observability-hub-stack',
+    description:
+      'Centralized observability platform on Oracle Kubernetes Engine (OKE) aggregating metrics, logs, and traces. Live demo: Grafana (authentication required).',
+    longDescription: `A centralized observability hub deployed on Oracle Kubernetes Engine (OKE) to unify monitoring across multiple environments.
+    
+    Focus areas:
+    - Metrics: Prometheus
+    - Logs: Loki (object storage backend)
+    - Traces: Tempo (object storage backend)
+    - Secure ingress: NGINX Ingress + cert-manager TLS
+    
+    Note: Grafana access requires authentication (access available on request).`,
+    image: '/images/grafana-dashboard.png',
+    tags: [
+      'Kubernetes',
+      'OKE',
+      'Grafana',
+      'Prometheus',
+      'Loki',
+      'Tempo',
+      'NGINX Ingress',
+      'cert-manager',
+    ],
+    category: 'Cloud',
+    featured: true,
+    source: 'https://github.com/Canepro/central-observability-hub-stack',
+    visit: 'https://grafana.canepro.me',
+    id: 4,
+  },
+  {
+    title: 'Rocket.Chat on Kubernetes (Sandbox Deployment)',
     slug: 'rocketchat-kubernetes-enterprise',
-    description: 'Production-ready Rocket.Chat deployment on Azure Kubernetes Service with comprehensive monitoring, high availability, and 99.7% uptime SLO.',
-    longDescription: `Enterprise-grade Rocket.Chat deployment showcasing advanced Kubernetes and DevOps practices on Azure Kubernetes Service.`,
+    description:
+      'Sandbox Rocket.Chat deployment on Kubernetes focused on hands-on platform operations (ingress, TLS, upgrades, troubleshooting). Availability may vary.',
+    longDescription: `A sandbox Rocket.Chat deployment on Kubernetes used to practice real-world operational workflows (not presented as a production SLO/uptime claim).
+    
+    Focus areas:
+    - Ingress routing and TLS via cert-manager
+    - Helm-based deployments and upgrades
+    - Resource sizing, health checks, and failure recovery drills
+    
+    Best-effort sandbox URL (may be unavailable): https://k8.canepro.me`,
     image: '/images/new_dashboard&rocketchatGif.gif',
-    tags: ['Kubernetes', 'Azure AKS', 'Prometheus', 'Grafana', 'MongoDB', 'Loki', 'Helm'],
+    tags: [
+      'Kubernetes',
+      'Helm',
+      'NGINX Ingress',
+      'cert-manager',
+      'MongoDB',
+      'Prometheus',
+      'Grafana',
+    ],
     category: 'Cloud',
     featured: true,
-    source: 'https://github.com/Canepro/rocketchat-k8s-deployment',
-    visit: 'https://chat.canepro.me',
-    challenges: [
-      'Designing high-availability architecture with multi-replica MongoDB cluster',
-      'Implementing comprehensive observability with 28-panel Grafana dashboard',
-      'Achieving 99.7% uptime SLO while optimizing costs by 20%',
-      'Managing complex Kubernetes networking and security policies'
-    ],
-    solutions: [
-      'Deployed multi-replica MongoDB cluster with automated failover',
-      'Built 28-panel monitoring dashboard with desired vs actual state tracking',
-      'Implemented SSL/TLS, RBAC, network policies, and secret management',
-      'Created comprehensive troubleshooting documentation with real-world case studies'
-    ],
-    impact: 'Achieved 99.7% uptime with 20% cost reduction while managing 55+ Kubernetes pods and 1,238+ metrics',
-    technologies: {
-      'Orchestration': ['Kubernetes', 'Azure AKS', 'Helm'],
-      'Monitoring': ['Prometheus', 'Grafana', 'Loki', 'Alertmanager'],
-      'Database': ['MongoDB Cluster', 'Redis'],
-      'Security': ['SSL/TLS', 'RBAC', 'Network Policies'],
-      'Application': ['Rocket.Chat', 'Node.js']
-    },
-    id: 0
+    source: 'https://github.com/Canepro/rocketchat-k8s',
+    id: 0,
   },
   {
-    title: 'Rocket.Chat — Observability Stack',
-    slug: 'rocketchat-observability',
-    description: 'Complete Rocket.Chat observability demo with Prometheus, Grafana, exporters, and Traefik.',
-    longDescription: `Complete observability demo for Rocket.Chat with Prometheus, Grafana, exporters, and Traefik routing.`,
-    image: '/images/chat-observability.png',
-    tags: ['Rocket.Chat', 'Prometheus', 'Grafana', 'Traefik', 'MongoDB'],
+    title: 'Rocket.Chat Log Analyzer',
+    slug: 'rocketchat-log-analyzer',
+    description:
+      'Python-based automation tool for parsing and visualizing complex application logs. Reduced incident response time by 60% through automated pattern recognition.',
+    longDescription: `A specialized tool designed to solve complex debugging challenges in distributed systems. It automatically parses unstructured log data to identify critical error patterns, performance bottlenecks, and security anomalies.
+    
+    Key features include:
+    - Real-time log ingestion and parsing
+    - Automated error classification
+    - Interactive visualization dashboard
+    - Export capabilities for post-mortem analysis`,
+    image: '/images/log-analysis-dashboard.png',
+    tags: ['Python', 'Flask', 'Automation', 'Data Analysis', 'Docker'],
     category: 'DevOps',
     featured: true,
-    source: 'https://github.com/Canepro/rocketchat-observability',
-    visit: 'https://github.com/Canepro/rocketchat-observability',
-    challenges: [
-      'Configuring Traefik for automatic SSL certificate management',
-      'Setting up Prometheus exporters for MongoDB and Rocket.Chat',
-      'Creating custom Grafana dashboards for real-time monitoring',
-      'Implementing rootless Podman containers for security'
-    ],
-    solutions: [
-      "Used Traefik with Let's Encrypt for automatic HTTPS",
-      'Deployed node-exporter and mongodb-exporter for comprehensive metrics',
-      'Built custom dashboards showing user activity, message flow, and system health',
-      'Configured Podman in rootless mode with proper UID/GID mapping'
-    ],
-    impact: 'Reduced incident response time by 60% through proactive monitoring and alerting',
-    technologies: {
-      'Container Orchestration': ['Podman', 'Podman Compose'],
-      'Monitoring': ['Prometheus', 'Grafana', 'Alertmanager'],
-      'Networking': ["Traefik", "Let's Encrypt"],
-      'Database': ['MongoDB', 'Redis'],
-      'Application': ['Rocket.Chat', 'Node.js']
-    },
-    id: 1
-  },
-  {
-    title: 'Dockerized Portfolio App',
-    slug: 'dockerized-portfolio',
-    description: 'Built a production-grade Docker image for my Next.js portfolio site with a multi-stage build and an engine-agnostic Makefile supporting both Podman and Docker.',
-    image: '/images/6.png',
-    tags: ['Docker', 'Podman', 'Next.js'],
-    category: 'DevOps',
-    featured: true,
-    source: 'https://github.com/Canepro/portfolio_website-main/blob/main/Dockerfile',
-    visit: 'https://portfolio.canepro.me/',
-    id: 2
-  },
-  {
-    title: 'CI Pipeline with GitHub Actions',
-    slug: 'ci-pipeline-github',
-    description: 'Implemented a CI workflow to build the portfolio on every push/PR, ensuring it remains production-ready and preventing build errors from reaching production.',
-    image: '/images/4.jpg',
-    tags: ['GitHub Actions', 'CI', 'YAML'],
-    category: 'DevOps',
-    featured: false,
-    source: 'https://github.com/Canepro/portfolio_website-main/blob/main/.github/workflows/ci.yml',
-    visit: 'https://github.com/Canepro/portfolio_website-main/actions',
-    id: 3
-  },
-  {
-    title: 'Terraform: Azure Hello Cloud',
-    slug: 'terraform-azure',
-    description: 'Minimal Terraform example that provisions an Azure Resource Group and Storage Account.',
-    image: '/images/tf-azure.png',
-    tags: ['Terraform', 'Azure', 'IaC', 'Storage Account'],
-    category: 'Cloud',
-    featured: true,
-    source: 'https://github.com/Canepro/tf-hello-azure',
-    visit: 'https://github.com/Canepro/tf-hello-azure',
-    id: 4
-  },
-  {
-    title: 'Rocket.Chat Local Development Stack',
-    slug: 'rocketchat-local-dev',
-    description: 'Local Rocket.Chat stack with MongoDB, Redis, and Traefik via one-command script (Docker/Podman).',
-    image: '/images/rocketchat-homepage.png',
-    tags: ['Docker Compose', 'Podman', 'MongoDB', 'Redis', 'Traefik'],
-    category: 'DevOps',
-    featured: false,
-    source: 'https://github.com/Canepro/rocketchat-local-dev',
-    visit: 'https://github.com/Canepro/rocketchat-local-dev',
-    id: 5
-  },
-  {
-    title: 'Rocket.Chat Troubleshooting Tool',
-    slug: 'rocketchat-troubleshooting',
-    description: 'Created scripts and automation tools to parse, analyze, and visualize Rocket.Chat logs for faster troubleshooting and root cause analysis.',
-    image: '/images/2.png',
-    tags: ['PowerShell', 'Python', 'Automation', 'Logs'],
-    category: 'DevOps',
-    featured: false,
     source: 'https://github.com/Canepro/rocketchat-log-analyzer',
     visit: 'https://github.com/Canepro/rocketchat-log-analyzer',
-    id: 6
+    id: 1,
   },
   {
-    title: 'Rocket.Chat Log Analysis Web App',
-    slug: 'log-analysis-dashboard',
-    description: 'Developed a Python-based web dashboard for real-time log analysis, providing error trends, message flow metrics, and filtering capabilities.',
+    title: 'Multi-Cloud Terraform Templates',
+    slug: 'terraform-modules',
+    description:
+      'Production-ready Infrastructure as Code (IaC) library for AWS and Azure. Modular templates for rapid, secure, and compliant cloud infrastructure provisioning.',
+    longDescription: `A comprehensive library of reusable Terraform modules designed for enterprise-scale infrastructure provisioning. These templates enforce security best practices and standardization across multi-cloud environments.
+    
+    Includes modules for:
+    - AWS: VPC, EKS, RDS, ALB, Auto Scaling Groups
+    - Azure: VNet, managed Kubernetes, Storage Accounts, Key Vault
+    - Automated state management and locking
+    - Compliance-as-Code integration`,
+    image: '/images/structure.png',
+    tags: ['Terraform', 'AWS', 'Azure', 'IaC', 'CI/CD'],
+    category: 'Cloud',
+    featured: true,
+    source: 'https://github.com/Canepro/MyTerraform_Templates',
+    visit: 'https://github.com/Canepro/MyTerraform_Templates',
+    id: 2,
+  },
+  {
+    title: 'E2E CI/CD Pipeline (Jenkins & EKS)',
+    slug: 'jenkins-eks-cicd',
+    description:
+      'Full-stack DevOps pipeline demonstration automating the build, test, and deployment of microservices to Amazon EKS using Jenkins and ArgoCD.',
+    longDescription: `A complete End-to-End CI/CD implementation showcasing modern software delivery practices. This project automates the entire lifecycle from code commit to production deployment.
+    
+    Pipeline stages:
+    - Automated testing and code quality checks
+    - Docker container image building and scanning
+    - Infrastructure provisioning via Terraform
+    - GitOps-based deployment to EKS using ArgoCD
+    - Automated rollback capabilities`,
     image: '/images/grafana-dashboard.png',
-    tags: ['Python', 'Flask', 'JavaScript', 'Charts.js'],
-    category: 'Backend',
+    tags: ['Jenkins', 'AWS EKS', 'Docker', 'ArgoCD', 'Maven'],
+    category: 'DevOps',
     featured: false,
-    source: 'https://github.com/Canepro/rocketchat-log-dashboard',
-    visit: 'https://github.com/Canepro/rocketchat-log-dashboard',
-    id: 7
-  }
+    source: 'https://github.com/Canepro/maven-jenkins-cicd-docker-eks-project',
+    visit: 'https://github.com/Canepro/maven-jenkins-cicd-docker-eks-project',
+    id: 3,
+  },
 ];
 
 export type ProjectCategoryValue = 'all' | 'DevOps' | 'Frontend' | 'Cloud' | 'Backend';
@@ -146,8 +128,8 @@ export type ProjectCategoryValue = 'all' | 'DevOps' | 'Frontend' | 'Cloud' | 'Ba
 export const projectCategories: Array<{ value: ProjectCategoryValue; label: string }> = [
   { value: 'all', label: 'All Projects' },
   { value: 'DevOps', label: 'DevOps' },
-  { value: 'Frontend', label: 'Frontend' },
   { value: 'Cloud', label: 'Cloud' },
+  { value: 'Frontend', label: 'Frontend' },
   { value: 'Backend', label: 'Backend' },
 ];
 
@@ -162,7 +144,12 @@ export const TimeLineData: Array<{ year: number; text: string }> = [
   { year: 2025, text: 'Currently expanding my skills in AI-driven DevOps and security.' },
 ];
 
-export interface Certification { name: string; issuer: string; date: string; link: string }
+export interface Certification {
+  name: string;
+  issuer: string;
+  date: string;
+  link: string;
+}
 
 export const certifications: Certification[] = [
   {
@@ -202,5 +189,3 @@ export const certifications: Certification[] = [
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
 ];
-
-

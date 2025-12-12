@@ -38,7 +38,7 @@ fi
 echo -e "${YELLOW}This script will delete the following merged branches:${NC}"
 echo ""
 
-# Array of branches to delete (confirmed merged and no longer needed)
+# Array of branches to delete (confirmed merged/closed and no longer needed)
 BRANCHES_TO_DELETE=(
   "copilot/review-most-recent-pr"
   "docs/improve-documentation"
@@ -46,7 +46,7 @@ BRANCHES_TO_DELETE=(
   "feature/add-project-markdowns-and-data"
   "feature/enterprise-kubernetes-project"
   "feature/modernize-portfolio-phase1"
-  "fix/code-quality-improvements-issue-53"
+  "fix/dependabot-nodemailer-upgrade"
   "fix/hero-tweak-layout"
   "fix/standardize-component-names"
   "fix/timeline-useEffect-cleanup"

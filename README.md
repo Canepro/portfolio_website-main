@@ -11,26 +11,22 @@
   <img src="https://github.com/Canepro/portfolio_website-main/blob/main/public/images/6.png?raw=true" alt="Portfolio Preview" width="800" />
 </div>
 
-## 🚀 Featured: Enterprise Kubernetes Project
+## 🚀 Featured: Kubernetes/SRE Projects
 
-**NEW:** This portfolio now showcases a **live production enterprise Kubernetes deployment** with working demos:
+This portfolio highlights hands-on **Kubernetes + SRE** work with working infrastructure and clear, honest scope:
 
-- **🔗 Live Chat Application**: [chat.canepro.me](https://chat.canepro.me) - Real Rocket.Chat instance
-- **📊 Live Monitoring Dashboard**: [Public Dashboard](https://grafana.canepro.me/d/public-rocketchat-overview) - 28-panel production monitoring
-- **🎯 Production Metrics**: 99.7% uptime SLO, 55+ managed pods, 1,238+ metrics
-- **💰 Business Impact**: 20% cost reduction through monitoring-driven optimization
-
-*This sets the portfolio apart by demonstrating actual working enterprise infrastructure, not just code samples.*
+- **Central Observability Hub Stack on OKE**: Grafana/Loki/Tempo platform with a live Grafana endpoint (**authentication required**) at `https://grafana.canepro.me`
+- **Rocket.Chat on Kubernetes (Sandbox)**: lab environment for ingress/TLS/upgrades/troubleshooting (best-effort availability; no production SLO claims)
 
 ## ✨ Features
 
-- **🚀 Live Enterprise Demos** - Working production Kubernetes infrastructure with real-time monitoring
+- **Project demos & links** - Recruiter-friendly live endpoints where available (clearly labeled when authentication is required)
 - **Modern Design** - Clean, responsive layout with smooth animations
 - **TypeScript** - 100% type-safe with comprehensive interfaces
 - **Performance** - Optimized with Next.js Image, ISR, and code splitting
 - **Accessibility** - ARIA labels, keyboard navigation, screen reader support
 - **SEO Optimized** - Meta tags, structured data, dynamic sitemap
-- **Interactive Projects** - Live demos, analytics tracking, and production metrics
+- **Interactive Projects** - Live demos and analytics tracking for engagement metrics
 - **📊 Dual Analytics System** - Professional RUM + Custom DevOps metrics showcase
 - **🔍 Frontend Observability** - Core Web Vitals, user journeys, error monitoring
 - **⚡ Custom Metrics API** - Prometheus exporter demonstrating observability skills
@@ -38,25 +34,25 @@
 - **Markdown Rendering** - Rich project documentation with proper typography
 - **Real-time Stats** - GitHub statistics with incremental static regeneration
 - **Contact Form** - Email delivery via SMTP with rate limiting
-- **Live Chat** - Rocket.Chat integration with production instance
+- **Sandbox demos** - Kubernetes sandbox environments for hands-on operations (no misleading uptime/cost claims)
 - **Container Ready** - Docker support with health checks
 - **CI/CD** - Automated deployment with GitHub Actions
 
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-|----------|------------|
-| **Framework** | Next.js 14.2.30 |
-| **Language** | TypeScript 5.9.2 |
-| **UI Library** | React 18.3.1 |
-| **Styling** | styled-components 5.3.0 |
-| **UI Components** | shadcn-inspired primitives |
-| **Icons** | react-icons, lucide-react |
-| **Animations** | framer-motion |
-| **Deployment** | Netlify |
-| **CI/CD** | GitHub Actions |
-| **Analytics** | Grafana Faro, Custom Prometheus Exporter |
-| **Monitoring** | Grafana Cloud, Grafana Alloy, Real User Monitoring |
+| Category          | Technology                                         |
+| ----------------- | -------------------------------------------------- |
+| **Framework**     | Next.js 14.2.30                                    |
+| **Language**      | TypeScript 5.9.2                                   |
+| **UI Library**    | React 18.3.1                                       |
+| **Styling**       | styled-components 5.3.0                            |
+| **UI Components** | shadcn-inspired primitives                         |
+| **Icons**         | react-icons, lucide-react                          |
+| **Animations**    | framer-motion                                      |
+| **Deployment**    | Netlify                                            |
+| **CI/CD**         | GitHub Actions                                     |
+| **Analytics**     | Grafana Faro, Custom Prometheus Exporter           |
+| **Monitoring**    | Grafana Cloud, Grafana Alloy, Real User Monitoring |
 
 ## 📊 Advanced Monitoring & Analytics
 
@@ -65,12 +61,14 @@ This portfolio demonstrates enterprise-grade monitoring capabilities through a s
 ### 🎯 Dual Analytics Architecture
 
 **1. Professional Real User Monitoring (RUM)**
+
 - **Grafana Faro Frontend Observability** - Industry-standard user experience monitoring
 - **Core Web Vitals Tracking** - LCP, FID, CLS performance metrics
-- **Error Monitoring** - JavaScript error tracking and alerting  
+- **Error Monitoring** - JavaScript error tracking and alerting
 - **User Journey Analytics** - Complete session tracking with persistent storage
 
 **2. Custom DevOps Metrics Demonstration**
+
 - **Custom Prometheus Exporter** (`/api/metrics`) - Demonstrates observability engineering
 - **Portfolio-Specific Metrics** - Demo clicks, engagement tracking, conversion analytics
 - **Grafana Alloy Integration** - Modern metrics collection agent
@@ -79,12 +77,13 @@ This portfolio demonstrates enterprise-grade monitoring capabilities through a s
 ### 💼 Professional Value
 
 This implementation showcases:
-- **DevOps Engineering** - Custom Prometheus metrics, Grafana integration  
+
+- **DevOps Engineering** - Custom Prometheus metrics, Grafana integration
 - **Production Observability** - Real user monitoring, error tracking
 - **Modern Tech Stack** - Latest Grafana tools (Faro, Alloy, Cloud)
 - **Meta-Demonstration** - Portfolio monitors itself while visitors explore
 
-*The dual analytics provides both business insights and demonstrates advanced monitoring capabilities sought by DevOps organizations.*
+_The dual analytics provides both business insights and demonstrates advanced monitoring capabilities sought by DevOps organizations._
 
 ## 🚀 Quick Start
 
@@ -115,16 +114,16 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 
 ### Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server (port 3000) |
-| `npm run dev:3001` | Start development server (port 3001) |
-| `npm run build` | Create production build |
-| `npm start` | Start production server |
-| `npm run lint` | Run ESLint for code quality checks |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check code formatting |
-| `npm run typecheck` | Run TypeScript type checking |
+| Command                | Description                          |
+| ---------------------- | ------------------------------------ |
+| `npm run dev`          | Start development server (port 3000) |
+| `npm run dev:3001`     | Start development server (port 3001) |
+| `npm run build`        | Create production build              |
+| `npm start`            | Start production server              |
+| `npm run lint`         | Run ESLint for code quality checks   |
+| `npm run format`       | Format code with Prettier            |
+| `npm run format:check` | Check code formatting                |
+| `npm run typecheck`    | Run TypeScript type checking         |
 
 ## ⚙️ Configuration
 
@@ -209,6 +208,7 @@ portfolio_website-main/
 ### TypeScript
 
 The project is fully migrated to TypeScript with:
+
 - Strict type checking enabled
 - Comprehensive type definitions
 - Zero compilation errors
