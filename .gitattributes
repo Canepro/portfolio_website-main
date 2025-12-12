@@ -1,11 +1,3 @@
-# Improve GitHub Linguist language statistics
-
-# Count TS/TSX as TypeScript
-*.ts linguist-language=TypeScript
-*.tsx linguist-language=TypeScript
-
-# De-emphasize vendored/generated assets
-.next/** linguist-vendored
-public/** linguist-vendored
-scripts/** linguist-vendored
-__snapshots__/** linguist-vendored
+* text=auto
+*.sh text eol=lf
+.husky/* text eol=lf
