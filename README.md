@@ -187,6 +187,7 @@ portfolio_website-main/
 - **[Architecture](docs/ARCHITECTURE.md)** - Technical architecture and TypeScript integration
 - **[Deployment](docs/DEPLOYMENT.md)** - Deployment guide and troubleshooting
 - **[Development Roadmap](docs/TODO.md)** - Current status and future plans
+- **[Branch Management](docs/BRANCH_MANAGEMENT.md)** - Branch cleanup and management strategy
 - **[Changelog](CHANGELOG.md)** - Version history and updates
 
 ## 🔧 Development
