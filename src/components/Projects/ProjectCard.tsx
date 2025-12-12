@@ -4,19 +4,10 @@ import OptimizedImage from '../OptimizedImage/OptimizedImage';
 import { ProjectCardProps } from '../../types/components';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { Github, ExternalLink, Terminal, MessageSquare, BarChart3 } from 'lucide-react';
+import { Github, ExternalLink, BarChart3 } from 'lucide-react';
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
-  const isEnterpriseProject = project.slug === 'rocketchat-kubernetes-enterprise';
-
-  const handleLiveChatClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (typeof window !== 'undefined') {
-      import('../../lib/analytics').then(({ analytics }) => {
-        analytics.trackDemoAccess('chat', project.slug);
-      });
-    }
-  };
+  const isGrafanaProject = project.slug === 'central-observability-hub-stack';
 
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -90,30 +81,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
 
         {/* Actions Footer */}
         <div className="mt-auto flex flex-wrap gap-2 pt-2">
-          {isEnterpriseProject ? (
+          {isGrafanaProject ? (
             <>
-              <Button size="sm" className="gap-2 w-full sm:w-auto" asChild>
-                <a
-                  href="https://chat.canepro.me"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={handleLiveChatClick}
-                >
-                  <MessageSquare className="h-4 w-4" /> Live Chat
-                </a>
-              </Button>
-              <Button size="sm" variant="outline" className="gap-2 w-full sm:w-auto" asChild>
-                <a
-                  href="https://grafana.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={handleDashboardClick}
-                >
-                  <BarChart3 className="h-4 w-4" /> Dashboard
-                </a>
-              </Button>
+              {project.visit && (
+                <Button size="sm" className="gap-2 w-full sm:w-auto" asChild>
+                  <a
+                    href={project.visit}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleDashboardClick}
+                  >
+                    <BarChart3 className="h-4 w-4" /> Open Grafana
+                  </a>
+                </Button>
+              )}
               {project.source && (
-                <Button size="sm" variant="ghost" className="gap-2 ml-auto" asChild>
+                <Button size="sm" variant="outline" className="gap-2 w-full sm:w-auto" asChild>
                   <a href={project.source} target="_blank" rel="noopener noreferrer">
                     <Github className="h-4 w-4" /> Code
                   </a>

@@ -2,22 +2,62 @@ import type { Project } from '../types/project';
 
 export const projects: Project[] = [
   {
-    title: 'Enterprise Kubernetes Chat Platform',
-    slug: 'rocketchat-kubernetes-enterprise',
+    title: 'Central Observability Hub Stack (Grafana/Loki/Tempo) on OKE',
+    slug: 'central-observability-hub-stack',
     description:
-      'Production-grade Rocket.Chat deployment on Azure (AKS) with 99.7% uptime SLO. Features advanced observability using Prometheus/Grafana and auto-healing MongoDB clusters.',
-    longDescription: `An enterprise-grade communications platform deployed on Azure Kubernetes Service (AKS). This project demonstrates advanced DevOps practices including:
-    - High-Availability architecture with multi-replica MongoDB
-    - Automated SSL/TLS certificate management
-    - Zero-downtime rolling updates
-    - Comprehensive observability stack (Prometheus, Grafana, Loki)
-    - GitOps-based deployment workflows`,
-    image: '/images/new_dashboard&rocketchatGif.gif',
-    tags: ['Kubernetes', 'Azure AKS', 'Helm', 'Grafana', 'Prometheus', 'MongoDB'],
+      'Centralized observability platform on Oracle Kubernetes Engine (OKE) aggregating metrics, logs, and traces. Live demo: Grafana (authentication required).',
+    longDescription: `A centralized observability hub deployed on Oracle Kubernetes Engine (OKE) to unify monitoring across multiple environments.
+    
+    Focus areas:
+    - Metrics: Prometheus
+    - Logs: Loki (object storage backend)
+    - Traces: Tempo (object storage backend)
+    - Secure ingress: NGINX Ingress + cert-manager TLS
+    
+    Note: Grafana access requires authentication (access available on request).`,
+    image: '/images/grafana-dashboard.png',
+    tags: [
+      'Kubernetes',
+      'OKE',
+      'Grafana',
+      'Prometheus',
+      'Loki',
+      'Tempo',
+      'NGINX Ingress',
+      'cert-manager',
+    ],
     category: 'Cloud',
     featured: true,
-    source: 'https://github.com/Canepro/rocketchat-k8s-deployment',
-    visit: 'https://chat.canepro.me',
+    source: 'https://github.com/Canepro/central-observability-hub-stack',
+    visit: 'https://grafana.canepro.me',
+    id: 4,
+  },
+  {
+    title: 'Rocket.Chat on Kubernetes (Sandbox Deployment)',
+    slug: 'rocketchat-kubernetes-enterprise',
+    description:
+      'Sandbox Rocket.Chat deployment on Kubernetes focused on hands-on platform operations (ingress, TLS, upgrades, troubleshooting). Availability may vary.',
+    longDescription: `A sandbox Rocket.Chat deployment on Kubernetes used to practice real-world operational workflows (not presented as a production SLO/uptime claim).
+    
+    Focus areas:
+    - Ingress routing and TLS via cert-manager
+    - Helm-based deployments and upgrades
+    - Resource sizing, health checks, and failure recovery drills
+    
+    Best-effort sandbox URL (may be unavailable): https://k8.canepro.me`,
+    image: '/images/new_dashboard&rocketchatGif.gif',
+    tags: [
+      'Kubernetes',
+      'Helm',
+      'NGINX Ingress',
+      'cert-manager',
+      'MongoDB',
+      'Prometheus',
+      'Grafana',
+    ],
+    category: 'Cloud',
+    featured: true,
+    source: 'https://github.com/Canepro/rocketchat-k8s',
     id: 0,
   },
   {
@@ -49,7 +89,7 @@ export const projects: Project[] = [
     
     Includes modules for:
     - AWS: VPC, EKS, RDS, ALB, Auto Scaling Groups
-    - Azure: VNet, AKS, Storage Accounts, Key Vault
+    - Azure: VNet, managed Kubernetes, Storage Accounts, Key Vault
     - Automated state management and locking
     - Compliance-as-Code integration`,
     image: '/images/structure.png',
@@ -76,7 +116,7 @@ export const projects: Project[] = [
     image: '/images/grafana-dashboard.png',
     tags: ['Jenkins', 'AWS EKS', 'Docker', 'ArgoCD', 'Maven'],
     category: 'DevOps',
-    featured: true,
+    featured: false,
     source: 'https://github.com/Canepro/maven-jenkins-cicd-docker-eks-project',
     visit: 'https://github.com/Canepro/maven-jenkins-cicd-docker-eks-project',
     id: 3,

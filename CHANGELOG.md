@@ -8,18 +8,17 @@ All notable changes to this project will be documented here. Dates are in YYYY-M
 
 ### Changed
 
-- Updated Grafana domain from `grafana.chat.canepro.me` to `grafana.canepro.me`.
+- Updated Grafana domain from the previous Rocket.Chat subdomain to `grafana.canepro.me`.
 - Refreshed links in README, project details, and Projects card buttons to point to the new domain.
 
 ## v1.3.0 - 2025-09-21
 
 ### Added
 
-- **🚀 Enterprise Kubernetes Chat Platform** - New featured project showcasing live production infrastructure
-- **Live Demo Integration** - Interactive buttons for live chat application and monitoring dashboard
+- **🚀 Kubernetes Project Showcase** - Featured project entries with accurate live-demo links
+- **Live Demo Integration** - Interactive buttons for demo endpoints (where applicable)
 - **Markdown Rendering** - Rich project documentation with react-markdown and remark-gfm
 - **Analytics Tracking** - Demo interaction tracking for portfolio engagement metrics
-- **Production Metrics Display** - Real enterprise achievements (99.7% uptime, 20% cost reduction)
 - **Animated GIF Support** - Optimized display for dynamic project demonstrations
 
 ### Enhanced
@@ -31,9 +30,8 @@ All notable changes to this project will be documented here. Dates are in YYYY-M
 
 ### Infrastructure
 
-- **Live Production Demos** - [chat.canepro.me](https://chat.canepro.me) (guest access) and [grafana.canepro.me](https://grafana.canepro.me)
-- **Real Monitoring Data** - 55+ Kubernetes pods, 1,238+ metrics, 28-panel dashboard
-- **Enterprise Architecture** - Azure AKS, MongoDB cluster, comprehensive observability stack
+- **Live Demo Links** - Grafana endpoint at `grafana.canepro.me` (authentication required) and sandbox endpoints where available
+- **Architecture Notes** - Documentation and project pages avoid unverified production SLO/cost claims and clearly label sandbox vs stable demos
 
 ---
 
@@ -146,5 +144,5 @@ All notable changes to this project will be documented here. Dates are in YYYY-M
 
 ### Known Issues
 
-- ~~Intermittent "Invalid hook call" warnings in development~~ ✅ FIXED (v1.2.0 TypeScript migration)  
+- ~~Intermittent "Invalid hook call" warnings in development~~ ✅ FIXED (v1.2.0 TypeScript migration)
 - Occasional missing chunk errors with `next dev`. Production build is unaffected. Follow-ups are tracked in TODO.

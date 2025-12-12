@@ -1,137 +1,107 @@
 import type { ProjectDetail } from '../types/project';
 
 export const projectDetails: Record<string, ProjectDetail> = {
-  'rocketchat-kubernetes-enterprise': {
-    slug: 'rocketchat-kubernetes-enterprise',
-    longDescription: `## 🚀 Production-Ready Enterprise Chat Platform
+  'central-observability-hub-stack': {
+    slug: 'central-observability-hub-stack',
+    longDescription: `## Overview
 
-**A comprehensive Kubernetes deployment showcasing enterprise-grade architecture, advanced DevOps practices, and production monitoring excellence.**
+Centralized observability hub deployed on **Oracle Kubernetes Engine (OKE)** to aggregate **metrics, logs, and traces** from multiple environments into one place.
 
----
+## Live Demo (Grafana)
 
-### ⭐ **Key Achievements**
+- **Grafana**: https://grafana.canepro.me (**authentication required**)
+- Access can be provided **on request**.
 
-🎯 **99.7% Production Uptime SLO** - Consistently maintained in live environment  
-💰 **20% Cost Reduction** - Through intelligent monitoring and optimization  
-📊 **1,238+ Metrics** - Comprehensive observability across 55+ pods  
-📚 **5,300+ Lines** - Production troubleshooting documentation  
+## Stack
 
----
+- **Grafana** (dashboards / exploration)
+- **Prometheus** (metrics collection + alerting patterns)
+- **Loki** (log aggregation)
+- **Tempo** (distributed tracing)
+- **Alertmanager** (alert routing)
+- **NGINX Ingress** + **cert-manager** (TLS + ingress routing)
 
-### 🎮 **Live Demo Access**
+## Security notes
 
-Experience the actual production infrastructure:
+- **TLS** terminated at ingress using cert-manager (Let's Encrypt).
+- **Ingestion endpoints** protected with **Basic Auth** (no anonymous remote-write / push endpoints).
+- Internal services remain **ClusterIP** unless explicitly exposed through authenticated ingress.
 
-**🔗 Live Chat Application**  
-[https://chat.canepro.me](https://chat.canepro.me) *(Guest access enabled)*
+## Storage
 
-**📊 Real-Time Monitoring Dashboard**  
-[Public Dashboard](https://grafana.canepro.me/d/public-rocketchat-overview) | [Kiosk Mode](https://grafana.canepro.me/d/public-rocketchat-overview?kiosk=tv&theme=dark)
+- **Object storage** used for Loki/Tempo persistence (OCI Object Storage / S3-compatible backend).
 
----
+## Why it matters for SRE
 
-### 🏗️ **Infrastructure Architecture**
-
-**Container Orchestration**
-- **Azure Kubernetes Service** - Production-grade cluster management
-- **55+ Managed Pods** - Across multiple namespaces with auto-scaling
-- **Multi-replica deployments** - High availability and fault tolerance
-
-**Database Layer**
-- **MongoDB Replica Set** - 3-node cluster with automated failover
-- **Redis Cache** - Session management and real-time features
-- **Persistent Storage** - Azure managed disks with backup automation
-
-**Monitoring & Observability**
-- **28-Panel Grafana Dashboard** - Comprehensive system monitoring
-- **Prometheus Metrics** - 1,238+ series with custom alerts
-- **Loki Log Aggregation** - Centralized logging with Fluent Bit
-- **Desired vs Actual State Tracking** - Kubernetes workload monitoring
-
----
-
-### 🔒 **Enterprise Security**
-
-**Network Security**
-- **SSL/TLS Automation** - cert-manager with Let's Encrypt
-- **Network Policies** - Micro-segmentation between services
-- **Ingress Controls** - Secure external access management
-
-**Access Control**
-- **RBAC Implementation** - Role-based access across namespaces  
-- **Pod Security Contexts** - Non-root containers with security policies
-- **Secret Management** - Kubernetes secrets with rotation policies
-
----
-
-### ⚡ **Performance & Reliability**
-
-**Automated Scaling**
-- **Horizontal Pod Autoscaler** - CPU/memory-based scaling
-- **Cluster Autoscaler** - Node-level scaling for cost optimization
-- **Resource Quotas** - Guaranteed performance with limits
-
-**Disaster Recovery**
-- **Automated MongoDB Backups** - Daily snapshots with retention policies
-- **GitOps Deployments** - Infrastructure as Code with rollback capabilities
-- **Health Checks** - Comprehensive liveness and readiness probes
-
----
-
-### 📈 **Production Metrics**
-
-| Metric | Achievement | Impact |
-|--------|-------------|---------|
-| **Uptime SLO** | 99.7% | Exceeds enterprise standards |
-| **Response Time** | <200ms | Optimal user experience |
-| **Cost Optimization** | 20% reduction | Efficient resource utilization |
-| **Monitoring Coverage** | 1,238+ metrics | Complete observability |
-| **Documentation** | 5,300+ lines | Enterprise troubleshooting |
-
----
-
-### 🛠️ **DevOps Excellence**
-
-**CI/CD Pipeline**
-- **GitOps Workflow** - Automated deployments with ArgoCD
-- **Multi-environment** - Dev/staging/prod with promotion workflows  
-- **Automated Testing** - Integration and performance tests
-
-**Monitoring-Driven Operations**
-- **Proactive Alerting** - Slack/email notifications for anomalies
-- **Performance Optimization** - Data-driven scaling decisions
-- **Capacity Planning** - Resource trend analysis and forecasting
-
----
-
-*This deployment demonstrates real-world production expertise in cloud-native technologies, DevOps practices, and enterprise-grade system reliability.*`,
+- Demonstrates **centralized telemetry** as a platform capability (shared service for multiple deployments).
+- Enables faster incident response by correlating **metrics + logs + traces** in one hub.
+- Establishes a repeatable pattern for secure ingestion, long-term storage, and cost-aware operation on a small cluster.`,
     challenges: [
-      'Designing resilient architecture for 99.7% uptime SLO while managing costs',
-      'Implementing comprehensive monitoring across 55+ Kubernetes pods',
-      'Creating production-ready MongoDB cluster with automated failover',
-      'Balancing security policies with operational flexibility in Kubernetes',
-      'Managing complex networking between microservices and external dependencies',
-      'Optimizing resource allocation to achieve 20% cost reduction',
-      'Building monitoring dashboard that tracks desired vs actual infrastructure state'
+      'Designing a single hub to aggregate telemetry from multiple clusters/environments safely',
+      'Exposing ingestion endpoints publicly without allowing anonymous writes',
+      'Balancing cost constraints (free tier budget) with operational reliability',
+      'Choosing storage patterns that scale beyond local PVCs for logs and traces',
     ],
     solutions: [
-      'Deployed multi-replica MongoDB cluster with automatic failover and backup strategies',
-      'Built comprehensive monitoring stack with Prometheus, Grafana, and Loki for full observability',
-      'Implemented RBAC, network policies, and pod security contexts for enterprise-grade security',
-      'Created 28-panel Grafana dashboard with real-time monitoring and alerting',
-      'Developed automated scaling policies based on application metrics and resource usage',
-      'Established GitOps deployment pipeline with automated testing and rollback capabilities',
-      'Documented comprehensive troubleshooting procedures with real-world case studies'
+      'Deployed Grafana/Prometheus/Loki/Tempo on OKE with NGINX Ingress and cert-manager TLS',
+      'Implemented Basic Auth for ingestion endpoints to prevent unauthenticated writes',
+      'Kept internal components as ClusterIP and only exposed required ingress routes',
+      'Backed Loki/Tempo with object storage for durable, scalable persistence',
     ],
-    impact: 'Production-ready enterprise chat platform serving real users with 99.7% uptime, 20% cost optimization, and comprehensive monitoring demonstrating advanced Kubernetes and cloud-native expertise',
+    impact:
+      'Provides a centralized, secure observability platform for multi-environment telemetry and demonstrates SRE practices around secure ingestion, storage design, and operational readiness.',
     technologies: {
-      'Container Orchestration': ['Kubernetes', 'Azure AKS', 'Helm Charts', 'HPA'],
-      'Monitoring & Observability': ['Prometheus', 'Grafana', 'Loki', 'Fluent Bit', 'Alertmanager'],
-      'Database & Storage': ['MongoDB Replica Set', 'Redis', 'Azure Storage', 'Persistent Volumes'],
-      'Security & Networking': ['SSL/TLS', 'cert-manager', 'RBAC', 'Network Policies', 'Ingress'],
-      'CI/CD & GitOps': ['GitHub Actions', 'ArgoCD', 'Helm', 'Git Workflows'],
-      'Application Stack': ['Rocket.Chat', 'Node.js', 'WebRTC', 'Real-time Messaging']
-    }
+      Kubernetes: ['OKE', 'NGINX Ingress', 'cert-manager', 'Helm'],
+      Observability: ['Grafana', 'Prometheus', 'Loki', 'Tempo', 'Alertmanager'],
+      Security: ['TLS', 'Basic Auth', 'ClusterIP services'],
+      Storage: ['OCI Object Storage (S3-compatible)'],
+    },
+  },
+  'rocketchat-kubernetes-enterprise': {
+    slug: 'rocketchat-kubernetes-enterprise',
+    longDescription: `## Overview
+
+Sandbox Rocket.Chat deployment on Kubernetes designed for hands-on platform operations and SRE-style troubleshooting workflows.
+
+## Source
+
+- Repo: https://github.com/Canepro/rocketchat-k8s
+
+## Sandbox access (best effort)
+
+- https://k8.canepro.me *(availability may vary)*
+
+## What this demonstrates
+
+- Helm-based deploy/upgrade/rollback workflows
+- Ingress routing and TLS via NGINX Ingress + cert-manager
+- Resource sizing, health checks, and recovery drills
+- Practical troubleshooting: logs, events, probes, and config validation
+
+## Notes
+
+This is a sandbox/lab environment. It is **not** presented as a production SLO/uptime claim.`,
+    challenges: [
+      'Providing a realistic Rocket.Chat deployment that is safe to run as a sandbox',
+      'Hardening ingress exposure with TLS while keeping internal services private by default',
+      'Documenting operational workflows for upgrades, failures, and common recovery tasks',
+      'Keeping the setup reproducible and easy to iterate on during learning and testing',
+    ],
+    solutions: [
+      'Standardized Helm deployment patterns with repeatable values and upgrade steps',
+      'Used NGINX Ingress + cert-manager for TLS and controlled external exposure',
+      'Kept internal services private (ClusterIP) and exposed only what is necessary',
+      'Added operational guardrails: probes, resource requests/limits, and clear troubleshooting steps',
+    ],
+    impact:
+      'Demonstrates practical Kubernetes platform operations and troubleshooting skills using a realistic sandbox Rocket.Chat deployment.',
+    technologies: {
+      Kubernetes: ['Kubernetes', 'Helm'],
+      Networking: ['NGINX Ingress', 'cert-manager', 'TLS'],
+      Data: ['MongoDB'],
+      Observability: ['Prometheus (optional)', 'Grafana (optional)'],
+      Application: ['Rocket.Chat'],
+    },
   },
   'rocketchat-observability': {
     slug: 'rocketchat-observability',
@@ -166,21 +136,22 @@ Experience the actual production infrastructure:
       'Configuring Traefik routes and path-based services',
       'Setting up exporters for Rocket.Chat and MongoDB',
       'Provisioning Grafana dashboards automatically',
-      'Ensuring compatibility with Docker and Podman'
+      'Ensuring compatibility with Docker and Podman',
     ],
     solutions: [
       'Traefik file provider routing with path-based services',
       'Node and MongoDB exporters integrated into the compose stack',
       'Grafana provisioning with pre-baked dashboards',
-      'Documented support for Podman and Docker engines'
+      'Documented support for Podman and Docker engines',
     ],
-    impact: 'Improved monitoring visibility and accelerated troubleshooting for Rocket.Chat environments',
+    impact:
+      'Improved monitoring visibility and accelerated troubleshooting for Rocket.Chat environments',
     technologies: {
-      'Orchestration': ['Docker Compose', 'Podman Compose'],
-      'Monitoring': ['Prometheus', 'Grafana', 'Alertmanager'],
-      'Routing': ['Traefik'],
-      'Services': ['Rocket.Chat', 'MongoDB']
-    }
+      Orchestration: ['Docker Compose', 'Podman Compose'],
+      Monitoring: ['Prometheus', 'Grafana', 'Alertmanager'],
+      Routing: ['Traefik'],
+      Services: ['Rocket.Chat', 'MongoDB'],
+    },
   },
   'dockerized-portfolio': {
     slug: 'dockerized-portfolio',
@@ -193,21 +164,22 @@ Experience the actual production infrastructure:
       'Optimizing Docker image size for faster deployments',
       'Ensuring compatibility with both Docker and Podman',
       'Implementing proper health checks for container orchestration',
-      'Managing secrets and environment variables securely'
+      'Managing secrets and environment variables securely',
     ],
     solutions: [
       'Multi-stage build with Alpine Linux base image',
       'Engine detection script in Makefile with fallback logic',
       'HTTP health check endpoint with proper timeout configuration',
-      'Build-time ARGs and runtime ENV separation'
+      'Build-time ARGs and runtime ENV separation',
     ],
-    impact: 'Reduced deployment time by 40% and enabled consistent development environments across the team',
+    impact:
+      'Reduced deployment time by 40% and enabled consistent development environments across the team',
     technologies: {
-      'Containerization': ['Docker', 'Podman', 'Alpine Linux'],
+      Containerization: ['Docker', 'Podman', 'Alpine Linux'],
       'Build Tools': ['Multi-stage builds', 'Makefile', 'npm'],
-      'Framework': ['Next.js', 'React', 'Node.js'],
-      'Security': ['Non-root user', 'Minimal base image']
-    }
+      Framework: ['Next.js', 'React', 'Node.js'],
+      Security: ['Non-root user', 'Minimal base image'],
+    },
   },
   'ci-pipeline-github': {
     slug: 'ci-pipeline-github',
@@ -220,21 +192,22 @@ Experience the actual production infrastructure:
       'Optimizing build times with effective caching strategies',
       'Running tests across multiple Node.js versions',
       'Managing workflow concurrency to prevent duplicate runs',
-      'Storing build artifacts for debugging failed builds'
+      'Storing build artifacts for debugging failed builds',
     ],
     solutions: [
       'Implemented dependency caching with cache keys based on lock files',
       'Matrix strategy for Node.js 18 and 20 parallel testing',
       'Concurrency groups with automatic cancellation of outdated runs',
-      'Artifact upload with 7-day retention for build outputs'
+      'Artifact upload with 7-day retention for build outputs',
     ],
-    impact: 'Caught 95% of build issues before merge, saving 10+ hours weekly in debugging production issues',
+    impact:
+      'Caught 95% of build issues before merge, saving 10+ hours weekly in debugging production issues',
     technologies: {
       'CI/CD': ['GitHub Actions', 'YAML', 'Workflow automation'],
-      'Testing': ['Node.js matrix builds', 'npm scripts'],
-      'Optimization': ['Dependency caching', 'Parallel jobs'],
-      'Artifacts': ['Build output storage', 'Debug logs']
-    }
+      Testing: ['Node.js matrix builds', 'npm scripts'],
+      Optimization: ['Dependency caching', 'Parallel jobs'],
+      Artifacts: ['Build output storage', 'Debug logs'],
+    },
   },
   'terraform-azure': {
     slug: 'terraform-azure',
@@ -260,19 +233,19 @@ Experience the actual production infrastructure:
     challenges: [
       'Managing provider authentication and subscription context',
       'Designing consistent naming and tagging',
-      'Keeping state safe and reproducible'
+      'Keeping state safe and reproducible',
     ],
     solutions: [
       'Documented az login and subscription selection',
       'Conventional resource naming and baseline tags',
-      'Guidance on remote state and workspaces for team use'
+      'Guidance on remote state and workspaces for team use',
     ],
     impact: 'Provides a simple baseline for Azure IaC and fast onboarding to Terraform',
     technologies: {
-      'IaC': ['Terraform'],
-      'Azure': ['Resource Group', 'Storage Account'],
-      'Auth': ['Azure CLI', 'Service Principal (optional)']
-    }
+      IaC: ['Terraform'],
+      Azure: ['Resource Group', 'Storage Account'],
+      Auth: ['Azure CLI', 'Service Principal (optional)'],
+    },
   },
   'rocketchat-local-dev': {
     slug: 'rocketchat-local-dev',
@@ -312,19 +285,19 @@ Experience the actual production infrastructure:
     challenges: [
       'Balancing simplicity with realistic service topology',
       'Ensuring fast resets while preserving important data',
-      'Supporting both Docker and Podman engines'
+      'Supporting both Docker and Podman engines',
     ],
     solutions: [
       'Compose files organized for easy spins and resets',
       'Named volumes for persistence and quick cleanup options',
-      'Engine-agnostic compose usage documented'
+      'Engine-agnostic compose usage documented',
     ],
     impact: 'Accelerates local development and testing for Rocket.Chat',
     technologies: {
-      'Orchestration': ['Docker Compose', 'Podman Compose'],
-      'Services': ['Rocket.Chat', 'MongoDB', 'Redis'],
-      'Optional': ['Traefik']
-    }
+      Orchestration: ['Docker Compose', 'Podman Compose'],
+      Services: ['Rocket.Chat', 'MongoDB', 'Redis'],
+      Optional: ['Traefik'],
+    },
   },
   'rocketchat-troubleshooting': {
     slug: 'rocketchat-troubleshooting',
@@ -337,21 +310,21 @@ Experience the actual production infrastructure:
       'Parsing multiple log formats and structures',
       'Identifying patterns in noisy log data',
       'Providing actionable insights from raw logs',
-      'Handling large log files efficiently'
+      'Handling large log files efficiently',
     ],
     solutions: [
       'Flexible regex patterns for various log formats',
       'Statistical analysis with error frequency tracking',
       'Knowledge base of common issues and solutions',
-      'Stream processing for large files with minimal memory usage'
+      'Stream processing for large files with minimal memory usage',
     ],
     impact: 'Reduced average troubleshooting time by 75%, from hours to minutes for common issues',
     technologies: {
-      'Languages': ['Python', 'PowerShell', 'Bash'],
-      'Analysis': ['Regex', 'Pattern matching', 'Statistical analysis'],
-      'Automation': ['Script automation', 'Batch processing'],
-      'Output': ['JSON reports', 'CSV exports', 'HTML dashboards']
-    }
+      Languages: ['Python', 'PowerShell', 'Bash'],
+      Analysis: ['Regex', 'Pattern matching', 'Statistical analysis'],
+      Automation: ['Script automation', 'Batch processing'],
+      Output: ['JSON reports', 'CSV exports', 'HTML dashboards'],
+    },
   },
   'log-analysis-dashboard': {
     slug: 'log-analysis-dashboard',
@@ -364,22 +337,20 @@ Experience the actual production infrastructure:
       'Processing logs in real-time without performance impact',
       'Creating intuitive visualizations for complex data',
       'Implementing efficient filtering and search',
-      'Managing browser memory with large datasets'
+      'Managing browser memory with large datasets',
     ],
     solutions: [
       'WebSocket connections for real-time streaming',
       'Aggregated data with drill-down capabilities',
       'Indexed search with Elasticsearch integration',
-      'Pagination and virtual scrolling for large results'
+      'Pagination and virtual scrolling for large results',
     ],
     impact: 'Enabled proactive monitoring leading to 50% reduction in critical incidents',
     technologies: {
-      'Backend': ['Python', 'Flask', 'WebSockets'],
-      'Frontend': ['JavaScript', 'Chart.js', 'Bootstrap'],
+      Backend: ['Python', 'Flask', 'WebSockets'],
+      Frontend: ['JavaScript', 'Chart.js', 'Bootstrap'],
       'Data Processing': ['Pandas', 'NumPy', 'Regular expressions'],
-      'Visualization': ['Time series charts', 'Heat maps', 'Error distribution']
-    }
-  }
+      Visualization: ['Time series charts', 'Heat maps', 'Error distribution'],
+    },
+  },
 };
-
-
