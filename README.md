@@ -103,6 +103,10 @@ cd portfolio_website-main
 # Install dependencies
 npm install
 
+# Set up environment variables (see Configuration section)
+cp .env.example .env.local
+# Edit .env.local with your values
+
 # Start development server
 npm run dev
 ```
@@ -117,12 +121,22 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 | `npm run dev:3001` | Start development server (port 3001) |
 | `npm run build` | Create production build |
 | `npm start` | Start production server |
+| `npm run lint` | Run ESLint for code quality checks |
+| `npm run format` | Format code with Prettier |
+| `npm run format:check` | Check code formatting |
+| `npm run typecheck` | Run TypeScript type checking |
 
 ## ⚙️ Configuration
 
 ### Environment Variables
 
-Create a `.env.local` file in the root directory:
+Copy the example environment file and configure your values:
+
+```bash
+cp .env.example .env.local
+```
+
+Then edit `.env.local` with your actual values. See `.env.example` for all available options:
 
 ```bash
 # Analytics (Optional)
