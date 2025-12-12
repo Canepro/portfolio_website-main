@@ -1,0 +1,128 @@
+From eecf7cd772590b4fd262bbade4801b0b49cec043 Mon Sep 17 00:00:00 2001
+From: "copilot-swe-agent[bot]" <198982749+Copilot@users.noreply.github.com>
+Date: Fri, 12 Dec 2025 11:35:06 +0000
+Subject: [PATCH] Fix ESLint violations in Footer, Hero, and TimeLine
+ components
+
+- Replace anchor tags with Next.js Link component for internal navigation in Footer and Hero
+- Refactor TimeLine functions to use useCallback for proper React hooks optimization
+- Add missing useEffect dependencies to fix exhaustive-deps ESLint rule
+
+All ESLint checks now pass successfully.
+---
+ src/components/Footer/Footer.tsx     |  9 ++++----
+ src/components/Hero/Hero.tsx         |  3 ++-
+ src/components/TimeLine/TimeLine.tsx | 32 ++++++++++++++--------------
+ 3 files changed, 23 insertions(+), 21 deletions(-)
+
+diff --git a/src/components/Footer/Footer.tsx b/src/components/Footer/Footer.tsx
+index 7f3ed07..f6b5b18 100644
+--- a/src/components/Footer/Footer.tsx
++++ b/src/components/Footer/Footer.tsx
+@@ -1,6 +1,7 @@
+ // src/components/Footer/Footer.tsx
+ 
+ import React from 'react';
++import Link from 'next/link';
+ import { AiFillGithub, AiFillTwitterCircle, AiFillLinkedin } from 'react-icons/ai';
+ import { SocialIcons } from '../Header/HeaderStyles';
+ import { FooterProps } from '../../types/components';
+@@ -29,16 +30,16 @@ const Footer: React.FC<FooterProps> = () => (
+         <LinkTitle>Quick Links</LinkTitle>
+         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+           <Button variant="ghost" size="sm" asChild>
+-            <a href="/#projects">Projects</a>
++            <Link href="/#projects">Projects</Link>
+           </Button>
+           <Button variant="ghost" size="sm" asChild>
+-            <a href="/#tech">Technologies</a>
++            <Link href="/#tech">Technologies</Link>
+           </Button>
+           <Button variant="ghost" size="sm" asChild>
+-            <a href="/#about">About</a>
++            <Link href="/#about">About</Link>
+           </Button>
+           <Button variant="ghost" size="sm" asChild>
+-            <a href="/contact">Contact</a>
++            <Link href="/contact">Contact</Link>
+           </Button>
+         </div>
+       </LinkColumn>
+diff --git a/src/components/Hero/Hero.tsx b/src/components/Hero/Hero.tsx
+index ff47028..4336e03 100644
+--- a/src/components/Hero/Hero.tsx
++++ b/src/components/Hero/Hero.tsx
+@@ -1,6 +1,7 @@
+ // src/components/Hero/Hero.tsx
+ 
+ import React from 'react';
++import Link from 'next/link';
+ import { Section, SectionText } from '../../styles/GlobalComponents';
+ import { LeftSection, HeroTitle, GradientName, ModernButton, BackgroundGraphics, HeroColumn } from './HeroStyles';
+ import { Button } from '../ui/button';
+@@ -23,7 +24,7 @@ const Hero: React.FC = () => (
+           View My Work
+         </ModernButton>
+         <Button variant="outline" size="lg" asChild>
+-          <a href="/contact">Get in Touch</a>
++          <Link href="/contact">Get in Touch</Link>
+         </Button>
+       </div>
+       </HeroColumn>
+diff --git a/src/components/TimeLine/TimeLine.tsx b/src/components/TimeLine/TimeLine.tsx
+index f375d0e..f9ffd49 100644
+--- a/src/components/TimeLine/TimeLine.tsx
++++ b/src/components/TimeLine/TimeLine.tsx
+@@ -1,4 +1,4 @@
+-import React, { useState, useRef, useEffect } from 'react';
++import React, { useState, useRef, useEffect, useCallback } from 'react';
+ import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+ import { Calendar, CheckCircle, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+ import { Section, SectionDivider, SectionText, SectionTitle } from '../../styles/GlobalComponents';
+@@ -73,6 +73,20 @@ const Timeline: React.FC = () => {
+     setExpandedHeight(Math.max(available, 80));
+   }, []);
+ 
++  const toggleExpand = useCallback((index: number) => {
++    if (index === currentIndex) setExpandedIndex(expandedIndex === index ? null : index);
++  }, [currentIndex, expandedIndex]);
++
++  const next = useCallback(() => {
++    setCurrentIndex((p) => (p === items.length - 1 ? 0 : p + 1));
++    setExpandedIndex(null);
++  }, [items.length]);
++  
++  const prev = useCallback(() => {
++    setCurrentIndex((p) => (p === 0 ? items.length - 1 : p - 1));
++    setExpandedIndex(null);
++  }, [items.length]);
++
+   // Keyboard navigation
+   useEffect(() => {
+     const handleKeyDown = (e: KeyboardEvent) => {
+@@ -93,21 +107,7 @@ const Timeline: React.FC = () => {
+ 
+     window.addEventListener('keydown', handleKeyDown);
+     return () => window.removeEventListener('keydown', handleKeyDown);
+-  }, [currentIndex, expandedIndex]);
+-
+-  const toggleExpand = (index: number) => {
+-    if (index === currentIndex) setExpandedIndex(expandedIndex === index ? null : index);
+-  };
+-
+-  const next = () => {
+-    setCurrentIndex((p) => (p === items.length - 1 ? 0 : p + 1));
+-    setExpandedIndex(null);
+-  };
+-  
+-  const prev = () => {
+-    setCurrentIndex((p) => (p === 0 ? items.length - 1 : p - 1));
+-    setExpandedIndex(null);
+-  };
++  }, [currentIndex, items, prev, next, toggleExpand]);
+ 
+   const goToSlide = (index: number) => {
+     setCurrentIndex(index);
+-- 
+2.52.0
+
