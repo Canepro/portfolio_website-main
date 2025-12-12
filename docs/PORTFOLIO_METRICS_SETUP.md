@@ -8,7 +8,7 @@ This guide walks you through setting up comprehensive portfolio analytics that f
 
 ### 🎯 What You'll Build
 
-- **Custom Metrics API**: Portfolio analytics endpoint at `/api/metrics` 
+- **Custom Metrics API**: Portfolio analytics endpoint at `/api/metrics`
 - **Dual Analytics**: Google Analytics + custom metrics collection
 - **Real-time Tracking**: Page views, demo clicks, performance metrics
 - **Grafana Cloud Dashboard**: 5-panel portfolio monitoring dashboard (free tier!)
@@ -25,8 +25,8 @@ This guide walks you through setting up comprehensive portfolio analytics that f
 
 ### 🔗 Grafana Instances (Important Distinction)
 
-- **Portfolio Site Monitoring**: `https://canepro.grafana.net/` *(New - for this integration)*
-- **Enterprise Kubernetes Project**: `https://grafana.canepro.me/` *(Existing - stays unchanged)*
+- **Portfolio Site Monitoring**: `https://canepro.grafana.net/` _(New - for this integration)_
+- **Enterprise Kubernetes Project**: `https://grafana.canepro.me/` _(Existing - stays unchanged)_
 
 ---
 
@@ -37,13 +37,15 @@ This guide walks you through setting up comprehensive portfolio analytics that f
 Your portfolio now includes these new files/changes:
 
 ✅ **New Files**:
+
 - `src/lib/analytics.ts` - Enhanced analytics service
-- `src/lib/ga-bridge.js` - Google Analytics to Prometheus bridge  
+- `src/lib/ga-bridge.js` - Google Analytics to Prometheus bridge
 - `src/pages/api/metrics.js` - Custom metrics API endpoint
 
 ✅ **Updated Files**:
+
 - `src/pages/_app.tsx` - Page view tracking
-- `src/components/Projects/ProjectCard.tsx` - Demo click tracking  
+- `src/components/Projects/ProjectCard.tsx` - Demo click tracking
 - `src/pages/projects/[slug].tsx` - Project view tracking
 - `src/pages/api/contact.js` - Contact form tracking
 - `docs/DEPLOYMENT.md` - Updated documentation
@@ -55,7 +57,7 @@ Your portfolio now includes these new files/changes:
 git add .
 git commit -m "Add portfolio metrics → Grafana integration"
 
-# 2. Push to main (triggers Netlify auto-deploy)  
+# 2. Push to main (triggers Netlify auto-deploy)
 git push origin main
 
 # 3. Verify deployment at https://portfolio.canepro.me
@@ -72,12 +74,13 @@ curl https://portfolio.canepro.me/api/metrics
 ```
 
 **Expected Output**: Prometheus-formatted metrics like:
+
 ```
 # HELP portfolio_page_views_total Total number of page views
 # TYPE portfolio_page_views_total counter
 portfolio_page_views_total 0
 
-# HELP ga4_active_users Currently active users from GA4  
+# HELP ga4_active_users Currently active users from GA4
 # TYPE ga4_active_users gauge
 ga4_active_users 8
 ```
@@ -116,6 +119,7 @@ ga4_active_users 8
 #### Option A: Docker (Recommended)
 
 Create `docker-compose.yml`:
+
 ```yaml
 version: '3.8'
 services:
@@ -130,11 +134,12 @@ services:
       - --storage.path=/var/lib/alloy/data
       - /etc/alloy/config.alloy
     ports:
-      - "12345:12345"  # Optional: for Alloy UI
+      - '12345:12345' # Optional: for Alloy UI
     restart: unless-stopped
 ```
 
 Create `config.alloy`:
+
 ```hcl
 // Grafana Alloy configuration for Portfolio Metrics
 // Note: Alloy uses HCL format (like Terraform) instead of YAML
@@ -148,7 +153,7 @@ prometheus.scrape "portfolio_metrics" {
   targets = [
     {"__address__" = "portfolio.canepro.me:443"},
   ]
-  
+
   forward_to      = [prometheus.remote_write.grafana_cloud.receiver]
   job_name        = "portfolio-metrics"
   metrics_path    = "/api/metrics"
@@ -161,13 +166,13 @@ prometheus.scrape "portfolio_metrics" {
 prometheus.remote_write "grafana_cloud" {
   endpoint {
     url = "YOUR_REMOTE_WRITE_URL"  // From step 2.2
-    
+
     basic_auth {
       username = "YOUR_USERNAME"   // From step 2.2
       password = "YOUR_API_KEY"    // From step 2.2
     }
   }
-  
+
   external_labels = {
     cluster     = "portfolio-monitoring"
     environment = "production"
@@ -185,6 +190,7 @@ prometheus.scrape "alloy_metrics" {
 ```
 
 **Deploy**:
+
 ```bash
 # Replace credentials in config.alloy first!
 docker-compose up -d
@@ -193,6 +199,7 @@ docker-compose up -d
 #### Option B: Direct Installation
 
 **Linux/macOS**:
+
 ```bash
 # Download Alloy
 curl -O -L "https://github.com/grafana/alloy/releases/latest/download/alloy-linux-amd64.zip"
@@ -204,9 +211,10 @@ chmod +x alloy-linux-amd64
 ```
 
 **Windows**:
+
 ```powershell
 # Download from: https://github.com/grafana/alloy/releases/latest
-# Extract and run: 
+# Extract and run:
 # alloy-windows-amd64.exe run --server.http.listen-addr=0.0.0.0:12345 config.alloy
 ```
 
@@ -214,9 +222,9 @@ chmod +x alloy-linux-amd64
 
 1. **Check Alloy Status**: `http://localhost:12345` (Alloy UI)
 2. **Check Alloy logs**: `docker logs portfolio-grafana-alloy`
-3. **Check Grafana Cloud**: 
+3. **Check Grafana Cloud**:
    - Go to your Grafana Cloud instance
-   - **Explore** → **Prometheus** 
+   - **Explore** → **Prometheus**
    - Query: `portfolio_page_views_total`
 4. **Generate test data**: Browse your portfolio to create metrics
 
@@ -230,13 +238,14 @@ Open your Grafana Cloud URL (from Step 2.1): `https://yourname123.grafana.net/`
 
 ### 3.2 Create New Dashboard
 
-1. **Click**: "+ Create" → "Dashboard" 
+1. **Click**: "+ Create" → "Dashboard"
 2. **Add Panel** → Select "Time series" or "Stat"
 3. **Data Source**: Should auto-select "Prometheus" (your cloud instance)
 
 ### 3.3 Panel 1: Real-time Visitors
 
 **Configuration**:
+
 - **Panel Title**: "Active Visitors"
 - **Panel Type**: Stat
 - **Query**: `ga4_active_users`
@@ -244,6 +253,7 @@ Open your Grafana Cloud URL (from Step 2.1): `https://yourname123.grafana.net/`
 - **Value Options**: Show current value with color coding
 
 **PromQL Query**:
+
 ```promql
 ga4_active_users
 ```
@@ -251,16 +261,18 @@ ga4_active_users
 ### 3.4 Panel 2: Portfolio Engagement
 
 **Configuration**:
-- **Panel Title**: "Daily Engagement"  
+
+- **Panel Title**: "Daily Engagement"
 - **Panel Type**: Time series
 - **Time Range**: Last 24 hours
 
 **PromQL Queries** (add multiple queries):
+
 ```promql
 # Query A: Page views
 ga4_daily_page_views
 
-# Query B: Demo clicks  
+# Query B: Demo clicks
 sum(portfolio_demo_clicks)
 
 # Query C: Contact submissions
@@ -270,26 +282,30 @@ portfolio_engagement_metrics{type="contact_submissions"}
 ### 3.5 Panel 3: Demo Performance Comparison
 
 **Configuration**:
+
 - **Panel Title**: "Live Demo Engagement"
 - **Panel Type**: Bar chart or Stat
 
 **PromQL Queries**:
+
 ```promql
 # Chat demo clicks
 portfolio_demo_clicks{demo_type="chat"}
 
-# Dashboard demo clicks  
+# Dashboard demo clicks
 portfolio_demo_clicks{demo_type="dashboard"}
 ```
 
 ### 3.6 Panel 4: Site Performance Metrics
 
 **Configuration**:
+
 - **Panel Title**: "Portfolio Performance"
 - **Panel Type**: Gauge
 - **Thresholds**: Green < 1000ms, Yellow < 2000ms, Red > 2000ms
 
 **PromQL Queries**:
+
 ```promql
 # Page load time
 ga4_performance_metrics{metric="page_load_time"}
@@ -301,10 +317,12 @@ ga4_performance_metrics{metric="first_contentful_paint"}
 ### 3.7 Panel 5: Geographic Distribution
 
 **Configuration**:
+
 - **Panel Title**: "Global Reach"
 - **Panel Type**: Stat
 
 **PromQL Query**:
+
 ```promql
 ga4_unique_countries
 ```
@@ -316,6 +334,7 @@ ga4_unique_countries
 ### 4.1 Enable Real Google Analytics Integration
 
 **Prerequisites**:
+
 1. Google Analytics 4 property set up
 2. Google Cloud Project with Analytics Data API enabled
 3. Service account with Analytics Data API access
@@ -323,11 +342,13 @@ ga4_unique_countries
 **Setup**:
 
 1. **Install GA4 API dependencies**:
+
    ```bash
    npm install @google-analytics/data
    ```
 
 2. **Set environment variables** (in Netlify):
+
    ```bash
    GA_PROPERTY_ID=123456789
    GA_CREDENTIALS=/path/to/service-account.json
@@ -338,6 +359,7 @@ ga4_unique_countries
 ### 4.2 Dashboard Variables (Dynamic Filtering)
 
 **Create Variables** in Grafana:
+
 1. **time_range**: Interval variable (5m,15m,1h,6h,24h,7d)
 2. **page_filter**: Query variable → `label_values(portfolio_page_views, page)`
 3. **demo_type**: Query variable → `label_values(portfolio_demo_clicks, demo_type)`
@@ -354,18 +376,18 @@ ga4_unique_countries
   labels:
     severity: warning
   annotations:
-    summary: "Portfolio page load time high"
-    description: "Load time: {{ $value }}ms"
+    summary: 'Portfolio page load time high'
+    description: 'Load time: {{ $value }}ms'
 
-# Low engagement alert  
+# Low engagement alert
 - alert: LowPortfolioEngagement
   expr: rate(portfolio_demo_clicks_total[1h]) < 0.01
   for: 30m
   labels:
     severity: info
   annotations:
-    summary: "Portfolio engagement low"
-    description: "Demo clicks below expected rate"
+    summary: 'Portfolio engagement low'
+    description: 'Demo clicks below expected rate'
 ```
 
 ---
@@ -375,6 +397,7 @@ ga4_unique_countries
 ### 5.1 Generate Test Data
 
 **Browse Your Portfolio**:
+
 1. Visit `https://portfolio.canepro.me`
 2. Navigate between pages (Home, Projects, Contact)
 3. Click demo buttons on enterprise project
@@ -384,23 +407,27 @@ ga4_unique_countries
 ### 5.2 Verify Data Flow
 
 **Check Metrics Endpoint**:
+
 ```bash
 curl https://portfolio.canepro.me/api/metrics | grep portfolio_page_views
 ```
 
 **Check Prometheus**:
+
 - Query: `increase(portfolio_page_views_total[5m])`
 - Should show increases based on your browsing
 
 **Check Grafana**:
+
 - Refresh dashboard
 - Should show activity from your test browsing
 
 ### 5.3 Test Analytics Events
 
 **Browser Dev Tools**:
+
 1. Open Network tab
-2. Navigate portfolio 
+2. Navigate portfolio
 3. Look for POST requests to `/api/metrics`
 4. Verify Google Analytics events (if GA configured)
 
@@ -424,7 +451,7 @@ curl https://portfolio.canepro.me/api/metrics | grep portfolio_page_views
 │  [Time series showing page views, demo clicks, contacts]   │
 ├─────────────────────────────────────────────────────────────┤
 │ Demo Performance     │ Geographic Distribution              │
-│ Chat: [##] clicks    │ Countries: [#]                      │ 
+│ Chat: [##] clicks    │ Countries: [#]                      │
 │ Dashboard: [##]      │ Top: US, UK, CA                     │
 └─────────────────────┴─────────────────────────────────────┘
 ```
@@ -432,15 +459,16 @@ curl https://portfolio.canepro.me/api/metrics | grep portfolio_page_views
 ### 6.2 Dashboard Settings
 
 **General**:
+
 - **Title**: "Portfolio Analytics - Real-time Visitor Engagement"
 - **Refresh**: 30s
 - **Time Range**: Last 24 hours (default)
 
 **Theme**: Dark (to match your portfolio aesthetic)
 
-### 6.3 Public Dashboard (Optional)
+### 6.3 Shared Dashboard (Optional)
 
-If you want to show this dashboard publicly (like your Kubernetes project):
+If you want to share this dashboard externally (e.g., with recruiters) without exposing credentials:
 
 1. **Create Dashboard Snapshot** or set **Public Access**
 2. **Add to Portfolio**: Link in footer or about section
@@ -453,7 +481,7 @@ If you want to show this dashboard publicly (like your Kubernetes project):
 ### 7.1 Final Checklist
 
 - [ ] Code deployed to production
-- [ ] `/api/metrics` endpoint accessible  
+- [ ] `/api/metrics` endpoint accessible
 - [ ] Grafana Cloud account created
 - [ ] Grafana Alloy deployed and running
 - [ ] Alloy successfully sending data to Grafana Cloud
@@ -465,13 +493,15 @@ If you want to show this dashboard publicly (like your Kubernetes project):
 ### 7.2 Monitor for Issues
 
 **Common Issues**:
-- CORS errors: Check domain spelling in configs  
+
+- CORS errors: Check domain spelling in configs
 - No metrics: Verify endpoint returns 200 status
 - Missing data: Check Grafana Alloy connectivity
 - Dashboard errors: Verify PromQL query syntax
 - Authentication: Check Grafana Cloud credentials
 
 **Debug Commands**:
+
 ```bash
 # Test portfolio endpoint
 curl -I https://portfolio.canepro.me/api/metrics
@@ -495,15 +525,16 @@ docker logs portfolio-grafana-alloy
 
 🎯 **Self-Demonstrating Portfolio**: Your portfolio now demonstrates monitoring expertise while visitors explore it
 
-📊 **Real-time Analytics**: Track visitor engagement, demo interactions, and site performance  
+📊 **Real-time Analytics**: Track visitor engagement, demo interactions, and site performance
 
 🚀 **Professional Differentiation**: Showcases advanced DevOps skills beyond static code samples
 
 💼 **Business Value**: Demonstrates data-driven decision making and monitoring best practices
 
 **Share Your Success**:
+
 - Update LinkedIn with your new monitoring capabilities
-- Blog about the meta-demonstration concept  
+- Blog about the meta-demonstration concept
 - Show interviewers the live dashboard during portfolio reviews
 - Use metrics to optimize portfolio performance
 
@@ -514,6 +545,7 @@ docker logs portfolio-grafana-alloy
 ### Issue: Metrics Endpoint Returns 404
 
 **Solution**:
+
 ```bash
 # Check if API route exists
 ls -la src/pages/api/metrics.js
@@ -525,6 +557,7 @@ curl -I https://portfolio.canepro.me/api/metrics
 ### Issue: No Data in Grafana Cloud
 
 **Steps**:
+
 1. **Check Grafana Alloy**: `http://localhost:12345` (Alloy UI)
 2. **Test metrics endpoint**: `curl https://portfolio.canepro.me/api/metrics`
 3. **Check Alloy logs**: `docker logs portfolio-grafana-alloy`
@@ -535,6 +568,7 @@ curl -I https://portfolio.canepro.me/api/metrics
 ### Issue: Analytics Not Tracking
 
 **Solutions**:
+
 1. Check browser console for JavaScript errors
 2. Verify Google Analytics is loaded: `typeof gtag === 'function'`
 3. Look for network requests to `/api/metrics` in dev tools
@@ -545,16 +579,19 @@ curl -I https://portfolio.canepro.me/api/metrics
 ## 📞 Support
 
 **Documentation**:
+
 - Full deployment guide: `docs/DEPLOYMENT.md`
 - Project architecture: `docs/ARCHITECTURE.md`
 
 **Debugging**:
+
 - Check browser dev tools console
-- Monitor Netlify function logs  
+- Monitor Netlify function logs
 - Review Grafana Alloy logs (`docker logs portfolio-grafana-alloy`)
 - Use Grafana Cloud Explore tab for query testing
 
 **Updates**:
+
 - Monitor GitHub issues for improvements
 - Check changelog for new features
 - Update dependencies regularly
