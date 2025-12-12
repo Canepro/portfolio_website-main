@@ -18,7 +18,7 @@
 }
 
 /* Light theme */
-body.light-theme {
+html.light-theme {
   --color-bg-primary: #FFFFFF;
   --color-bg-secondary: #F7F8FA;
   --color-text-primary: #0F1624;

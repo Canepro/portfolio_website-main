@@ -52,7 +52,7 @@ export const projects: Project[] = [
     - Azure: VNet, AKS, Storage Accounts, Key Vault
     - Automated state management and locking
     - Compliance-as-Code integration`,
-    image: '/images/tf-azure.png',
+    image: '/images/structure.png',
     tags: ['Terraform', 'AWS', 'Azure', 'IaC', 'CI/CD'],
     category: 'Cloud',
     featured: true,
@@ -73,7 +73,7 @@ export const projects: Project[] = [
     - Infrastructure provisioning via Terraform
     - GitOps-based deployment to EKS using ArgoCD
     - Automated rollback capabilities`,
-    image: '/images/gha-ci.png',
+    image: '/images/grafana-dashboard.png',
     tags: ['Jenkins', 'AWS EKS', 'Docker', 'ArgoCD', 'Maven'],
     category: 'DevOps',
     featured: true,

@@ -8,26 +8,26 @@ const SimpleThemeToggle: React.FC = () => {
 
   useEffect(() => {
     setMounted(true);
-    // Check localStorage and system preference
-    const savedTheme = localStorage.getItem('theme');
+    // Use class-based theming:
+    // - Tailwind/shadcn: `html.dark`
+    // - Legacy CSS variables: `html.light-theme`
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem('theme'); // 'dark' | 'light' | null
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'light' || (!savedTheme && !prefersDark)) {
-      document.body.classList.add('light-theme');
-      setIsDark(false);
-    }
+
+    const shouldUseDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+    root.classList.toggle('dark', shouldUseDark);
+    root.classList.toggle('light-theme', !shouldUseDark);
+    setIsDark(shouldUseDark);
   }, []);
 
   const toggleTheme = () => {
-    if (isDark) {
-      document.body.classList.add('light-theme');
-      localStorage.setItem('theme', 'light');
-      setIsDark(false);
-    } else {
-      document.body.classList.remove('light-theme');
-      localStorage.setItem('theme', 'dark');
-      setIsDark(true);
-    }
+    const nextIsDark = !isDark;
+    const root = document.documentElement;
+    root.classList.toggle('dark', nextIsDark);
+    root.classList.toggle('light-theme', !nextIsDark);
+    localStorage.setItem('theme', nextIsDark ? 'dark' : 'light');
+    setIsDark(nextIsDark);
   };
 
   // Don't render on server
@@ -40,9 +40,7 @@ const SimpleThemeToggle: React.FC = () => {
       aria-label="Toggle theme"
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >
-      <span style={{ fontSize: 22, lineHeight: 1 }}>
-        {isDark ? '☀️' : '🌙'}
-      </span>
+      <span style={{ fontSize: 22, lineHeight: 1 }}>{isDark ? '☀️' : '🌙'}</span>
     </button>
   );
 };

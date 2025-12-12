@@ -22,3 +22,25 @@ export const GridContainer = styled.section`
     padding: 1.5rem 0;
   }
 `;
+
+export const SkeletonOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.18) 37%,
+    rgba(255, 255, 255, 0.08) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+  @keyframes shimmer {
+    0% {
+      background-position: 100% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+`;

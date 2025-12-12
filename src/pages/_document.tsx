@@ -1,4 +1,11 @@
-import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from 'next/document';
+import Document, {
+  DocumentContext,
+  DocumentInitialProps,
+  Head,
+  Html,
+  Main,
+  NextScript,
+} from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
@@ -9,8 +16,7 @@ export default class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
+          enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
         });
 
       const initialProps = await Document.getInitialProps(ctx);
@@ -32,12 +38,34 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en-GB">
         <Head>
+          {/* Set theme class before paint (prevents flash and keeps Tailwind + legacy vars in sync) */}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function () {
+                  try {
+                    var theme = localStorage.getItem('theme'); // 'dark' | 'light' | null
+                    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    var isDark = theme ? theme === 'dark' : !!prefersDark;
+                    var root = document.documentElement;
+                    if (isDark) {
+                      root.classList.add('dark');
+                      root.classList.remove('light-theme');
+                    } else {
+                      root.classList.remove('dark');
+                      root.classList.add('light-theme');
+                    }
+                  } catch (e) {}
+                })();
+              `,
+            }}
+          />
           {/* Favicon and App Icons */}
           <link rel="icon" href="/favicon.ico" />
           <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
-          
+
           {/* Fonts */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -45,7 +73,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
             rel="stylesheet"
           />
-          
+
           {/* DNS Prefetch for performance */}
           <link rel="dns-prefetch" href="//fonts.googleapis.com" />
           <link rel="dns-prefetch" href="//fonts.gstatic.com" />
