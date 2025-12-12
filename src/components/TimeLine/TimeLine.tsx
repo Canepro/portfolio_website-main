@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { Calendar, CheckCircle, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { Section, SectionDivider, SectionText, SectionTitle } from '../../styles/GlobalComponents';
@@ -41,12 +41,8 @@ const yearHighlights: YearHighlights = {
     { title: 'Dockerized Portfolio (multi-stage build, healthcheck)', done: true },
     { title: 'Rocket.Chat Observability Stack (Prometheus/Grafana)', done: true },
   ],
-  2023: [
-    { title: 'CI pipeline hardening on GitHub Actions', done: true },
-  ],
-  2022: [
-    { title: 'Azure-focused IaC experiments (Terraform AZ Storage RG)', done: true },
-  ],
+  2023: [{ title: 'CI pipeline hardening on GitHub Actions', done: true }],
+  2022: [{ title: 'Azure-focused IaC experiments (Terraform AZ Storage RG)', done: true }],
 };
 
 const Timeline: React.FC = () => {
@@ -56,14 +52,14 @@ const Timeline: React.FC = () => {
   const carouselRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
-  const items = TimeLineData.map((t) => ({ year: t.year, text: t.text }));
+  const items = useMemo(() => TimeLineData.map(t => ({ year: t.year, text: t.text })), []);
 
-  const getHighlights = (year: number, text: string): Highlight[] => {
+  const getHighlights = useCallback((year: number, text: string): Highlight[] => {
     const fromMap = yearHighlights[year];
     if (fromMap && fromMap.length > 0) return fromMap;
     // Fallback: show the year text as a single highlight
     return text ? [{ title: text, done: true }] : [];
-  };
+  }, []);
 
   useEffect(() => {
     if (!carouselRef.current || !headerRef.current) return;
@@ -72,6 +68,25 @@ const Timeline: React.FC = () => {
     const available = total - head - 110;
     setExpandedHeight(Math.max(available, 80));
   }, []);
+
+  const toggleExpand = useCallback(
+    (index: number) => {
+      if (index === currentIndex) {
+        setExpandedIndex(current => (current === index ? null : index));
+      }
+    },
+    [currentIndex]
+  );
+
+  const next = useCallback(() => {
+    setCurrentIndex(p => (p === items.length - 1 ? 0 : p + 1));
+    setExpandedIndex(null);
+  }, [items.length]);
+
+  const prev = useCallback(() => {
+    setCurrentIndex(p => (p === 0 ? items.length - 1 : p - 1));
+    setExpandedIndex(null);
+  }, [items.length]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -93,28 +108,18 @@ const Timeline: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, expandedIndex]);
-
-  const toggleExpand = (index: number) => {
-    if (index === currentIndex) setExpandedIndex(expandedIndex === index ? null : index);
-  };
-
-  const next = () => {
-    setCurrentIndex((p) => (p === items.length - 1 ? 0 : p + 1));
-    setExpandedIndex(null);
-  };
-  
-  const prev = () => {
-    setCurrentIndex((p) => (p === 0 ? items.length - 1 : p - 1));
-    setExpandedIndex(null);
-  };
+  }, [currentIndex, items, prev, next, toggleExpand, getHighlights]);
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
     setExpandedIndex(null);
   };
 
-  const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo, index: number) => {
+  const handleDragEnd = (
+    _e: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo,
+    index: number
+  ) => {
     const THRESHOLD = 50;
     if (info.offset.x > THRESHOLD && index === currentIndex) prev();
     else if (info.offset.x < -THRESHOLD && index === currentIndex) next();
@@ -129,23 +134,20 @@ const Timeline: React.FC = () => {
     <Section id="about">
       <SectionTitle>About Me</SectionTitle>
       <SectionText style={{ maxWidth: 720, textAlign: 'left', margin: 0 }}>
-        I'm an infrastructure‑focused engineer who loves clean UI. I design and run scalable systems, automate cloud operations, and build front‑ends that are fast and accessible.
+        I'm an infrastructure‑focused engineer who loves clean UI. I design and run scalable
+        systems, automate cloud operations, and build front‑ends that are fast and accessible.
       </SectionText>
 
       <TimelineWrapper>
-        <TimelineNavigationButton 
-          onClick={prev} 
+        <TimelineNavigationButton
+          onClick={prev}
           aria-label="Previous timeline item"
           className="prev"
         >
           <ChevronLeft width={20} height={20} />
         </TimelineNavigationButton>
-        
-        <TimelineNavigationButton 
-          onClick={next} 
-          aria-label="Next timeline item"
-          className="next"
-        >
+
+        <TimelineNavigationButton onClick={next} aria-label="Next timeline item" className="next">
           <ChevronRight width={20} height={20} />
         </TimelineNavigationButton>
 
@@ -173,15 +175,34 @@ const Timeline: React.FC = () => {
                 />
 
                 <TimelineCardContent layout transition={{ duration: 0.25 }}>
-                  <Card style={{ overflow: 'hidden', border: '1px solid var(--color-border)', background: 'var(--color-card-bg)', boxShadow: 'var(--shadow-md)' }}>
-                    <TimelineCardHeader 
+                  <Card
+                    style={{
+                      overflow: 'hidden',
+                      border: '1px solid var(--color-border)',
+                      background: 'var(--color-card-bg)',
+                      boxShadow: 'var(--shadow-md)',
+                    }}
+                  >
+                    <TimelineCardHeader
                       ref={index === 0 ? headerRef : null}
-                      $isClickable={getHighlights(item.year, item.text).length > 0 && index === currentIndex}
-                      onClick={() => getHighlights(item.year, item.text).length > 0 && toggleExpand(index)}
+                      $isClickable={
+                        getHighlights(item.year, item.text).length > 0 && index === currentIndex
+                      }
+                      onClick={() =>
+                        getHighlights(item.year, item.text).length > 0 && toggleExpand(index)
+                      }
                       role={getHighlights(item.year, item.text).length > 0 ? 'button' : undefined}
-                      tabIndex={getHighlights(item.year, item.text).length > 0 && index === currentIndex ? 0 : -1}
+                      tabIndex={
+                        getHighlights(item.year, item.text).length > 0 && index === currentIndex
+                          ? 0
+                          : -1
+                      }
                       aria-expanded={expandedIndex === index}
-                      aria-controls={getHighlights(item.year, item.text).length > 0 ? `timeline-highlights-${index}` : undefined}
+                      aria-controls={
+                        getHighlights(item.year, item.text).length > 0
+                          ? `timeline-highlights-${index}`
+                          : undefined
+                      }
                     >
                       <TimelineBadge>
                         <Calendar width={14} height={14} style={{ marginRight: 6 }} />
@@ -190,11 +211,11 @@ const Timeline: React.FC = () => {
                       <TimelineCardTitle>{item.year} Milestones</TimelineCardTitle>
                       <TimelineCardText>{item.text}</TimelineCardText>
                       {getHighlights(item.year, item.text).length > 0 && (
-                        <TimelineChevron 
-                          animate={{ 
-                            rotate: expandedIndex === index ? 180 : 0, 
-                            opacity: index === currentIndex ? 1 : 0.5 
-                          }} 
+                        <TimelineChevron
+                          animate={{
+                            rotate: expandedIndex === index ? 180 : 0,
+                            opacity: index === currentIndex ? 1 : 0.5,
+                          }}
                           transition={{ duration: 0.25 }}
                         >
                           <ChevronDown width={18} height={18} />
@@ -203,32 +224,38 @@ const Timeline: React.FC = () => {
                     </TimelineCardHeader>
 
                     <AnimatePresence>
-                      {expandedIndex === index && index === currentIndex && getHighlights(item.year, item.text).length > 0 && (
-                        <TimelineExpandedContent
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: expandedHeight, opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                          id={`timeline-highlights-${index}`}
-                        >
-                          <TimelineExpandedInner>
-                            <TimelineHighlightsTitle>Highlights</TimelineHighlightsTitle>
-                            <TimelineHighlightList>
-                              {getHighlights(item.year, item.text).map((h, i) => (
-                                <TimelineHighlightItem 
-                                  key={i} 
-                                  initial={{ opacity: 0, x: -12 }} 
-                                  animate={{ opacity: 1, x: 0 }} 
-                                  transition={{ duration: 0.2, delay: i * 0.05 }}
-                                >
-                                  <TimelineHighlightIcon width={16} height={16} $isDone={h.done || false} />
-                                  <TimelineHighlightText>{h.title}</TimelineHighlightText>
-                                </TimelineHighlightItem>
-                              ))}
-                            </TimelineHighlightList>
-                          </TimelineExpandedInner>
-                        </TimelineExpandedContent>
-                      )}
+                      {expandedIndex === index &&
+                        index === currentIndex &&
+                        getHighlights(item.year, item.text).length > 0 && (
+                          <TimelineExpandedContent
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: expandedHeight, opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            id={`timeline-highlights-${index}`}
+                          >
+                            <TimelineExpandedInner>
+                              <TimelineHighlightsTitle>Highlights</TimelineHighlightsTitle>
+                              <TimelineHighlightList>
+                                {getHighlights(item.year, item.text).map((h, i) => (
+                                  <TimelineHighlightItem
+                                    key={i}
+                                    initial={{ opacity: 0, x: -12 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.2, delay: i * 0.05 }}
+                                  >
+                                    <TimelineHighlightIcon
+                                      width={16}
+                                      height={16}
+                                      $isDone={h.done || false}
+                                    />
+                                    <TimelineHighlightText>{h.title}</TimelineHighlightText>
+                                  </TimelineHighlightItem>
+                                ))}
+                              </TimelineHighlightList>
+                            </TimelineExpandedInner>
+                          </TimelineExpandedContent>
+                        )}
                     </AnimatePresence>
                   </Card>
                 </TimelineCardContent>
