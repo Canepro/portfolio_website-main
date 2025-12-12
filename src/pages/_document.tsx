@@ -36,7 +36,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="en-GB">
+      <Html lang="en-GB" className="light-theme">
         <Head>
           {/* Set theme class before paint (prevents flash and keeps Tailwind + legacy vars in sync) */}
           <script

@@ -37,9 +37,16 @@ export default function App({ Component, pageProps }: AppProps) {
       .then(({ getWebInstrumentations, initializeFaro }) => {
         import('@grafana/faro-web-tracing').then(({ TracingInstrumentation }) => {
           try {
+            const faroUrl = process.env.NEXT_PUBLIC_FARO_URL;
+            if (!faroUrl || typeof faroUrl !== 'string' || faroUrl.trim() === '') {
+              console.warn(
+                'Faro initialization skipped: NEXT_PUBLIC_FARO_URL environment variable is not set.'
+              );
+              return;
+            }
             initializeFaro({
               // Grafana Cloud Frontend Observability collector endpoint
-              url: process.env.NEXT_PUBLIC_FARO_URL || '',
+              url: faroUrl,
 
               // Application identification for Grafana Cloud dashboard
               app: {
