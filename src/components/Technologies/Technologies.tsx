@@ -43,7 +43,7 @@ const Technologies: React.FC = () => (
       </ListItem>
       <ListItem>
         <picture>
-          <TerminalIcon />
+          <MicrosoftIcon />
         </picture>
         <ListContainer>
           <ListTitle>GitOps & IaC</ListTitle>
