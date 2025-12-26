@@ -1,14 +1,14 @@
 # ---- build stage ----
-FROM node:20-alpine AS build
+FROM oven/bun:1.3.5-alpine AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
-COPY package*.json ./
-RUN npm ci --no-audit --no-fund
+COPY package.json bun.lock* ./
+RUN bun install --frozen-lockfile
 COPY . .
-RUN npm run build
+RUN bun run build
 
 # ---- run stage ----
-FROM node:20-alpine
+FROM oven/bun:1.3.5-alpine
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
@@ -18,18 +18,18 @@ WORKDIR /app
 RUN apk add --no-cache curl
 
 # Only runtime deps
-COPY --from=build /app/package*.json ./
-RUN npm ci --omit=dev --no-audit --no-fund
+COPY --from=build /app/package.json /app/bun.lock* ./
+RUN bun install --frozen-lockfile --production
 
 # App artifacts
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
 COPY --from=build /app/next.config.js ./
 
-USER node
+USER bun
 EXPOSE 3000
 
 # Basic healthcheck (works for Podman or Docker)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=15s CMD curl -fsS http://localhost:3000/ || exit 1
 
-CMD ["npm","start"]
+CMD ["bun", "run", "start"]

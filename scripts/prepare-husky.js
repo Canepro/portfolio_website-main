@@ -28,7 +28,7 @@ function main() {
   }
 
   try {
-    execSync('npx husky install', {
+    execSync('bunx husky install', {
       cwd: repoRoot,
       stdio: 'inherit',
     });

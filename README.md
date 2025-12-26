@@ -89,8 +89,8 @@ _The dual analytics provides both business insights and demonstrates advanced mo
 
 ### Prerequisites
 
-- Node.js 18+ (recommended 20)
-- npm or yarn
+- Bun 1.3.5+ ([install Bun](https://bun.sh/docs/installation))
+- Node.js 18+ (recommended 20) - required for Next.js runtime
 
 ### Installation
 
@@ -100,14 +100,14 @@ git clone https://github.com/Canepro/portfolio_website-main.git
 cd portfolio_website-main
 
 # Install dependencies
-npm install
+bun install
 
 # Set up environment variables (see Configuration section)
 cp .env.example .env.local
 # Edit .env.local with your values
 
 # Start development server
-npm run dev
+bun run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the site.
@@ -116,14 +116,50 @@ Open [http://localhost:3000](http://localhost:3000) to view the site.
 
 | Command                | Description                          |
 | ---------------------- | ------------------------------------ |
-| `npm run dev`          | Start development server (port 3000) |
-| `npm run dev:3001`     | Start development server (port 3001) |
-| `npm run build`        | Create production build              |
-| `npm start`            | Start production server              |
-| `npm run lint`         | Run ESLint for code quality checks   |
-| `npm run format`       | Format code with Prettier            |
-| `npm run format:check` | Check code formatting                |
-| `npm run typecheck`    | Run TypeScript type checking         |
+| `bun run dev`          | Start development server (port 3000) |
+| `bun run dev:3001`     | Start development server (port 3001) |
+| `bun run build`        | Create production build              |
+| `bun run start`        | Start production server              |
+| `bun run lint`         | Run ESLint for code quality checks   |
+| `bun run format`       | Format code with Prettier            |
+| `bun run format:check` | Check code formatting                |
+| `bun run typecheck`    | Run TypeScript type checking         |
+
+### Upgrading Bun
+
+This project is pinned to **Bun 1.3.5** for reproducible builds. To upgrade:
+
+1. **Update version in `package.json`**:
+
+   ```json
+   "packageManager": "bun@<new-version>"
+   ```
+
+2. **Update `netlify.toml`**:
+
+   ```toml
+   [build.environment]
+     BUN_VERSION = "<new-version>"
+   ```
+
+3. **Update `Dockerfile`** (if using Docker):
+
+   ```dockerfile
+   FROM oven/bun:<new-version>-alpine
+   ```
+
+4. **Regenerate lockfile**:
+
+   ```bash
+   bun install
+   ```
+
+5. **Test locally**:
+   ```bash
+   bun run typecheck
+   bun run build
+   bun run start
+   ```
 
 ## ⚙️ Configuration
 

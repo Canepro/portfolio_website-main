@@ -15,10 +15,12 @@ This portfolio website is deployed on **Netlify** with automatic deployments fro
    - Enable automatic deployments from the main branch
 
 2. **Configure Build Settings**
+
    ```bash
-   Build command: npm run build
+   Build command: bun run build
    Publish directory: .next (auto-managed by Next.js runtime)
    Node version: 20
+   Bun version: 1.3.5 (auto-detected from bun.lockb)
    ```
 
 3. **Set Environment Variables** (see Configuration section below)
@@ -31,7 +33,7 @@ This portfolio website is deployed on **Netlify** with automatic deployments fro
 
 ```bash
 # Build the project
-npm run build
+bun run build
 
 # Deploy to your preferred platform
 # (Vercel, Railway, DigitalOcean, etc.)
@@ -79,11 +81,12 @@ Create a `netlify.toml` file in your project root:
 
 ```toml
 [build]
-  command = "npm run build"
+  command = "bun run build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
+  BUN_VERSION = "1.3.5"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -102,22 +105,22 @@ The build process includes comprehensive type checking:
 
 ```bash
 # Type checking (runs automatically during build)
-npx tsc --noEmit
+bun run typecheck
 
 # Production build
-npm run build
+bun run build
 
 # Verify build output
-npm start
+bun run start
 ```
 
 ### Build Verification
 
-| Check | Command | Expected Result |
-|-------|---------|-----------------|
-| TypeScript | `npx tsc --noEmit` | No errors |
-| Build | `npm run build` | Success with 12 pages |
-| Production | `npm start` | Server starts on port 3000 |
+| Check      | Command             | Expected Result            |
+| ---------- | ------------------- | -------------------------- |
+| TypeScript | `bun run typecheck` | No errors                  |
+| Build      | `bun run build`     | Success with 12 pages      |
+| Production | `bun run start`     | Server starts on port 3000 |
 
 ## 🐛 Troubleshooting
 
@@ -128,12 +131,14 @@ npm start
 **Problem**: Contact form returns 500 error
 
 **Solutions**:
+
 1. Verify SMTP environment variables are set correctly
 2. Check email credentials and port settings
 3. Test SMTP settings with a simple email client
 4. Ensure `CONTACT_TO` email is valid
 
 **Debug Steps**:
+
 ```bash
 # Check environment variables
 echo $CONTACT_SMTP_HOST
@@ -148,7 +153,8 @@ telnet $CONTACT_SMTP_HOST $CONTACT_SMTP_PORT
 **Problem**: TypeScript compilation errors
 
 **Solutions**:
-1. Run `npx tsc --noEmit` to identify type errors
+
+1. Run `bun run typecheck` to identify type errors
 2. Check for missing type definitions in `src/types/`
 3. Verify all components have proper interfaces
 4. Ensure styled components have typed props
@@ -156,8 +162,9 @@ telnet $CONTACT_SMTP_HOST $CONTACT_SMTP_PORT
 **Problem**: Next.js build fails
 
 **Solutions**:
+
 1. Clear cache: `rm -rf .next`
-2. Reinstall dependencies: `rm -rf node_modules && npm install`
+2. Reinstall dependencies: `rm -rf node_modules && bun install`
 3. Check for syntax errors in pages
 4. Verify all imports are correctly typed
 
@@ -166,9 +173,10 @@ telnet $CONTACT_SMTP_HOST $CONTACT_SMTP_PORT
 **Problem**: Port conflicts
 
 **Solutions**:
+
 ```bash
 # Use alternative port
-npm run dev:3001
+bun run dev:3001
 
 # Kill existing processes (macOS/Linux)
 pkill -f node
@@ -189,12 +197,14 @@ netstat -tulpn | grep :3000
 **Problem**: `/api/metrics` endpoint returns empty or error
 
 **Solutions**:
+
 1. Check that the metrics API is deployed and accessible
 2. Verify environment variables are set correctly
 3. Test the endpoint directly: `curl https://portfolio.canepro.me/api/metrics`
 4. Check server logs for API errors
 
 **Debug Steps**:
+
 ```bash
 # Test metrics endpoint locally
 curl http://localhost:3000/api/metrics
@@ -210,6 +220,7 @@ echo $GA_CREDENTIALS
 **Problem**: Grafana not showing portfolio metrics
 
 **Solutions**:
+
 1. Verify Grafana can reach the portfolio metrics endpoint
 2. Check Prometheus configuration and scraping
 3. Ensure correct metric names in Grafana queries
@@ -218,6 +229,7 @@ echo $GA_CREDENTIALS
 **Problem**: Demo click tracking not working
 
 **Solutions**:
+
 1. Check browser console for JavaScript errors
 2. Verify Google Analytics is loaded (`gtag` function available)
 3. Test with browser dev tools → Network tab
@@ -226,12 +238,14 @@ echo $GA_CREDENTIALS
 **Problem**: GA4 metrics showing sample data instead of real data
 
 **Solutions**:
+
 1. Set up Google Analytics Data API credentials
-2. Configure `GA_PROPERTY_ID` and `GA_CREDENTIALS` environment variables  
-3. Install GA4 API dependencies: `npm install @google-analytics/data`
+2. Configure `GA_PROPERTY_ID` and `GA_CREDENTIALS` environment variables
+3. Install GA4 API dependencies: `bun add @google-analytics/data`
 4. Update the GA bridge service with real API calls
 
 **Debug GA4 Integration**:
+
 ```bash
 # Check if GA4 is configured
 echo "GA Property ID: $GA_PROPERTY_ID"
@@ -249,8 +263,9 @@ console.log('GA4 API available:', !!BetaAnalyticsDataClient);
 **Problem**: Slow build times
 
 **Solutions**:
+
 1. Enable Next.js SWC compiler (enabled by default)
-2. Use `npm run build` instead of `npm run dev` for production testing
+2. Use `bun run build` instead of `bun run dev` for production testing
 3. Consider incremental builds for large projects
 
 ## 📊 Monitoring
@@ -278,6 +293,7 @@ The portfolio now includes a comprehensive metrics endpoint that serves data in 
 **Endpoint**: `https://portfolio.canepro.me/api/metrics`
 
 **Metrics Available**:
+
 - Page views (total and by page type)
 - Demo button clicks (chat and dashboard)
 - Contact form submissions
@@ -287,6 +303,7 @@ The portfolio now includes a comprehensive metrics endpoint that serves data in 
 - Google Analytics data integration (when configured)
 
 **Usage with Prometheus**:
+
 ```yaml
 # Add to prometheus.yml
 scrape_configs:
@@ -299,12 +316,12 @@ scrape_configs:
 
 ### Performance Benchmarks
 
-| Metric | Target | Current |
-|--------|--------|---------|
-| First Contentful Paint | < 1.5s | ✅ |
-| Time to Interactive | < 3.5s | ✅ |
-| Cumulative Layout Shift | < 0.1 | ✅ |
-| Lighthouse Score | > 95 | ✅ |
+| Metric                  | Target | Current |
+| ----------------------- | ------ | ------- |
+| First Contentful Paint  | < 1.5s | ✅      |
+| Time to Interactive     | < 3.5s | ✅      |
+| Cumulative Layout Shift | < 0.1  | ✅      |
+| Lighthouse Score        | > 95   | ✅      |
 
 ## 🔄 Rollback Procedures
 
@@ -324,14 +341,16 @@ scrape_configs:
 ### Fix and Redeploy
 
 1. Create hotfix branch
+
    ```bash
    git checkout -b hotfix/issue-description
    ```
 
 2. Apply fixes and verify
+
    ```bash
-   npm run build
-   npm start
+   bun run build
+   bun run start
    ```
 
 3. Deploy
@@ -344,8 +363,8 @@ scrape_configs:
 
 Before deploying to production:
 
-- [ ] **TypeScript Compilation**: `npx tsc --noEmit` passes
-- [ ] **Build Success**: `npm run build` completes without errors
+- [ ] **TypeScript Compilation**: `bun run typecheck` passes
+- [ ] **Build Success**: `bun run build` completes without errors
 - [ ] **All Pages Generate**: 12 pages build successfully
 - [ ] **Environment Variables**: All required env vars configured
 - [ ] **Contact Form**: Test with proper SMTP settings (if enabled)
@@ -361,16 +380,16 @@ Before deploying to production:
 
 ```bash
 # Install dependencies
-npm install
+bun install
 
 # Start development server
-npm run dev
+bun run dev
 
 # Build for production
-npm run build
+bun run build
 
 # Start production server
-npm start
+bun run start
 ```
 
 ### TypeScript Development
@@ -398,19 +417,19 @@ npm start
 
 ```bash
 # Type checking
-npx tsc --noEmit
+bun run typecheck
 
 # Production build
-npm run build
+bun run build
 
 # Local production test
-npm start
+bun run start
 
 # Clear cache
 rm -rf .next
 
 # Reinstall dependencies
-rm -rf node_modules && npm install
+rm -rf node_modules && bun install
 ```
 
 ---
@@ -430,6 +449,7 @@ The portfolio includes a comprehensive metrics collection system that integrates
 #### Dashboard Panels Recommendations
 
 **Panel 1: Real-time Visitors**
+
 ```promql
 # Query: Current active users
 ga4_active_users
@@ -440,8 +460,9 @@ ga4_active_users
 ```
 
 **Panel 2: Daily Engagement Metrics**
+
 ```promql
-# Query: Page views today  
+# Query: Page views today
 ga4_daily_page_views
 
 # Query: Demo clicks today
@@ -452,6 +473,7 @@ sum(portfolio_demo_clicks)
 ```
 
 **Panel 3: Demo Performance**
+
 ```promql
 # Query: Demo clicks by type
 portfolio_demo_clicks{demo_type="chat"}
@@ -462,6 +484,7 @@ portfolio_demo_clicks{demo_type="dashboard"}
 ```
 
 **Panel 4: Portfolio Performance**
+
 ```promql
 # Query: Page load performance
 ga4_performance_metrics{metric="page_load_time"}
@@ -472,6 +495,7 @@ ga4_performance_metrics{metric="first_contentful_paint"}
 ```
 
 **Panel 5: Geographic Distribution**
+
 ```promql
 # Query: Unique countries
 ga4_unique_countries
@@ -495,25 +519,27 @@ scrape_configs:
     metrics_path: '/api/metrics'
     scrape_interval: 30s
     scrape_timeout: 10s
-    
+
   # Add other existing jobs here...
 ```
 
 #### Sample Grafana Queries
 
 **Total Portfolio Engagement**:
+
 ```promql
-sum(portfolio_page_views_total) + 
-sum(portfolio_demo_clicks_total) + 
+sum(portfolio_page_views_total) +
+sum(portfolio_demo_clicks_total) +
 sum(portfolio_engagement_metrics{type="contact_submissions"})
 ```
 
 **User Journey Funnel**:
+
 ```promql
 # Home page visits
 portfolio_page_views{page="home"}
 
-# Project page visits  
+# Project page visits
 portfolio_page_views{page="projects"}
 
 # Demo interactions
@@ -524,6 +550,7 @@ portfolio_engagement_metrics{type="contact_submissions"}
 ```
 
 **Performance SLA Monitoring**:
+
 ```promql
 # Page load time SLA (< 3 seconds)
 (ga4_performance_metrics{metric="page_load_time"} < 3000) * 100
@@ -541,12 +568,12 @@ Create dashboard variables for dynamic filtering:
 # Type: Interval
 # Values: 5m,15m,1h,6h,24h,7d
 
-# Variable: page_filter  
+# Variable: page_filter
 # Type: Query
 # Query: label_values(portfolio_page_views, page)
 
 # Variable: demo_type
-# Type: Query  
+# Type: Query
 # Query: label_values(portfolio_demo_clicks, demo_type)
 ```
 
@@ -562,18 +589,18 @@ Create alerts for important metrics:
   labels:
     severity: warning
   annotations:
-    summary: "Portfolio page load time is high"
-    description: "Page load time is {{ $value }}ms, above 5 second threshold"
+    summary: 'Portfolio page load time is high'
+    description: 'Page load time is {{ $value }}ms, above 5 second threshold'
 
 # Low engagement alert
-- alert: LowEngagement  
+- alert: LowEngagement
   expr: rate(portfolio_demo_clicks_total[1h]) < 0.01
   for: 30m
   labels:
     severity: info
   annotations:
-    summary: "Portfolio engagement is low"
-    description: "Demo clicks are below expected rate"
+    summary: 'Portfolio engagement is low'
+    description: 'Demo clicks are below expected rate'
 ```
 
 ---

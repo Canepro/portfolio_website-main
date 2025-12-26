@@ -27,8 +27,8 @@ We welcome various types of contributions:
 
 ### Prerequisites
 
-- Node.js 18+ (recommended 20)
-- npm or yarn
+- Bun 1.3.5+ ([install Bun](https://bun.sh/docs/installation))
+- Node.js 18+ (recommended 20) - required for Next.js runtime
 - Git
 
 ### Local Development
@@ -39,20 +39,20 @@ git clone https://github.com/Canepro/portfolio_website-main.git
 cd portfolio_website-main
 
 # Install dependencies
-npm install
+bun install
 
 # Start development server
-npm run dev
+bun run dev
 ```
 
 ### Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server (port 3000) |
-| `npm run dev:3001` | Start development server (port 3001) |
-| `npm run build` | Create production build |
-| `npm start` | Start production server |
+| Command            | Description                          |
+| ------------------ | ------------------------------------ |
+| `bun run dev`      | Start development server (port 3000) |
+| `bun run dev:3001` | Start development server (port 3001) |
+| `bun run build`    | Create production build              |
+| `bun run start`    | Start production server              |
 
 ## 📝 Code Style Guidelines
 
@@ -79,12 +79,7 @@ interface ButtonProps {
   onClick?: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({ 
-  variant, 
-  size = 'md', 
-  children, 
-  onClick 
-}) => {
+const Button: React.FC<ButtonProps> = ({ variant, size = 'md', children, onClick }) => {
   // Component implementation
 };
 ```
@@ -102,11 +97,8 @@ interface StyledButtonProps {
 }
 
 const StyledButton = styled.button<StyledButtonProps>`
-  background-color: ${props => 
-    props.variant === 'primary' 
-      ? props.theme.colors.primary 
-      : props.theme.colors.secondary
-  };
+  background-color: ${props =>
+    props.variant === 'primary' ? props.theme.colors.primary : props.theme.colors.secondary};
   font-size: ${props => props.theme.fontSizes[props.size]};
 `;
 ```
@@ -131,6 +123,7 @@ Use descriptive branch names with prefixes:
 - `test/` - Adding or updating tests
 
 Examples:
+
 - `feature/timeline-animations`
 - `fix/contact-form-validation`
 - `docs/update-readme`
@@ -148,6 +141,7 @@ type(scope): description
 ```
 
 Types:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -157,6 +151,7 @@ Types:
 - `chore`: Maintenance tasks
 
 Examples:
+
 ```
 feat(timeline): add keyboard navigation support
 
@@ -168,6 +163,7 @@ docs(readme): update installation instructions
 ### Pull Request Process
 
 1. **Create Feature Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -178,24 +174,27 @@ docs(readme): update installation instructions
    - Update documentation if needed
 
 3. **Test Your Changes**
+
    ```bash
    # Type checking
-   npx tsc --noEmit
-   
+   bun run typecheck
+
    # Build test
-   npm run build
-   
+   bun run build
+
    # Start production server
-   npm start
+   bun run start
    ```
 
 4. **Commit Your Changes**
+
    ```bash
    git add .
    git commit -m "feat(component): add new feature"
    ```
 
 5. **Push to Remote**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -213,7 +212,7 @@ docs(readme): update installation instructions
 All code must pass TypeScript compilation:
 
 ```bash
-npx tsc --noEmit
+bun run typecheck
 ```
 
 ### Build Verification
@@ -221,12 +220,13 @@ npx tsc --noEmit
 Ensure the project builds successfully:
 
 ```bash
-npm run build
+bun run build
 ```
 
 ### Manual Testing
 
 Test your changes across:
+
 - **Browsers**: Chrome, Firefox, Safari, Edge
 - **Devices**: Desktop, tablet, mobile
 - **Accessibility**: Keyboard navigation, screen readers
@@ -243,6 +243,7 @@ Test your changes across:
 ### README Updates
 
 Update README.md if your changes affect:
+
 - Installation process
 - Configuration options
 - Available features
@@ -260,26 +261,32 @@ Update README.md if your changes affect:
 
 ```markdown
 ## Bug Description
+
 Brief description of the issue
 
 ## Steps to Reproduce
+
 1. Go to '...'
 2. Click on '...'
 3. Scroll down to '...'
 4. See error
 
 ## Expected Behavior
+
 What you expected to happen
 
 ## Actual Behavior
+
 What actually happened
 
 ## Environment
+
 - OS: [e.g. Windows 10, macOS 12]
 - Browser: [e.g. Chrome 96, Firefox 95]
 - Node.js Version: [e.g. 18.0.0]
 
 ## Additional Information
+
 Screenshots, console errors, etc.
 ```
 
@@ -295,18 +302,23 @@ Screenshots, console errors, etc.
 
 ```markdown
 ## Feature Description
+
 Brief description of the requested feature
 
 ## Problem Statement
+
 What problem does this feature solve?
 
 ## Proposed Solution
+
 How would you like to see this implemented?
 
 ## Alternative Solutions
+
 Any alternative approaches you've considered?
 
 ## Additional Context
+
 Screenshots, mockups, or examples
 ```
 
@@ -364,6 +376,7 @@ For security vulnerabilities, please email directly instead of creating a public
 ### Contributors
 
 Contributors will be recognized in:
+
 - Project README
 - Release notes
 - GitHub contributors list
