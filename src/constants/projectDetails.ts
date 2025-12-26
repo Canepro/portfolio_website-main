@@ -1,6 +1,61 @@
 import type { ProjectDetail } from '../types/project';
 
 export const projectDetails: Record<string, ProjectDetail> = {
+  'hybrid-cloud-gitops-control-plane': {
+    slug: 'hybrid-cloud-gitops-control-plane',
+    longDescription: `## Overview
+
+A **hub-and-spoke GitOps control plane** that connects **OCI OKE (Hub)** with a **remote K3s cluster (Spoke)** using a single Git repository.
+
+This project is intentionally framed as **Infrastructure vs. Application**:
+
+- **Terraform (Foundation)** provisions the OCI resources and cluster primitives.
+- **ArgoCD (Orchestrator)** continuously reconciles **100% of application state** from Git, including observability and workloads.
+
+## Always Free constraints (designed, not accidental)
+
+Engineered to run the full LGTM stack (**Loki, Grafana, Tempo, Mimir**) within an OCI Always Free-style **200GB storage envelope**.
+
+- Used **persistent volumes** only where it matters (stateful data).
+- Used **ephemeral \`emptyDir\`** for appropriate transient components (example: **Alertmanager** state), keeping storage usage predictable.
+
+## Multi-cluster GitOps bridge
+
+- **ArgoCD runs on the OKE Hub** and manages a **remote K3s Spoke**.
+- A **single Git repository** is the source of truth for infra + ops + apps.
+- Uses **ArgoCD Multi-Source** patterns to separate concerns cleanly (e.g. \`ops/\` vs app charts/manifests).
+
+## Cost + reliability guardrails
+
+- Implemented an **egress tracker** aligned to a **10TB/month** limit using PromQL-style queries as an operational cost-control signal.
+- Stateful workloads (MongoDB/NATS) use **Retain policies** for disaster recovery, managed via an \`ops/\` Kustomize app adopted by ArgoCD.
+
+## Infrastructure Flow
+
+![Hybrid Cloud GitOps Architecture showing Terraform provisioning OCI OKE and ArgoCD managing K3s Rocket.Chat deployments](/images/infra-flow.svg)
+`,
+    challenges: [
+      'Operating within Always Free constraints without overselling uptime or capacity',
+      'Keeping a clear separation between “infra”, “ops”, and “apps” while still using one repo',
+      'Managing a remote K3s cluster safely from a central ArgoCD control plane',
+      'Avoiding storage surprises by explicitly budgeting PV usage and ephemeral state',
+    ],
+    solutions: [
+      'Terraform-managed OCI lifecycle for reproducible cluster creation and change control',
+      'ArgoCD reconciliation as the single source of truth for application + observability state',
+      'Adopted ArgoCD Multi-Source to keep ops/app boundaries clean and upgrades predictable',
+      'Cost-control instrumentation (egress tracking) and Retain policies for stateful recovery',
+    ],
+    impact:
+      'Demonstrates end-to-end platform engineering: constraints-first design, GitOps multi-cluster operations, and measurable efficiency improvements without misleading production claims.',
+    technologies: {
+      Kubernetes: ['OCI OKE', 'K3s', 'Helm', 'Kustomize'],
+      GitOps: ['ArgoCD', 'ArgoCD Multi-Source'],
+      IaC: ['Terraform'],
+      Observability: ['Grafana', 'Loki', 'Tempo', 'Mimir'],
+      Operations: ['PromQL cost signals', 'Retain policies'],
+    },
+  },
   'central-observability-hub-stack': {
     slug: 'central-observability-hub-stack',
     longDescription: `## Overview
@@ -41,15 +96,17 @@ Centralized observability hub deployed on **Oracle Kubernetes Engine (OKE)** to 
       'Exposing ingestion endpoints publicly without allowing anonymous writes',
       'Balancing cost constraints (free tier budget) with operational reliability',
       'Choosing storage patterns that scale beyond local PVCs for logs and traces',
+      'Operating the stack with reproducible change control (Terraform + ArgoCD) rather than manual drift',
     ],
     solutions: [
       'Deployed Grafana/Prometheus/Loki/Tempo on OKE with NGINX Ingress and cert-manager TLS',
       'Implemented Basic Auth for ingestion endpoints to prevent unauthenticated writes',
       'Kept internal components as ClusterIP and only exposed required ingress routes',
       'Backed Loki/Tempo with object storage for durable, scalable persistence',
+      'Used Terraform for OCI/OKE lifecycle and ArgoCD for continuous reconciliation of the observability stack',
     ],
     impact:
-      'Provides a centralized, secure observability platform for multi-environment telemetry and demonstrates SRE practices around secure ingestion, storage design, and operational readiness.',
+      'A centralized, secure observability platform for multi-environment telemetry, demonstrating SRE practices around secure ingestion, storage design, and operational readiness—with Terraform + ArgoCD patterns for repeatable infrastructure and application changes.',
     technologies: {
       Kubernetes: ['OKE', 'NGINX Ingress', 'cert-manager', 'Helm'],
       Observability: ['Grafana', 'Prometheus', 'Loki', 'Tempo', 'Alertmanager'],
@@ -101,6 +158,47 @@ This is a sandbox/lab environment. It is **not** presented as a production SLO/u
       Data: ['MongoDB'],
       Observability: ['Prometheus (optional)', 'Grafana (optional)'],
       Application: ['Rocket.Chat'],
+    },
+  },
+  'rocketchat-microservices-migration': {
+    slug: 'rocketchat-microservices-migration',
+    longDescription: `## Overview
+
+A **high-signal GitOps migration** that turns Rocket.Chat operations into a predictable, declarative workflow.
+
+The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Source** pattern where upgrades become a **single version change**.
+
+## What changed (the efficiency metric)
+
+- **10,355 lines of YAML deleted** by collapsing static manifests into Helm + GitOps composition.
+- Result: “one-commit” upgrades and faster, safer day-2 operations.
+
+## Upgrade story (risk-minimized)
+
+- Adopted existing in-cluster stateful resources (**MongoDB / NATS**) without downtime.
+- Performed a clean upgrade from **Rocket.Chat v7.12.2 → v7.13.2** using the Multi-Source pattern (no sprawling manifest rewrites).
+
+## Operational safety
+
+- Stateful volumes use **Retain policies** for disaster recovery.
+- An \`ops/\` Kustomize app is used to manage shared cluster primitives cleanly (adopted and reconciled by ArgoCD).`,
+    challenges: [
+      'Reducing operational overhead without breaking running stateful services',
+      'Adopting existing resources under GitOps control safely (no surprise deletes)',
+      'Creating an upgrade workflow that is reproducible and low-risk',
+    ],
+    solutions: [
+      'ArgoCD Multi-Source Apps to separate “ops” Kustomize from “app” Helm releases',
+      'Controlled adoption patterns for existing MongoDB/NATS resources before any upgrade',
+      'Helm-driven version bump workflow to make upgrades a single, reviewable change',
+    ],
+    impact:
+      'Deleted 10,355 lines of YAML and replaced manual drift-prone ops with a repeatable GitOps upgrade workflow, demonstrating real-world efficiency and risk control.',
+    technologies: {
+      GitOps: ['ArgoCD', 'ArgoCD Multi-Source'],
+      Kubernetes: ['Kubernetes', 'Helm'],
+      Data: ['MongoDB', 'NATS'],
+      Observability: ['Prometheus', 'OpenTelemetry'],
     },
   },
   'rocketchat-observability': {

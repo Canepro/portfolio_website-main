@@ -2,17 +2,34 @@ import type { Project } from '../types/project';
 
 export const projects: Project[] = [
   {
-    title: 'Central Observability Hub Stack (Grafana/Loki/Tempo) on OKE',
+    title: 'Hybrid-Cloud GitOps Control Plane (Terraform + ArgoCD)',
+    slug: 'hybrid-cloud-gitops-control-plane',
+    description:
+      'Dual-cluster “hub-and-spoke” architecture: Terraform provisions OCI OKE + K3s, while ArgoCD reconciles observability and application state from a single Git repository.',
+    longDescription: `A hybrid-cloud GitOps control plane that demonstrates full-stack platform ownership:
+    
+    - Terraform provisions OCI Always Free infrastructure (OKE hub + K3s spoke)
+    - ArgoCD manages application lifecycle across clusters from Git
+    - Helm/Kustomize used to keep “ops” and “apps” cleanly separated`,
+    image: '/images/structure.png',
+    tags: ['OCI', 'OKE', 'K3s', 'Terraform', 'ArgoCD', 'GitOps', 'Helm', 'Kustomize', 'LGTM'],
+    category: 'Cloud',
+    featured: true,
+    id: 5,
+  },
+  {
+    title: 'Central Observability Hub (Terraform-provisioned OKE + ArgoCD-managed LGTM)',
     slug: 'central-observability-hub-stack',
     description:
-      'Centralized observability platform on Oracle Kubernetes Engine (OKE) aggregating metrics, logs, and traces. Live demo: Grafana (authentication required).',
-    longDescription: `A centralized observability hub deployed on Oracle Kubernetes Engine (OKE) to unify monitoring across multiple environments.
+      'Terraform-provisioned OKE hub running an ArgoCD-managed LGTM stack (Grafana/Loki/Tempo). Live demo: Grafana (authentication required).',
+    longDescription: `A centralized observability hub deployed on Oracle Kubernetes Engine (OKE) to unify monitoring across multiple environments, with a Terraform + ArgoCD workflow.
     
     Focus areas:
     - Metrics: Prometheus
     - Logs: Loki (object storage backend)
     - Traces: Tempo (object storage backend)
     - Secure ingress: NGINX Ingress + cert-manager TLS
+    - GitOps: ArgoCD reconciliation for day-2 operations
     
     Note: Grafana access requires authentication (access available on request).`,
     image: '/images/grafana-dashboard.png',
@@ -25,6 +42,8 @@ export const projects: Project[] = [
       'Tempo',
       'NGINX Ingress',
       'cert-manager',
+      'Terraform',
+      'ArgoCD',
     ],
     category: 'Cloud',
     featured: true,
@@ -61,6 +80,33 @@ export const projects: Project[] = [
     id: 0,
   },
   {
+    title: 'Rocket.Chat Microservices Migration (ArgoCD Multi-Source GitOps)',
+    slug: 'rocketchat-microservices-migration',
+    description:
+      'Advanced GitOps migration using ArgoCD Multi-Source Apps. Deleted 10,355 lines of YAML and enabled “one-commit” upgrades (v7.12.2 → v7.13.2) via Helm.',
+    longDescription: `A high-signal GitOps migration focused on repeatability and safe upgrades:
+    
+    - Migrated from static manifests to ArgoCD Multi-Source
+    - Adopted existing in-cluster resources (MongoDB/NATS) without downtime
+    - Upgraded Rocket.Chat v7.12.2 → v7.13.2 with a single version bump`,
+    image: '/images/new_dashboard&rocketchatGif.gif',
+    tags: [
+      'ArgoCD',
+      'GitOps',
+      'Helm',
+      'Kubernetes',
+      'Prometheus',
+      'OpenTelemetry',
+      'MongoDB',
+      'NATS',
+    ],
+    category: 'DevOps',
+    featured: true,
+    source: 'https://github.com/Canepro/rocketchat-k8s',
+    visit: 'https://k8.canepro.me',
+    id: 6,
+  },
+  {
     title: 'Rocket.Chat Log Analyzer',
     slug: 'rocketchat-log-analyzer',
     description:
@@ -95,7 +141,7 @@ export const projects: Project[] = [
     image: '/images/structure.png',
     tags: ['Terraform', 'AWS', 'Azure', 'IaC', 'CI/CD'],
     category: 'Cloud',
-    featured: true,
+    featured: false,
     source: 'https://github.com/Canepro/MyTerraform_Templates',
     visit: 'https://github.com/Canepro/MyTerraform_Templates',
     id: 2,
