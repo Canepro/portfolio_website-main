@@ -8,13 +8,13 @@ Thanks for your interest! This is a personal portfolio site, but improvements ar
 1. Install dependencies
 
 ```bash
-npm install
+bun install
 ```
 
 1. Start the dev server
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 ## Branching & commits
@@ -29,12 +29,14 @@ npm run dev
 ## Code style
 
 ### TypeScript Requirements (v1.2.0+)
+
 - **All new components must be TypeScript** (`.tsx` for React, `.ts` for utilities)
 - **Proper type definitions required** - no `any` types
 - **Component props must have interfaces** defined in `src/types/`
 - **Styled components must be typed** with prop interfaces
 
 ### General Standards
+
 - Keep components small and readable; prefer clear names over abbreviations
 - Avoid deep nesting; favor early returns
 - Check for a11y (labels, keyboard support, color contrast)
@@ -44,15 +46,17 @@ npm run dev
 ## Before you submit
 
 ### TypeScript Validation
-- **Type checking must pass**: `npx tsc --noEmit`
+
+- **Type checking must pass**: `bun run typecheck`
 - **Zero TypeScript compilation errors**
 - **All components properly typed**
 
 ### Build Verification
+
 - Run a local build:
 
 ```bash
-npm run build
+bun run build
 ```
 
 - **All 12 pages must generate successfully**
