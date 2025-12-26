@@ -344,7 +344,7 @@ ga4_unique_countries
 1. **Install GA4 API dependencies**:
 
    ```bash
-   npm install @google-analytics/data
+   bun add @google-analytics/data
    ```
 
 2. **Set environment variables** (in Netlify):

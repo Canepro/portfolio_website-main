@@ -20,7 +20,7 @@ This portfolio website is deployed on **Netlify** with automatic deployments fro
    Build command: bun run build
    Publish directory: .next (auto-managed by Next.js runtime)
    Node version: 20
-   Bun version: 1.3.5 (auto-detected from bun.lockb)
+   Bun version: 1.3.5 (pinned via `BUN_VERSION` and `bun.lock`)
    ```
 
 3. **Set Environment Variables** (see Configuration section below)
@@ -38,6 +38,23 @@ bun run build
 # Deploy to your preferred platform
 # (Vercel, Railway, DigitalOcean, etc.)
 ```
+
+### Docker / Podman (Optional)
+
+If you want to run the production build in a container:
+
+```bash
+# Build image
+docker build -t portfolio:test .
+
+# Run container
+docker run --rm -p 3000:3000 --name portfolio-test localhost/portfolio:test
+```
+
+Notes:
+
+- This repo’s `Dockerfile` uses **Bun** (`docker.io/oven/bun:1.3.5-alpine`) and runs as a **non-root** user.
+- If you build with **Podman** in OCI format, Docker `HEALTHCHECK` metadata may be ignored. Use Docker format if you want healthchecks preserved: `podman build --format docker -t portfolio:test .`
 
 ## ⚙️ Configuration
 

@@ -40,8 +40,8 @@ The portfolio website is live and functional with recent major improvements incl
 
 ### 1️⃣ **Immediate Actions** (Today)
 
-- [x] Test production build locally: `npm run build && npm start`
-- [x] Fix dev instability by using a clean port when needed: `npm run dev -- -p 3001`
+- [x] Test production build locally: `bun run build && bun run start`
+- [x] Fix dev instability by using a clean port when needed: `bun run dev:3001`
 - [x] Commit all changes to feature branch
 - [x] Create PR and merge to main
 - [x] Verify Netlify auto-deployment
@@ -376,7 +376,7 @@ The portfolio website is live and functional with recent major improvements incl
 ### Technology Choices
 
 - Next.js 14 with Pages Router (not App Router yet)
-- npm as package manager (not yarn)
+- Bun as package manager (pinned to 1.3.5)
 - Netlify for hosting (not Vercel)
 - GitHub Actions for CI/CD
 

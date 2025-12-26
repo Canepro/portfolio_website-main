@@ -176,7 +176,7 @@ This is a sandbox/lab environment. It is **not** presented as a production SLO/u
       'Reduced deployment time by 40% and enabled consistent development environments across the team',
     technologies: {
       Containerization: ['Docker', 'Podman', 'Alpine Linux'],
-      'Build Tools': ['Multi-stage builds', 'Makefile', 'npm'],
+      'Build Tools': ['Multi-stage builds', 'Makefile', 'Bun'],
       Framework: ['Next.js', 'React', 'Node.js'],
       Security: ['Non-root user', 'Minimal base image'],
     },
@@ -204,7 +204,7 @@ This is a sandbox/lab environment. It is **not** presented as a production SLO/u
       'Caught 95% of build issues before merge, saving 10+ hours weekly in debugging production issues',
     technologies: {
       'CI/CD': ['GitHub Actions', 'YAML', 'Workflow automation'],
-      Testing: ['Node.js matrix builds', 'npm scripts'],
+      Testing: ['Node.js matrix builds', 'bun scripts'],
       Optimization: ['Dependency caching', 'Parallel jobs'],
       Artifacts: ['Build output storage', 'Debug logs'],
     },

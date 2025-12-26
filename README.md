@@ -145,7 +145,7 @@ This project is pinned to **Bun 1.3.5** for reproducible builds. To upgrade:
 3. **Update `Dockerfile`** (if using Docker):
 
    ```dockerfile
-   FROM oven/bun:<new-version>-alpine
+   FROM docker.io/oven/bun:<new-version>-alpine
    ```
 
 4. **Regenerate lockfile**:
