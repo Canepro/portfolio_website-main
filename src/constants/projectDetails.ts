@@ -25,6 +25,11 @@ Engineered to run the full LGTM stack (**Loki, Grafana, Tempo, Mimir**) within a
 - A **single Git repository** is the source of truth for infra + ops + apps.
 - Uses **ArgoCD Multi-Source** patterns to separate concerns cleanly (e.g. \`ops/\` vs app charts/manifests).
 
+## Live demo + source
+
+- **ArgoCD UI**: https://argocd.canepro.me *(authentication required)*
+- **ArgoCD code**: https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd
+
 ## Cost + reliability guardrails
 
 - Implemented an **egress tracker** aligned to a **10TB/month** limit using PromQL-style queries as an operational cost-control signal.
@@ -177,6 +182,12 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
 
 - Adopted existing in-cluster stateful resources (**MongoDB / NATS**) without downtime.
 - Performed a clean upgrade from **Rocket.Chat v7.12.2 → v7.13.2** using the Multi-Source pattern (no sprawling manifest rewrites).
+
+## Live demo + source
+
+- **ArgoCD UI**: https://argocd.canepro.me *(authentication required)*
+- **Rocket.Chat workspace**: https://k8.canepro.me *(best effort availability)*
+- **ArgoCD code**: https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd
 
 ## Operational safety
 

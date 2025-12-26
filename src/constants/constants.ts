@@ -11,10 +11,12 @@ export const projects: Project[] = [
     - Terraform provisions OCI Always Free infrastructure (OKE hub + K3s spoke)
     - ArgoCD manages application lifecycle across clusters from Git
     - Helm/Kustomize used to keep “ops” and “apps” cleanly separated`,
-    image: '/images/structure.png',
+    image: '/images/ArgoCD_set-up.png',
     tags: ['OCI', 'OKE', 'K3s', 'Terraform', 'ArgoCD', 'GitOps', 'Helm', 'Kustomize', 'LGTM'],
     category: 'Cloud',
     featured: true,
+    source: 'https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd',
+    visit: 'https://argocd.canepro.me',
     id: 5,
   },
   {
@@ -32,7 +34,7 @@ export const projects: Project[] = [
     - GitOps: ArgoCD reconciliation for day-2 operations
     
     Note: Grafana access requires authentication (access available on request).`,
-    image: '/images/grafana-dashboard.png',
+    image: '/images/grafana_k8s_dashboard.png',
     tags: [
       'Kubernetes',
       'OKE',
@@ -52,10 +54,10 @@ export const projects: Project[] = [
     id: 4,
   },
   {
-    title: 'Rocket.Chat on Kubernetes (Sandbox Deployment)',
+    title: 'Rocket.Chat Kubernetes Ops Sandbox (Helm + TLS + Recovery Drills)',
     slug: 'rocketchat-kubernetes-enterprise',
     description:
-      'Sandbox Rocket.Chat deployment on Kubernetes focused on hands-on platform operations (ingress, TLS, upgrades, troubleshooting). Availability may vary.',
+      'A hands-on Kubernetes operations lab: Helm deploy/upgrade/rollback, ingress + TLS, probes, and realistic troubleshooting (best-effort sandbox availability).',
     longDescription: `A sandbox Rocket.Chat deployment on Kubernetes used to practice real-world operational workflows (not presented as a production SLO/uptime claim).
     
     Focus areas:
@@ -77,19 +79,20 @@ export const projects: Project[] = [
     category: 'Cloud',
     featured: true,
     source: 'https://github.com/Canepro/rocketchat-k8s',
+    visit: 'https://k8.canepro.me',
     id: 0,
   },
   {
-    title: 'Rocket.Chat Microservices Migration (ArgoCD Multi-Source GitOps)',
+    title: 'ArgoCD Multi-Source GitOps Migration (Rocket.Chat)',
     slug: 'rocketchat-microservices-migration',
     description:
-      'Advanced GitOps migration using ArgoCD Multi-Source Apps. Deleted 10,355 lines of YAML and enabled “one-commit” upgrades (v7.12.2 → v7.13.2) via Helm.',
+      'ArgoCD Multi-Source migration with measurable wins: deleted 10,355 lines of YAML and enabled “one-commit” upgrades (v7.12.2 → v7.13.2) via Helm.',
     longDescription: `A high-signal GitOps migration focused on repeatability and safe upgrades:
     
     - Migrated from static manifests to ArgoCD Multi-Source
     - Adopted existing in-cluster resources (MongoDB/NATS) without downtime
     - Upgraded Rocket.Chat v7.12.2 → v7.13.2 with a single version bump`,
-    image: '/images/new_dashboard&rocketchatGif.gif',
+    image: '/images/ArgoCD.gif',
     tags: [
       'ArgoCD',
       'GitOps',
@@ -102,8 +105,8 @@ export const projects: Project[] = [
     ],
     category: 'DevOps',
     featured: true,
-    source: 'https://github.com/Canepro/rocketchat-k8s',
-    visit: 'https://k8.canepro.me',
+    source: 'https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd',
+    visit: 'https://argocd.canepro.me',
     id: 6,
   },
   {
@@ -118,7 +121,7 @@ export const projects: Project[] = [
     - Automated error classification
     - Interactive visualization dashboard
     - Export capabilities for post-mortem analysis`,
-    image: '/images/log-analysis-dashboard.png',
+    image: '/images/rocketchat-analyzer.png',
     tags: ['Python', 'Flask', 'Automation', 'Data Analysis', 'Docker'],
     category: 'DevOps',
     featured: true,
@@ -159,7 +162,7 @@ export const projects: Project[] = [
     - Infrastructure provisioning via Terraform
     - GitOps-based deployment to EKS using ArgoCD
     - Automated rollback capabilities`,
-    image: '/images/grafana-dashboard.png',
+    image: '/images/grafana_k8s_dashboard.png',
     tags: ['Jenkins', 'AWS EKS', 'Docker', 'ArgoCD', 'Maven'],
     category: 'DevOps',
     featured: false,
