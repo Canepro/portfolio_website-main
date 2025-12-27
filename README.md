@@ -11,12 +11,13 @@
   <img src="https://github.com/Canepro/portfolio_website-main/blob/main/public/images/6.png?raw=true" alt="Portfolio Preview" width="800" />
 </div>
 
-## 🚀 Featured: Kubernetes/SRE Projects
+## 🚀 Featured: Terraform + ArgoCD GitOps (Hub-and-Spoke)
 
-This portfolio highlights hands-on **Kubernetes + SRE** work with working infrastructure and clear, honest scope:
+This portfolio highlights hands-on **Kubernetes + SRE** work with a clear **Infrastructure vs. Application** story:
 
-- **Central Observability Hub Stack on OKE**: Grafana/Loki/Tempo platform with a live Grafana endpoint (**authentication required**) at `https://grafana.canepro.me`
-- **Rocket.Chat on Kubernetes (Sandbox)**: lab environment for ingress/TLS/upgrades/troubleshooting (best-effort availability; no production SLO claims)
+- **Hybrid Cloud GitOps Control Plane**: Terraform-provisioned OCI OKE Hub + K3s Spoke, with a live ArgoCD UI (**authentication required**) at `https://argocd.canepro.me`
+- **Central Observability Hub on OKE**: ArgoCD-managed LGTM stack (Grafana/Loki/Tempo) with a live Grafana endpoint (**authentication required**) at `https://grafana.canepro.me`
+- **Rocket.Chat Ops Sandbox**: lab environment for ingress/TLS/upgrades/troubleshooting (best-effort availability; no production SLO claims) at `https://k8.canepro.me`
 
 ## ✨ Features
 
@@ -36,7 +37,7 @@ This portfolio highlights hands-on **Kubernetes + SRE** work with working infras
 - **Contact Form** - Email delivery via SMTP with rate limiting
 - **Sandbox demos** - Kubernetes sandbox environments for hands-on operations (no misleading uptime/cost claims)
 - **Container Ready** - Docker support with health checks
-- **CI/CD** - Automated deployment with GitHub Actions
+- **CI/CD** - Azure DevOps pipeline validation + Netlify deploys from `main`
 
 ## 🛠️ Tech Stack
 
@@ -50,7 +51,7 @@ This portfolio highlights hands-on **Kubernetes + SRE** work with working infras
 | **Icons**         | react-icons, lucide-react                          |
 | **Animations**    | framer-motion                                      |
 | **Deployment**    | Netlify                                            |
-| **CI/CD**         | GitHub Actions                                     |
+| **CI/CD**         | Azure DevOps Pipelines                             |
 | **Analytics**     | Grafana Faro, Custom Prometheus Exporter           |
 | **Monitoring**    | Grafana Cloud, Grafana Alloy, Real User Monitoring |
 
@@ -235,8 +236,8 @@ portfolio_website-main/
 
 - **[Architecture](docs/ARCHITECTURE.md)** - Technical architecture and TypeScript integration
 - **[Deployment](docs/DEPLOYMENT.md)** - Deployment guide and troubleshooting
-- **[Development Roadmap](docs/TODO.md)** - Current status and future plans
-- **[Branch Management](docs/BRANCH_MANAGEMENT.md)** - Branch cleanup and management strategy
+- **[Roadmap](docs/ROADMAP.md)** - Current focus and future plans
+- **[Maintenance](docs/MAINTENANCE.md)** - Branch strategy and repo hygiene
 - **[Changelog](CHANGELOG.md)** - Version history and updates
 
 ## 🔧 Development

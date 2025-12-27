@@ -5,13 +5,13 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import { SkeletonOverlay } from '../../components/Projects/ProjectsStyles';
 import { Layout } from '../../layout/Layout';
 import { projectDetails } from '../../constants/projectDetails';
 import SEO from '../../components/SEO/SEO';
 import { projectStructuredData } from '../../lib/structuredData';
 import { Project, ProjectDetail } from '../../types/project';
+import ProjectMedia from '../../components/ProjectMedia/ProjectMedia';
 import {
   ProjectDetailContainer,
   BackButton,
@@ -33,7 +33,7 @@ import {
   ProjectLinks,
   ImpactBox,
   TagList,
-  Tag
+  Tag,
 } from '../../styles/ProjectDetailStyles';
 import { Button } from '../../components/ui/button';
 
@@ -71,6 +71,13 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, slug }) 
 
   // Merge project data with details
   const fullProject = { ...project, ...details };
+  const heroSrc = (fullProject as Project).media || project.media || project.image;
+  const heroFit =
+    heroSrc.toLowerCase().endsWith('.gif') ||
+    heroSrc.toLowerCase().endsWith('.mp4') ||
+    heroSrc.toLowerCase().endsWith('.webm')
+      ? 'contain'
+      : 'cover';
 
   return (
     <>
@@ -83,33 +90,28 @@ const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({ project, slug }) 
       <Layout>
         <ProjectDetailContainer>
           <Link href="/projects" passHref legacyBehavior>
-            <BackButton>
-              ← Back to Projects
-            </BackButton>
+            <BackButton>← Back to Projects</BackButton>
           </Link>
 
           <ProjectHero>
             <ProjectImage>
               <SkeletonOverlay />
-              <Image
-                src={project.image}
+              <ProjectMedia
+                src={heroSrc}
                 alt={project.title}
                 fill
-                unoptimized={project.image.endsWith('.gif')}
-                style={{ objectFit: project.image.endsWith('.gif') ? 'contain' : 'cover' }}
                 priority
+                poster={project.image}
+                fit={heroFit}
+                className="h-full w-full"
               />
             </ProjectImage>
-            
+
             <ProjectTitle>{project.title}</ProjectTitle>
-            
+
             <ProjectMeta>
-              <CategoryBadge category={project.category}>
-                {project.category}
-              </CategoryBadge>
-              {project.featured && (
-                <CategoryBadge featured>Featured Project</CategoryBadge>
-              )}
+              <CategoryBadge category={project.category}>{project.category}</CategoryBadge>
+              {project.featured && <CategoryBadge featured>Featured Project</CategoryBadge>}
             </ProjectMeta>
 
             <TagList>
@@ -207,8 +209,8 @@ export default ProjectDetailPage;
 export const getStaticPaths: GetStaticPaths = async () => {
   // Import TS constants (Next can import TS in pages)
   const { projects } = await import('../../constants/constants');
-  
-  const paths = projects.map((project) => ({
+
+  const paths = projects.map(project => ({
     params: { slug: project.slug },
   }));
 
@@ -216,19 +218,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths,
     fallback: false, // Return 404 for unknown slugs
   };
-}
+};
 
 // Generate static props for each project
 export const getStaticProps: GetStaticProps<ProjectDetailPageProps> = async ({ params }) => {
   const { slug } = params!;
   const slugString = Array.isArray(slug) ? slug[0] : slug;
-  
+
   // Import TS source
   const { projects } = await import('../../constants/constants');
-  
+
   // Find the project by slug
-  const project = projects.find((p) => p.slug === slugString);
-  
+  const project = projects.find(p => p.slug === slugString);
+
   if (!project || !slugString) {
     return {
       notFound: true,
@@ -242,4 +244,4 @@ export const getStaticProps: GetStaticProps<ProjectDetailPageProps> = async ({ p
     },
     revalidate: 60, // Revalidate every minute
   };
-}
+};

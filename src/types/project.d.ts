@@ -4,6 +4,7 @@ export interface Project {
   description: string;
   longDescription?: string;
   image: string;
+  media?: string;
   tags: string[];
   category?: string;
   featured?: boolean;

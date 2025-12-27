@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="Hybrid Cloud GitOps Architecture showing Terraform provisioning OCI OKE and ArgoCD managing K3s Rocket.Chat deployments">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#121a2b"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#18233a"/>
+      <stop offset="1" stop-color="#121a2b"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8aa4ff"/>
+    </marker>
+    <style>
+      .label { font: 600 22px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: #eaf1ff; }
+      .sub { font: 400 16px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; fill: rgba(234,241,255,0.8); }
+      .box { fill: url(#card); stroke: rgba(234,241,255,0.18); stroke-width: 2; rx: 18; }
+      .pill { fill: rgba(19,173,199,0.12); stroke: rgba(19,173,199,0.55); stroke-width: 2; rx: 999; }
+      .arrow { stroke: #8aa4ff; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="675" fill="url(#bg)"/>
+
+  <text x="60" y="70" class="label">Infrastructure vs Application (Terraform + ArgoCD)</text>
+  <text x="60" y="100" class="sub">Single Git repo as source of truth: provision clusters, then continuously reconcile apps + observability</text>
+
+  <!-- Git Repo -->
+  <rect x="60" y="160" width="260" height="120" class="box"/>
+  <text x="90" y="210" class="label">Git Repo</text>
+  <text x="90" y="242" class="sub">infra/ + ops/ + apps/</text>
+
+  <!-- Terraform -->
+  <rect x="380" y="150" width="320" height="140" class="box"/>
+  <text x="410" y="205" class="label">Terraform (Infra)</text>
+  <rect x="410" y="225" width="250" height="40" class="pill"/>
+  <text x="430" y="252" class="sub">OCI Always Free constraints</text>
+
+  <!-- Clusters -->
+  <rect x="760" y="135" width="380" height="170" class="box"/>
+  <text x="790" y="190" class="label">Clusters</text>
+  <text x="790" y="222" class="sub">OKE Hub + K3s Spoke</text>
+  <text x="790" y="252" class="sub">200GB storage envelope</text>
+  <text x="790" y="282" class="sub">10TB/month egress signals</text>
+
+  <!-- ArgoCD -->
+  <rect x="420" y="360" width="360" height="150" class="box"/>
+  <text x="450" y="420" class="label">ArgoCD (Apps)</text>
+  <text x="450" y="452" class="sub">Multi-Source reconciliation</text>
+  <text x="450" y="482" class="sub">ops/ Kustomize + app Helm</text>
+
+  <!-- Apps -->
+  <rect x="830" y="360" width="310" height="70" class="box"/>
+  <text x="860" y="405" class="label">Rocket.Chat</text>
+  <text x="860" y="430" class="sub">Microservices upgrade workflow</text>
+
+  <rect x="830" y="440" width="310" height="70" class="box"/>
+  <text x="860" y="485" class="label">LGTM Stack</text>
+  <text x="860" y="510" class="sub">Loki, Grafana, Tempo, Mimir</text>
+
+  <!-- Arrows -->
+  <path class="arrow" d="M 320 220 C 340 220, 350 220, 380 220"/>
+  <path class="arrow" d="M 700 220 C 720 220, 735 220, 760 220"/>
+  <path class="arrow" d="M 600 290 C 600 320, 600 330, 600 360"/>
+  <path class="arrow" d="M 780 435 C 800 435, 810 435, 830 395"/>
+  <path class="arrow" d="M 780 435 C 800 455, 810 465, 830 475"/>
+</svg>
+
+

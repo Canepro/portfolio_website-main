@@ -8,13 +8,15 @@ import { List, ListContainer, ListItem, ListParagraph, ListTitle } from './Techn
 import MicrosoftIcon from './icons/MicrosoftIcon';
 import TerminalIcon from './icons/TerminalIcon';
 import ReactIcon from './icons/ReactIcon';
+import GitIcon from './icons/GitIcon';
 
 const Technologies: React.FC = () => (
   <Section id="tech">
     <SectionDivider divider />
     <SectionTitle>Tech Stack</SectionTitle>
     <SectionText>
-      My technical toolkit includes a variety of technologies for cloud, DevOps, and front-end development.
+      My technical toolkit includes a variety of technologies for cloud, DevOps, and front-end
+      development.
     </SectionText>
     <List>
       <ListItem>
@@ -23,7 +25,9 @@ const Technologies: React.FC = () => (
         </picture>
         <ListContainer>
           <ListTitle>Cloud & Architecture</ListTitle>
-          <ListParagraph>Experience with Azure and AWS for building scalable and secure cloud infrastructure.</ListParagraph>
+          <ListParagraph>
+            Experience with Azure and AWS for building scalable and secure cloud infrastructure.
+          </ListParagraph>
         </ListContainer>
       </ListItem>
       <ListItem>
@@ -32,7 +36,23 @@ const Technologies: React.FC = () => (
         </picture>
         <ListContainer>
           <ListTitle>DevOps & Containers</ListTitle>
-          <ListParagraph>Proficient with Kubernetes, Docker, Podman, Terraform, and GitHub Actions.</ListParagraph>
+          <ListParagraph>
+            Proficient with Kubernetes, Docker, Podman, GitHub Actions, and production-minded
+            operational workflows.
+          </ListParagraph>
+        </ListContainer>
+      </ListItem>
+      <ListItem>
+        <picture>
+          <GitIcon />
+        </picture>
+        <ListContainer>
+          <ListTitle>GitOps & IaC</ListTitle>
+          <ListParagraph>
+            ArgoCD: GitOps Continuous Delivery for multi-cluster Kubernetes orchestration.
+            Terraform: Infrastructure as Code for provisioning OCI Always Free cloud resources and
+            OKE clusters.
+          </ListParagraph>
         </ListContainer>
       </ListItem>
       <ListItem>

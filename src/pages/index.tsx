@@ -6,6 +6,7 @@ import Accomplishments from '../components/Accomplishments/Accomplishments';
 import BgAnimation from '../components/BackgroundAnimation/BackgroundAnimation';
 import Hero from '../components/Hero/Hero';
 import Projects from '../components/Projects/Projects';
+import InfrastructureFlow from '../components/InfrastructureFlow/InfrastructureFlow';
 import Technologies from '../components/Technologies/Technologies';
 import Timeline from '../components/TimeLine/TimeLine';
 import { Layout } from '../layout/Layout';
@@ -33,6 +34,7 @@ const Home: React.FC<HomePageProps> = ({ githubStats }) => {
           <BgAnimation />
         </Section>
         <Projects />
+        <InfrastructureFlow />
         <Technologies />
         <Timeline />
         {/* 2. Add the new Certifications component here */}
@@ -59,10 +61,7 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
       throw new Error('GitHub API responded with a non-200 status');
     }
 
-    const [user, repos] = await Promise.all([
-      userResponse.json(),
-      reposResponse.json(),
-    ]);
+    const [user, repos] = await Promise.all([userResponse.json(), reposResponse.json()]);
 
     const totalStars = Array.isArray(repos)
       ? repos.reduce((acc, repo) => acc + (repo.stargazers_count || 0), 0)
@@ -90,6 +89,6 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
       revalidate: 86400,
     };
   }
-}
+};
 
 export default Home;
