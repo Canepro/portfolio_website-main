@@ -51,6 +51,8 @@ const ProjectMedia: React.FC<ProjectMediaProps> = ({
           poster={poster}
         >
           <source src={src} type={getVideoMimeType(src)} />
+          {alt ? `${alt} ` : ''}
+          Your browser does not support the video tag.
         </video>
       </div>
     );
