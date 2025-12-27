@@ -15,7 +15,7 @@
 
 This portfolio highlights hands-on **Kubernetes + SRE** work with a clear **Infrastructure vs. Application** story:
 
-- **Hybrid-Cloud GitOps Control Plane**: Terraform-provisioned OCI OKE Hub + K3s Spoke, with a live ArgoCD UI (**authentication required**) at `https://argocd.canepro.me`
+- **Hybrid Cloud GitOps Control Plane**: Terraform-provisioned OCI OKE Hub + K3s Spoke, with a live ArgoCD UI (**authentication required**) at `https://argocd.canepro.me`
 - **Central Observability Hub on OKE**: ArgoCD-managed LGTM stack (Grafana/Loki/Tempo) with a live Grafana endpoint (**authentication required**) at `https://grafana.canepro.me`
 - **Rocket.Chat Ops Sandbox**: lab environment for ingress/TLS/upgrades/troubleshooting (best-effort availability; no production SLO claims) at `https://k8.canepro.me`
 

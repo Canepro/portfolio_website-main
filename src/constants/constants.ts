@@ -2,10 +2,10 @@ import type { Project } from '../types/project';
 
 export const projects: Project[] = [
   {
-    title: 'Hybrid-Cloud GitOps Control Plane (Terraform + ArgoCD)',
+    title: 'Hybrid Cloud GitOps Control Plane (Terraform + ArgoCD)',
     slug: 'hybrid-cloud-gitops-control-plane',
     description:
-      'Dual-cluster “hub-and-spoke” architecture: Terraform provisions OCI OKE + K3s, while ArgoCD reconciles observability and application state from a single Git repository.',
+      'Dual cluster “hub-and-spoke” architecture: Terraform provisions OCI OKE + K3s, while ArgoCD reconciles observability and application state from a single Git repository.',
     longDescription: `A hybrid-cloud GitOps control plane that demonstrates full-stack platform ownership:
     
     - Terraform provisions OCI Always Free infrastructure (OKE hub + K3s spoke)

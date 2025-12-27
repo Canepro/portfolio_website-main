@@ -8,6 +8,7 @@ import { List, ListContainer, ListItem, ListParagraph, ListTitle } from './Techn
 import MicrosoftIcon from './icons/MicrosoftIcon';
 import TerminalIcon from './icons/TerminalIcon';
 import ReactIcon from './icons/ReactIcon';
+import GitIcon from './icons/GitIcon';
 
 const Technologies: React.FC = () => (
   <Section id="tech">
@@ -43,7 +44,7 @@ const Technologies: React.FC = () => (
       </ListItem>
       <ListItem>
         <picture>
-          <MicrosoftIcon />
+          <GitIcon />
         </picture>
         <ListContainer>
           <ListTitle>GitOps & IaC</ListTitle>
