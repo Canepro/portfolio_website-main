@@ -92,7 +92,8 @@ export const projects: Project[] = [
     - Migrated from static manifests to ArgoCD Multi-Source
     - Adopted existing in-cluster resources (MongoDB/NATS) without downtime
     - Upgraded Rocket.Chat v7.12.2 → v7.13.2 with a single version bump`,
-    image: '/images/ArgoCD.gif',
+    image: '/images/argocd-multisource.webp',
+    media: '/images/argocd-multisource.mp4',
     tags: [
       'ArgoCD',
       'GitOps',

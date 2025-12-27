@@ -1,13 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
-import OptimizedImage from '../OptimizedImage/OptimizedImage';
 import { ProjectCardProps } from '../../types/components';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Github, ExternalLink, BarChart3 } from 'lucide-react';
+import ProjectMedia from '../ProjectMedia/ProjectMedia';
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   const isGrafanaProject = project.slug === 'central-observability-hub-stack';
+  const previewSrc = project.media || project.image;
 
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -25,12 +26,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
         href={`/projects/${project.slug}`}
         className="relative block aspect-video overflow-hidden"
       >
-        <OptimizedImage
-          src={project.image}
+        <ProjectMedia
+          src={previewSrc}
           alt={`${project.title} thumbnail`}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
           priority={index < 4}
+          poster={project.image}
+          fit="cover"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
 
