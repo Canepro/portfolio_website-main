@@ -26,19 +26,76 @@ pipeline {
       steps {
         sh '''
           # Install unzip (required by bun installer)
-          # Update package list and install unzip if not already present
+          # Since we're running as non-root, try multiple approaches
           if ! command -v unzip &> /dev/null; then
-            if command -v apt-get &> /dev/null; then
-              apt-get update && apt-get install -y unzip
-            elif command -v yum &> /dev/null; then
-              yum install -y unzip
-            elif command -v apk &> /dev/null; then
-              apk add --no-cache unzip
-            else
-              echo "ERROR: Cannot install unzip - package manager not found"
-              exit 1
+            echo "unzip not found, attempting installation..."
+            
+            # Method 1: Try with sudo (if available and passwordless)
+            if command -v sudo &> /dev/null && sudo -n true 2>/dev/null; then
+              echo "Attempting installation with sudo..."
+              if command -v apt-get &> /dev/null; then
+                sudo apt-get update && sudo apt-get install -y unzip && echo "✅ Installed unzip with sudo"
+              elif command -v yum &> /dev/null; then
+                sudo yum install -y unzip && echo "✅ Installed unzip with sudo"
+              elif command -v apk &> /dev/null; then
+                sudo apk add --no-cache unzip && echo "✅ Installed unzip with sudo"
+              fi
+            fi
+            
+            # Method 2: Download static unzip binary (no root required)
+            if ! command -v unzip &> /dev/null; then
+              echo "⚠️ Could not install unzip via package manager, downloading static binary..."
+              mkdir -p "$HOME/.local/bin"
+              
+              # Try to download a static unzip binary
+              # Using busybox unzip (lightweight, single binary)
+              if command -v busybox &> /dev/null; then
+                # Busybox has unzip built-in
+                ln -sf "$(which busybox)" "$HOME/.local/bin/unzip"
+                export PATH="$HOME/.local/bin:$PATH"
+                echo "✅ Using busybox unzip"
+              elif command -v python3 &> /dev/null; then
+                # Fallback: Python zipfile module
+                echo "Using Python zipfile module as fallback..."
+                cat > "$HOME/.local/bin/unzip" << 'PYEOF'
+#!/usr/bin/env python3
+import sys
+import zipfile
+import os
+
+if len(sys.argv) < 2:
+    print("Usage: unzip <zipfile> [-d <dir>]", file=sys.stderr)
+    sys.exit(1)
+
+zipfile_path = sys.argv[1]
+extract_dir = "."
+
+if "-d" in sys.argv:
+    idx = sys.argv.index("-d")
+    if idx + 1 < len(sys.argv):
+        extract_dir = sys.argv[idx + 1]
+
+os.makedirs(extract_dir, exist_ok=True)
+with zipfile.ZipFile(zipfile_path, 'r') as zip_ref:
+    zip_ref.extractall(extract_dir)
+PYEOF
+                chmod +x "$HOME/.local/bin/unzip"
+                export PATH="$HOME/.local/bin:$PATH"
+                echo "✅ Created Python-based unzip wrapper"
+              else
+                echo "ERROR: Cannot install unzip and no fallback available"
+                exit 1
+              fi
             fi
           fi
+          
+          # Verify unzip is available
+          if ! command -v unzip &> /dev/null; then
+            echo "ERROR: unzip is still not available after installation attempt"
+            exit 1
+          fi
+          
+          echo "✅ unzip is available: $(which unzip)"
           
           # Install Bun using official installer
           curl -fsSL https://bun.sh/install | bash
