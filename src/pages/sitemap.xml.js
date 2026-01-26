@@ -11,7 +11,7 @@ function generateSiteMap(projects = []) {
     { loc: `${EXTERNAL_DATA_URL}/contact`, priority: '0.6' },
   ];
 
-  const projectUrls = projects.map((p) => ({
+  const projectUrls = projects.map(p => ({
     loc: `${EXTERNAL_DATA_URL}/projects/${p.slug}`,
     priority: '0.7',
   }));

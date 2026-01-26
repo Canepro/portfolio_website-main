@@ -7,19 +7,19 @@ export const LeftSection = styled.div`
   padding-right: 0;
   position: relative;
   z-index: 1; /* keep content above background animation */
-  
+
   /* Laptop-only tweak (~1400px) to reduce vertical padding in hero */
   @media (min-width: 1280px) and (max-width: 1500px) {
     padding-top: 8px;
     padding-bottom: 8px;
   }
-  @media ${(props) => props.theme.breakpoints.sm} {
+  @media ${props => props.theme.breakpoints.sm} {
     width: 80%;
     display: flex;
     flex-direction: column;
     margin: 0 auto;
   }
-  @media ${(props) => props.theme.breakpoints.md} {
+  @media ${props => props.theme.breakpoints.md} {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -38,14 +38,14 @@ export const HeroTitle = styled.h1`
   padding: 40px 0 8px;
   letter-spacing: -0.5px;
 
-  @media ${props => props.theme.breakpoints.md}{
+  @media ${props => props.theme.breakpoints.md} {
     font-size: 64px;
     line-height: 72px;
     margin-bottom: 12px;
     padding: 40px 0 12px;
   }
 
-  @media ${props => props.theme.breakpoints.sm}{
+  @media ${props => props.theme.breakpoints.sm} {
     font-size: 40px;
     line-height: 46px;
     margin-bottom: 8px;
@@ -136,12 +136,12 @@ export const BackgroundGraphics = styled.div`
 
   @media ${props => props.theme.breakpoints.md} {
     width: 40%;
-    
+
     &::before {
       width: 150px;
       right: 5%;
     }
-    
+
     &::after {
       width: 100px;
       right: 15%;
@@ -156,4 +156,3 @@ export const BackgroundGraphics = styled.div`
 export const HeroColumn = styled.div`
   max-width: 768px; /* ~max-w-3xl to avoid name wrapping */
 `;
-

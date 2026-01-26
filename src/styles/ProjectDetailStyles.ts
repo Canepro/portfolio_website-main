@@ -8,11 +8,11 @@ export const ProjectDetailContainer = styled.div`
   margin: 0 auto;
   padding: 80px 48px 40px;
 
-  @media ${(props) => props.theme.breakpoints.md} {
+  @media ${props => props.theme.breakpoints.md} {
     padding: 60px 24px 40px;
   }
 
-  @media ${(props) => props.theme.breakpoints.sm} {
+  @media ${props => props.theme.breakpoints.sm} {
     padding: 40px 16px;
   }
 `;
@@ -20,7 +20,7 @@ export const ProjectDetailContainer = styled.div`
 export const BackButton = styled.a`
   display: inline-flex;
   align-items: center;
-  color: ${(props) => props.theme.colors.primary1};
+  color: ${props => props.theme.colors.primary1};
   font-size: 18px;
   margin-bottom: 32px;
   transition: all 0.3s ease;
@@ -28,7 +28,7 @@ export const BackButton = styled.a`
 
   &:hover {
     transform: translateX(-4px);
-    color: ${(props) => props.theme.colors.accent1};
+    color: ${props => props.theme.colors.accent1};
   }
 `;
 
@@ -46,7 +46,7 @@ export const ProjectImage = styled.div`
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   background: ${({ theme }) => theme.colors.card};
 
-  @media ${(props) => props.theme.breakpoints.sm} {
+  @media ${props => props.theme.breakpoints.sm} {
     height: 250px;
   }
 `;
@@ -57,11 +57,11 @@ export const ProjectTitle = styled.h1`
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 16px;
 
-  @media ${(props) => props.theme.breakpoints.md} {
+  @media ${props => props.theme.breakpoints.md} {
     font-size: 40px;
   }
 
-  @media ${(props) => props.theme.breakpoints.sm} {
+  @media ${props => props.theme.breakpoints.sm} {
     font-size: 32px;
   }
 `;
@@ -76,15 +76,16 @@ export const ProjectMeta = styled.div`
 export const CategoryBadge = styled.span<CategoryBadgeProps>`
   display: inline-block;
   padding: 8px 16px;
-  background: ${props => props.featured 
-    ? 'linear-gradient(270deg, #F46737 0%, #945DD6 100%)' 
-    : props.category === 'DevOps' 
-      ? 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)'
-      : props.category === 'Cloud'
-        ? 'linear-gradient(270deg, #F46737 0%, #FFC837 100%)'
-        : props.category === 'Backend'
-          ? 'linear-gradient(270deg, #13ADC7 0%, #6978D1 100%)'
-          : 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)'};
+  background: ${props =>
+    props.featured
+      ? 'linear-gradient(270deg, #F46737 0%, #945DD6 100%)'
+      : props.category === 'DevOps'
+        ? 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)'
+        : props.category === 'Cloud'
+          ? 'linear-gradient(270deg, #F46737 0%, #FFC837 100%)'
+          : props.category === 'Backend'
+            ? 'linear-gradient(270deg, #13ADC7 0%, #6978D1 100%)'
+            : 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)'};
   border-radius: 20px;
   font-size: 14px;
   font-weight: 600;
@@ -106,10 +107,10 @@ export const Section = styled.section`
 export const SectionTitle = styled.h2`
   font-size: 32px;
   font-weight: 600;
-  color: ${(props) => props.theme.colors.primary1};
+  color: ${props => props.theme.colors.primary1};
   margin-bottom: 24px;
 
-  @media ${(props) => props.theme.breakpoints.sm} {
+  @media ${props => props.theme.breakpoints.sm} {
     font-size: 24px;
   }
 `;
@@ -117,35 +118,43 @@ export const SectionTitle = styled.h2`
 export const Description = styled.div`
   font-size: 22px;
   line-height: 36px;
-  color: ${(props) => props.theme.colors.textSecondary};
+  color: ${props => props.theme.colors.textSecondary};
   white-space: normal;
   max-width: 800px;
   margin: 0 auto;
   text-align: left;
 
-  @media ${(props) => props.theme.breakpoints.sm} {
+  @media ${props => props.theme.breakpoints.sm} {
     font-size: 16px;
     line-height: 28px;
   }
 
   /* Markdown content styling */
-  h2, h3, h4 {
-    color: ${(props) => props.theme.colors.text};
+  h2,
+  h3,
+  h4 {
+    color: ${props => props.theme.colors.text};
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
     font-weight: 700;
   }
 
-  h2 { font-size: 28px; }
-  h3 { font-size: 22px; }
-  h4 { font-size: 18px; }
+  h2 {
+    font-size: 28px;
+  }
+  h3 {
+    font-size: 22px;
+  }
+  h4 {
+    font-size: 18px;
+  }
 
   p {
     margin: 0.75rem 0;
   }
 
   a {
-    color: ${(props) => props.theme.colors.accent1};
+    color: ${props => props.theme.colors.accent1};
     text-decoration: none;
   }
 
@@ -178,18 +187,21 @@ export const Description = styled.div`
     border-radius: 8px;
   }
 
-  th, td {
+  th,
+  td {
     border: 1px solid rgba(255, 255, 255, 0.12);
     padding: 8px 12px;
     text-align: left;
   }
 
-  thead th { background: rgba(255, 255, 255, 0.06); }
+  thead th {
+    background: rgba(255, 255, 255, 0.06);
+  }
   hr {
     height: 3px;
     width: 64px;
     border: none;
-    background: ${(props) => props.theme.colors.gradient};
+    background: ${props => props.theme.colors.gradient};
     margin: 1.25rem 0;
     border-radius: 6px;
   }
@@ -200,7 +212,7 @@ export const ChallengeGrid = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 32px;
 
-  @media ${(props) => props.theme.breakpoints.md} {
+  @media ${props => props.theme.breakpoints.md} {
     grid-template-columns: 1fr;
   }
 `;
@@ -214,7 +226,7 @@ export const ChallengeCard = styled.div`
   h3 {
     font-size: 24px;
     margin-bottom: 16px;
-    color: ${(props) => props.theme.colors.primary1};
+    color: ${props => props.theme.colors.primary1};
   }
 
   ul {
@@ -233,7 +245,7 @@ export const ChallengeCard = styled.div`
       content: '▸';
       position: absolute;
       left: 0;
-      color: ${(props) => props.theme.colors.accent1};
+      color: ${props => props.theme.colors.accent1};
     }
   }
 `;
@@ -247,7 +259,7 @@ export const TechStack = styled.div`
 export const TechCategory = styled.div`
   h4 {
     font-size: 20px;
-    color: ${(props) => props.theme.colors.primary1};
+    color: ${props => props.theme.colors.primary1};
     margin-bottom: 12px;
   }
 `;
@@ -274,7 +286,7 @@ export const ProjectLinks = styled.div`
   margin-top: 32px;
   flex-wrap: wrap;
 
-  @media ${(props) => props.theme.breakpoints.sm} {
+  @media ${props => props.theme.breakpoints.sm} {
     flex-direction: column;
   }
 `;
@@ -283,12 +295,9 @@ export const LinkButton = styled.a<LinkButtonProps>`
   display: inline-flex;
   align-items: center;
   padding: 12px 24px;
-  background: ${props => props.primary 
-    ? 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)' 
-    : 'transparent'};
-  border: 2px solid ${props => props.primary 
-    ? 'transparent' 
-    : 'rgba(255, 255, 255, 0.3)'};
+  background: ${props =>
+    props.primary ? 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)' : 'transparent'};
+  border: 2px solid ${props => (props.primary ? 'transparent' : 'rgba(255, 255, 255, 0.3)')};
   border-radius: 8px;
   color: white;
   font-size: 16px;
@@ -299,7 +308,9 @@ export const LinkButton = styled.a<LinkButtonProps>`
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    ${props => !props.primary && `
+    ${props =>
+      !props.primary &&
+      `
       background: rgba(255, 255, 255, 0.05);
       border-color: rgba(255, 255, 255, 0.5);
     `}
@@ -315,7 +326,7 @@ export const ImpactBox = styled.div`
 
   h3 {
     font-size: 24px;
-    color: ${(props) => props.theme.colors.primary1};
+    color: ${props => props.theme.colors.primary1};
     margin-bottom: 12px;
   }
 

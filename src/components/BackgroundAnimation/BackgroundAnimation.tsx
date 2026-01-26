@@ -1,7 +1,18 @@
 import React from 'react';
 
 const BackgroundAnimation: React.FC = () => (
-  <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '50%', minWidth: '520px', pointerEvents: 'none', opacity: 0.32 }}>
+  <div
+    style={{
+      position: 'absolute',
+      right: 0,
+      top: 0,
+      bottom: 0,
+      width: '50%',
+      minWidth: '520px',
+      pointerEvents: 'none',
+      opacity: 0.32,
+    }}
+  >
     <svg
       className="BgAnimation__svg"
       viewBox="0 0 602 602"
@@ -58,12 +69,7 @@ const BackgroundAnimation: React.FC = () => (
         ry="1.07433"
         fill="#F46737"
       >
-        <animateMotion
-          dur="5s"
-          begin="1"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="5s" begin="1" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_2" />
         </animateMotion>
       </ellipse>
@@ -72,12 +78,7 @@ const BackgroundAnimation: React.FC = () => (
         transform="translate(-294.685 -193.474) rotate(45 294.685 193.474)"
         stroke="url(#paint7_linear)"
       >
-        <animateMotion
-          dur="5s"
-          begin="1"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="5s" begin="1" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_2" />
         </animateMotion>
       </path>
@@ -110,12 +111,7 @@ const BackgroundAnimation: React.FC = () => (
         transform="translate(-382.164 -155.029) rotate(90 382.164 155.029)"
         fill="#F46737"
       >
-        <animateMotion
-          dur="10s"
-          begin="1"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="10s" begin="1" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_0" />
         </animateMotion>
       </ellipse>
@@ -124,12 +120,7 @@ const BackgroundAnimation: React.FC = () => (
         transform="translate(-381.81 -154.669) rotate(-45 381.81 154.669)"
         stroke="url(#paint5_linear)"
       >
-        <animateMotion
-          dur="10s"
-          begin="1"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="10s" begin="1" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_0" />
         </animateMotion>
       </path>
@@ -141,12 +132,7 @@ const BackgroundAnimation: React.FC = () => (
         transform="translate(-333.324 -382.691) rotate(-180 333.324 382.691)"
         fill="#F46737"
       >
-        <animateMotion
-          dur="5s"
-          begin="0"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="5s" begin="0" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_1" />
         </animateMotion>
       </ellipse>
@@ -155,12 +141,7 @@ const BackgroundAnimation: React.FC = () => (
         transform="scale(-1 1) translate(-333.667 -382.335) rotate(45 333.667 382.335)"
         stroke="url(#paint6_linear)"
       >
-        <animateMotion
-          dur="5s"
-          begin="0"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="5s" begin="0" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_1" />
         </animateMotion>
       </path>
@@ -172,12 +153,7 @@ const BackgroundAnimation: React.FC = () => (
         transform="translate(-165.524 -93.9596)"
         fill="#F46737"
       >
-        <animateMotion
-          dur="10s"
-          begin="3"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="10s" begin="3" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_0" />
         </animateMotion>
       </ellipse>
@@ -186,12 +162,7 @@ const BackgroundAnimation: React.FC = () => (
         transform="translate(-165.182 -94.3159) rotate(45 165.182 94.3159)"
         stroke="url(#paint7_linear)"
       >
-        <animateMotion
-          dur="10s"
-          begin="3"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="10s" begin="3" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_0" />
         </animateMotion>
       </path>
@@ -203,12 +174,7 @@ const BackgroundAnimation: React.FC = () => (
         transform="translate(-476.525 -363.313) rotate(90 476.525 363.313)"
         fill="#13ADC7"
       >
-        <animateMotion
-          dur="12s"
-          begin="4"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="12s" begin="4" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_0" />
         </animateMotion>
       </ellipse>
@@ -217,12 +183,7 @@ const BackgroundAnimation: React.FC = () => (
         transform="translate(-476.525 -363.313) rotate(-45 476.171 362.952)"
         stroke="url(#paint11_linear)"
       >
-        <animateMotion
-          dur="12s"
-          begin="4"
-          repeatCount="indefinite"
-          rotate="auto"
-        >
+        <animateMotion dur="12s" begin="4" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_0" />
         </animateMotion>
       </path>

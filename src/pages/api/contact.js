@@ -94,14 +94,17 @@ export default async function handler(req, res) {
 
     // Track successful contact form submission
     try {
-      await fetch(`${req.headers.origin || process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/metrics`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          metric_type: 'contact_submission',
-          metadata: { method: 'email', timestamp: Date.now() }
-        })
-      });
+      await fetch(
+        `${req.headers.origin || process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/metrics`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            metric_type: 'contact_submission',
+            metadata: { method: 'email', timestamp: Date.now() },
+          }),
+        }
+      );
     } catch (analyticsError) {
       // Don't fail the contact form if analytics fails
       console.warn('Failed to track contact submission:', analyticsError);
@@ -112,5 +115,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Failed to send' });
   }
 }
-
-

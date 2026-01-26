@@ -2,7 +2,12 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Badge } from '../ui/badge';
 import { CheckCircle } from 'lucide-react';
-import { CarouselMobileScrollNodeProps, CarouselItemProps, CarouselButtonProps, CarouselButtonDotProps } from '../../types/styled-components';
+import {
+  CarouselMobileScrollNodeProps,
+  CarouselItemProps,
+  CarouselButtonProps,
+  CarouselButtonDotProps,
+} from '../../types/styled-components';
 
 export const TimelineWrapper = styled.div`
   position: relative;
@@ -21,26 +26,26 @@ export const TimelineNavigationButton = styled.button`
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background: var(--color-card-hover);
     box-shadow: var(--shadow-md);
   }
-  
+
   &:focus {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
   }
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  
+
   &.prev {
     left: 0;
   }
-  
+
   &.next {
     right: 0;
   }
@@ -76,8 +81,8 @@ export const TimelineDot = styled(motion.div)<{ $isActive: boolean }>`
   border-radius: 999px;
   transform: translateX(-50%);
   z-index: 10;
-  background: ${props => props.$isActive ? 'var(--color-accent)' : 'transparent'};
-  border: ${props => props.$isActive ? 'none' : '2px solid var(--color-accent)'};
+  background: ${props => (props.$isActive ? 'var(--color-accent)' : 'transparent')};
+  border: ${props => (props.$isActive ? 'none' : '2px solid var(--color-accent)')};
 `;
 
 export const TimelineCardContent = styled(motion.div)`
@@ -90,11 +95,11 @@ export const TimelineCardHeader = styled.div<{ $isClickable: boolean }>`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  cursor: ${props => props.$isClickable ? 'pointer' : 'default'};
+  cursor: ${props => (props.$isClickable ? 'pointer' : 'default')};
   transition: background-color 0.2s ease;
-  
+
   &:hover {
-    background-color: ${props => props.$isClickable ? 'var(--color-card-hover)' : 'transparent'};
+    background-color: ${props => (props.$isClickable ? 'var(--color-card-hover)' : 'transparent')};
   }
 `;
 
@@ -157,7 +162,7 @@ export const TimelineHighlightItem = styled(motion.li)`
 
 export const TimelineHighlightIcon = styled(CheckCircle)<{ $isDone: boolean }>`
   margin-right: 8px;
-  color: ${props => props.$isDone ? '#10B981' : 'var(--color-text-secondary)'};
+  color: ${props => (props.$isDone ? '#10B981' : 'var(--color-text-secondary)')};
 `;
 
 export const TimelineHighlightText = styled.span`
@@ -176,15 +181,21 @@ export const TimelinePaginationDot = styled.button<{ $isActive: boolean }>`
   width: 12px;
   height: 12px;
   border-radius: 999px;
-  background: ${props => props.$isActive ? 'var(--color-accent)' : 'color-mix(in srgb, var(--color-accent) 30%, transparent)'};
+  background: ${props =>
+    props.$isActive
+      ? 'var(--color-accent)'
+      : 'color-mix(in srgb, var(--color-accent) 30%, transparent)'};
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  
+
   &:hover {
-    background: ${props => props.$isActive ? 'var(--color-accent)' : 'color-mix(in srgb, var(--color-accent) 50%, transparent)'};
+    background: ${props =>
+      props.$isActive
+        ? 'var(--color-accent)'
+        : 'color-mix(in srgb, var(--color-accent) 50%, transparent)'};
   }
-  
+
   &:focus {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
@@ -196,19 +207,19 @@ export const CarouselContainer = styled.ul`
   max-width: 1040px;
   background: transparent;
   padding: 0rem;
-  list-style:none;
+  list-style: none;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   gap: 16px;
   margin-left: 32px;
-  &:first-of-type{
+  &:first-of-type {
     margin-left: 0px;
   }
   margin-bottom: 80px;
-  scrollbar-width: none;  
-   &::-webkit-scrollbar {
-     display: none;
-   }
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   @media ${props => props.theme.breakpoints.sm} {
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
@@ -222,45 +233,49 @@ export const CarouselContainer = styled.ul`
 export const CarouselMobileScrollNode = styled.div<CarouselMobileScrollNodeProps>`
   @media ${props => props.theme.breakpoints.sm} {
     display: flex;
-    min-width: ${({ final }) => final ? `120%;` : `min-content`}
+    min-width: ${({ final }) => (final ? `120%;` : `min-content`)};
   }
 `;
 
 export const CarouselItem = styled.div<CarouselItemProps>`
-background: ${({ theme }) => theme.colors.card};
-border: 1px solid ${({ theme }) => theme.colors.border};
-border-radius: 12px;
-max-width: 220px;
-padding: 16px;
-transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
-z-index: 0;
-
-&:hover {
-  background: ${({ theme }) => theme.colors.cardHover};
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  cursor: pointer;
-  z-index: 1;
-}
-
-@media ${props => props.theme.breakpoints.lg} {
-  margin-left: 16px;
-  min-width: 160px;
   background: ${({ theme }) => theme.colors.card};
-  padding: 12px;
-  align-content: start;
-  scroll-snap-align: start;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 12px;
-  overflow: visible;
-  position: relative;
-  height: fit-content;
+  max-width: 220px;
+  padding: 16px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+  z-index: 0;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.cardHover};
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  @media ${props => props.theme.breakpoints.lg} {
+    margin-left: 16px;
+    min-width: 160px;
+    background: ${({ theme }) => theme.colors.card};
+    padding: 12px;
+    align-content: start;
+    scroll-snap-align: start;
+    border-radius: 12px;
+    overflow: visible;
+    position: relative;
+    height: fit-content;
   }
 
   @media ${props => props.theme.breakpoints.md} {
     max-width: 180px;
     margin-left: 24px;
 
-    &:first-of-type{
+    &:first-of-type {
       margin-left: 0;
     }
   }
@@ -277,7 +292,10 @@ z-index: 0;
     position: relative;
     height: fit-content;
 
-    ${(props) => props.active === props.index ? `opacity: 1; box-shadow: 0 0 0 2px var(--color-accent); border-color: var(--color-accent);` : `opacity: 0.75`};
+    ${props =>
+      props.active === props.index
+        ? `opacity: 1; box-shadow: 0 0 0 2px var(--color-accent); border-color: var(--color-accent);`
+        : `opacity: 0.75`};
   }
 `;
 
@@ -290,19 +308,18 @@ export const CarouselItemTitle = styled.h4`
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 8px;
 
-@media ${props => props.theme.breakpoints.lg} {
-  font-size: 20px;
-  line-height: 28px;
-  margin-bottom: 16px;
-}
+  @media ${props => props.theme.breakpoints.lg} {
+    font-size: 20px;
+    line-height: 28px;
+    margin-bottom: 16px;
+  }
 
-@media ${props => props.theme.breakpoints.md} {
-  font-size: 20px;
-  line-height: 28px;
-  margin-bottom: 16px;
-}
+  @media ${props => props.theme.breakpoints.md} {
+    font-size: 20px;
+    line-height: 28px;
+    margin-bottom: 16px;
+  }
 
-  
   @media ${props => props.theme.breakpoints.sm} {
     font-size: 16px;
     line-height: 24px;
@@ -312,17 +329,29 @@ export const CarouselItemTitle = styled.h4`
 
 export const CarouselItemImg = styled.svg`
   margin-left: 21px;
-  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
   width: 100%;
 
-@media ${props => props.theme.breakpoints.md} {
-  margin-left: 16px;
-  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 67%, rgba(0,0,0,0) 67%, rgba(0,0,0,0) 100%);
-}
-@media ${props => props.theme.breakpoints.sm} {
-  -webkit-mask-image: none;
-  margin-left: 16px;
-  overflow: visible
+  @media ${props => props.theme.breakpoints.md} {
+    margin-left: 16px;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 67%,
+      rgba(0, 0, 0, 0) 67%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+  @media ${props => props.theme.breakpoints.sm} {
+    -webkit-mask-image: none;
+    margin-left: 16px;
+    overflow: visible;
   }
 `;
 
@@ -333,15 +362,15 @@ export const CarouselItemText = styled.p`
   color: ${({ theme }) => theme.colors.textSecondary};
   padding-right: 16px;
 
-@media ${props => props.theme.breakpoints.lg} {
-  font-size: 12px;
-  line-height: 18px;
-  padding-right: 32px;
-}
-@media ${props => props.theme.breakpoints.md} {
-  font-size: 12px;
-  line-height: 18px;
-  padding-right: 32px;
+  @media ${props => props.theme.breakpoints.lg} {
+    font-size: 12px;
+    line-height: 18px;
+    padding-right: 32px;
+  }
+  @media ${props => props.theme.breakpoints.md} {
+    font-size: 12px;
+    line-height: 18px;
+    padding-right: 32px;
   }
   @media ${props => props.theme.breakpoints.sm} {
     font-size: 10px;
@@ -354,23 +383,23 @@ export const CarouselButtons = styled.div`
   width: 288px;
   display: none;
 
-@media ${props => props.theme.breakpoints.lg} {
-  width: 208px;
-}
+  @media ${props => props.theme.breakpoints.lg} {
+    width: 208px;
+  }
 
-@media ${props => props.theme.breakpoints.md} {
-  visibility: hidden;
-  width: 124px;
-}
+  @media ${props => props.theme.breakpoints.md} {
+    visibility: hidden;
+    width: 124px;
+  }
 
-@media ${props => props.theme.breakpoints.sm} {
-  margin-bottom: 48px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  visibility: visible;
-  width: 100%;
-}
+  @media ${props => props.theme.breakpoints.sm} {
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    visibility: visible;
+    width: 100%;
+  }
 `;
 
 export const CarouselButton = styled.button<CarouselButtonProps>`
@@ -380,8 +409,8 @@ export const CarouselButton = styled.button<CarouselButtonProps>`
   border: none;
   cursor: pointer;
   margin-right: 4px;
-  opacity: ${(props) => props.active === props.index ? `1` : `.33`};
-  transform: ${(props) => props.active === props.index ? `scale(1.6)` : `scale(1)`};
+  opacity: ${props => (props.active === props.index ? `1` : `.33`)};
+  transform: ${props => (props.active === props.index ? `scale(1.6)` : `scale(1)`)};
 
   &:focus {
     outline: none;

@@ -12,9 +12,17 @@ interface AccomplishmentsProps {
 const Accomplishments: React.FC<AccomplishmentsProps> = ({ stats }) => {
   // The "Certifications" box has been removed for a cleaner look.
   const data = [
-    { number: stats.repos, text: 'Open Source Projects', link: 'https://github.com/canepro?tab=repositories' },
-    { number: stats.followers, text: 'Github Followers', link: 'https://github.com/canepro?tab=followers' },
-    { number: stats.stars, text: 'Github Stars', link: 'https://github.com/canepro?tab=stars' }
+    {
+      number: stats.repos,
+      text: 'Open Source Projects',
+      link: 'https://github.com/canepro?tab=repositories',
+    },
+    {
+      number: stats.followers,
+      text: 'Github Followers',
+      link: 'https://github.com/canepro?tab=followers',
+    },
+    { number: stats.stars, text: 'Github Stars', link: 'https://github.com/canepro?tab=stars' },
   ];
 
   return (
@@ -30,7 +38,7 @@ const Accomplishments: React.FC<AccomplishmentsProps> = ({ stats }) => {
           </BoxLink>
         ))}
       </Boxes>
-      <SectionDivider/>
+      <SectionDivider />
     </Section>
   );
 };
