@@ -39,14 +39,14 @@ spec:
 '''
     }
   }
-  
+
   // Environment variables for tool versions
   // These match the project's package.json requirements
   environment {
     NODE_VERSION = '20'      // Node.js version (required by Next.js)
     BUN_VERSION = '1.3.5'    // Bun version (package manager and runtime)
   }
-  
+
   stages {
     // Stage 1: Install Bun Runtime
     // Bun is the package manager and runtime for this Next.js project
@@ -58,7 +58,7 @@ spec:
           # node:20-bullseye runs as root by default, so apt works here.
           apt-get update
           apt-get install -y --no-install-recommends unzip curl ca-certificates
-          
+
           # Install Bun using official installer
           curl -fsSL https://bun.sh/install | bash
           # Add Bun to PATH for this session
@@ -68,8 +68,21 @@ spec:
         '''
       }
     }
-    
-    // Stage 2: Dependency Security Audit
+
+    // Stage 2: Install Dependencies
+    // Install project dependencies before running validation checks
+    // Required for lint, typecheck, and build commands to work
+    stage('Install Dependencies') {
+      steps {
+        sh '''
+          export PATH="$HOME/.bun/bin:$PATH"
+          # Install project dependencies (Next.js, TypeScript, ESLint, etc.)
+          bun install
+        '''
+      }
+    }
+
+    // Stage 3: Dependency Security Audit
     // Scans package.json dependencies for known vulnerabilities
     // Similar to npm audit or yarn audit, but for Bun
     stage('Dependency Audit') {
@@ -82,8 +95,8 @@ spec:
         '''
       }
     }
-    
-    // Stage 3: Code Quality Checks
+
+    // Stage 4: Code Quality Checks
     // Runs ESLint (linting) and Prettier (formatting check)
     // Ensures code follows project style guidelines
     stage('Code Quality') {
@@ -97,8 +110,8 @@ spec:
         '''
       }
     }
-    
-    // Stage 4: TypeScript Type Checking
+
+    // Stage 5: TypeScript Type Checking
     // Validates TypeScript types without building
     // Catches type errors early in the CI pipeline
     stage('Type Checking') {
@@ -110,8 +123,8 @@ spec:
         '''
       }
     }
-    
-    // Stage 5: Build Validation
+
+    // Stage 6: Build Validation
     // Attempts to build the Next.js application
     // Ensures the app can compile successfully before deployment
     stage('Build Validation') {
@@ -124,8 +137,8 @@ spec:
         '''
       }
     }
-    
-    // Stage 6: Container Image Security Scan
+
+    // Stage 7: Container Image Security Scan
     // Scans Dockerfile and container images for vulnerabilities
     // Only runs on main/master branches (production builds)
     stage('Container Scan') {
@@ -148,7 +161,7 @@ spec:
       }
     }
   }
-  
+
   // Post-build actions: cleanup and status reporting
   post {
     // Always clean workspace after build (free up disk space)
