@@ -6,13 +6,25 @@ pipeline {
   // The default `jnlp` inbound-agent runs as non-root and cannot apt-get.
   agent {
     kubernetes {
-      label 'default'
+      // Define a complete pod with both jnlp (required) and node (for builds) containers
+      // This avoids issues with pod template inheritance/merging
+      label 'node-build'
       defaultContainer 'node'
       yaml '''
 apiVersion: v1
 kind: Pod
 spec:
   containers:
+    - name: jnlp
+      image: jenkins/inbound-agent:latest
+      imagePullPolicy: Always
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
     - name: node
       image: node:20-bullseye
       command: ["cat"]
