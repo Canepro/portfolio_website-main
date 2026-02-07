@@ -53,6 +53,7 @@ spec:
 
           curl -fsSL https://bun.sh/install -o /tmp/bun-install.sh
           bash /tmp/bun-install.sh "$BUN_TAG"
+          bash /tmp/bun-install.sh
           export PATH="$HOME/.bun/bin:$PATH"
           bun --version
           node --version
@@ -66,6 +67,17 @@ spec:
           set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           bun install --frozen-lockfile
+        '''
+      }
+    }
+
+    stage('Dependency Audit') {
+      steps {
+        sh '''
+          set -eu
+          export PATH="$HOME/.bun/bin:$PATH"
+          # Only fail on CRITICAL vulnerabilities.
+          bun audit --audit-level=critical
         '''
       }
     }

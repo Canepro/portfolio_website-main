@@ -41,7 +41,9 @@ Configure webhook in repository settings:
 This repo uses Jenkins strictly for CI validation (lint, typecheck, build) on:
 
 - `main` branch builds
-- pull requests via Multibranch Pipeline PR jobs (for example `PR-64`)
+- Pull requests via Multibranch Pipeline PR jobs (for example `PR-64`)
+
+Jenkins is not the deploy mechanism for this site (Netlify handles deploys). The Jenkins pipeline is intentionally focused on fast, deterministic validation.
 
 ## Notes (OKE)
 

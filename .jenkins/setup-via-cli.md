@@ -165,7 +165,7 @@ Save this as `setup-jenkins-job.sh`:
 set -e
 
 # Configuration
-JENKINS_URL="${JENKINS_URL:-}"
+JENKINS_URL="${JENKINS_URL:-https://jenkins.canepro.me}"
 JOB_NAME="${JOB_NAME:-portfolio_website-main}"
 CONFIG_FILE="${CONFIG_FILE:-.jenkins/job-config.xml}"
 
