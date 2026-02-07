@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 import ProjectCard from '@/components/Projects/ProjectCard';
 import { projectCategories, projects } from '@/constants/constants';
@@ -8,12 +10,26 @@ import type { Project } from '@/types/project';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
+function hasLiveDemo(project: Project): boolean {
+  if (typeof project.visit !== 'string') return false;
+  if (!/^https?:\/\//i.test(project.visit)) return false;
+  if (/github\.com/i.test(project.visit)) return false;
+  if (typeof project.source === 'string' && project.visit === project.source) return false;
+  return true;
+}
+
 export default function ProjectsPageClient() {
+  const searchParams = useSearchParams();
+  const mode = searchParams?.get('mode');
+  const liveOnly = mode === 'live';
+
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const filteredProjects = useMemo((): Project[] => {
     return projects.filter(project => {
+      const matchesLive = !liveOnly || hasLiveDemo(project);
+
       const matchesSearch =
         searchTerm === '' ||
         project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -22,9 +38,13 @@ export default function ProjectsPageClient() {
 
       const matchesCategory = selectedCategory === 'all' || project.category === selectedCategory;
 
-      return matchesSearch && matchesCategory;
+      return matchesLive && matchesSearch && matchesCategory;
     });
-  }, [searchTerm, selectedCategory]);
+  }, [liveOnly, searchTerm, selectedCategory]);
+
+  const baseProjectsForCounts = useMemo(() => {
+    return liveOnly ? projects.filter(hasLiveDemo) : projects;
+  }, [liveOnly]);
 
   return (
     <section className="px-6 py-10 md:px-10">
@@ -33,6 +53,16 @@ export default function ProjectsPageClient() {
         <p className="mt-3 max-w-3xl text-[color:var(--color-text-secondary)] leading-7">
           Explore my complete portfolio of projects spanning DevOps, cloud, frontend, and more.
         </p>
+
+        {liveOnly ? (
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
+            Showing <span className="font-semibold text-white/85">live demos</span> only.{' '}
+            <Link href="/projects" className="underline underline-offset-4 hover:text-white">
+              Show all
+            </Link>
+            .
+          </div>
+        ) : null}
 
         <div className="mt-8 space-y-4">
           <Input
@@ -49,8 +79,9 @@ export default function ProjectsPageClient() {
               const isActive = selectedCategory === category.value;
               const count =
                 category.value === 'all'
-                  ? projects.length
-                  : projects.filter(p => p.category === category.value).length;
+                  ? baseProjectsForCounts.length
+                  : baseProjectsForCounts.filter(p => p.category === category.value).length;
+              const isDisabled = count === 0;
               return (
                 <Button
                   key={category.value}
@@ -60,6 +91,7 @@ export default function ProjectsPageClient() {
                   className="gap-2"
                   onClick={() => setSelectedCategory(category.value)}
                   aria-pressed={isActive}
+                  disabled={isDisabled}
                 >
                   {category.label}
                   <span className={isActive ? 'text-black/70' : 'text-white/60'}>{count}</span>

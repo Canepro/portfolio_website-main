@@ -32,36 +32,36 @@ export default function HomePage() {
               {profile.name}
             </h1>
             <p className="mt-5 max-w-xl text-[color:var(--color-text-secondary)] leading-7">
-              I build and operate systems that are easy to ship, observable in production, and
-              boring to run. My work spans identity and access reliability (Entra ID / Microsoft
-              365), GitOps-driven Kubernetes operations, and pragmatic automation.
+              I design and operate production systems: GitOps-driven Kubernetes, identity
+              reliability, and observability. Measured in safe deploys, clean dashboards, and boring
+              on-call.
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
               <Button variant="accent" size="lg" className="h-11" asChild>
-                <Link href="/projects">View Projects</Link>
+                <Link href="/projects">View Case Studies</Link>
               </Button>
               <Button variant="glass" size="lg" className="h-11" asChild>
-                <Link href="/blog">Read Writing</Link>
+                <Link href="/projects?mode=live">See Live Demos</Link>
               </Button>
               <Button variant="glass" size="lg" className="h-11" asChild>
-                <Link href="/contact">Contact</Link>
+                <Link href="/blog">Read Playbooks</Link>
               </Button>
             </div>
 
-            <div className="mt-8 grid grid-cols-3 gap-3">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <div className="text-xs text-white/60">Strength</div>
-                <div className="mt-2 text-sm font-semibold">K8s + GitOps</div>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <div className="text-xs text-white/60">Focus</div>
-                <div className="mt-2 text-sm font-semibold">Observability</div>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <div className="text-xs text-white/60">Also</div>
-                <div className="mt-2 text-sm font-semibold">Identity</div>
-              </div>
+            <div className="mt-7 flex flex-wrap gap-2">
+              <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-xs font-semibold text-white/75">
+                2 clusters: OKE hub + AKS spoke
+              </span>
+              <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-xs font-semibold text-white/75">
+                GitOps: Argo CD
+              </span>
+              <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-xs font-semibold text-white/75">
+                CI: Jenkins multibranch
+              </span>
+              <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-xs font-semibold text-white/75">
+                Telemetry: OTLP → LGTM
+              </span>
             </div>
           </div>
 
