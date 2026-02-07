@@ -36,6 +36,34 @@ spec:
         limits:
           cpu: "1000m"
           memory: "2Gi"
+    - name: hadolint
+      image: docker.io/hadolint/hadolint:v2.12.0
+      command: ["cat"]
+      tty: true
+      resources:
+        requests:
+          cpu: "25m"
+          memory: "64Mi"
+        limits:
+          cpu: "200m"
+          memory: "256Mi"
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:v1.23.2-debug
+      command: ["/busybox/cat"]
+      tty: true
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "512Mi"
+        limits:
+          cpu: "1500m"
+          memory: "3Gi"
+      volumeMounts:
+        - name: kaniko-cache
+          mountPath: /kaniko/cache
+  volumes:
+    - name: kaniko-cache
+      emptyDir: {}
 '''
     }
   }
@@ -146,26 +174,35 @@ spec:
       }
     }
 
-    // Stage 7: Container Image Security Scan
-    // Scans Dockerfile and container images for vulnerabilities
-    // Only runs on main/master branches (production builds)
-    stage('Container Scan') {
+    // Stage 7: Container Build Validation (no push)
+    // Validates the Dockerfile stays buildable (portable deploy via Docker/Podman).
+    // Uses kaniko (no Docker daemon required).
+    stage('Container Build (no push)') {
       when {
-        anyOf {
-          branch 'main'
-          branch 'master'
-        }
+        expression { fileExists('Dockerfile') }
       }
       steps {
-        sh '''
-          # Container scanning (if Dockerfile exists)
-          # This would use tools like Trivy, Snyk, or similar
-          if [ -f Dockerfile ]; then
-            echo "Container scanning would run here (trivy, etc.)"
-            # Example: trivy image --exit-code 1 --severity HIGH,CRITICAL <image>
-            # Note: Would need to build image first, then scan it
-          fi
-        '''
+        container('hadolint') {
+          sh '''
+            set -eu
+            hadolint Dockerfile
+          '''
+        }
+        container('kaniko') {
+          sh '''
+            set -eu
+            /kaniko/executor \
+              --context "$WORKSPACE" \
+              --dockerfile "$WORKSPACE/Dockerfile" \
+              --destination "portfolio_website-main:ci" \
+              --no-push \
+              --tarPath "$WORKSPACE/ci-image.tar" \
+              --cache=true \
+              --cache-dir=/kaniko/cache
+
+            rm -f "$WORKSPACE/ci-image.tar" || true
+          '''
+        }
       }
     }
   }

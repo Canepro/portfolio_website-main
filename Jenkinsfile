@@ -31,6 +31,34 @@ spec:
         limits:
           cpu: "1000m"
           memory: "2Gi"
+    - name: hadolint
+      image: docker.io/hadolint/hadolint:v2.12.0
+      command: ["cat"]
+      tty: true
+      resources:
+        requests:
+          cpu: "25m"
+          memory: "64Mi"
+        limits:
+          cpu: "200m"
+          memory: "256Mi"
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:v1.23.2-debug
+      command: ["/busybox/cat"]
+      tty: true
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "512Mi"
+        limits:
+          cpu: "1500m"
+          memory: "3Gi"
+      volumeMounts:
+        - name: kaniko-cache
+          mountPath: /kaniko/cache
+  volumes:
+    - name: kaniko-cache
+      emptyDir: {}
 '''
     }
   }
@@ -53,7 +81,6 @@ spec:
 
           curl -fsSL https://bun.sh/install -o /tmp/bun-install.sh
           bash /tmp/bun-install.sh "$BUN_TAG"
-          bash /tmp/bun-install.sh
           export PATH="$HOME/.bun/bin:$PATH"
           bun --version
           node --version
@@ -109,6 +136,46 @@ spec:
           export PATH="$HOME/.bun/bin:$PATH"
           bun run build
         '''
+      }
+    }
+
+    stage('Dockerfile Lint') {
+      when {
+        expression { fileExists('Dockerfile') }
+      }
+      steps {
+        container('hadolint') {
+          sh '''
+            set -eu
+            hadolint Dockerfile
+          '''
+        }
+      }
+    }
+
+    stage('Container Build (no push)') {
+      when {
+        expression { fileExists('Dockerfile') }
+      }
+      steps {
+        container('kaniko') {
+          sh '''
+            set -eu
+            # Kaniko builds container images from Dockerfile without requiring a Docker daemon.
+            # We use --no-push so PR builds validate portability without publishing images.
+            /kaniko/executor \
+              --context "$WORKSPACE" \
+              --dockerfile "$WORKSPACE/Dockerfile" \
+              --destination "portfolio_website-main:ci" \
+              --no-push \
+              --tarPath "$WORKSPACE/ci-image.tar" \
+              --cache=true \
+              --cache-dir=/kaniko/cache
+
+            # Keep artifacts tidy: the image tar is only for validation.
+            rm -f "$WORKSPACE/ci-image.tar" || true
+          '''
+        }
       }
     }
   }

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, BarChart3, Boxes, GitBranch, Server, Waypoints } from 'lucide-react';
 
 function Node({
@@ -38,6 +38,8 @@ function Node({
 }
 
 export default function HeroVisual() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <div
       data-hero-visual
@@ -48,14 +50,18 @@ export default function HeroVisual() {
       <motion.div
         aria-hidden="true"
         className="absolute -left-16 -top-16 h-56 w-56 rounded-full bg-[color:var(--color-accent)]/20 blur-2xl"
-        animate={{ x: [0, 24, 0], y: [0, 12, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        animate={shouldReduceMotion ? undefined : { x: [0, 24, 0], y: [0, 12, 0] }}
+        transition={
+          shouldReduceMotion ? undefined : { duration: 10, repeat: Infinity, ease: 'easeInOut' }
+        }
       />
       <motion.div
         aria-hidden="true"
         className="absolute -bottom-20 right-[-40px] h-72 w-72 rounded-full bg-white/10 blur-3xl"
-        animate={{ x: [0, -18, 0], y: [0, -10, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        animate={shouldReduceMotion ? undefined : { x: [0, -18, 0], y: [0, -10, 0] }}
+        transition={
+          shouldReduceMotion ? undefined : { duration: 12, repeat: Infinity, ease: 'easeInOut' }
+        }
       />
 
       <div className="relative flex h-full flex-col p-5 md:p-6">

@@ -22,9 +22,17 @@ const SimpleThemeToggle: React.FC<SimpleThemeToggleProps> = ({ className }) => {
     // - Tailwind/shadcn: `html.dark`
     // - Legacy CSS variables: `html.light-theme`
     const root = document.documentElement;
-    const savedTheme = localStorage.getItem('theme'); // 'dark' | 'light' | null
-    // Dark-first: if the user hasn't chosen, default to dark.
-    const shouldUseDark = savedTheme ? savedTheme === 'dark' : true;
+    let savedTheme: string | null = null;
+    try {
+      savedTheme = localStorage.getItem('theme'); // 'dark' | 'light' | null
+    } catch {
+      savedTheme = null;
+    }
+    const prefersDark =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldUseDark = savedTheme ? savedTheme === 'dark' : prefersDark;
     root.classList.toggle('dark', shouldUseDark);
     root.classList.toggle('light-theme', !shouldUseDark);
     setIsDark(shouldUseDark);
@@ -35,7 +43,11 @@ const SimpleThemeToggle: React.FC<SimpleThemeToggleProps> = ({ className }) => {
     const root = document.documentElement;
     root.classList.toggle('dark', nextIsDark);
     root.classList.toggle('light-theme', !nextIsDark);
-    localStorage.setItem('theme', nextIsDark ? 'dark' : 'light');
+    try {
+      localStorage.setItem('theme', nextIsDark ? 'dark' : 'light');
+    } catch {
+      // Storage unavailable; best-effort only.
+    }
     setIsDark(nextIsDark);
   };
 
