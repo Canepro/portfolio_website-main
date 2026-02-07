@@ -44,13 +44,14 @@ spec:
     stage('Setup') {
       steps {
         sh '''
-          #!/usr/bin/env bash
-          set -euo pipefail
+          # Jenkins executes `sh` steps using /bin/sh; avoid bash-only options like `pipefail`.
+          set -eu
 
           apt-get update
           apt-get install -y --no-install-recommends unzip curl ca-certificates
 
-          curl -fsSL https://bun.sh/install | bash
+          curl -fsSL https://bun.sh/install -o /tmp/bun-install.sh
+          bash /tmp/bun-install.sh
           export PATH="$HOME/.bun/bin:$PATH"
           bun --version
           node --version
@@ -61,8 +62,7 @@ spec:
     stage('Install') {
       steps {
         sh '''
-          #!/usr/bin/env bash
-          set -euo pipefail
+          set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           bun install --frozen-lockfile
         '''
@@ -72,8 +72,7 @@ spec:
     stage('Lint') {
       steps {
         sh '''
-          #!/usr/bin/env bash
-          set -euo pipefail
+          set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           bun run lint
         '''
@@ -83,8 +82,7 @@ spec:
     stage('Typecheck') {
       steps {
         sh '''
-          #!/usr/bin/env bash
-          set -euo pipefail
+          set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           bun run typecheck
         '''
@@ -94,8 +92,7 @@ spec:
     stage('Build') {
       steps {
         sh '''
-          #!/usr/bin/env bash
-          set -euo pipefail
+          set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           bun run build
         '''
