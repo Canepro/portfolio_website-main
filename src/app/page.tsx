@@ -190,14 +190,16 @@ export default function HomePage() {
               operations.
             </p>
           </div>
-          <a
-            href={profile.links.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden text-sm text-white/70 underline underline-offset-4 hover:text-white md:block"
-          >
-            Full history on LinkedIn
-          </a>
+          {linkedinHref ? (
+            <a
+              href={linkedinHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden text-sm text-white/70 underline underline-offset-4 hover:text-white md:block"
+            >
+              Full history on LinkedIn
+            </a>
+          ) : null}
         </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-2">
