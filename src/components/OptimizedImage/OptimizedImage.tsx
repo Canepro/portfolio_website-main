@@ -36,32 +36,49 @@ const BlurOverlay = styled.div.withConfig({
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  opacity: ${props => (props.loading ? 0.7 : 0)};
-  transition: opacity 0.3s ease;
+  pointer-events: none;
+  /* Subtle skeleton shimmer (avoid loud purple placeholders). */
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  opacity: ${props => (props.loading ? 1 : 0)};
+  transition: opacity 0.25s ease;
   z-index: 2;
 
   &::after {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 24px;
-    height: 24px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    border-top: 2px solid transparent;
-    border-radius: 50%;
-    animation: ${props => (props.loading ? 'spin 1s linear infinite' : 'none')};
+    inset: 0;
+    opacity: 0.55;
+    background: radial-gradient(
+      60% 60% at 30% 20%,
+      rgba(0, 219, 216, 0.12) 0%,
+      rgba(0, 219, 216, 0) 60%
+    );
   }
 
-  @keyframes spin {
+  @keyframes shimmer {
     0% {
-      transform: translate(-50%, -50%) rotate(0deg);
+      background-position: 200% 0;
     }
     100% {
-      transform: translate(-50%, -50%) rotate(360deg);
+      background-position: -200% 0;
     }
+  }
+
+  animation: ${props => (props.loading ? 'shimmer 1.1s ease-in-out infinite' : 'none')};
+
+  html.light-theme & {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.03) 0%,
+      rgba(0, 0, 0, 0.06) 50%,
+      rgba(0, 0, 0, 0.03) 100%
+    );
   }
 `;
 
