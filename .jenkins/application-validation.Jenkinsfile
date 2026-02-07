@@ -16,7 +16,7 @@ kind: Pod
 spec:
   containers:
     - name: jnlp
-      image: jenkins/inbound-agent:latest
+      image: docker.io/jenkins/inbound-agent:latest
       imagePullPolicy: Always
       resources:
         requests:
@@ -26,7 +26,7 @@ spec:
           cpu: "1000m"
           memory: "2Gi"
     - name: node
-      image: node:22-bullseye
+      image: docker.io/library/node:22-bullseye
       command: ["cat"]
       tty: true
       resources:
@@ -55,7 +55,7 @@ spec:
       steps {
         sh '''
           # Install prerequisites for bun installer (needs unzip + curl + bash)
-          # node:20-bullseye runs as root by default, so apt works here.
+          # node:22-bullseye runs as root by default, so apt works here.
           apt-get update
           apt-get install -y --no-install-recommends unzip curl ca-certificates
 
@@ -166,7 +166,14 @@ spec:
   post {
     // Always clean workspace after build (free up disk space)
     always {
-      cleanWs()
+      script {
+        // If the Kubernetes pod never starts (image pull, scheduling), there is no workspace context.
+        try {
+          cleanWs()
+        } catch (err) {
+          echo "cleanWs skipped: ${err}"
+        }
+      }
     }
     // Success message for easy log scanning
     success {

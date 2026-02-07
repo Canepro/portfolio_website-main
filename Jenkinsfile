@@ -11,7 +11,7 @@ kind: Pod
 spec:
   containers:
     - name: jnlp
-      image: jenkins/inbound-agent:latest
+      image: docker.io/jenkins/inbound-agent:latest
       imagePullPolicy: Always
       resources:
         requests:
@@ -21,7 +21,7 @@ spec:
           cpu: "1000m"
           memory: "2Gi"
     - name: node
-      image: node:22-bullseye
+      image: docker.io/library/node:22-bullseye
       command: ["cat"]
       tty: true
       resources:
@@ -100,7 +100,14 @@ spec:
 
   post {
     always {
-      cleanWs()
+      script {
+        // If the Kubernetes pod never starts (image pull, scheduling), there is no workspace context.
+        try {
+          cleanWs()
+        } catch (err) {
+          echo "cleanWs skipped: ${err}"
+        }
+      }
     }
     success {
       echo '✅ CI validation passed'
