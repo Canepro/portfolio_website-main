@@ -35,14 +35,14 @@ curl -X POST \
   -H "$CRUMB_FIELD:$CRUMB_VALUE" \
   -H "Content-Type: application/xml" \
   --data-binary @.jenkins/job-config.xml \
-  "$JENKINS_URL/createItem?name=rocketchat-k8s"
+  "$JENKINS_URL/createItem?name=portfolio_website-main"
 
 # Step 3: Trigger initial indexing (Branch Indexing)
 curl -X POST \
   -u "$JENKINS_USER:$JENKINS_PASSWORD" \
   -c "$COOKIE_JAR" -b "$COOKIE_JAR" \
   -H "$CRUMB_FIELD:$CRUMB_VALUE" \
-  "$JENKINS_URL/job/rocketchat-k8s/build?delay=0sec"
+  "$JENKINS_URL/job/portfolio_website-main/build?delay=0sec"
 ```
 
 ### Verify Job Created
@@ -50,12 +50,12 @@ curl -X POST \
 ```bash
 # Check if job exists
 curl -u "$JENKINS_USER:$JENKINS_PASSWORD" \
-  "$JENKINS_URL/job/rocketchat-k8s/api/json"
+  "$JENKINS_URL/job/portfolio_website-main/api/json"
 
 # Trigger initial indexing
 curl -X POST \
   -u "$JENKINS_USER:$JENKINS_PASSWORD" \
-  "$JENKINS_URL/job/rocketchat-k8s/build?delay=0sec"
+  "$JENKINS_URL/job/portfolio_website-main/build?delay=0sec"
 ```
 
 ---
@@ -85,13 +85,13 @@ curl -X POST \
   -H "$CRUMB" \
   -H "Content-Type: application/xml" \
   --data-binary @.jenkins/job-config.xml \
-  "$JENKINS_URL/createItem?name=rocketchat-k8s"
+  "$JENKINS_URL/createItem?name=portfolio_website-main"
 
 # Trigger scan
 curl -X POST \
   -u "$JENKINS_USER:$JENKINS_API_TOKEN" \
   -H "$CRUMB" \
-  "$JENKINS_URL/job/rocketchat-k8s/build?delay=0sec"
+  "$JENKINS_URL/job/portfolio_website-main/build?delay=0sec"
 ```
 
 ---
@@ -106,18 +106,18 @@ controller:
     configScripts:
       # ... existing configs ...
 
-      # Multibranch Pipeline Job for rocketchat-k8s
-      rocketchat-k8s-job: |
+      # Multibranch Pipeline Job for portfolio_website-main
+      portfolio_website-main-job: |
         jobs:
           - multibranch:
-              name: "rocketchat-k8s"
-              description: "CI validation pipeline for rocketchat-k8s repository"
+              name: "portfolio_website-main"
+              description: "CI validation pipeline for portfolio_website-main repository"
               sources:
                 - github:
-                    id: "github-rocketchat-k8s"
+                    id: "github-portfolio_website-main"
                     credentialsId: "github-token"
                     repoOwner: "Canepro"
-                    repository: "rocketchat-k8s"
+                    repository: "portfolio_website-main"
                     traits:
                       - branchDiscovery:
                           strategyId: 1  # Exclude branches that are also filed as PRs
@@ -126,7 +126,7 @@ controller:
                       - forkPullRequestDiscovery:
                           strategyId: 1  # The current pull request revision
                           trust: "Contributors"
-              scriptPath: ".jenkins/terraform-validation.Jenkinsfile"
+              scriptPath: "Jenkinsfile"
               orphanedItemStrategy:
                 pruneDeadBranches: true
 ```
@@ -151,7 +151,7 @@ kubectl exec -n jenkins jenkins-0 -c jenkins -- \
   java -jar /usr/share/jenkins/jenkins.war \
   -s https://jenkins.canepro.me \
   -auth admin:PASSWORD \
-  create-job rocketchat-k8s < .jenkins/job-config.xml
+  create-job portfolio_website-main < .jenkins/job-config.xml
 ```
 
 ---
@@ -166,7 +166,7 @@ set -e
 
 # Configuration
 JENKINS_URL="${JENKINS_URL:-https://jenkins.canepro.me}"
-JOB_NAME="${JOB_NAME:-rocketchat-k8s}"
+JOB_NAME="${JOB_NAME:-portfolio_website-main}"
 CONFIG_FILE="${CONFIG_FILE:-.jenkins/job-config.xml}"
 
 # Get credentials
@@ -286,7 +286,7 @@ CRUMB_VALUE=$(echo "$CRUMB_JSON" | grep -o '"crumb":"[^"]*"' | cut -d'"' -f4)
 curl -X POST \
   -u "admin:$JENKINS_PASSWORD" \
   -H "$CRUMB_FIELD:$CRUMB_VALUE" \
-  "$JENKINS_URL/job/rocketchat-k8s/doDelete"
+  "$JENKINS_URL/job/portfolio_website-main/doDelete"
 ```
 
 ### Invalid Credentials
