@@ -103,9 +103,6 @@ export default function ContactClient() {
               <Button size="default" type="submit" disabled={status === 'loading'}>
                 {status === 'loading' ? 'Sending…' : 'Send Message'}
               </Button>
-              <span className="text-xs text-white/60">
-                Uses the same endpoint as before: `POST /api/contact`.
-              </span>
             </div>
 
             {status === 'success' && (

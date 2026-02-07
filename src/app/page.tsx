@@ -5,6 +5,7 @@ import { experience } from '@/content/experience';
 import { profile } from '@/content/profile';
 import { skillGroups } from '@/content/skills';
 import { getAllBlogPostsMeta } from '@/lib/blog';
+import { safeExternalHref } from '@/lib/url';
 import { certifications, projects } from '@/constants/constants';
 
 export const dynamic = 'force-static';
@@ -13,6 +14,12 @@ export default function HomePage() {
   const posts = getAllBlogPostsMeta().slice(0, 2);
   const featured = projects.filter(p => p.featured).slice(0, 3);
   const featuredCerts = certifications.slice(0, 4);
+  const githubHref = safeExternalHref(profile.links.github);
+  const linkedinHref = safeExternalHref(profile.links.linkedin);
+  type CertificationWithHref = (typeof featuredCerts)[number] & { href: string };
+  const featuredCertsSafe: CertificationWithHref[] = featuredCerts
+    .map(c => ({ ...c, href: safeExternalHref(c.link) }))
+    .filter((c): c is CertificationWithHref => Boolean(c.href));
 
   return (
     <div className="px-6 py-10 md:px-10">
@@ -80,22 +87,26 @@ export default function HomePage() {
               ))}
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href={profile.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-white/85 hover:bg-white/[0.06]"
-              >
-                GitHub
-              </a>
-              <a
-                href={profile.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-white/85 hover:bg-white/[0.06]"
-              >
-                LinkedIn
-              </a>
+              {githubHref ? (
+                <a
+                  href={githubHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-white/85 hover:bg-white/[0.06]"
+                >
+                  GitHub
+                </a>
+              ) : null}
+              {linkedinHref ? (
+                <a
+                  href={linkedinHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-white/85 hover:bg-white/[0.06]"
+                >
+                  LinkedIn
+                </a>
+              ) : null}
               <span className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm text-white/70">
                 {profile.location}
               </span>
@@ -108,10 +119,10 @@ export default function HomePage() {
               Selected licenses and certifications (details link on LinkedIn).
             </p>
             <div className="mt-6 space-y-3">
-              {featuredCerts.map(c => (
+              {featuredCertsSafe.map(c => (
                 <a
                   key={c.name}
-                  href={c.link}
+                  href={c.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block rounded-2xl border border-white/10 bg-black/20 p-4 hover:bg-white/[0.06]"
