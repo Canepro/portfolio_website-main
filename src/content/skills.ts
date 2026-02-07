@@ -3,10 +3,16 @@ export type Skill = {
   notes?: string;
 };
 
+export type Evidence = {
+  label: string;
+  href: string; // internal or external
+};
+
 export type SkillGroup = {
   title: string;
   description: string;
   skills: Skill[];
+  evidence?: Evidence[];
 };
 
 export const skillGroups: SkillGroup[] = [
@@ -25,6 +31,10 @@ export const skillGroups: SkillGroup[] = [
       { name: 'GitOps (auto-sync, self-heal, prune)' },
       { name: 'Troubleshooting drills' },
     ],
+    evidence: [
+      { label: 'Observability Hub', href: '/projects/central-observability-hub-stack' },
+      { label: 'Rocket.Chat on K8s', href: '/projects/rocketchat-kubernetes-enterprise' },
+    ],
   },
   {
     title: 'IaC + Cloud',
@@ -38,6 +48,10 @@ export const skillGroups: SkillGroup[] = [
       { name: 'Networking basics' },
       { name: 'Secrets / config' },
     ],
+    evidence: [
+      { label: 'GitOps Control Plane', href: '/projects/hybrid-cloud-gitops-control-plane' },
+      { label: 'Terraform on OKE', href: '/projects/central-observability-hub-stack' },
+    ],
   },
   {
     title: 'Delivery + CI/CD',
@@ -49,6 +63,10 @@ export const skillGroups: SkillGroup[] = [
       { name: 'Docker' },
       { name: 'Artifact promotion' },
       { name: 'Static analysis + security gates' },
+    ],
+    evidence: [
+      { label: 'Jenkins + EKS CI/CD', href: '/projects/jenkins-eks-cicd' },
+      { label: 'This repo CI', href: 'https://jenkins.canepro.me/job/portfolio_website-main/' },
     ],
   },
   {
@@ -64,6 +82,10 @@ export const skillGroups: SkillGroup[] = [
       { name: 'OTLP' },
       { name: 'RUM (Grafana Faro)' },
     ],
+    evidence: [
+      { label: 'LGTM on OKE', href: '/projects/central-observability-hub-stack' },
+      { label: 'GitOps + Dashboards', href: '/projects/hybrid-cloud-gitops-control-plane' },
+    ],
   },
   {
     title: 'Frontend Engineering',
@@ -75,6 +97,10 @@ export const skillGroups: SkillGroup[] = [
       { name: 'Tailwind CSS' },
       { name: 'styled-components' },
       { name: 'Accessibility' },
+    ],
+    evidence: [
+      { label: 'Projects UI', href: '/projects' },
+      { label: 'MDX Blog', href: '/blog' },
     ],
   },
 ];

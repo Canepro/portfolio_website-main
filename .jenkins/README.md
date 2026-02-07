@@ -38,14 +38,15 @@ Configure webhook in repository settings:
 
 ## More Information
 
-See [JENKINS_STRATEGY.md](../../rocketchat-k8s/JENKINS_STRATEGY.md) in the `rocketchat-k8s` repository for:
+This repo uses Jenkins strictly for CI validation (lint, typecheck, build) on:
 
-- Understanding what Jenkins does
-- How to maximize Jenkins across repos
-- Best practices
+- `main` branch builds
+- pull requests via Multibranch Pipeline PR jobs (for example `PR-64`)
 
 ## Notes (OKE)
 
 Jenkins is deployed on OKE, and the recommended pipeline (`Jenkinsfile`) uses a Kubernetes agent. Ensure the Jenkins Kubernetes plugin is configured (cloud, namespace, and permissions) so it can start the `node-build` pod template used by the pipeline.
 
 If your cluster enforces short-name image resolution, keep images fully qualified (for example `docker.io/jenkins/inbound-agent:latest` instead of `jenkins/inbound-agent:latest`) to avoid `ErrImagePull` ambiguity.
+
+For build reproducibility, Bun is pinned in the Jenkinsfiles and can be overridden with `BUN_TAG_OVERRIDE` when you intentionally bump versions.

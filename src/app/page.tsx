@@ -176,6 +176,38 @@ export default function HomePage() {
                   </span>
                 ))}
               </div>
+
+              {group.evidence && group.evidence.length ? (
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {group.evidence.map(e => {
+                    const isExternal = /^https?:\/\//i.test(e.href);
+                    const safeHref = isExternal ? safeExternalHref(e.href) : e.href;
+                    if (!safeHref) return null;
+                    if (isExternal) {
+                      return (
+                        <a
+                          key={e.href}
+                          href={safeHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-xs font-semibold text-white/80 hover:bg-white/[0.06]"
+                        >
+                          {e.label}
+                        </a>
+                      );
+                    }
+                    return (
+                      <Link
+                        key={e.href}
+                        href={safeHref}
+                        className="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-xs font-semibold text-white/80 hover:bg-white/[0.06]"
+                      >
+                        {e.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              ) : null}
             </div>
           ))}
         </div>

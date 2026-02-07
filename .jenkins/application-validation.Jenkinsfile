@@ -44,7 +44,7 @@ spec:
   // These match the project's package.json requirements
   environment {
     NODE_VERSION = '22'      // Node.js version (matches local dev)
-    BUN_VERSION = 'latest'   // Bun version (installed via official installer)
+    BUN_TAG = 'bun-v1.3.6'   // Bun release tag (passed to installer). Override with BUN_TAG_OVERRIDE.
   }
 
   stages {
@@ -57,12 +57,13 @@ spec:
           # Install prerequisites for bun installer (needs unzip + curl + bash)
           # node:22-bullseye runs as root by default, so apt works here.
           set -eu
+          BUN_TAG="${BUN_TAG_OVERRIDE:-$BUN_TAG}"
           apt-get update
           apt-get install -y --no-install-recommends unzip curl ca-certificates
 
           # Install Bun using official installer
           curl -fsSL https://bun.sh/install -o /tmp/bun-install.sh
-          bash /tmp/bun-install.sh
+          bash /tmp/bun-install.sh "$BUN_TAG"
           # Add Bun to PATH for this session
           export PATH="$HOME/.bun/bin:$PATH"
           # Verify installation
@@ -94,8 +95,8 @@ spec:
           set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           # Run security audit on dependencies
-          # || echo: don't fail on warnings, only critical vulnerabilities
-          bun audit || echo "Audit completed (warnings may exist)"
+          # Only fail on CRITICAL vulnerabilities.
+          bun audit --audit-level=critical
         '''
       }
     }

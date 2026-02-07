@@ -165,9 +165,14 @@ Save this as `setup-jenkins-job.sh`:
 set -e
 
 # Configuration
-JENKINS_URL="${JENKINS_URL:-https://jenkins.canepro.me}"
+JENKINS_URL="${JENKINS_URL:-}"
 JOB_NAME="${JOB_NAME:-portfolio_website-main}"
 CONFIG_FILE="${CONFIG_FILE:-.jenkins/job-config.xml}"
+
+if [ -z "$JENKINS_URL" ]; then
+  echo "JENKINS_URL must be set (for example: export JENKINS_URL=\"https://jenkins.canepro.me\")"
+  exit 1
+fi
 
 # Get credentials
 echo "Enter Jenkins admin username (default: admin):"

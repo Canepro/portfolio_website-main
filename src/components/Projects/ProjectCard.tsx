@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { ProjectCardProps } from '../../types/components';
 import { Badge } from '../ui/badge';
-import { Button } from '../ui/button';
 import { Github, ExternalLink, BarChart3 } from 'lucide-react';
 import ProjectMedia from '../ProjectMedia/ProjectMedia';
 import { safeExternalHref } from '@/lib/url';
@@ -13,6 +12,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   const projectHref = `/projects/${encodeURIComponent(project.slug)}`;
   const visitHref = safeExternalHref(project.visit);
   const sourceHref = safeExternalHref(project.source);
+  const hasSeparateLiveDemo = Boolean(visitHref && sourceHref && visitHref !== sourceHref);
+
+  const actionBase =
+    'inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20';
+  const actionAccent = actionBase + ' bg-[color:var(--color-accent)] text-black hover:opacity-95';
+  const actionOutline =
+    actionBase + ' border border-white/15 bg-white/5 text-white/90 hover:bg-white/[0.07]';
 
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -24,7 +30,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   };
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+    <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 text-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/[0.07] hover:shadow-lg">
       {/* Image Section */}
       <Link href={projectHref} className="relative block aspect-video overflow-hidden">
         <ProjectMedia
@@ -43,7 +49,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
           {project.featured && (
             <Badge
               variant="default"
-              className="bg-yellow-500 hover:bg-yellow-600 text-white border-none"
+              className="border-none bg-yellow-500 text-white hover:bg-yellow-600"
             >
               Featured
             </Badge>
@@ -59,25 +65,27 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
       {/* Content Section */}
       <div className="flex flex-1 flex-col p-5">
         <Link href={projectHref} className="group/title">
-          <h3 className="mb-2 text-xl font-bold tracking-tight text-primary transition-colors group-hover/title:text-blue-600">
+          <h3 className="mb-2 text-xl font-semibold tracking-tight text-white transition-colors group-hover/title:text-[color:var(--color-accent)]">
             {project.title}
           </h3>
         </Link>
 
-        <p className="mb-4 line-clamp-3 text-sm text-muted-foreground">{project.description}</p>
+        <p className="mb-4 line-clamp-3 text-sm text-[color:var(--color-text-secondary)]">
+          {project.description}
+        </p>
 
         {/* Tags */}
         <div className="mb-6 flex flex-wrap gap-2">
           {project.tags.slice(0, 4).map((tag, i) => (
             <span
               key={i}
-              className="inline-flex items-center rounded-md bg-secondary/50 px-2 py-1 text-xs font-medium ring-1 ring-inset ring-gray-500/10"
+              className="inline-flex items-center rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs font-medium text-white/80"
             >
               {tag}
             </span>
           ))}
           {project.tags.length > 4 && (
-            <span className="inline-flex items-center rounded-md bg-secondary/50 px-2 py-1 text-xs font-medium text-muted-foreground">
+            <span className="inline-flex items-center rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs font-medium text-white/60">
               +{project.tags.length - 4}
             </span>
           )}
@@ -88,48 +96,49 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
           {isGrafanaProject ? (
             <>
               {visitHref && (
-                <Button size="sm" className="gap-2 w-full sm:w-auto" asChild>
-                  <a
-                    href={visitHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={handleDashboardClick}
-                  >
-                    <BarChart3 className="h-4 w-4" /> Open Grafana
-                  </a>
-                </Button>
+                <a
+                  className={`${actionAccent} w-full sm:w-auto`}
+                  href={visitHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleDashboardClick}
+                >
+                  <BarChart3 className="h-4 w-4" /> Open Grafana
+                </a>
               )}
               {sourceHref && (
-                <Button size="sm" variant="outline" className="gap-2 w-full sm:w-auto" asChild>
-                  <a href={sourceHref} target="_blank" rel="noopener noreferrer">
-                    <Github className="h-4 w-4" /> Code
-                  </a>
-                </Button>
+                <a
+                  className={`${actionOutline} w-full sm:w-auto`}
+                  href={sourceHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Github className="h-4 w-4" /> Code
+                </a>
               )}
             </>
           ) : (
             <>
-              {visitHref && sourceHref && visitHref !== sourceHref && (
-                <Button size="sm" className="gap-2" asChild>
-                  <a href={visitHref} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="h-4 w-4" /> Live Demo
-                  </a>
-                </Button>
+              {hasSeparateLiveDemo && visitHref && (
+                <a
+                  className={`${actionAccent} w-full sm:w-auto`}
+                  href={visitHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ExternalLink className="h-4 w-4" /> Live Demo
+                </a>
               )}
               {sourceHref && (
-                <Button
-                  size="sm"
-                  variant={
-                    visitHref && sourceHref && visitHref !== sourceHref ? 'outline' : 'default'
-                  }
-                  className="gap-2"
-                  asChild
+                <a
+                  className={`${hasSeparateLiveDemo ? actionOutline : actionAccent} w-full sm:w-auto`}
+                  href={sourceHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <a href={sourceHref} target="_blank" rel="noopener noreferrer">
-                    <Github className="h-4 w-4" />
-                    {visitHref && visitHref === sourceHref ? 'View Source' : 'Code'}
-                  </a>
-                </Button>
+                  <Github className="h-4 w-4" />
+                  {visitHref && visitHref === sourceHref ? 'View Source' : 'Code'}
+                </a>
               )}
             </>
           )}

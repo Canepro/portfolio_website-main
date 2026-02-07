@@ -46,12 +46,13 @@ spec:
         sh '''
           # Jenkins executes `sh` steps using /bin/sh; avoid bash-only options like `pipefail`.
           set -eu
+          BUN_TAG="${BUN_TAG_OVERRIDE:-bun-v1.3.6}"
 
           apt-get update
           apt-get install -y --no-install-recommends unzip curl ca-certificates
 
           curl -fsSL https://bun.sh/install -o /tmp/bun-install.sh
-          bash /tmp/bun-install.sh
+          bash /tmp/bun-install.sh "$BUN_TAG"
           export PATH="$HOME/.bun/bin:$PATH"
           bun --version
           node --version
