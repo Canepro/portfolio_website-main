@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Cloud, GitBranch, BarChart3 } from 'lucide-react';
+import { ArrowRight, BarChart3, Boxes, GitBranch, Server, Waypoints } from 'lucide-react';
 
 function Node({
   label,
@@ -62,34 +62,51 @@ export default function HeroVisual() {
           <div className="text-[11px] font-semibold uppercase tracking-widest text-white/55">
             Systems Snapshot
           </div>
-          <div className="hidden text-[10px] font-mono text-white/45 md:block">
-            gitops · ci · deploy · observability
+          <div className="hidden items-center gap-2 md:flex">
+            <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] font-mono text-white/55">
+              Netlify: deploy previews
+            </span>
+            <span className="text-[10px] font-mono text-white/45">gitops · ci · k8s · obs</span>
           </div>
         </div>
 
         <div className="mt-4 flex-1">
           <div className="hidden h-full items-center md:flex">
-            <div className="relative grid w-full grid-cols-[1fr_auto_1fr] items-center gap-3">
+            <div className="relative grid w-full grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-3">
               <Node label="GitHub" sub="main + PRs" icon={<GitBranch className="h-4 w-4" />} />
               <div className="flex items-center justify-center text-white/35">
                 <ArrowRight className="h-4 w-4" />
               </div>
               <Node
                 label="Jenkins"
-                sub="multibranch (OKE)"
-                icon={<Cloud className="h-4 w-4" />}
+                sub="multibranch (controller: OKE)"
+                icon={<Waypoints className="h-4 w-4" />}
                 accent
               />
+              <div className="flex items-center justify-center text-white/35">
+                <ArrowRight className="h-4 w-4" />
+              </div>
+              <Node
+                label="Build Agents"
+                sub="AKS agent (RBAC constrained)"
+                icon={<Server className="h-4 w-4" />}
+              />
 
-              <div className="col-span-3 mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-                <Node label="Netlify" sub="deploy previews" icon={<Cloud className="h-4 w-4" />} />
-                <div className="flex items-center justify-center text-white/35">
+              <div className="col-span-5 mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                <Node
+                  label="AKS Spoke"
+                  sub="Rocket.Chat + metrics → hub"
+                  icon={<Boxes className="h-4 w-4" />}
+                />
+                <div className="flex flex-col items-center justify-center text-white/35">
                   <ArrowRight className="h-4 w-4" />
+                  <div className="mt-1 text-[10px] font-mono text-white/45">OTLP</div>
                 </div>
                 <Node
-                  label="Observability"
-                  sub="Grafana / LGTM"
+                  label="OKE Hub"
+                  sub="ArgoCD + GrafanaLocal"
                   icon={<BarChart3 className="h-4 w-4" />}
+                  accent
                 />
               </div>
             </div>
@@ -97,14 +114,24 @@ export default function HeroVisual() {
 
           <div className="grid gap-3 md:hidden">
             <Node
-              label="GitHub → Jenkins (OKE) → Netlify"
-              sub="PR previews + main builds"
+              label="GitHub → Jenkins (OKE)"
+              sub="multibranch CI + gated builds"
               icon={<GitBranch className="h-4 w-4" />}
               accent
             />
             <Node
+              label="Kubernetes (Agents + Clusters)"
+              sub="OKE + AKS (build + run)"
+              icon={<Boxes className="h-4 w-4" />}
+            />
+            <Node
+              label="Deploy Previews"
+              sub="Netlify (PR preview URLs)"
+              icon={<Waypoints className="h-4 w-4" />}
+            />
+            <Node
               label="Observability"
-              sub="Grafana / LGTM demos in Projects"
+              sub="Grafana / LGTM demos"
               icon={<BarChart3 className="h-4 w-4" />}
             />
           </div>
