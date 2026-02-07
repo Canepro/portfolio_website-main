@@ -4,9 +4,8 @@
     // - Tailwind/shadcn: `html.dark`
     // - Legacy CSS variables: `html.light-theme`
     var theme = localStorage.getItem('theme'); // 'dark' | 'light' | null
-    var prefersDark =
-      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var isDark = theme ? theme === 'dark' : !!prefersDark;
+    // Dark-first: if the user hasn't chosen, default to dark.
+    var isDark = theme ? theme === 'dark' : true;
     var root = document.documentElement;
     if (isDark) {
       root.classList.add('dark');
@@ -17,4 +16,3 @@
     }
   } catch (e) {}
 })();
-

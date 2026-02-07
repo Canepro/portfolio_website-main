@@ -41,6 +41,11 @@ html.light-theme {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Let form controls and UA widgets pick appropriate colors in both modes. */
+:root {
+  color-scheme: dark light;
+}
+
 /* Enhanced animations */
 @keyframes fadeIn {
   from {

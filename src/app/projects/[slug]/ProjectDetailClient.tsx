@@ -5,10 +5,10 @@ import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-import { SkeletonOverlay } from '@/components/Projects/ProjectsStyles';
 import ProjectMedia from '@/components/ProjectMedia/ProjectMedia';
 import { Button } from '@/components/ui/button';
 import { projectDetails } from '@/constants/projectDetails';
+import { safeExternalHref } from '@/lib/url';
 import type { Project } from '@/types/project';
 import {
   BackButton,
@@ -53,6 +53,8 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
     heroSrc.toLowerCase().endsWith('.webm')
       ? 'contain'
       : 'cover';
+  const visitHref = safeExternalHref(project.visit);
+  const sourceHref = safeExternalHref(project.source);
 
   return (
     <ProjectDetailContainer>
@@ -62,7 +64,6 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
 
       <ProjectHero>
         <ProjectImage>
-          <SkeletonOverlay />
           <ProjectMedia
             src={heroSrc}
             alt={project.title}
@@ -148,16 +149,16 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
         )}
 
         <ProjectLinks>
-          {project.visit && (
-            <Button asChild>
-              <a href={project.visit} target="_blank" rel="noopener noreferrer">
+          {visitHref && (
+            <Button variant="accent" asChild>
+              <a href={visitHref} target="_blank" rel="noopener noreferrer">
                 View Live Project →
               </a>
             </Button>
           )}
-          {project.source && (
-            <Button variant="outline" asChild>
-              <a href={project.source} target="_blank" rel="noopener noreferrer">
+          {sourceHref && (
+            <Button variant="glass" asChild>
+              <a href={sourceHref} target="_blank" rel="noopener noreferrer">
                 View Source Code →
               </a>
             </Button>

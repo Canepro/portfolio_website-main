@@ -1,7 +1,14 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { getAllBlogPostsMeta } from '@/lib/blog';
 
 export const dynamic = 'force-static';
+
+export const metadata: Metadata = {
+  title: 'Blog',
+  description: 'Notes on DevOps, cloud architecture, frontend engineering, and lessons learned.',
+  alternates: { canonical: '/blog' },
+};
 
 export default function BlogIndexPage() {
   const posts = getAllBlogPostsMeta();

@@ -7,6 +7,7 @@ import { skillGroups } from '@/content/skills';
 import { getAllBlogPostsMeta } from '@/lib/blog';
 import { safeExternalHref } from '@/lib/url';
 import { certifications, projects } from '@/constants/constants';
+import { Button } from '@/components/ui/button';
 
 export const dynamic = 'force-static';
 
@@ -37,24 +38,15 @@ export default function HomePage() {
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/projects"
-                className="rounded-xl bg-[color:var(--color-accent)] px-5 py-3 text-sm font-semibold text-black hover:opacity-95"
-              >
-                View Projects
-              </Link>
-              <Link
-                href="/blog"
-                className="rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/[0.07]"
-              >
-                Read Writing
-              </Link>
-              <Link
-                href="/contact"
-                className="rounded-xl border border-white/10 px-5 py-3 text-sm font-semibold text-white/90 hover:bg-white/[0.06]"
-              >
-                Contact
-              </Link>
+              <Button variant="accent" size="lg" className="h-11" asChild>
+                <Link href="/projects">View Projects</Link>
+              </Button>
+              <Button variant="glass" size="lg" className="h-11" asChild>
+                <Link href="/blog">Read Writing</Link>
+              </Button>
+              <Button variant="glass" size="lg" className="h-11" asChild>
+                <Link href="/contact">Contact</Link>
+              </Button>
             </div>
 
             <div className="mt-8 grid grid-cols-3 gap-3">

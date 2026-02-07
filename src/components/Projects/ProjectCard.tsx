@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ProjectCardProps } from '../../types/components';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 import { Github, ExternalLink, BarChart3 } from 'lucide-react';
 import ProjectMedia from '../ProjectMedia/ProjectMedia';
 import { safeExternalHref } from '@/lib/url';
@@ -13,12 +14,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   const visitHref = safeExternalHref(project.visit);
   const sourceHref = safeExternalHref(project.source);
   const hasSeparateLiveDemo = Boolean(visitHref && sourceHref && visitHref !== sourceHref);
-
-  const actionBase =
-    'inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20';
-  const actionAccent = actionBase + ' bg-[color:var(--color-accent)] text-black hover:opacity-95';
-  const actionOutline =
-    actionBase + ' border border-white/15 bg-white/5 text-white/90 hover:bg-white/[0.07]';
 
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -96,49 +91,46 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
           {isGrafanaProject ? (
             <>
               {visitHref && (
-                <a
-                  className={`${actionAccent} w-full sm:w-auto`}
-                  href={visitHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={handleDashboardClick}
-                >
-                  <BarChart3 className="h-4 w-4" /> Open Grafana
-                </a>
+                <Button variant="accent" size="sm" className="w-full gap-2 sm:w-auto" asChild>
+                  <a
+                    href={visitHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleDashboardClick}
+                  >
+                    <BarChart3 className="h-4 w-4" /> Open Grafana
+                  </a>
+                </Button>
               )}
               {sourceHref && (
-                <a
-                  className={`${actionOutline} w-full sm:w-auto`}
-                  href={sourceHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Github className="h-4 w-4" /> Code
-                </a>
+                <Button variant="glass" size="sm" className="w-full gap-2 sm:w-auto" asChild>
+                  <a href={sourceHref} target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4" /> Code
+                  </a>
+                </Button>
               )}
             </>
           ) : (
             <>
               {hasSeparateLiveDemo && visitHref && (
-                <a
-                  className={`${actionAccent} w-full sm:w-auto`}
-                  href={visitHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ExternalLink className="h-4 w-4" /> Live Demo
-                </a>
+                <Button variant="accent" size="sm" className="w-full gap-2 sm:w-auto" asChild>
+                  <a href={visitHref} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="h-4 w-4" /> Live Demo
+                  </a>
+                </Button>
               )}
               {sourceHref && (
-                <a
-                  className={`${hasSeparateLiveDemo ? actionOutline : actionAccent} w-full sm:w-auto`}
-                  href={sourceHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Button
+                  variant={hasSeparateLiveDemo ? 'glass' : 'accent'}
+                  size="sm"
+                  className="w-full gap-2 sm:w-auto"
+                  asChild
                 >
-                  <Github className="h-4 w-4" />
-                  {visitHref && visitHref === sourceHref ? 'View Source' : 'Code'}
-                </a>
+                  <a href={sourceHref} target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4" />
+                    {visitHref && visitHref === sourceHref ? 'View Source' : 'Code'}
+                  </a>
+                </Button>
               )}
             </>
           )}

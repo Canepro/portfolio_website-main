@@ -100,7 +100,7 @@ export default function ContactClient() {
             </div>
 
             <div className="flex flex-wrap items-center gap-4">
-              <Button size="default" type="submit" disabled={status === 'loading'}>
+              <Button variant="accent" size="default" type="submit" disabled={status === 'loading'}>
                 {status === 'loading' ? 'Sending…' : 'Send Message'}
               </Button>
             </div>

@@ -26,7 +26,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${spaceGrotesk.variable} light-theme`} suppressHydrationWarning>
+    // Default to dark (site is designed dark-first). theme-init.js will flip to light if user chose it.
+    <html lang="en-GB" className={`${spaceGrotesk.variable} dark`} suppressHydrationWarning>
       <head>
         {/* Set theme class before paint (prevents flash and keeps Tailwind + legacy vars in sync) */}
         <Script id="theme-init" src="/theme-init.js" strategy="beforeInteractive" />
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
+        <meta name="color-scheme" content="dark light" />
         <link rel="dns-prefetch" href="//api.github.com" />
       </head>
       <body>

@@ -104,7 +104,10 @@ const generateBlurDataURL = (width: number = 400, height: number = 300): string 
   return `data:image/svg+xml;base64,${base64}`;
 };
 
-interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'onError' | 'placeholder'> {
+interface OptimizedImageProps extends Omit<
+  ImageProps,
+  'onLoad' | 'onLoadingComplete' | 'onError' | 'placeholder'
+> {
   src: string;
   alt: string;
   width?: number;
@@ -139,7 +142,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
     ? { position: 'absolute', inset: 0 }
     : undefined;
 
-  const handleLoad = () => {
+  const handleLoaded = () => {
     setLoaded(true);
     setLoading(false);
   };
@@ -163,7 +166,8 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         sizes={sizes}
         loaded={loaded}
         className={className}
-        onLoad={handleLoad}
+        // next/image fires `onLoadingComplete` reliably for cached images too.
+        onLoadingComplete={handleLoaded}
         onError={handleError}
         placeholder={placeholder ? 'blur' : 'empty'}
         blurDataURL={blurDataURL}

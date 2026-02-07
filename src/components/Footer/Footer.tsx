@@ -24,12 +24,12 @@ const Footer: React.FC<FooterProps> = () => (
       <LinkColumn>
         <LinkTitle>Get In Touch</LinkTitle>
         <div className="flex flex-col gap-3 mt-4 w-[220px]">
-          <Button variant="outline" size="sm" className="w-full gap-2" asChild>
+          <Button variant="glass" size="sm" className="w-full gap-2" asChild>
             <a href="mailto:mogah.vincent@hotmail.com">
               <Mail className="h-4 w-4" /> Send Email
             </a>
           </Button>
-          <Button variant="outline" size="sm" className="w-full gap-2" asChild>
+          <Button variant="glass" size="sm" className="w-full gap-2" asChild>
             <a
               href="https://www.linkedin.com/in/vincent-mogah/"
               target="_blank"
