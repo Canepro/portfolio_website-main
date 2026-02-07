@@ -7,7 +7,7 @@ set -euo pipefail
 
 # Configuration
 JENKINS_URL="${JENKINS_URL:-https://jenkins.canepro.me}"
-JOB_NAME="${JOB_NAME:-rocketchat-k8s}"
+JOB_NAME="${JOB_NAME:-portfolio_website-main}"
 CONFIG_FILE="${CONFIG_FILE:-.jenkins/job-config.xml}"
 JENKINS_USER="${JENKINS_USER:-}"
 

@@ -26,7 +26,7 @@ bash .jenkins/create-job.sh
 3. Enter job name: `portfolio_website-main`
 4. Select "Multibranch Pipeline"
 5. Configure GitHub branch source
-6. Set Script Path to the appropriate Jenkinsfile (e.g., `.jenkins/terraform-validation.Jenkinsfile`)
+6. Set Script Path to `Jenkinsfile` (repo root, recommended) or one of the `.jenkins/*.Jenkinsfile` pipelines
 
 ## GitHub Webhook
 
@@ -43,3 +43,9 @@ See [JENKINS_STRATEGY.md](../../rocketchat-k8s/JENKINS_STRATEGY.md) in the `rock
 - Understanding what Jenkins does
 - How to maximize Jenkins across repos
 - Best practices
+
+## Notes (OKE)
+
+Jenkins is deployed on OKE, and the recommended pipeline (`Jenkinsfile`) uses a Kubernetes agent. Ensure the Jenkins Kubernetes plugin is configured (cloud, namespace, and permissions) so it can start the `node-build` pod template used by the pipeline.
+
+If your cluster enforces short-name image resolution, keep images fully qualified (for example `docker.io/jenkins/inbound-agent:latest` instead of `jenkins/inbound-agent:latest`) to avoid `ErrImagePull` ambiguity.

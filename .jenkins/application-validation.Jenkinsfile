@@ -16,7 +16,7 @@ kind: Pod
 spec:
   containers:
     - name: jnlp
-      image: jenkins/inbound-agent:latest
+      image: docker.io/jenkins/inbound-agent:latest
       imagePullPolicy: Always
       resources:
         requests:
@@ -26,7 +26,7 @@ spec:
           cpu: "1000m"
           memory: "2Gi"
     - name: node
-      image: node:20-bullseye
+      image: docker.io/library/node:22-bullseye
       command: ["cat"]
       tty: true
       resources:
@@ -43,8 +43,8 @@ spec:
   // Environment variables for tool versions
   // These match the project's package.json requirements
   environment {
-    NODE_VERSION = '20'      // Node.js version (required by Next.js)
-    BUN_VERSION = '1.3.5'    // Bun version (package manager and runtime)
+    NODE_VERSION = '22'      // Node.js version (matches local dev)
+    BUN_VERSION = 'latest'   // Bun version (installed via official installer)
   }
 
   stages {
@@ -55,12 +55,14 @@ spec:
       steps {
         sh '''
           # Install prerequisites for bun installer (needs unzip + curl + bash)
-          # node:20-bullseye runs as root by default, so apt works here.
+          # node:22-bullseye runs as root by default, so apt works here.
+          set -eu
           apt-get update
           apt-get install -y --no-install-recommends unzip curl ca-certificates
 
           # Install Bun using official installer
-          curl -fsSL https://bun.sh/install | bash
+          curl -fsSL https://bun.sh/install -o /tmp/bun-install.sh
+          bash /tmp/bun-install.sh
           # Add Bun to PATH for this session
           export PATH="$HOME/.bun/bin:$PATH"
           # Verify installation
@@ -75,9 +77,10 @@ spec:
     stage('Install Dependencies') {
       steps {
         sh '''
+          set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           # Install project dependencies (Next.js, TypeScript, ESLint, etc.)
-          bun install
+          bun install --frozen-lockfile
         '''
       }
     }
@@ -88,6 +91,7 @@ spec:
     stage('Dependency Audit') {
       steps {
         sh '''
+          set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           # Run security audit on dependencies
           # || echo: don't fail on warnings, only critical vulnerabilities
@@ -102,6 +106,7 @@ spec:
     stage('Code Quality') {
       steps {
         sh '''
+          set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           # Run ESLint to catch code quality issues
           bun run lint
@@ -117,6 +122,7 @@ spec:
     stage('Type Checking') {
       steps {
         sh '''
+          set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           # Run TypeScript compiler in check-only mode
           bun run typecheck
@@ -130,6 +136,7 @@ spec:
     stage('Build Validation') {
       steps {
         sh '''
+          set -eu
           export PATH="$HOME/.bun/bin:$PATH"
           # Build Next.js application for production
           # This validates that all code compiles and bundles correctly
@@ -166,7 +173,14 @@ spec:
   post {
     // Always clean workspace after build (free up disk space)
     always {
-      cleanWs()
+      script {
+        // If the Kubernetes pod never starts (image pull, scheduling), there is no workspace context.
+        try {
+          cleanWs()
+        } catch (err) {
+          echo "cleanWs skipped: ${err}"
+        }
+      }
     }
     // Success message for easy log scanning
     success {
