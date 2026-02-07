@@ -229,14 +229,16 @@ export default function HomePage() {
         </div>
 
         <div className="mt-8 md:hidden">
-          <a
-            href={profile.links.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-sm text-white/70 underline underline-offset-4 hover:text-white"
-          >
-            Full history on LinkedIn
-          </a>
+          {linkedinHref ? (
+            <a
+              href={linkedinHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-sm text-white/70 underline underline-offset-4 hover:text-white"
+            >
+              Full history on LinkedIn
+            </a>
+          ) : null}
         </div>
       </section>
 
@@ -257,45 +259,48 @@ export default function HomePage() {
         </div>
 
         <div className="mt-10 grid gap-4 md:grid-cols-3">
-          {featured.map(p => (
-            <article
-              key={p.slug}
-              className="rounded-3xl border border-white/10 bg-white/5 p-6 hover:bg-white/[0.07] transition-colors"
-            >
-              <h3 className="text-lg font-semibold tracking-tight">{p.title}</h3>
-              <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
-                {p.description}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {p.tags.slice(0, 6).map(t => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs text-white/75"
+          {featured.map(p => {
+            const visitHref = safeExternalHref(p.visit);
+            return (
+              <article
+                key={p.slug}
+                className="rounded-3xl border border-white/10 bg-white/5 p-6 hover:bg-white/[0.07] transition-colors"
+              >
+                <h3 className="text-lg font-semibold tracking-tight">{p.title}</h3>
+                <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
+                  {p.description}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {p.tags.slice(0, 6).map(t => (
+                    <span
+                      key={t}
+                      className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs text-white/75"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-6 flex items-center justify-between gap-4">
+                  <Link
+                    href={`/projects/${encodeURIComponent(p.slug)}`}
+                    className="text-sm font-semibold text-white underline underline-offset-4 hover:opacity-90"
                   >
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-6 flex items-center justify-between gap-4">
-                <Link
-                  href={`/projects/${encodeURIComponent(p.slug)}`}
-                  className="text-sm font-semibold text-white underline underline-offset-4 hover:opacity-90"
-                >
-                  Read case study
-                </Link>
-                {p.visit ? (
-                  <a
-                    href={p.visit}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-white/70 hover:text-white"
-                  >
-                    Live
-                  </a>
-                ) : null}
-              </div>
-            </article>
-          ))}
+                    Read case study
+                  </Link>
+                  {visitHref ? (
+                    <a
+                      href={visitHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-white/70 hover:text-white"
+                    >
+                      Live
+                    </a>
+                  ) : null}
+                </div>
+              </article>
+            );
+          })}
         </div>
 
         <div className="mt-8 md:hidden">
