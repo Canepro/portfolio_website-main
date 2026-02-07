@@ -4,9 +4,11 @@ export const profile = {
   headline:
     'Azure Infrastructure & Cloud Engineer | DevOps | Microsoft 365 & Entra ID | PowerShell Automation | ITIL',
   location: 'United Kingdom',
+  email: 'mogah.vincent@hotmail.com',
   links: {
     github: 'https://github.com/Canepro',
     linkedin: 'https://www.linkedin.com/in/vincent-mogah',
+    twitter: 'https://twitter.com/Canepro',
   },
   summary: [
     'Cloud Engineer and DevOps professional focused on dependable systems, automation, and secure delivery.',

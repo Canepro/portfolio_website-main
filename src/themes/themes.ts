@@ -8,8 +8,8 @@ const breakpoints = {
 };
 
 const fonts = {
-  title: 'Space Grotesk, sans-serif',
-  main: 'Space Grotesk, sans-serif',
+  title: 'var(--font-sans)',
+  main: 'var(--font-sans)',
 };
 
 export const darkTheme = {
@@ -26,8 +26,8 @@ export const darkTheme = {
     card: 'rgba(255, 255, 255, 0.05)',
     cardHover: 'rgba(255, 255, 255, 0.08)',
     border: 'rgba(255, 255, 255, 0.1)',
-    gradient: 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)',
-    gradientSecondary: 'linear-gradient(270deg, #F46737 0%, #945DD6 100%)',
+    gradient: 'linear-gradient(270deg, #00DBD8 0%, #0EA5E9 100%)',
+    gradientSecondary: 'linear-gradient(270deg, #0EA5E9 0%, #00DBD8 100%)',
   },
 };
 
@@ -45,7 +45,7 @@ export const lightTheme = {
     card: 'rgba(0, 0, 0, 0.03)',
     cardHover: 'rgba(0, 0, 0, 0.06)',
     border: 'rgba(0, 0, 0, 0.1)',
-    gradient: 'linear-gradient(270deg, #13ADC7 0%, #6978D1 100%)',
-    gradientSecondary: 'linear-gradient(270deg, #F46737 0%, #945DD6 100%)',
+    gradient: 'linear-gradient(270deg, #13ADC7 0%, #0EA5E9 100%)',
+    gradientSecondary: 'linear-gradient(270deg, #0EA5E9 0%, #13ADC7 100%)',
   },
 };

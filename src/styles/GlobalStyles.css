@@ -1,18 +1,21 @@
 /* Global CSS Variables for Theming */
 :root {
   /* Dark theme (default) */
-  --font-space-grotesk: 'Space Grotesk', sans-serif;
-  --color-bg-primary: #0F1624;
-  --color-bg-secondary: #212D45;
+  /* Fonts are injected via next/font as CSS variables. */
+  --font-space-grotesk: var(--font-sans);
+  /* More neutral base (less "neon/purple" cast) */
+  --color-bg-primary: #0F1115;
+  --color-bg-secondary: #151A22;
   --color-text-primary: #FFFFFF;
   --color-text-secondary: rgba(255, 255, 255, 0.86);
   --color-accent: #00DBD8;
-  --color-accent-secondary: #B133FF;
+  /* Secondary accent: keep it in the cyan/sky family (avoids "neon purple/indigo" cast). */
+  --color-accent-secondary: #0EA5E9;
   --color-card-bg: rgba(255, 255, 255, 0.05);
   --color-card-hover: rgba(255, 255, 255, 0.08);
   --color-border: rgba(255, 255, 255, 0.1);
-  --gradient-primary: linear-gradient(270deg, #00DBD8 0%, #B133FF 100%);
-  --gradient-secondary: linear-gradient(270deg, #F46737 0%, #945DD6 100%);
+  --gradient-primary: linear-gradient(270deg, #00DBD8 0%, #0EA5E9 100%);
+  --gradient-secondary: linear-gradient(270deg, #0EA5E9 0%, #00DBD8 100%);
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
@@ -25,12 +28,12 @@ html.light-theme {
   --color-text-primary: #0F1624;
   --color-text-secondary: rgba(15, 22, 36, 0.75);
   --color-accent: #13ADC7;
-  --color-accent-secondary: #6978D1;
+  --color-accent-secondary: #0EA5E9;
   --color-card-bg: rgba(0, 0, 0, 0.03);
   --color-card-hover: rgba(0, 0, 0, 0.06);
   --color-border: rgba(0, 0, 0, 0.1);
-  --gradient-primary: linear-gradient(270deg, #13ADC7 0%, #6978D1 100%);
-  --gradient-secondary: linear-gradient(270deg, #F46737 0%, #945DD6 100%);
+  --gradient-primary: linear-gradient(270deg, #13ADC7 0%, #0EA5E9 100%);
+  --gradient-secondary: linear-gradient(270deg, #0EA5E9 0%, #13ADC7 100%);
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
   --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
@@ -130,45 +133,6 @@ html.light-theme {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Theme toggle button styles */
-.theme-toggle {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem; /* moved to bottom-left to avoid Rocket.Chat bubble */
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--gradient-primary);
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-md);
-  z-index: 1000;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.1);
-  box-shadow: var(--shadow-lg);
-}
-
-.theme-toggle:active {
-  transform: scale(0.95);
-}
-
-.theme-toggle svg {
-  width: 24px;
-  height: 24px;
-  color: white;
-  transition: transform 0.3s ease;
-}
-
-.theme-toggle:hover svg {
-  transform: rotate(20deg);
 }
 
 /* Smooth scroll behavior */

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Space_Grotesk } from 'next/font/google';
+import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 
 import AppShell from '@/app/shared/AppShell';
 import { profile } from '@/content/profile';
@@ -8,11 +8,18 @@ import { profile } from '@/content/profile';
 import '@/styles/GlobalStyles.css';
 import '@/styles/globals.css';
 
-const spaceGrotesk = Space_Grotesk({
+const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
-  variable: '--font-space-grotesk',
+  variable: '--font-sans',
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  display: 'swap',
+  variable: '--font-mono',
 });
 
 export const metadata: Metadata = {
@@ -27,7 +34,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     // Default to dark (site is designed dark-first). theme-init.js will flip to light if user chose it.
-    <html lang="en-GB" className={`${spaceGrotesk.variable} dark`} suppressHydrationWarning>
+    <html
+      lang="en-GB"
+      className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} dark`}
+      suppressHydrationWarning
+    >
       <head>
         {/* Set theme class before paint (prevents flash and keeps Tailwind + legacy vars in sync) */}
         {/* Cache-bust the theme script: Netlify can cache /theme-init.js aggressively across deploys. */}
@@ -40,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="color-scheme" content="dark light" />
         <link rel="dns-prefetch" href="//api.github.com" />
       </head>
-      <body>
+      <body className="font-sans antialiased">
         <AppShell>{children}</AppShell>
       </body>
     </html>

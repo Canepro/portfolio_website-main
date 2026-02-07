@@ -28,10 +28,9 @@ export interface Theme {
 const theme: Theme = {
   // Temp fonts
   fonts: {
-    // In App Router we set --font-space-grotesk via next/font; in Pages Router this falls back to the
-    // Google Fonts-loaded family name.
-    title: 'var(--font-space-grotesk)',
-    main: 'var(--font-space-grotesk)',
+    // App Router sets --font-sans via next/font.
+    title: 'var(--font-sans)',
+    main: 'var(--font-sans)',
   },
   // Colors now use CSS variables that change with theme
   colors: {

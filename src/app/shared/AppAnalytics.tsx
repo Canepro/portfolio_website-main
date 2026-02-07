@@ -18,6 +18,12 @@ export default function AppAnalytics() {
     if (init.faro) return;
     init.faro = true;
 
+    // Don't emit noisy console errors outside real production (local dev, deploy previews, etc.).
+    // This keeps the UI clean while still allowing Faro in the final deployed site.
+    if (typeof window !== 'undefined' && window.location.hostname !== 'vincent-mogah.netlify.app') {
+      return;
+    }
+
     import('@grafana/faro-web-sdk')
       .then(({ getWebInstrumentations, initializeFaro }) => {
         import('@grafana/faro-web-tracing').then(({ TracingInstrumentation }) => {

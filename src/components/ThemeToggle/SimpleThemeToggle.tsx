@@ -3,8 +3,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { Moon, Sun } from 'lucide-react';
 
-const SimpleThemeToggle: React.FC = () => {
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+type SimpleThemeToggleProps = {
+  className?: string;
+};
+
+const SimpleThemeToggle: React.FC<SimpleThemeToggleProps> = ({ className }) => {
   const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(true);
 
@@ -35,14 +43,17 @@ const SimpleThemeToggle: React.FC = () => {
   if (!mounted) return null;
 
   return (
-    <button
-      className="theme-toggle"
+    <Button
+      type="button"
+      variant="glass"
+      size="icon"
       onClick={toggleTheme}
-      aria-label="Toggle theme"
+      aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      className={cn('rounded-xl', className)}
     >
-      <span style={{ fontSize: 22, lineHeight: 1 }}>{isDark ? '☀️' : '🌙'}</span>
-    </button>
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </Button>
   );
 };
 

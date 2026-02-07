@@ -1,189 +1,208 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useState, useCallback, useEffect } from 'react';
-import { AiFillGithub, AiFillInstagram, AiFillLinkedin, AiFillTwitterCircle } from 'react-icons/ai';
-import { DiCssdeck } from 'react-icons/di';
-import { HeaderProps } from '../../types/components';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Github, Linkedin, Menu, X } from 'lucide-react';
 
-import {
-  Container,
-  Div1,
-  Div2,
-  Div3,
-  NavLink,
-  SocialIcons,
-  Span,
-  MobileMenuButton,
-  MobileMenuOverlay,
-  MobileMenuPanel,
-  MobileMenuList,
-  MobileMenuItem,
-  MobileNavLink,
-} from './HeaderStyles';
+import SimpleThemeToggle from '@/components/ThemeToggle/SimpleThemeToggle';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { profile } from '@/content/profile';
+import { safeExternalHref } from '@/lib/url';
 
-const Header: React.FC<HeaderProps> = () => {
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+type NavItem = { href: string; label: string };
 
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
-  const toggleMenu = useCallback(() => setMenuOpen(v => !v), []);
+export default function Header() {
+  const pathname = usePathname() ?? '';
+  const [open, setOpen] = useState(false);
+
+  const nav: NavItem[] = useMemo(
+    () => [
+      { href: '/', label: 'Home' },
+      { href: '/projects', label: 'Projects' },
+      { href: '/blog', label: 'Blog' },
+      { href: '/contact', label: 'Contact' },
+      { href: '/#tech', label: 'Technologies' },
+      { href: '/#about', label: 'About' },
+    ],
+    []
+  );
+
+  const githubHref = safeExternalHref(profile.links.github);
+  const linkedinHref = safeExternalHref(profile.links.linkedin);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closeMenu();
-      }
+      if (e.key === 'Escape') setOpen(false);
     };
-    if (menuOpen) {
-      window.addEventListener('keydown', onKeyDown);
-    }
+    if (open) window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [menuOpen, closeMenu]);
+  }, [open]);
 
-  const handleOverlayClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      closeMenu();
-    },
-    [closeMenu]
-  );
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
-  const handlePanelClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-  }, []);
+  useEffect(() => {
+    // Close mobile menu on navigation.
+    setOpen(false);
+  }, [pathname]);
 
   return (
-    <Container>
-      <Div1>
-        <Link
-          href="/"
-          style={{ display: 'flex', alignItems: 'center', color: 'white', marginBottom: '20px' }}
-          onClick={closeMenu}
-        >
-          <DiCssdeck size="3rem" aria-hidden="true" /> <Span>Personal Portfolio</Span>
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-6 md:px-10">
+        <Link href="/" className="group inline-flex items-center gap-3">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-sm font-semibold text-white/90 shadow-sm transition-colors group-hover:bg-white/[0.07]">
+            VM
+          </span>
+          <span className="hidden text-sm font-semibold tracking-tight text-white/90 sm:inline">
+            {profile.name}
+          </span>
         </Link>
-      </Div1>
-      <Div2>
-        <li>
-          <Link href="/" passHref legacyBehavior>
-            <NavLink onClick={closeMenu}>Home</NavLink>
-          </Link>
-        </li>
-        <li>
-          <Link href="/projects" passHref legacyBehavior>
-            <NavLink onClick={closeMenu}>Projects</NavLink>
-          </Link>
-        </li>
-        <li>
-          <Link href="/contact" passHref legacyBehavior>
-            <NavLink onClick={closeMenu}>Contact</NavLink>
-          </Link>
-        </li>
-        <li>
-          <Link href="/blog" passHref legacyBehavior>
-            <NavLink onClick={closeMenu}>Blog</NavLink>
-          </Link>
-        </li>
-        <li>
-          <NavLink href="/#tech" onClick={closeMenu}>
-            Technologies
-          </NavLink>
-        </li>
-        <li>
-          <NavLink href="/#about" onClick={closeMenu}>
-            About
-          </NavLink>
-        </li>
-      </Div2>
-      <Div3>
-        <MobileMenuButton
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          onClick={toggleMenu}
-        >
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M4 6H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            <path d="M4 12H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            <path d="M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-        </MobileMenuButton>
-        <SocialIcons
-          href="https://github.com/Canepro"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="GitHub profile"
-        >
-          <AiFillGithub size="3rem" aria-hidden="true" />
-        </SocialIcons>
-        <SocialIcons
-          href="https://www.linkedin.com/in/vincent-mogah/"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="LinkedIn profile"
-        >
-          <AiFillLinkedin size="3rem" aria-hidden="true" />
-        </SocialIcons>
-        <SocialIcons
-          href="https://twitter.com/Canepro"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Twitter profile"
-        >
-          <AiFillTwitterCircle size="3rem" aria-hidden="true" />
-        </SocialIcons>
-      </Div3>
 
-      {/* Mobile overlay */}
-      <MobileMenuOverlay open={menuOpen} onClick={handleOverlayClick}>
-        <MobileMenuPanel
-          id="mobile-menu"
+        <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
+          {nav.map(item => {
+            const isActive =
+              item.href === '/'
+                ? pathname === '/'
+                : item.href.startsWith('/#')
+                  ? pathname === '/'
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  'rounded-xl px-3 py-2 text-sm font-medium text-white/70 transition-colors hover:text-white',
+                  isActive && 'bg-white/5 text-white'
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          {githubHref ? (
+            <Button variant="glass" size="icon" className="hidden md:inline-flex" asChild>
+              <a href={githubHref} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <Github className="h-4 w-4" />
+              </a>
+            </Button>
+          ) : null}
+          {linkedinHref ? (
+            <Button variant="glass" size="icon" className="hidden md:inline-flex" asChild>
+              <a
+                href={linkedinHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-4 w-4" />
+              </a>
+            </Button>
+          ) : null}
+
+          <SimpleThemeToggle className="hidden md:inline-flex" />
+
+          <Button
+            type="button"
+            variant="glass"
+            size="icon"
+            className="md:hidden"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            onClick={() => setOpen(v => !v)}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      <div
+        className={cn(
+          'fixed inset-0 z-50 md:hidden',
+          open ? 'pointer-events-auto' : 'pointer-events-none'
+        )}
+        aria-hidden={!open}
+      >
+        <div
+          className={cn(
+            'absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity',
+            open ? 'opacity-100' : 'opacity-0'
+          )}
+          onClick={() => setOpen(false)}
+        />
+
+        <div
+          className={cn(
+            'absolute right-0 top-0 h-full w-[86vw] max-w-sm border-l border-white/10 bg-background/95 p-5 shadow-2xl transition-transform',
+            open ? 'translate-x-0' : 'translate-x-full'
+          )}
+          onClick={e => e.stopPropagation()}
           role="dialog"
           aria-modal="true"
-          open={menuOpen}
-          onClick={handlePanelClick}
         >
-          <MobileMenuList>
-            <MobileMenuItem>
-              <Link href="/" passHref legacyBehavior>
-                <MobileNavLink onClick={closeMenu}>Home</MobileNavLink>
-              </Link>
-            </MobileMenuItem>
-            <MobileMenuItem>
-              <Link href="/projects" passHref legacyBehavior>
-                <MobileNavLink onClick={closeMenu}>Projects</MobileNavLink>
-              </Link>
-            </MobileMenuItem>
-            <MobileMenuItem>
-              <Link href="/contact" passHref legacyBehavior>
-                <MobileNavLink onClick={closeMenu}>Contact</MobileNavLink>
-              </Link>
-            </MobileMenuItem>
-            <MobileMenuItem>
-              <Link href="/blog" passHref legacyBehavior>
-                <MobileNavLink onClick={closeMenu}>Blog</MobileNavLink>
-              </Link>
-            </MobileMenuItem>
-            <MobileMenuItem>
-              <MobileNavLink href="/#tech" onClick={closeMenu}>
-                Technologies
-              </MobileNavLink>
-            </MobileMenuItem>
-            <MobileMenuItem>
-              <MobileNavLink href="/#about" onClick={closeMenu}>
-                About
-              </MobileNavLink>
-            </MobileMenuItem>
-          </MobileMenuList>
-        </MobileMenuPanel>
-      </MobileMenuOverlay>
-    </Container>
-  );
-};
+          <div className="flex items-center justify-between">
+            <div className="text-sm font-semibold text-white/90">Menu</div>
+            <Button
+              type="button"
+              variant="glass"
+              size="icon"
+              aria-label="Close menu"
+              onClick={() => setOpen(false)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          </div>
 
-export default Header;
+          <div className="mt-5 grid gap-1">
+            {nav.map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 hover:bg-white/[0.07]"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-6 flex items-center gap-2">
+            <SimpleThemeToggle />
+            {githubHref ? (
+              <Button variant="glass" size="icon" asChild>
+                <a href={githubHref} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                  <Github className="h-4 w-4" />
+                </a>
+              </Button>
+            ) : null}
+            {linkedinHref ? (
+              <Button variant="glass" size="icon" asChild>
+                <a
+                  href={linkedinHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </a>
+              </Button>
+            ) : null}
+          </div>
+
+          <p className="mt-6 text-xs leading-5 text-white/55">
+            Short, high-signal notes. Production-first engineering. Documentation over vibes.
+          </p>
+        </div>
+      </div>
+    </header>
+  );
+}
