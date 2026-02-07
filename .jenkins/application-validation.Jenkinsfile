@@ -54,8 +54,10 @@ spec:
     stage('Setup') {
       steps {
         sh '''
+          #!/usr/bin/env bash
           # Install prerequisites for bun installer (needs unzip + curl + bash)
           # node:22-bullseye runs as root by default, so apt works here.
+          set -euo pipefail
           apt-get update
           apt-get install -y --no-install-recommends unzip curl ca-certificates
 
@@ -75,6 +77,8 @@ spec:
     stage('Install Dependencies') {
       steps {
         sh '''
+          #!/usr/bin/env bash
+          set -euo pipefail
           export PATH="$HOME/.bun/bin:$PATH"
           # Install project dependencies (Next.js, TypeScript, ESLint, etc.)
           bun install --frozen-lockfile
@@ -88,6 +92,8 @@ spec:
     stage('Dependency Audit') {
       steps {
         sh '''
+          #!/usr/bin/env bash
+          set -euo pipefail
           export PATH="$HOME/.bun/bin:$PATH"
           # Run security audit on dependencies
           # || echo: don't fail on warnings, only critical vulnerabilities
@@ -102,6 +108,8 @@ spec:
     stage('Code Quality') {
       steps {
         sh '''
+          #!/usr/bin/env bash
+          set -euo pipefail
           export PATH="$HOME/.bun/bin:$PATH"
           # Run ESLint to catch code quality issues
           bun run lint
@@ -117,6 +125,8 @@ spec:
     stage('Type Checking') {
       steps {
         sh '''
+          #!/usr/bin/env bash
+          set -euo pipefail
           export PATH="$HOME/.bun/bin:$PATH"
           # Run TypeScript compiler in check-only mode
           bun run typecheck
@@ -130,6 +140,8 @@ spec:
     stage('Build Validation') {
       steps {
         sh '''
+          #!/usr/bin/env bash
+          set -euo pipefail
           export PATH="$HOME/.bun/bin:$PATH"
           # Build Next.js application for production
           # This validates that all code compiles and bundles correctly

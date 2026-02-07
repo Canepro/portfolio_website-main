@@ -44,6 +44,7 @@ spec:
     stage('Setup') {
       steps {
         sh '''
+          #!/usr/bin/env bash
           set -euo pipefail
 
           apt-get update
@@ -60,6 +61,7 @@ spec:
     stage('Install') {
       steps {
         sh '''
+          #!/usr/bin/env bash
           set -euo pipefail
           export PATH="$HOME/.bun/bin:$PATH"
           bun install --frozen-lockfile
@@ -70,6 +72,7 @@ spec:
     stage('Lint') {
       steps {
         sh '''
+          #!/usr/bin/env bash
           set -euo pipefail
           export PATH="$HOME/.bun/bin:$PATH"
           bun run lint
@@ -80,6 +83,7 @@ spec:
     stage('Typecheck') {
       steps {
         sh '''
+          #!/usr/bin/env bash
           set -euo pipefail
           export PATH="$HOME/.bun/bin:$PATH"
           bun run typecheck
@@ -90,6 +94,7 @@ spec:
     stage('Build') {
       steps {
         sh '''
+          #!/usr/bin/env bash
           set -euo pipefail
           export PATH="$HOME/.bun/bin:$PATH"
           bun run build
