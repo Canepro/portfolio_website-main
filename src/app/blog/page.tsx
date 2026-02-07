@@ -37,7 +37,10 @@ export default function BlogIndexPage() {
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <h2 className="text-xl font-semibold tracking-tight">
-                    <Link href={`/blog/${p.slug}`} className="hover:underline underline-offset-4">
+                    <Link
+                      href={`/blog/${encodeURIComponent(p.slug)}`}
+                      className="hover:underline underline-offset-4"
+                    >
                       {p.title}
                     </Link>
                   </h2>

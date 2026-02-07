@@ -29,29 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-GB" className={`${spaceGrotesk.variable} light-theme`} suppressHydrationWarning>
       <head>
         {/* Set theme class before paint (prevents flash and keeps Tailwind + legacy vars in sync) */}
-        <Script
-          id="theme-init"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function () {
-                try {
-                  var theme = localStorage.getItem('theme'); // 'dark' | 'light' | null
-                  var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  var isDark = theme ? theme === 'dark' : !!prefersDark;
-                  var root = document.documentElement;
-                  if (isDark) {
-                    root.classList.add('dark');
-                    root.classList.remove('light-theme');
-                  } else {
-                    root.classList.remove('dark');
-                    root.classList.add('light-theme');
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
+        <Script id="theme-init" src="/theme-init.js" strategy="beforeInteractive" />
 
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />

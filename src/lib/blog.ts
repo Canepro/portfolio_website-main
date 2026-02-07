@@ -14,6 +14,7 @@ export type BlogPostMeta = BlogFrontmatter & {
 };
 
 const BLOG_DIR = path.join(process.cwd(), 'content', 'blog');
+const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function assertBlogDirExists() {
   if (!fs.existsSync(BLOG_DIR)) return;
@@ -31,10 +32,14 @@ export function getBlogSlugs(): string[] {
     .readdirSync(BLOG_DIR)
     .filter(f => f.endsWith('.mdx'))
     .map(f => f.replace(/\.mdx$/, ''))
+    .filter(slug => SLUG_RE.test(slug))
     .sort();
 }
 
 export function getBlogPostMeta(slug: string): BlogPostMeta {
+  if (!SLUG_RE.test(slug)) {
+    throw new Error(`Invalid blog slug: ${slug}`);
+  }
   const fullPath = path.join(BLOG_DIR, `${slug}.mdx`);
   const raw = fs.readFileSync(fullPath, 'utf8');
   const { data } = matter(raw);
@@ -62,6 +67,9 @@ export function getAllBlogPostsMeta(): BlogPostMeta[] {
 }
 
 export function getBlogPostSource(slug: string): { meta: BlogPostMeta; source: string } {
+  if (!SLUG_RE.test(slug)) {
+    throw new Error(`Invalid blog slug: ${slug}`);
+  }
   const fullPath = path.join(BLOG_DIR, `${slug}.mdx`);
   const raw = fs.readFileSync(fullPath, 'utf8');
   const { data, content } = matter(raw);

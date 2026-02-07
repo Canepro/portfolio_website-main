@@ -5,10 +5,14 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Github, ExternalLink, BarChart3 } from 'lucide-react';
 import ProjectMedia from '../ProjectMedia/ProjectMedia';
+import { safeExternalHref } from '@/lib/url';
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   const isGrafanaProject = project.slug === 'central-observability-hub-stack';
   const previewSrc = project.media || project.image;
+  const projectHref = `/projects/${encodeURIComponent(project.slug)}`;
+  const visitHref = safeExternalHref(project.visit);
+  const sourceHref = safeExternalHref(project.source);
 
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -22,10 +26,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       {/* Image Section */}
-      <Link
-        href={`/projects/${project.slug}`}
-        className="relative block aspect-video overflow-hidden"
-      >
+      <Link href={projectHref} className="relative block aspect-video overflow-hidden">
         <ProjectMedia
           src={previewSrc}
           alt={`${project.title} thumbnail`}
@@ -57,7 +58,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
 
       {/* Content Section */}
       <div className="flex flex-1 flex-col p-5">
-        <Link href={`/projects/${project.slug}`} className="group/title">
+        <Link href={projectHref} className="group/title">
           <h3 className="mb-2 text-xl font-bold tracking-tight text-primary transition-colors group-hover/title:text-blue-600">
             {project.title}
           </h3>
@@ -86,10 +87,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
         <div className="mt-auto flex flex-wrap gap-2 pt-2">
           {isGrafanaProject ? (
             <>
-              {project.visit && (
+              {visitHref && (
                 <Button size="sm" className="gap-2 w-full sm:w-auto" asChild>
                   <a
-                    href={project.visit}
+                    href={visitHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={handleDashboardClick}
@@ -98,9 +99,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
                   </a>
                 </Button>
               )}
-              {project.source && (
+              {sourceHref && (
                 <Button size="sm" variant="outline" className="gap-2 w-full sm:w-auto" asChild>
-                  <a href={project.source} target="_blank" rel="noopener noreferrer">
+                  <a href={sourceHref} target="_blank" rel="noopener noreferrer">
                     <Github className="h-4 w-4" /> Code
                   </a>
                 </Button>
@@ -108,25 +109,25 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
             </>
           ) : (
             <>
-              {project.visit && project.visit !== project.source && (
+              {visitHref && sourceHref && visitHref !== sourceHref && (
                 <Button size="sm" className="gap-2" asChild>
-                  <a href={project.visit} target="_blank" rel="noopener noreferrer">
+                  <a href={visitHref} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-4 w-4" /> Live Demo
                   </a>
                 </Button>
               )}
-              {project.source && (
+              {sourceHref && (
                 <Button
                   size="sm"
                   variant={
-                    project.visit && project.visit !== project.source ? 'outline' : 'default'
+                    visitHref && sourceHref && visitHref !== sourceHref ? 'outline' : 'default'
                   }
                   className="gap-2"
                   asChild
                 >
-                  <a href={project.source} target="_blank" rel="noopener noreferrer">
+                  <a href={sourceHref} target="_blank" rel="noopener noreferrer">
                     <Github className="h-4 w-4" />
-                    {project.visit === project.source ? 'View Source' : 'Code'}
+                    {visitHref && visitHref === sourceHref ? 'View Source' : 'Code'}
                   </a>
                 </Button>
               )}
