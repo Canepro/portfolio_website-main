@@ -1,0 +1,21 @@
+---
+title: "GitOps Notes: The Parts That Actually Matter"
+date: "2026-02-07"
+description: "A practical mental model for GitOps beyond the buzzwords."
+tags: ["gitops", "argocd", "kubernetes"]
+---
+
+GitOps is less about tools and more about **control loops**.
+
+## The Mental Model
+
+1. Desired state lives in Git.
+2. A reconciler (like Argo CD) continuously compares desired vs actual.
+3. Drift becomes visible and correctable.
+
+## Practical Checklist
+
+- Keep "platform" and "apps" separate (different repos or at least different paths).
+- Make rollbacks boring (one commit, one sync).
+- Treat access like production: auth, audit, and least privilege.
+

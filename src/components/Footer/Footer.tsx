@@ -55,6 +55,9 @@ const Footer: React.FC<FooterProps> = () => (
           <Button variant="ghost" size="sm" className="justify-start px-2" asChild>
             <Link href="/contact">Contact</Link>
           </Button>
+          <Button variant="ghost" size="sm" className="justify-start px-2" asChild>
+            <Link href="/blog">Blog</Link>
+          </Button>
         </div>
       </LinkColumn>
     </LinkList>

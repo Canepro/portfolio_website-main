@@ -1,6 +1,7 @@
 /* Global CSS Variables for Theming */
 :root {
   /* Dark theme (default) */
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
   --color-bg-primary: #0F1624;
   --color-bg-secondary: #212D45;
   --color-text-primary: #FFFFFF;

@@ -1,14 +1,30 @@
 // src/pages/sitemap.xml.js
 
 const EXTERNAL_DATA_URL = 'https://portfolio.canepro.me';
+const fs = require('fs');
+const path = require('path');
 
-function generateSiteMap(projects = []) {
+function getBlogSlugs() {
+  try {
+    const dir = path.join(process.cwd(), 'content', 'blog');
+    if (!fs.existsSync(dir)) return [];
+    return fs
+      .readdirSync(dir)
+      .filter(f => f.endsWith('.mdx'))
+      .map(f => f.replace(/\.mdx$/, ''));
+  } catch {
+    return [];
+  }
+}
+
+function generateSiteMap(projects = [], blogSlugs = []) {
   const now = new Date().toISOString();
 
   const staticUrls = [
     { loc: `${EXTERNAL_DATA_URL}`, priority: '1.0' },
     { loc: `${EXTERNAL_DATA_URL}/projects`, priority: '0.8' },
     { loc: `${EXTERNAL_DATA_URL}/contact`, priority: '0.6' },
+    { loc: `${EXTERNAL_DATA_URL}/blog`, priority: '0.7' },
   ];
 
   const projectUrls = projects.map(p => ({
@@ -16,7 +32,12 @@ function generateSiteMap(projects = []) {
     priority: '0.7',
   }));
 
-  const allUrls = [...staticUrls, ...projectUrls]
+  const blogUrls = blogSlugs.map(slug => ({
+    loc: `${EXTERNAL_DATA_URL}/blog/${slug}`,
+    priority: '0.6',
+  }));
+
+  const allUrls = [...staticUrls, ...projectUrls, ...blogUrls]
     .map(
       ({ loc, priority }) => `
      <url>
@@ -41,7 +62,8 @@ function SiteMap() {
 export async function getServerSideProps({ res }) {
   // Dynamically import projects for sitemap generation
   const { projects } = await import('../constants/constants');
-  const sitemap = generateSiteMap(projects);
+  const blogSlugs = getBlogSlugs();
+  const sitemap = generateSiteMap(projects, blogSlugs);
 
   res.setHeader('Content-Type', 'text/xml');
   // We send the XML to the browser

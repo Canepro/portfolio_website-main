@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import React, { useState, useCallback, useEffect } from 'react';
 import { AiFillGithub, AiFillInstagram, AiFillLinkedin, AiFillTwitterCircle } from 'react-icons/ai';
@@ -74,6 +76,11 @@ const Header: React.FC<HeaderProps> = () => {
         <li>
           <Link href="/contact" passHref legacyBehavior>
             <NavLink onClick={closeMenu}>Contact</NavLink>
+          </Link>
+        </li>
+        <li>
+          <Link href="/blog" passHref legacyBehavior>
+            <NavLink onClick={closeMenu}>Blog</NavLink>
           </Link>
         </li>
         <li>
@@ -155,6 +162,11 @@ const Header: React.FC<HeaderProps> = () => {
             <MobileMenuItem>
               <Link href="/contact" passHref legacyBehavior>
                 <MobileNavLink onClick={closeMenu}>Contact</MobileNavLink>
+              </Link>
+            </MobileMenuItem>
+            <MobileMenuItem>
+              <Link href="/blog" passHref legacyBehavior>
+                <MobileNavLink onClick={closeMenu}>Blog</MobileNavLink>
               </Link>
             </MobileMenuItem>
             <MobileMenuItem>

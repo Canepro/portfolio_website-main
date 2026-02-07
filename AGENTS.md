@@ -14,7 +14,8 @@ This repository is a Next.js (Pages Router) portfolio site built with TypeScript
 
 ## Project Layout
 
-- Pages (routing): `src/pages`
+- Pages Router (legacy routing): `src/pages`
+- App Router (new routing): `src/app` (currently used for `/blog`)
 - API routes: `src/pages/api`
 - UI/components: `src/components`
 - Site-wide constants/content: `src/constants/constants.ts`
@@ -44,8 +45,8 @@ The codebase currently uses both `styled-components` and Tailwind utilities.
 
 If adding a blog section, keep it static-first:
 
-- Store posts in-repo (recommended): `content/blog/*.md` (or `*.mdx`) with frontmatter.
-- Generate `/blog` index + `/blog/[slug]` pages via `getStaticProps`/`getStaticPaths`.
+- Store posts in-repo: `content/blog/*.mdx` with frontmatter.
+- Generate `/blog` + `/blog/[slug]` via App Router (`generateStaticParams`, `generateMetadata`).
 - Keep the authoring workflow simple (no CMS required unless requested).
 
 ## Definition Of Done (For Any Change)

@@ -28,8 +28,10 @@ export interface Theme {
 const theme: Theme = {
   // Temp fonts
   fonts: {
-    title: 'Space Grotesk, sans-serif',
-    main: 'Space Grotesk, sans-serif',
+    // In App Router we set --font-space-grotesk via next/font; in Pages Router this falls back to the
+    // Google Fonts-loaded family name.
+    title: 'var(--font-space-grotesk)',
+    main: 'var(--font-space-grotesk)',
   },
   // Colors now use CSS variables that change with theme
   colors: {

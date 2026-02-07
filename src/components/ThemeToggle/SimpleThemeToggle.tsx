@@ -1,5 +1,7 @@
 // src/components/ThemeToggle/SimpleThemeToggle.tsx
 
+'use client';
+
 import React, { useEffect, useState } from 'react';
 
 const SimpleThemeToggle: React.FC = () => {
