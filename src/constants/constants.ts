@@ -193,14 +193,24 @@ export const projectCategories: Array<{ value: ProjectCategoryValue; label: stri
 ];
 
 export const TimeLineData: Array<{ year: number; text: string }> = [
-  { year: 2015, text: 'Started my career in IT technical support.' },
-  { year: 2019, text: 'Advanced to a Tier 2 Technical Support Engineer role.' },
-  { year: 2020, text: 'Promoted to Technical Lead, managing and mentoring teams.' },
-  { year: 2021, text: 'Began my professional journey into DevOps and cloud engineering.' },
-  { year: 2022, text: 'Expanded my expertise into Front-End Development with React.' },
-  { year: 2023, text: 'Deepened my skills in cloud-native technologies and automation.' },
-  { year: 2024, text: 'Focused on container orchestration with Kubernetes and advanced IaC.' },
-  { year: 2025, text: 'Currently expanding my skills in AI-driven DevOps and security.' },
+  { year: 2011, text: 'IT Manager and ICT Trainer (education environment).' },
+  { year: 2015, text: 'IT Operations Engineer, focused on monitoring, stability, and runbooks.' },
+  {
+    year: 2019,
+    text: 'Cloud Engineer supporting Azure infrastructure, Azure AD, and Microsoft 365.',
+  },
+  {
+    year: 2020,
+    text: 'Technical Lead for Cloud Engineering with a reliability and automation focus.',
+  },
+  {
+    year: 2022,
+    text: 'Senior Tech Analyst supporting Kubernetes/Docker deployments on Azure and AWS.',
+  },
+  {
+    year: 2024,
+    text: 'Microsoft Engineer owning identity and access escalations across Entra ID and M365.',
+  },
 ];
 
 export interface Certification {
@@ -212,39 +222,27 @@ export interface Certification {
 
 export const certifications: Certification[] = [
   {
-    name: 'Microsoft Certified: DevOps Engineer Expert',
-    issuer: 'Microsoft',
-    date: 'Aug 2023',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'Microsoft Certified: Azure Administrator Associate',
-    issuer: 'Microsoft',
-    date: 'Dec 2022',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'AWS Certified Cloud Practitioner',
-    issuer: 'Amazon Web Services',
-    date: 'Nov 2021',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'ITIL 4 Foundation Certificate',
-    issuer: 'PeopleCert',
-    date: 'Apr 2025 (Expires)',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
     name: 'Microsoft Certified: Azure AI Fundamentals',
     issuer: 'Microsoft',
-    date: 'Dec 2021',
+    date: 'Issued (see LinkedIn)',
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
   {
-    name: 'freeCodeCamp: Responsive Web Design',
+    name: 'Microsoft Certified: Azure Fundamentals',
+    issuer: 'Microsoft',
+    date: 'Issued (see LinkedIn)',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'freeCodeCamp.org Responsive Web Design Certification',
     issuer: 'freeCodeCamp',
-    date: 'Feb 2022',
+    date: 'Issued (see LinkedIn)',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'ITIL 4 Foundation Certificate in IT Service Management',
+    issuer: 'PeopleCert',
+    date: 'Issued (see LinkedIn)',
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
 ];

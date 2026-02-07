@@ -1,31 +1,32 @@
 import Link from 'next/link';
 
 import HeroVisual from '@/app/home/HeroVisual';
+import { experience } from '@/content/experience';
+import { profile } from '@/content/profile';
 import { skillGroups } from '@/content/skills';
 import { getAllBlogPostsMeta } from '@/lib/blog';
-import { projects } from '@/constants/constants';
+import { certifications, projects } from '@/constants/constants';
 
 export const dynamic = 'force-static';
 
 export default function HomePage() {
   const posts = getAllBlogPostsMeta().slice(0, 2);
   const featured = projects.filter(p => p.featured).slice(0, 3);
+  const featuredCerts = certifications.slice(0, 4);
 
   return (
     <div className="px-6 py-10 md:px-10">
       <section className="mx-auto max-w-6xl">
         <div className="grid gap-10 md:grid-cols-2 md:items-center">
           <div>
-            <p className="text-sm font-medium tracking-wide text-white/70">
-              DevOps, Cloud, and Frontend Engineering
-            </p>
+            <p className="text-sm font-medium tracking-wide text-white/70">{profile.headline}</p>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight md:text-6xl">
-              Vincent Mogah
+              {profile.name}
             </h1>
             <p className="mt-5 max-w-xl text-[color:var(--color-text-secondary)] leading-7">
               I build and operate systems that are easy to ship, observable in production, and
-              boring to run. This portfolio is structured around outcomes: GitOps, Kubernetes ops,
-              and practical frontend craftsmanship.
+              boring to run. My work spans identity and access reliability (Entra ID / Microsoft
+              365), GitOps-driven Kubernetes operations, and pragmatic automation.
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
@@ -60,12 +61,67 @@ export default function HomePage() {
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                 <div className="text-xs text-white/60">Also</div>
-                <div className="mt-2 text-sm font-semibold">Frontend</div>
+                <div className="mt-2 text-sm font-semibold">Identity</div>
               </div>
             </div>
           </div>
 
           <HeroVisual />
+        </div>
+      </section>
+
+      <section className="mx-auto mt-16 max-w-6xl">
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+            <h2 className="text-3xl font-semibold tracking-tight">Summary</h2>
+            <div className="mt-4 space-y-3 text-[color:var(--color-text-secondary)] leading-7">
+              {profile.summary.map(p => (
+                <p key={p}>{p}</p>
+              ))}
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={profile.links.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-white/85 hover:bg-white/[0.06]"
+              >
+                GitHub
+              </a>
+              <a
+                href={profile.links.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-white/85 hover:bg-white/[0.06]"
+              >
+                LinkedIn
+              </a>
+              <span className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm text-white/70">
+                {profile.location}
+              </span>
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+            <h2 className="text-3xl font-semibold tracking-tight">Certifications</h2>
+            <p className="mt-3 text-[color:var(--color-text-secondary)] leading-7">
+              Selected licenses and certifications (details link on LinkedIn).
+            </p>
+            <div className="mt-6 space-y-3">
+              {featuredCerts.map(c => (
+                <a
+                  key={c.name}
+                  href={c.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block rounded-2xl border border-white/10 bg-black/20 p-4 hover:bg-white/[0.06]"
+                >
+                  <div className="text-sm font-semibold">{c.name}</div>
+                  <div className="mt-1 text-xs text-white/65">{c.issuer}</div>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -111,6 +167,65 @@ export default function HomePage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="mx-auto mt-16 max-w-6xl">
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <h2 className="text-3xl font-semibold tracking-tight">Experience</h2>
+            <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
+              A reliability-first track record across identity platforms and cloud-native
+              operations.
+            </p>
+          </div>
+          <a
+            href={profile.links.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden text-sm text-white/70 underline underline-offset-4 hover:text-white md:block"
+          >
+            Full history on LinkedIn
+          </a>
+        </div>
+
+        <div className="mt-10 grid gap-4 md:grid-cols-2">
+          {experience.slice(0, 4).map(item => (
+            <article
+              key={`${item.company}-${item.role}-${item.start}`}
+              className="rounded-3xl border border-white/10 bg-white/5 p-6 hover:bg-white/[0.07] transition-colors"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <div className="text-xs text-white/60">{item.company}</div>
+                  <h3 className="mt-1 text-lg font-semibold tracking-tight">{item.role}</h3>
+                </div>
+                <div className="text-xs text-white/60">
+                  {item.start}
+                  {item.end ? ` → ${item.end}` : ' → Present'}
+                </div>
+              </div>
+              {item.location ? (
+                <div className="mt-2 text-xs text-white/60">{item.location}</div>
+              ) : null}
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-[color:var(--color-text-secondary)]">
+                {item.highlights.map(h => (
+                  <li key={h}>{h}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-8 md:hidden">
+          <a
+            href={profile.links.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block text-sm text-white/70 underline underline-offset-4 hover:text-white"
+          >
+            Full history on LinkedIn
+          </a>
         </div>
       </section>
 

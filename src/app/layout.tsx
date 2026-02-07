@@ -3,6 +3,7 @@ import Script from 'next/script';
 import { Space_Grotesk } from 'next/font/google';
 
 import AppShell from '@/app/shared/AppShell';
+import { profile } from '@/content/profile';
 
 import '@/styles/GlobalStyles.css';
 import '@/styles/globals.css';
@@ -16,10 +17,11 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Vincent Mogah',
-    template: '%s | Vincent Mogah',
+    default: profile.name,
+    template: `%s | ${profile.name}`,
   },
-  description: 'Portfolio of Vincent Mogah: DevOps, Cloud, and Frontend engineering.',
+  description:
+    'Portfolio of Vincent Mogah: Azure infrastructure, DevOps and GitOps, identity reliability (Entra ID / Microsoft 365), and observability.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
