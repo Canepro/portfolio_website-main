@@ -40,6 +40,18 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
+    title: 'Delivery + CI/CD',
+    description: 'Pipelines, quality gates, and release hygiene that keep shipping boring.',
+    skills: [
+      { name: 'Jenkins (Multibranch Pipelines)' },
+      { name: 'GitHub Actions' },
+      { name: 'Azure Pipelines' },
+      { name: 'Docker' },
+      { name: 'Artifact promotion' },
+      { name: 'Static analysis + security gates' },
+    ],
+  },
+  {
     title: 'Observability',
     description: 'Metrics, logs, traces, and practical dashboards that answer questions fast.',
     skills: [

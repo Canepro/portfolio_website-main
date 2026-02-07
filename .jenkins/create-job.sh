@@ -6,8 +6,8 @@
 set -euo pipefail
 
 # Configuration
-JENKINS_URL="${JENKINS_URL:-https://jenkins.canepro.me}"
-JOB_NAME="${JOB_NAME:-rocketchat-k8s}"
+JENKINS_URL="${JENKINS_URL:-}"
+JOB_NAME="${JOB_NAME:-portfolio_website-main}"
 CONFIG_FILE="${CONFIG_FILE:-.jenkins/job-config.xml}"
 JENKINS_USER="${JENKINS_USER:-}"
 
@@ -20,6 +20,11 @@ cleanup() {
 trap cleanup EXIT
 
 # Get Jenkins credentials from Kubernetes secret (unless provided via env)
+if [ -z "${JENKINS_URL}" ]; then
+  echo "Missing JENKINS_URL. Example: export JENKINS_URL=\"https://your-jenkins.example.com\""
+  exit 1
+fi
+
 echo "Getting Jenkins admin credentials from Kubernetes secret..."
 if [ -z "${JENKINS_USER}" ]; then
   JENKINS_USER=$(kubectl get secret jenkins-admin -n jenkins -o jsonpath='{.data.username}' 2>/dev/null | base64 -d || true)

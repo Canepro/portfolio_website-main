@@ -26,7 +26,7 @@ spec:
           cpu: "1000m"
           memory: "2Gi"
     - name: node
-      image: node:20-bullseye
+      image: node:22-bullseye
       command: ["cat"]
       tty: true
       resources:
@@ -43,8 +43,8 @@ spec:
   // Environment variables for tool versions
   // These match the project's package.json requirements
   environment {
-    NODE_VERSION = '20'      // Node.js version (required by Next.js)
-    BUN_VERSION = '1.3.5'    // Bun version (package manager and runtime)
+    NODE_VERSION = '22'      // Node.js version (matches local dev)
+    BUN_VERSION = 'latest'   // Bun version (installed via official installer)
   }
 
   stages {
@@ -77,7 +77,7 @@ spec:
         sh '''
           export PATH="$HOME/.bun/bin:$PATH"
           # Install project dependencies (Next.js, TypeScript, ESLint, etc.)
-          bun install
+          bun install --frozen-lockfile
         '''
       }
     }

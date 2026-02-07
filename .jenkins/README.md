@@ -13,7 +13,7 @@ See the Jenkinsfiles in this directory for available validation pipelines.
 ```bash
 # From this repository directory
 cd portfolio_website-main
-export JENKINS_URL="https://jenkins.canepro.me"
+export JENKINS_URL="https://your-jenkins.example.com"
 export JOB_NAME="portfolio_website-main"
 export CONFIG_FILE=".jenkins/job-config.xml"
 bash .jenkins/create-job.sh
@@ -26,13 +26,13 @@ bash .jenkins/create-job.sh
 3. Enter job name: `portfolio_website-main`
 4. Select "Multibranch Pipeline"
 5. Configure GitHub branch source
-6. Set Script Path to the appropriate Jenkinsfile (e.g., `.jenkins/terraform-validation.Jenkinsfile`)
+6. Set Script Path to `Jenkinsfile` (repo root, recommended) or one of the `.jenkins/*.Jenkinsfile` pipelines
 
 ## GitHub Webhook
 
 Configure webhook in repository settings:
 
-- **URL**: `https://jenkins.canepro.me/github-webhook/`
+- **URL**: `https://your-jenkins.example.com/github-webhook/`
 - **Events**: Pull requests, Pushes
 - **Content type**: `application/json`
 
