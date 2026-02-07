@@ -1,7 +1,7 @@
 #!/bin/bash
 # Test script to verify Jenkins authentication and CSRF token
 
-JENKINS_URL="${JENKINS_URL:-}"
+JENKINS_URL="${JENKINS_URL:-https://jenkins.canepro.me}"
 JENKINS_USER="${JENKINS_USER:-admin}"
 
 # Get password
@@ -17,11 +17,6 @@ fi
 
 echo "Testing authentication..."
 echo "================================"
-
-if [ -z "${JENKINS_URL}" ]; then
-  echo "Missing JENKINS_URL. Example: export JENKINS_URL=\"https://your-jenkins.example.com\""
-  exit 1
-fi
 
 # Test 1: Basic auth
 echo "1. Testing basic authentication..."

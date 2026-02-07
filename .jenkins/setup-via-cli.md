@@ -13,7 +13,7 @@ If the Jenkins UI is not working for you, you can create Multibranch Pipeline jo
 
 ```bash
 # Set Jenkins URL and credentials
-export JENKINS_URL="https://your-jenkins.example.com"
+export JENKINS_URL="https://jenkins.canepro.me"
 export JENKINS_USER="$(kubectl get secret jenkins-admin -n jenkins -o jsonpath='{.data.username}' | base64 -d)"
 export JENKINS_PASSWORD="$(kubectl get secret jenkins-admin -n jenkins -o jsonpath='{.data.password}' | base64 -d)"
 
@@ -64,14 +64,14 @@ curl -X POST \
 
 ### Get API Token First
 
-1. Login to Jenkins UI: `https://your-jenkins.example.com`
+1. Login to Jenkins UI: `https://jenkins.canepro.me`
 2. **Manage Jenkins** → **Users** → **admin** → **Configure**
 3. **API Token** section → **Add new token** → Copy the token
 
 ### Create Job with API Token
 
 ```bash
-export JENKINS_URL="https://your-jenkins.example.com"
+export JENKINS_URL="https://jenkins.canepro.me"
 export JENKINS_USER="admin"
 export JENKINS_API_TOKEN="your-api-token-here"
 
@@ -149,7 +149,7 @@ kubectl get secret jenkins-admin -n jenkins -o jsonpath='{.data.password}' | bas
 # Create job via CLI inside pod
 kubectl exec -n jenkins jenkins-0 -c jenkins -- \
   java -jar /usr/share/jenkins/jenkins.war \
-  -s https://your-jenkins.example.com \
+  -s https://jenkins.canepro.me \
   -auth admin:PASSWORD \
   create-job portfolio_website-main < .jenkins/job-config.xml
 ```
@@ -165,7 +165,7 @@ Save this as `setup-jenkins-job.sh`:
 set -e
 
 # Configuration
-JENKINS_URL="${JENKINS_URL:-https://your-jenkins.example.com}"
+JENKINS_URL="${JENKINS_URL:-https://jenkins.canepro.me}"
 JOB_NAME="${JOB_NAME:-portfolio_website-main}"
 CONFIG_FILE="${CONFIG_FILE:-.jenkins/job-config.xml}"
 

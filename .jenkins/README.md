@@ -13,7 +13,7 @@ See the Jenkinsfiles in this directory for available validation pipelines.
 ```bash
 # From this repository directory
 cd portfolio_website-main
-export JENKINS_URL="https://your-jenkins.example.com"
+export JENKINS_URL="https://jenkins.canepro.me"
 export JOB_NAME="portfolio_website-main"
 export CONFIG_FILE=".jenkins/job-config.xml"
 bash .jenkins/create-job.sh
@@ -32,7 +32,7 @@ bash .jenkins/create-job.sh
 
 Configure webhook in repository settings:
 
-- **URL**: `https://your-jenkins.example.com/github-webhook/`
+- **URL**: `https://jenkins.canepro.me/github-webhook/`
 - **Events**: Pull requests, Pushes
 - **Content type**: `application/json`
 
@@ -43,3 +43,7 @@ See [JENKINS_STRATEGY.md](../../rocketchat-k8s/JENKINS_STRATEGY.md) in the `rock
 - Understanding what Jenkins does
 - How to maximize Jenkins across repos
 - Best practices
+
+## Notes (OKE)
+
+Jenkins is deployed on OKE, and the recommended pipeline (`Jenkinsfile`) uses a Kubernetes agent. Ensure the Jenkins Kubernetes plugin is configured (cloud, namespace, and permissions) so it can start the `node-build` pod template used by the pipeline.
