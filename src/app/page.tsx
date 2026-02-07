@@ -25,7 +25,7 @@ export default function HomePage() {
   return (
     <div className="px-6 py-10 md:px-10">
       <section className="mx-auto max-w-6xl">
-        <div className="grid gap-10 md:grid-cols-2 md:items-center">
+        <div className="grid gap-10 md:grid-cols-2 md:items-stretch">
           <div>
             <p className="text-sm font-medium tracking-wide text-white/70">{profile.headline}</p>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight md:text-6xl">

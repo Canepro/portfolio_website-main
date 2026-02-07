@@ -17,7 +17,8 @@ function Node({
   return (
     <div
       className={[
-        'relative rounded-2xl border px-3 py-2 shadow-sm backdrop-blur',
+        // min-w-0 is critical: CSS grid items default to min-width:auto and can overflow/clipped.
+        'relative min-w-0 rounded-2xl border px-3 py-2 shadow-sm backdrop-blur',
         accent
           ? 'border-white/15 bg-white/[0.07]'
           : 'border-white/10 bg-black/20 hover:bg-white/[0.06]',
@@ -40,7 +41,7 @@ export default function HeroVisual() {
   return (
     <div
       data-hero-visual
-      className="relative h-[240px] w-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] md:h-[340px]"
+      className="relative h-[240px] w-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] md:h-full md:min-h-[440px]"
     >
       <div className="pointer-events-none absolute inset-0 [background:radial-gradient(circle_at_30%_20%,rgba(0,219,216,0.18),transparent_60%),radial-gradient(circle_at_75%_55%,rgba(255,255,255,0.05),transparent_65%),radial-gradient(circle_at_50%_110%,rgba(0,219,216,0.06),transparent_70%)]" />
 
@@ -72,9 +73,9 @@ export default function HeroVisual() {
 
         <div className="mt-4 flex-1">
           <div className="hidden h-full items-center md:flex">
-            <div className="relative grid w-full grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-3">
+            <div className="relative grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
               <Node label="GitHub" sub="main + PRs" icon={<GitBranch className="h-4 w-4" />} />
-              <div className="flex items-center justify-center text-white/35">
+              <div className="flex shrink-0 items-center justify-center text-white/35">
                 <ArrowRight className="h-4 w-4" />
               </div>
               <Node
@@ -83,7 +84,7 @@ export default function HeroVisual() {
                 icon={<Waypoints className="h-4 w-4" />}
                 accent
               />
-              <div className="flex items-center justify-center text-white/35">
+              <div className="flex shrink-0 items-center justify-center text-white/35">
                 <ArrowRight className="h-4 w-4" />
               </div>
               <Node
@@ -98,7 +99,7 @@ export default function HeroVisual() {
                   sub="Rocket.Chat + metrics → hub"
                   icon={<Boxes className="h-4 w-4" />}
                 />
-                <div className="flex flex-col items-center justify-center text-white/35">
+                <div className="flex shrink-0 flex-col items-center justify-center text-white/35">
                   <ArrowRight className="h-4 w-4" />
                   <div className="mt-1 text-[10px] font-mono text-white/45">OTLP</div>
                 </div>
