@@ -15,19 +15,19 @@ spec:
       imagePullPolicy: Always
       resources:
         requests:
-          cpu: "100m"
-          memory: "256Mi"
+          cpu: "25m"
+          memory: "128Mi"
         limits:
-          cpu: "1000m"
-          memory: "2Gi"
+          cpu: "500m"
+          memory: "512Mi"
     - name: node
       image: docker.io/library/node:22-bullseye
       command: ["cat"]
       tty: true
       resources:
         requests:
-          cpu: "200m"
-          memory: "512Mi"
+          cpu: "50m"
+          memory: "256Mi"
         limits:
           cpu: "1000m"
           memory: "2Gi"
@@ -37,19 +37,19 @@ spec:
       tty: true
       resources:
         requests:
-          cpu: "25m"
-          memory: "64Mi"
+          cpu: "5m"
+          memory: "32Mi"
         limits:
           cpu: "200m"
-          memory: "256Mi"
+          memory: "128Mi"
     - name: kaniko
       image: gcr.io/kaniko-project/executor:v1.23.2-debug
       command: ["/busybox/cat"]
       tty: true
       resources:
         requests:
-          cpu: "200m"
-          memory: "512Mi"
+          cpu: "50m"
+          memory: "256Mi"
         limits:
           cpu: "1500m"
           memory: "3Gi"
