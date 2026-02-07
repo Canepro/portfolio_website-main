@@ -15,9 +15,8 @@ const SimpleThemeToggle: React.FC = () => {
     // - Legacy CSS variables: `html.light-theme`
     const root = document.documentElement;
     const savedTheme = localStorage.getItem('theme'); // 'dark' | 'light' | null
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    const shouldUseDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+    // Dark-first: if the user hasn't chosen, default to dark.
+    const shouldUseDark = savedTheme ? savedTheme === 'dark' : true;
     root.classList.toggle('dark', shouldUseDark);
     root.classList.toggle('light-theme', !shouldUseDark);
     setIsDark(shouldUseDark);
