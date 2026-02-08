@@ -89,6 +89,15 @@ tags: ['optional', 'array', 'of', 'strings']
 - Keep posts scannable: use headings to break up sections, bold for key phrases, and lists for enumerations. Recruiters skim.
 - Avoid walls of text. If a section has more than three consecutive paragraphs without a heading, list, or code block, break it up.
 
+### MDX + GFM Plugin Versioning
+
+The codebase intentionally uses two different GFM plugin versions:
+
+- `remark-gfm` (v3) is used with `react-markdown` in a few legacy/Markdown-rendered pages.
+- `remark-gfm-mdx` is an npm alias to `remark-gfm@^4` and is used for MDX compilation in `next-mdx-remote/rsc`.
+
+Reason: `next-mdx-remote` compiles MDX using `@mdx-js/mdx` (newer `mdast-util-from-markdown`), and `remark-gfm@3` is incompatible there and will throw `this.getData is not a function` at build time.
+
 ## Shipping / Branching
 
 - Netlify production deploys are tied to `main`.

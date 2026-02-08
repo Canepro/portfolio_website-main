@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import remarkGfm from 'remark-gfm';
+import remarkGfmMdx from 'remark-gfm-mdx';
 
 import { getBlogPostSource, getBlogSlugs } from '@/lib/blog';
 import { mdxComponents } from '@/app/blog/mdx-components';
@@ -73,7 +73,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <MDXRemote
             source={post.source}
             components={mdxComponents}
-            options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+            // `next-mdx-remote/rsc` uses @mdx-js/mdx (mdast-util-from-markdown v2+).
+            // Keep a compatible GFM plugin version for MDX, separate from react-markdown.
+            options={{ mdxOptions: { remarkPlugins: [remarkGfmMdx] } }}
           />
         </div>
       </div>
