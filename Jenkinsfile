@@ -176,9 +176,7 @@ spec:
               --dockerfile "$WORKSPACE/Dockerfile" \
               --destination "portfolio_website-main:ci" \
               --no-push \
-              --tarPath "$WORKSPACE/ci-image.tar" \
-              --cache=true \
-              --cache-dir=/kaniko/cache
+              --tarPath "$WORKSPACE/ci-image.tar"
 
             # Keep artifacts tidy: the image tar is only for validation.
             rm -f "$WORKSPACE/ci-image.tar" || true
