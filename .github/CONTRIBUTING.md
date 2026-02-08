@@ -59,7 +59,7 @@ bun run dev
 bun run build
 ```
 
-- **All 12 pages must generate successfully**
+- **All 18 pages must generate successfully**
 - Verify no console errors in dev
 - Ensure mobile and desktop layouts look good
 - Test that new TypeScript components work correctly

@@ -5,10 +5,16 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Github, ExternalLink, BarChart3 } from 'lucide-react';
 import ProjectMedia from '../ProjectMedia/ProjectMedia';
+import { safeExternalHref } from '@/lib/url';
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   const isGrafanaProject = project.slug === 'central-observability-hub-stack';
   const previewSrc = project.media || project.image;
+  const projectHref = `/projects/${encodeURIComponent(project.slug)}`;
+  const visitHref = safeExternalHref(project.visit);
+  const sourceHref = safeExternalHref(project.source);
+  const hasSeparateLiveDemo = Boolean(visitHref && sourceHref && visitHref !== sourceHref);
+  const showLiveDemo = Boolean(visitHref && (!sourceHref || visitHref !== sourceHref));
 
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -20,12 +26,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   };
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+    <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 text-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/[0.07] hover:shadow-lg">
       {/* Image Section */}
-      <Link
-        href={`/projects/${project.slug}`}
-        className="relative block aspect-video overflow-hidden"
-      >
+      <Link href={projectHref} className="relative block aspect-video overflow-hidden">
         <ProjectMedia
           src={previewSrc}
           alt={`${project.title} thumbnail`}
@@ -42,7 +45,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
           {project.featured && (
             <Badge
               variant="default"
-              className="bg-yellow-500 hover:bg-yellow-600 text-white border-none"
+              className="border-none bg-yellow-500 text-white hover:bg-yellow-600"
             >
               Featured
             </Badge>
@@ -57,28 +60,27 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
 
       {/* Content Section */}
       <div className="flex flex-1 flex-col p-5">
-        <Link href={`/projects/${project.slug}`} className="group/title">
-          <h3 className="mb-2 text-xl font-bold tracking-tight text-primary transition-colors group-hover/title:text-blue-600">
+        <Link href={projectHref} className="group/title">
+          <h3 className="mb-2 text-xl font-semibold tracking-tight text-white transition-colors group-hover/title:text-sky-400">
             {project.title}
           </h3>
         </Link>
 
-        <p className="mb-4 line-clamp-3 text-sm text-muted-foreground">{project.description}</p>
+        <p className="mb-4 line-clamp-3 text-sm text-[color:var(--color-text-secondary)]">
+          {project.description}
+        </p>
 
         {/* Tags */}
         <div className="mb-6 flex flex-wrap gap-2">
           {project.tags.slice(0, 4).map((tag, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center rounded-md bg-secondary/50 px-2 py-1 text-xs font-medium ring-1 ring-inset ring-gray-500/10"
-            >
+            <Badge key={i} variant="tech">
               {tag}
-            </span>
+            </Badge>
           ))}
           {project.tags.length > 4 && (
-            <span className="inline-flex items-center rounded-md bg-secondary/50 px-2 py-1 text-xs font-medium text-muted-foreground">
+            <Badge variant="tech" className="text-white/60">
               +{project.tags.length - 4}
-            </span>
+            </Badge>
           )}
         </div>
 
@@ -86,10 +88,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
         <div className="mt-auto flex flex-wrap gap-2 pt-2">
           {isGrafanaProject ? (
             <>
-              {project.visit && (
-                <Button size="sm" className="gap-2 w-full sm:w-auto" asChild>
+              {visitHref && (
+                <Button variant="accent" size="sm" className="w-full gap-2 sm:w-auto" asChild>
                   <a
-                    href={project.visit}
+                    href={visitHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={handleDashboardClick}
@@ -98,9 +100,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
                   </a>
                 </Button>
               )}
-              {project.source && (
-                <Button size="sm" variant="outline" className="gap-2 w-full sm:w-auto" asChild>
-                  <a href={project.source} target="_blank" rel="noopener noreferrer">
+              {sourceHref && (
+                <Button variant="glass" size="sm" className="w-full gap-2 sm:w-auto" asChild>
+                  <a href={sourceHref} target="_blank" rel="noopener noreferrer">
                     <Github className="h-4 w-4" /> Code
                   </a>
                 </Button>
@@ -108,25 +110,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
             </>
           ) : (
             <>
-              {project.visit && project.visit !== project.source && (
-                <Button size="sm" className="gap-2" asChild>
-                  <a href={project.visit} target="_blank" rel="noopener noreferrer">
+              {showLiveDemo && visitHref && (
+                <Button variant="accent" size="sm" className="w-full gap-2 sm:w-auto" asChild>
+                  <a href={visitHref} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-4 w-4" /> Live Demo
                   </a>
                 </Button>
               )}
-              {project.source && (
+              {sourceHref && (
                 <Button
+                  variant={showLiveDemo ? 'glass' : 'accent'}
                   size="sm"
-                  variant={
-                    project.visit && project.visit !== project.source ? 'outline' : 'default'
-                  }
-                  className="gap-2"
+                  className="w-full gap-2 sm:w-auto"
                   asChild
                 >
-                  <a href={project.source} target="_blank" rel="noopener noreferrer">
+                  <a href={sourceHref} target="_blank" rel="noopener noreferrer">
                     <Github className="h-4 w-4" />
-                    {project.visit === project.source ? 'View Source' : 'Code'}
+                    {visitHref && visitHref === sourceHref ? 'View Source' : 'Code'}
                   </a>
                 </Button>
               )}

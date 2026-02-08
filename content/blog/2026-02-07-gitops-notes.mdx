@@ -1,0 +1,45 @@
+---
+title: "GitOps Notes: The Parts That Actually Matter"
+date: "2026-02-07"
+description: "A practical mental model for GitOps beyond the buzzwords — drawn from running ArgoCD across OCI and Azure."
+tags: ["gitops", "argocd", "kubernetes", "ci-cd"]
+---
+
+GitOps is less about tools and more about **control loops**. After running ArgoCD across two clusters — an [OKE hub on OCI](/projects/hybrid-cloud-gitops-control-plane) and an [AKS spoke on Azure](/projects/rocketchat-kubernetes-enterprise) — these are the patterns that actually held up.
+
+## The Mental Model
+
+1. **Desired state lives in Git.** Every Helm values file, every Kustomize overlay, every namespace definition. If it is not in the repo, it does not exist.
+2. **A reconciler continuously compares desired vs actual.** ArgoCD watches the repo and diffs against the live cluster. This is where drift becomes visible.
+3. **Drift is correctable, not catastrophic.** A misconfigured resource is not a crisis — it is a PR away from being fixed.
+
+The key insight: GitOps is not "infrastructure as code." It is *infrastructure as a feedback loop*. The value is not in storing YAML in Git; it is in the reconciler closing the gap automatically.
+
+## What This Looks Like in Practice
+
+On the [Hybrid Cloud GitOps Control Plane](/projects/hybrid-cloud-gitops-control-plane), the separation looks like this:
+
+- **Hub cluster (OKE)** — runs ArgoCD, the LGTM observability stack, and platform services. Terraform provisions the infrastructure; ArgoCD manages everything above the node level.
+- **Spoke cluster (AKS/K3s)** — runs application workloads like Rocket.Chat. ArgoCD on the hub syncs manifests to the spoke via cluster secrets.
+- **CI pipeline (Jenkins)** — validates changes *before* they reach Git. Lint, typecheck, build, Dockerfile lint, container build — all without pushing images on PRs. ArgoCD only sees commits that already passed CI.
+
+This means a deployment is: merge a PR, ArgoCD syncs, done. A rollback is: revert the PR, ArgoCD syncs, done.
+
+## Practical Checklist
+
+- **Separate platform from apps.** Different repos or at minimum different directory trees. The [observability hub](/projects/central-observability-hub-stack) and [Rocket.Chat deployment](/projects/rocketchat-kubernetes-enterprise) live in separate repos for a reason — different change cadences, different blast radii.
+- **Make rollbacks boring.** One revert commit, one sync. If rolling back requires manual steps, your GitOps setup is incomplete.
+- **Pin everything.** Image tags, Helm chart versions, Terraform provider versions. `latest` is not a version — it is a prayer.
+- **Treat repo access like production access.** Branch protection, required reviews, signed commits if you can. The Git repo *is* your control plane.
+- **Validate before merge, not after.** CI should catch misconfigurations before ArgoCD ever sees them. This is why the Jenkins pipeline runs hadolint and a full container build on every PR.
+- **Monitor the reconciler, not just the workloads.** If ArgoCD is unhealthy, you have lost your feedback loop. The [observability stack](/projects/central-observability-hub-stack) watches ArgoCD sync status alongside application metrics.
+
+## The Anti-Patterns
+
+1. **"We do GitOps" but deployments still require `kubectl apply`.** If a human is running commands against the cluster, it is not GitOps — it is Git-adjacent.
+2. **One giant mono-repo for everything.** Works for small teams, breaks when platform and app teams have different review cycles.
+3. **Skipping the CI gate.** ArgoCD will happily sync broken manifests. The reconciler does not validate — it applies.
+
+## Takeaway
+
+GitOps is a control loop: **commit, reconcile, observe, repeat**. Everything else is implementation detail. Pick tools that make the loop fast and the drift visible.

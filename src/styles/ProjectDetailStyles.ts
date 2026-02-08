@@ -78,14 +78,16 @@ export const CategoryBadge = styled.span<CategoryBadgeProps>`
   padding: 8px 16px;
   background: ${props =>
     props.featured
-      ? 'linear-gradient(270deg, #F46737 0%, #945DD6 100%)'
+      ? 'linear-gradient(270deg, #F59E0B 0%, #0EA5E9 100%)'
       : props.category === 'DevOps'
-        ? 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)'
+        ? 'linear-gradient(270deg, #0EA5E9 0%, #38BDF8 100%)'
         : props.category === 'Cloud'
-          ? 'linear-gradient(270deg, #F46737 0%, #FFC837 100%)'
-          : props.category === 'Backend'
-            ? 'linear-gradient(270deg, #13ADC7 0%, #6978D1 100%)'
-            : 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)'};
+          ? 'linear-gradient(270deg, #F97316 0%, #F59E0B 100%)'
+          : props.category === 'Frontend'
+            ? 'linear-gradient(270deg, #22C55E 0%, #0EA5E9 100%)'
+            : props.category === 'Backend'
+              ? 'linear-gradient(270deg, #0284C7 0%, #6978D1 100%)'
+              : 'linear-gradient(270deg, #0EA5E9 0%, #38BDF8 100%)'};
   border-radius: 20px;
   font-size: 14px;
   font-weight: 600;
@@ -296,7 +298,7 @@ export const LinkButton = styled.a<LinkButtonProps>`
   align-items: center;
   padding: 12px 24px;
   background: ${props =>
-    props.primary ? 'linear-gradient(270deg, #00DBD8 0%, #B133FF 100%)' : 'transparent'};
+    props.primary ? 'linear-gradient(270deg, #0EA5E9 0%, #38BDF8 100%)' : 'transparent'};
   border: 2px solid ${props => (props.primary ? 'transparent' : 'rgba(255, 255, 255, 0.3)')};
   border-radius: 8px;
   color: white;
@@ -318,7 +320,7 @@ export const LinkButton = styled.a<LinkButtonProps>`
 `;
 
 export const ImpactBox = styled.div`
-  background: linear-gradient(135deg, rgba(0, 219, 216, 0.1) 0%, rgba(177, 51, 255, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(0, 219, 216, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
   border: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 24px;

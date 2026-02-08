@@ -8,6 +8,16 @@ This document is a lightweight, living roadmap for the portfolio website.
 - Improve **documentation clarity** (reduce duplication; keep one “source of truth” per topic).
 - Keep the repo clean: remove stale assets, keep root tidy, and avoid broken references.
 
+## Recently completed
+
+- **Frontend redesign pass** (PR #64, `redesign/portfolio-overhaul-2026`):
+  - Unified accent color to sky-500 (`#0EA5E9`); removed neon cyan haze.
+  - Added Badge `tech` variant; replaced ~30 inline badge spans with the primitive.
+  - Toned down AppShell/HeroVisual radial gradients.
+  - Cleaned up `GlobalStyles.css` (removed `* { transition }` antipattern, gradient scrollbar).
+  - Updated Card, Input focus rings, MDX link colors, contact form styles.
+  - Fixed Jenkins CI kaniko `PATH` issue for durable-task wrapper.
+
 ## Near-term enhancements
 
 - **Portfolio Metrics → Grafana**: continue tightening the “portfolio monitors itself” demo.

@@ -54,3 +54,10 @@ alloy_data/
 # Logs
 logs
 *.log
+
+# Local Python tooling (used for ad-hoc parsing, not part of the app)
+.venv/
+
+# Playwright CLI artifacts (local debugging only)
+.playwright-cli/
+output/playwright/

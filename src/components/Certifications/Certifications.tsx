@@ -14,7 +14,7 @@ const Certifications: React.FC = () => (
           <Box>
             <BoxTitle>{card.name}</BoxTitle>
             <BoxText>{card.issuer}</BoxText>
-            <BoxText>Issued {card.date}</BoxText>
+            <BoxText>{card.date}</BoxText>
           </Box>
         </BoxLink>
       ))}

@@ -65,8 +65,8 @@ const SEO: React.FC<ExtendedSEOProps> = ({
       <meta name="twitter:creator" content="@Canepro" />
 
       {/* Additional Meta Tags */}
-      <meta name="theme-color" content="#13ADC7" />
-      <meta name="msapplication-TileColor" content="#13ADC7" />
+      <meta name="theme-color" content="#0EA5E9" />
+      <meta name="msapplication-TileColor" content="#0EA5E9" />
 
       {/* Structured Data */}
       {structuredData && (

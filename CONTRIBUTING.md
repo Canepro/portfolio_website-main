@@ -28,7 +28,7 @@ We welcome various types of contributions:
 ### Prerequisites
 
 - Bun 1.3.5+ ([install Bun](https://bun.sh/docs/installation))
-- Node.js 18+ (recommended 20) - required for Next.js runtime
+- Node.js 20+ (recommended 22) - required for Next.js runtime
 - Git
 
 ### Local Development
@@ -84,7 +84,9 @@ const Button: React.FC<ButtonProps> = ({ variant, size = 'md', children, onClick
 };
 ```
 
-### Styled Components
+### Styled Components (Legacy)
+
+> **Note**: styled-components is a legacy layer in this codebase. For new components, prefer Tailwind utilities with shadcn-style primitives from `src/components/ui/*`.
 
 - **Type Safety**: Use TypeScript interfaces for styled component props
 - **Theme Integration**: Access theme values through props.theme
@@ -333,10 +335,11 @@ Screenshots, mockups, or examples
 
 ### Design Guidelines
 
-- **Color Scheme**: Use theme colors from CSS variables
-- **Typography**: Follow established font hierarchy
-- **Spacing**: Use consistent spacing patterns
-- **Animations**: Keep animations smooth and purposeful
+- **Color Scheme**: Use the sky-500 accent (`--color-accent`) consistently; do not introduce additional accent hues
+- **Typography**: IBM Plex Sans/Mono via `next/font`; follow the established type scale
+- **Spacing**: Use consistent Tailwind spacing patterns
+- **Animations**: Keep animations minimal, meaningful, and respect `prefers-reduced-motion`
+- **UI Primitives**: Use `src/components/ui/*` (Button, Badge, Card, Input) instead of hand-rolling markup
 
 ## 🔒 Security
 

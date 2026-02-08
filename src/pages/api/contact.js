@@ -34,6 +34,35 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 }
 
+function getTrustedBaseUrl() {
+  const candidates = [
+    // Netlify: deploy previews (preferred when available)
+    process.env.DEPLOY_PRIME_URL,
+    // Netlify: primary site URL
+    process.env.URL,
+    // Generic deploy configuration
+    process.env.SITE_URL,
+    process.env.NEXT_PUBLIC_SITE_URL,
+    // Legacy / auth-centric env used in some setups
+    process.env.NEXTAUTH_URL,
+    // Local fallback
+    'http://localhost:3000',
+  ].filter(Boolean);
+
+  for (const raw of candidates) {
+    try {
+      const url = new URL(String(raw));
+      // Only allow http(s) for internal callbacks.
+      if (url.protocol !== 'http:' && url.protocol !== 'https:') continue;
+      return url.origin;
+    } catch {
+      // Ignore invalid candidates.
+    }
+  }
+
+  return null;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -94,17 +123,17 @@ export default async function handler(req, res) {
 
     // Track successful contact form submission
     try {
-      await fetch(
-        `${req.headers.origin || process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/metrics`,
-        {
+      const base = getTrustedBaseUrl();
+      if (base) {
+        await fetch(new URL('/api/metrics', base), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             metric_type: 'contact_submission',
             metadata: { method: 'email', timestamp: Date.now() },
           }),
-        }
-      );
+        });
+      }
     } catch (analyticsError) {
       // Don't fail the contact form if analytics fails
       console.warn('Failed to track contact submission:', analyticsError);

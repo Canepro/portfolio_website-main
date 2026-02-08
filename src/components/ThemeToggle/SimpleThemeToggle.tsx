@@ -1,8 +1,18 @@
 // src/components/ThemeToggle/SimpleThemeToggle.tsx
 
-import React, { useEffect, useState } from 'react';
+'use client';
 
-const SimpleThemeToggle: React.FC = () => {
+import React, { useEffect, useState } from 'react';
+import { Moon, Sun } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+type SimpleThemeToggleProps = {
+  className?: string;
+};
+
+const SimpleThemeToggle: React.FC<SimpleThemeToggleProps> = ({ className }) => {
   const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(true);
 
@@ -12,9 +22,16 @@ const SimpleThemeToggle: React.FC = () => {
     // - Tailwind/shadcn: `html.dark`
     // - Legacy CSS variables: `html.light-theme`
     const root = document.documentElement;
-    const savedTheme = localStorage.getItem('theme'); // 'dark' | 'light' | null
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
+    let savedTheme: string | null = null;
+    try {
+      savedTheme = localStorage.getItem('theme'); // 'dark' | 'light' | null
+    } catch {
+      savedTheme = null;
+    }
+    const prefersDark =
+      typeof window !== 'undefined' &&
+      typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches;
     const shouldUseDark = savedTheme ? savedTheme === 'dark' : prefersDark;
     root.classList.toggle('dark', shouldUseDark);
     root.classList.toggle('light-theme', !shouldUseDark);
@@ -26,7 +43,11 @@ const SimpleThemeToggle: React.FC = () => {
     const root = document.documentElement;
     root.classList.toggle('dark', nextIsDark);
     root.classList.toggle('light-theme', !nextIsDark);
-    localStorage.setItem('theme', nextIsDark ? 'dark' : 'light');
+    try {
+      localStorage.setItem('theme', nextIsDark ? 'dark' : 'light');
+    } catch {
+      // Storage unavailable; best-effort only.
+    }
     setIsDark(nextIsDark);
   };
 
@@ -34,14 +55,17 @@ const SimpleThemeToggle: React.FC = () => {
   if (!mounted) return null;
 
   return (
-    <button
-      className="theme-toggle"
+    <Button
+      type="button"
+      variant="glass"
+      size="icon"
       onClick={toggleTheme}
-      aria-label="Toggle theme"
+      aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      className={cn('rounded-xl', className)}
     >
-      <span style={{ fontSize: 22, lineHeight: 1 }}>{isDark ? '☀️' : '🌙'}</span>
-    </button>
+      {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </Button>
   );
 };
 

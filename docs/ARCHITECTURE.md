@@ -4,7 +4,13 @@
 
 ## 🏗️ Overview
 
-This portfolio website follows a modern **Next.js Pages Router** architecture with a component-driven UI built using **styled-components** and fully migrated to **TypeScript**. The application prioritizes performance, accessibility, and developer experience.
+This portfolio is **App Router-first** (Next.js 14) with a small amount of **legacy Pages Router** still present for API routes. It prioritizes production-style engineering: performance, accessibility, deterministic CI, and clear, scannable content.
+
+Key product surfaces:
+
+- **Projects**: case studies + live endpoints where available
+- **Blog**: static-first MDX writing (`content/blog/*.mdx`)
+- **Systems**: a skimmable architecture map at `/systems` (OKE hub + AKS spoke + CI + telemetry)
 
 ## 🎯 Architecture Principles
 
@@ -23,52 +29,26 @@ portfolio_website-main/
 │   ├── images/               # Project images and screenshots
 │   ├── favicon.ico          # Site favicon
 │   └── robots.txt           # Search engine directives
+├── content/                   # Content files
+│   └── blog/                 # MDX posts
 ├── src/
-│   ├── components/          # React components (.tsx)
-│   │   ├── Hero/           # Hero section with animations
-│   │   ├── Projects/       # Project showcase and filtering
-│   │   ├── TimeLine/       # Career timeline with animations
-│   │   ├── Technologies/   # Skills and technology display
-│   │   ├── Accomplishments/# GitHub stats and achievements
-│   │   ├── Certifications/ # Professional certifications
-│   │   ├── Footer/         # Site footer with links
-│   │   ├── Header/         # Navigation and theme toggle
-│   │   ├── SEO/            # Meta tags and structured data
-│   │   ├── ui/             # Reusable UI primitives
-│   │   └── OptimizedImage/ # Next.js Image wrapper
-│   ├── constants/          # Data definitions (.ts)
-│   │   ├── constants.ts    # Core project data
-│   │   └── projectDetails.ts # Detailed project metadata
-│   ├── layout/            # Layout components
-│   │   └── Layout.tsx     # Main layout wrapper
-│   ├── pages/             # Next.js pages (.tsx)
-│   │   ├── _app.tsx       # App wrapper and providers
-│   │   ├── _document.tsx  # Document customization
-│   │   ├── index.tsx      # Homepage with ISR
-│   │   ├── contact.tsx    # Contact form page
-│   │   ├── projects/      # Project pages
-│   │   │   ├── index.tsx  # Projects listing
-│   │   │   └── [slug].tsx # Individual project pages
-│   │   ├── api/           # API routes
-│   │   │   └── contact.js # Contact form handler
-│   │   └── sitemap.xml.js # Dynamic sitemap
-│   ├── styles/            # Global styles and themes
-│   │   ├── globals.ts     # Global styled-components
-│   │   ├── theme.tsx      # Theme provider
-│   │   └── GlobalStyles.css # CSS variables and animations
-│   ├── themes/            # Theme configuration
-│   │   ├── default.ts     # Default theme values
-│   │   └── themes.ts      # Theme definitions
-│   ├── types/             # TypeScript definitions (.d.ts)
-│   │   ├── components.d.ts # Component prop interfaces
-│   │   ├── pages.d.ts     # Page component types
-│   │   ├── project.d.ts   # Project data types
-│   │   └── styled-components.d.ts # Styled component props
-│   └── lib/               # Utility functions
-│       ├── utils.ts       # Helper functions
-│       └── structuredData.js # JSON-LD structured data
+│   ├── app/                # App Router pages (primary)
+│   │   ├── page.tsx        # Home
+│   │   ├── projects/       # Projects index + [slug]
+│   │   ├── blog/           # Blog index + [slug] (MDX)
+│   │   ├── systems/        # Systems map page
+│   │   └── sitemap.ts      # /sitemap.xml (MetadataRoute)
+│   ├── pages/              # Pages Router (API routes only)
+│   │   └── api/            # /api/contact, /api/metrics
+│   ├── components/         # UI/components
+│   ├── constants/          # Project + certification data
+│   ├── content/            # Profile/experience/skills content
+│   ├── lib/                # Utilities (blog parsing, URL sanitization, analytics)
+│   ├── styles/             # Global CSS + legacy styled-components
+│   └── types/              # TypeScript definitions
 ├── docs/                  # Documentation
 ├── Dockerfile            # Container configuration
+├── Jenkinsfile            # Jenkins multibranch CI pipeline
 ├── netlify.toml         # Deployment configuration
 ├── next.config.js       # Next.js configuration
 ├── package.json         # Dependencies and scripts
@@ -79,15 +59,16 @@ portfolio_website-main/
 
 ### Core Framework
 
-- **Next.js 14.2.30** - React framework with SSR, SSG, and ISR
+- **Next.js 14.2.35** - React framework (App Router)
 - **React 18.3.1** - UI library with hooks and concurrent features
 - **TypeScript 5.9.2** - Type-safe JavaScript with strict mode
 
 ### Styling & UI
 
-- **styled-components 5.3.0** - CSS-in-JS with SSR support
-- **shadcn-inspired primitives** - Modern UI component patterns
-- **framer-motion** - Animation library for smooth transitions
+- **Tailwind + CSS variables** - primary styling path for new UI
+- **shadcn-inspired primitives** (`src/components/ui/*`) — Button (CVA), Badge (incl. `tech` variant), Card, Input
+- **Legacy styled-components** - still present in parts of the codebase (kept, not extended)
+- **framer-motion** - Animation library (respects `prefers-reduced-motion`)
 - **lucide-react** - Modern icon library
 - **react-icons** - Icon library for technology logos
 
@@ -100,37 +81,47 @@ portfolio_website-main/
 ### Deployment & Infrastructure
 
 - **Netlify** - Hosting platform with Next.js runtime
-- **GitHub Actions** - CI/CD automation
+- **Jenkins** - Multibranch CI validation (Kubernetes pod agents)
 - **Docker** - Containerization support
+- **Kubernetes** - Real demo infrastructure (OKE hub + AKS spoke)
 
 ## 🎨 Design System
 
 ### Theme Architecture
 
-The application uses a **CSS Variables + styled-components** approach:
+The application uses a **dual CSS-variable** system with a legacy styled-components bridge:
+
+```css
+/* GlobalStyles.css — legacy CSS variables */
+:root {
+  --color-accent: #0ea5e9; /* sky-500 */
+  --color-accent-hover: #38bdf8; /* sky-400 */
+  --color-bg: #0f1115;
+  --color-text: #e2e8f0;
+}
+
+/* globals.css — shadcn-style HSL variables (dark class) */
+.dark {
+  --accent: 199 89% 48%; /* sky-500 */
+  --background: 222 47% 7%;
+  --foreground: 210 40% 95%;
+}
+```
+
+The styled-components `Theme` provider in `src/themes/default.ts` references these CSS variables, so both systems stay in sync automatically.
+
+UI primitives live in `src/components/ui/*` and use CVA (class-variance-authority) with a `cn()` helper (clsx + tailwind-merge):
 
 ```typescript
-// CSS Variables (GlobalStyles.css)
-:root {
-  --color-primary: #007acc;
-  --color-background: #ffffff;
-  --color-text: #333333;
-}
-
-[data-theme="dark"] {
-  --color-background: #1a1a1a;
-  --color-text: #ffffff;
-}
-
-// Styled Components (theme.tsx)
-const theme = {
-  colors: {
-    primary: 'var(--color-primary)',
-    background: 'var(--color-background)',
-    text: 'var(--color-text)',
+// src/components/ui/badge.tsx
+const badgeVariants = cva('...base classes...', {
+  variants: {
+    variant: {
+      default: '...',
+      tech: 'border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/80',
+    },
   },
-  // ... other theme values
-};
+});
 ```
 
 ### Component Patterns
@@ -143,7 +134,9 @@ const theme = {
 - **Templates**: Page layouts (Layout, PageWrapper)
 - **Pages**: Complete pages (Home, Contact, Projects)
 
-#### Styled Components Pattern
+#### Styled Components Pattern (Legacy)
+
+> For new components prefer Tailwind utilities with the shadcn primitives in `src/components/ui/*`.
 
 ```typescript
 // Component with typed props
@@ -179,29 +172,12 @@ const Button: React.FC<ButtonProps> = ({ variant, size, children }) => (
 - **Contact Form**: Server-side processing via API routes
 - **Sitemap**: Generated dynamically from project data
 
-### Data Fetching Strategy
+### Data Fetching Strategy (App Router)
 
-```typescript
-// Static Generation with ISR
-export async function getStaticProps() {
-  const githubStats = await fetchGitHubStats();
-
-  return {
-    props: { githubStats },
-    revalidate: 86400, // Revalidate every 24 hours
-  };
-}
-
-// Dynamic Routes
-export async function getStaticPaths() {
-  const projects = getProjects();
-
-  return {
-    paths: projects.map(project => ({ params: { slug: project.slug } })),
-    fallback: 'blocking',
-  };
-}
-```
+- **Static-first pages**: `export const dynamic = 'force-static'` on content routes where possible.
+- **Dynamic routes**: `generateStaticParams()` prebuilds known slugs for `/projects/[slug]` and `/blog/[slug]`.
+- **Metadata**: `generateMetadata()` for SEO per route.
+- **Sitemap**: `src/app/sitemap.ts` returns `MetadataRoute.Sitemap`.
 
 ## 🚀 Performance Optimization
 
@@ -363,5 +339,4 @@ export async function getStaticPaths() {
 
 ---
 
-**Last Updated**: January 2025  
-**Next Review**: February 2025
+**Last Updated**: 2026-02-08

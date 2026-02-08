@@ -6,6 +6,11 @@
 
 This portfolio website is deployed on **Netlify** with automatic deployments from the main branch. It uses Netlify's Next.js runtime (serverless functions + edge) to support dynamic features like the contact API route and server-rendered sitemap.
 
+Notes:
+
+- **Production**: deploys from `main`
+- **Pull requests**: use Netlify Deploy Previews for review/QA
+
 ## 🚀 Quick Deploy
 
 ### Netlify (Recommended)
@@ -136,7 +141,7 @@ bun run start
 | Check      | Command             | Expected Result            |
 | ---------- | ------------------- | -------------------------- |
 | TypeScript | `bun run typecheck` | No errors                  |
-| Build      | `bun run build`     | Success with 12 pages      |
+| Build      | `bun run build`     | Success with 18 pages      |
 | Production | `bun run start`     | Server starts on port 3000 |
 
 ## 🐛 Troubleshooting
@@ -382,7 +387,7 @@ Before deploying to production:
 
 - [ ] **TypeScript Compilation**: `bun run typecheck` passes
 - [ ] **Build Success**: `bun run build` completes without errors
-- [ ] **All Pages Generate**: 12 pages build successfully
+- [ ] **All Pages Generate**: 18 pages build successfully
 - [ ] **Environment Variables**: All required env vars configured
 - [ ] **Contact Form**: Test with proper SMTP settings (if enabled)
 - [ ] **Performance**: Lighthouse score > 90
@@ -622,5 +627,4 @@ Create alerts for important metrics:
 
 ---
 
-**Last Updated**: January 2025  
-**Next Review**: February 2025
+**Last Updated**: 2026-02-08
