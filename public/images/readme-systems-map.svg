@@ -1,0 +1,149 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1200 675"
+  role="img"
+  aria-label="Systems map: GitHub to Jenkins multibranch to OKE hub and AKS spoke"
+>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0f14" />
+      <stop offset="1" stop-color="#101821" />
+    </linearGradient>
+
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111a24" />
+      <stop offset="1" stop-color="#0e141d" />
+    </linearGradient>
+
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0ea5e9" />
+      <stop offset="1" stop-color="#0284c7" />
+    </linearGradient>
+
+    <marker
+      id="arrow"
+      viewBox="0 0 10 10"
+      refX="9"
+      refY="5"
+      markerWidth="8"
+      markerHeight="8"
+      orient="auto-start-reverse"
+    >
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7dd3fc" />
+    </marker>
+
+    <style>
+      .h1 {
+        font: 700 22px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        fill: #e8f0ff;
+        letter-spacing: 0.3px;
+      }
+      .h2 {
+        font: 650 18px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        fill: #e8f0ff;
+      }
+      .sub {
+        font: 450 14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        fill: rgba(232, 240, 255, 0.78);
+      }
+      .mono {
+        font: 600 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
+        fill: rgba(232, 240, 255, 0.75);
+      }
+      .box {
+        fill: url(#card);
+        stroke: rgba(232, 240, 255, 0.14);
+        stroke-width: 2;
+        rx: 18;
+      }
+      .tag {
+        fill: rgba(14, 165, 233, 0.12);
+        stroke: rgba(14, 165, 233, 0.55);
+        stroke-width: 2;
+        rx: 999;
+      }
+      .tagText {
+        font: 650 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+          monospace;
+        fill: rgba(232, 240, 255, 0.85);
+      }
+      .arrow {
+        stroke: rgba(125, 211, 252, 0.92);
+        stroke-width: 3.5;
+        fill: none;
+        marker-end: url(#arrow);
+      }
+      .mutedLine {
+        stroke: rgba(232, 240, 255, 0.08);
+        stroke-width: 2;
+      }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="675" fill="url(#bg)" />
+
+  <text x="60" y="70" class="h1">Systems Snapshot (Recruiter-Speed)</text>
+  <text x="60" y="98" class="sub">
+    CI + GitOps across two clusters: OKE hub (controller + observability) and AKS spoke (workloads + constrained agent).
+  </text>
+
+  <!-- Top tags -->
+  <rect x="870" y="52" width="108" height="30" class="tag" />
+  <text x="885" y="72" class="tagText">gitops</text>
+  <rect x="984" y="52" width="78" height="30" class="tag" />
+  <text x="999" y="72" class="tagText">ci</text>
+  <rect x="1068" y="52" width="82" height="30" class="tag" />
+  <text x="1083" y="72" class="tagText">k8s</text>
+
+  <!-- GitHub -->
+  <rect x="60" y="160" width="270" height="135" class="box" />
+  <text x="86" y="205" class="h2">GitHub</text>
+  <text x="86" y="233" class="sub">main + PRs</text>
+  <text x="86" y="258" class="mono">repo: portfolio_website-main</text>
+
+  <!-- Jenkins controller -->
+  <rect x="405" y="150" width="335" height="155" class="box" />
+  <text x="431" y="200" class="h2">Jenkins</text>
+  <text x="431" y="230" class="sub">Multibranch pipeline</text>
+  <text x="431" y="256" class="sub">Controller: OKE</text>
+  <text x="431" y="282" class="mono">jenkins.canepro.me</text>
+
+  <!-- Build -->
+  <rect x="815" y="150" width="325" height="155" class="box" />
+  <text x="841" y="200" class="h2">Build + Validate</text>
+  <text x="841" y="230" class="sub">Bun, TS, Next, Docker</text>
+  <text x="841" y="256" class="sub">Kaniko (no-push) + hadolint</text>
+
+  <!-- AKS spoke -->
+  <rect x="60" y="360" width="520" height="220" class="box" />
+  <text x="86" y="410" class="h2">AKS Spoke</text>
+  <text x="86" y="440" class="sub">Rocket.Chat + app workloads</text>
+  <text x="86" y="468" class="sub">Metrics shipped to hub</text>
+  <text x="86" y="496" class="sub">Jenkins agent: AKS (permissions constraints)</text>
+
+  <!-- OKE hub -->
+  <rect x="650" y="360" width="490" height="220" class="box" />
+  <text x="676" y="410" class="h2">OKE Hub</text>
+  <text x="676" y="440" class="sub">ArgoCD + GrafanaLocal (LGTM)</text>
+  <text x="676" y="468" class="sub">OTLP collector + dashboards</text>
+  <text x="676" y="496" class="mono">argocd + grafana + loki + tempo</text>
+
+  <!-- Arrows -->
+  <path class="arrow" d="M 330 227 C 355 227, 375 227, 405 227" />
+  <path class="arrow" d="M 740 227 C 765 227, 785 227, 815 227" />
+
+  <!-- Downlink from Build to clusters -->
+  <path class="mutedLine" d="M 977 305 L 977 330" />
+  <path class="arrow" d="M 977 330 C 977 345, 960 355, 930 365" />
+
+  <!-- AKS -> OKE metrics -->
+  <path class="arrow" d="M 580 470 C 610 470, 625 470, 650 470" />
+  <text x="600" y="452" class="tagText">OTLP</text>
+
+  <!-- Footer copy -->
+  <text x="60" y="635" class="sub">
+    This portfolio is a working system, not a slide: projects show outcomes; writing shows decisions.
+  </text>
+</svg>
+

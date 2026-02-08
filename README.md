@@ -3,21 +3,21 @@
 > Production-focused portfolio built with Next.js (App Router), TypeScript, Bun, Tailwind, and MDX.
 
 [![Live Site](https://img.shields.io/badge/Live%20Site-portfolio.canepro.me-00ad9f?style=for-the-badge&logo=netlify)](https://portfolio.canepro.me)
-[![Next.js](https://img.shields.io/badge/Next.js-14.2.35-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.5.12-black?style=flat&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue?style=flat&logo=typescript)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.3.1-blue?style=flat&logo=react)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-19.2.4-blue?style=flat&logo=react)](https://reactjs.org/)
 
 <div align="center">
-  <img src="https://github.com/Canepro/portfolio_website-main/blob/main/public/images/6.png?raw=true" alt="Portfolio Preview" width="800" />
+  <img src="public/images/readme-systems-map.svg" alt="Systems map: GitHub to Jenkins to OKE hub and AKS spoke" width="900" />
 </div>
 
-## 🚀 Featured: Terraform + ArgoCD GitOps (Hub-and-Spoke)
+## 🚀 Featured: Hub-and-Spoke Platform (OKE Hub + AKS Spoke)
 
 This portfolio highlights hands-on **Kubernetes + SRE** work with a clear **Infrastructure vs. Application** story:
 
-- **Hybrid Cloud GitOps Control Plane**: Terraform-provisioned OCI OKE Hub + K3s Spoke, with a live ArgoCD UI (**authentication required**) at `https://argocd.canepro.me`
-- **Central Observability Hub on OKE**: ArgoCD-managed LGTM stack (Grafana/Loki/Tempo) with a live Grafana endpoint (**authentication required**) at `https://grafana.canepro.me`
-- **Rocket.Chat Ops Sandbox**: lab environment for ingress/TLS/upgrades/troubleshooting (best-effort availability; no production SLO claims) at `https://k8.canepro.me`
+- **OKE Hub (control plane)**: ArgoCD-managed GitOps + GrafanaLocal (LGTM) + telemetry ingest (**authentication required**) at `https://argocd.canepro.me` and `https://grafana.canepro.me`
+- **AKS Spoke (workloads)**: Rocket.Chat platform work + constrained Jenkins agent (permissions boundaries)
+- **Signals flow**: application metrics/traces/logs ship from the spoke into the hub (OTLP), so one place answers “what changed and what broke?”
 
 For a skimmable overview of how these pieces fit together, see `/systems` in the site.
 
@@ -47,9 +47,9 @@ For a skimmable overview of how these pieces fit together, see `/systems` in the
 
 | Category          | Technology                                          |
 | ----------------- | --------------------------------------------------- |
-| **Framework**     | Next.js 14.2.35                                     |
+| **Framework**     | Next.js 15.5.12                                     |
 | **Language**      | TypeScript 5.9.2                                    |
-| **UI Library**    | React 18.3.1                                        |
+| **UI Library**    | React 19.2.4                                        |
 | **Styling**       | Tailwind + CSS variables (legacy styled-components) |
 | **UI Components** | shadcn-inspired primitives                          |
 | **Icons**         | react-icons, lucide-react                           |
