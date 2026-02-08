@@ -66,9 +66,9 @@ portfolio_website-main/
 ### Styling & UI
 
 - **Tailwind + CSS variables** - primary styling path for new UI
-- **Legacy styled-components** - still present in parts of the codebase
-- **shadcn-inspired primitives** - Modern UI component patterns
-- **framer-motion** - Animation library for smooth transitions
+- **shadcn-inspired primitives** (`src/components/ui/*`) — Button (CVA), Badge (incl. `tech` variant), Card, Input
+- **Legacy styled-components** - still present in parts of the codebase (kept, not extended)
+- **framer-motion** - Animation library (respects `prefers-reduced-motion`)
 - **lucide-react** - Modern icon library
 - **react-icons** - Icon library for technology logos
 
@@ -89,30 +89,39 @@ portfolio_website-main/
 
 ### Theme Architecture
 
-The application uses a **CSS Variables + styled-components** approach:
+The application uses a **dual CSS-variable** system with a legacy styled-components bridge:
+
+```css
+/* GlobalStyles.css — legacy CSS variables */
+:root {
+  --color-accent: #0ea5e9; /* sky-500 */
+  --color-accent-hover: #38bdf8; /* sky-400 */
+  --color-bg: #0f1115;
+  --color-text: #e2e8f0;
+}
+
+/* globals.css — shadcn-style HSL variables (dark class) */
+.dark {
+  --accent: 199 89% 48%; /* sky-500 */
+  --background: 222 47% 7%;
+  --foreground: 210 40% 95%;
+}
+```
+
+The styled-components `Theme` provider in `src/themes/default.ts` references these CSS variables, so both systems stay in sync automatically.
+
+UI primitives live in `src/components/ui/*` and use CVA (class-variance-authority) with a `cn()` helper (clsx + tailwind-merge):
 
 ```typescript
-// CSS Variables (GlobalStyles.css)
-:root {
-  --color-primary: #007acc;
-  --color-background: #ffffff;
-  --color-text: #333333;
-}
-
-[data-theme="dark"] {
-  --color-background: #1a1a1a;
-  --color-text: #ffffff;
-}
-
-// Styled Components (theme.tsx)
-const theme = {
-  colors: {
-    primary: 'var(--color-primary)',
-    background: 'var(--color-background)',
-    text: 'var(--color-text)',
+// src/components/ui/badge.tsx
+const badgeVariants = cva('...base classes...', {
+  variants: {
+    variant: {
+      default: '...',
+      tech: 'border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-white/80',
+    },
   },
-  // ... other theme values
-};
+});
 ```
 
 ### Component Patterns
@@ -125,7 +134,9 @@ const theme = {
 - **Templates**: Page layouts (Layout, PageWrapper)
 - **Pages**: Complete pages (Home, Contact, Projects)
 
-#### Styled Components Pattern
+#### Styled Components Pattern (Legacy)
+
+> For new components prefer Tailwind utilities with the shadcn primitives in `src/components/ui/*`.
 
 ```typescript
 // Component with typed props
@@ -328,5 +339,4 @@ const Button: React.FC<ButtonProps> = ({ variant, size, children }) => (
 
 ---
 
-**Last Updated**: January 2025  
-**Next Review**: February 2025
+**Last Updated**: July 2025

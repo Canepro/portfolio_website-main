@@ -46,31 +46,22 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
 
 ## Styling Conventions
 
-The codebase currently uses both `styled-components` and Tailwind utilities.
+The codebase uses Tailwind utilities (primary) and `styled-components` (legacy).
 
 - If changing an existing component: stick to its current styling approach.
 - If creating a new component: prefer Tailwind in `src/app/*` for speed and consistency with the new pages.
 - Avoid generic template-y UI. Prefer evidence-driven copy, tight hierarchy, and intentional spacing.
 
-## Frontend Redesign Brief (Next Pass)
+### Design System
 
-Goal: modern, professional, and intentional. Avoid the “AI portfolio template” look.
-
-- Typography:
-  - Use a deliberate font system (non-default stack).
-  - Establish a clear type scale (h1/h2/body/label) and consistent line-lengths.
-- Color + background:
-  - Keep dark mode intentional (charcoal/ink), no purple haze gradients.
-  - Use 1 accent color (for CTAs, active states, chips) and keep it consistent.
-- Components:
-  - Prefer `shadcn/ui` style primitives where it makes sense (nav, buttons, cards, tabs, badges, dialog, form).
-  - Create/keep `src/components/ui/*` primitives and a `cn()` helper (tailwind-merge + clsx).
-  - Do not introduce a second component library.
-- Motion:
-  - Keep motion minimal and meaningful; respect `prefers-reduced-motion`.
-- Quality bar:
-  - Mobile layout must be first-class (nav, spacing, card density, readable font sizes).
-  - Accessibility is non-negotiable (labels, focus styles, contrast).
+- **Fonts**: IBM Plex Sans (body) + IBM Plex Mono (code) via `next/font` — CSS vars `--font-sans`, `--font-mono`.
+- **Accent color**: sky-500 (`#0EA5E9`) on dark, sky-600 (`#0284C7`) on light. Defined as `--color-accent` in `GlobalStyles.css` and `--accent` (HSL) in `globals.css`. Use this single accent for CTAs, active states, focus rings, link colors, and tag badges.
+- **Dark theme**: charcoal/ink (`#0F1115` base). No neon, no purple/cyan haze gradients. Background radials are subtle and desaturated.
+- **UI primitives** (`src/components/ui/*`): `Button` (CVA), `Badge` (including `tech` variant for skill/tag chips), `Card` (rounded-2xl, hover transition), `Input` (sky-500 focus ring). Use these instead of hand-rolling markup.
+- **Helper**: `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge).
+- **Motion**: framer-motion where used; always respect `prefers-reduced-motion`.
+- **Mobile-first**: all layouts must work on small screens; no overflow, readable font sizes.
+- **Accessibility**: focus styles, contrast, labels, keyboard nav — non-negotiable.
 
 ## Content Conventions (Portfolio)
 

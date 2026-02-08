@@ -245,11 +245,11 @@ portfolio_website-main/
 
 ## 🎨 Design System
 
-- **Typography**: Modern, readable fonts with proper hierarchy
-- **Colors**: Dark/light theme support with CSS variables
-- **Components**: Consistent design patterns with shadcn inspiration
-- **Animations**: Smooth transitions using framer-motion
-- **Responsive**: Mobile-first approach with breakpoint system
+- **Typography**: IBM Plex Sans (body) + IBM Plex Mono (code) via `next/font`, with CSS vars `--font-sans` / `--font-mono`
+- **Colors**: Single accent — sky-500 (`#0EA5E9`) on dark, sky-600 (`#0284C7`) on light. Dark theme base is charcoal/ink (`#0F1115`). No neon or haze gradients.
+- **Components**: shadcn-inspired primitives in `src/components/ui/*` — Button (CVA), Badge (incl. `tech` variant), Card, Input — with a `cn()` helper (clsx + tailwind-merge)
+- **Animations**: Minimal, meaningful motion via framer-motion; respects `prefers-reduced-motion`
+- **Responsive**: Mobile-first layout with consistent spacing and readable font sizes
 
 ## 📚 Documentation
 
@@ -272,8 +272,9 @@ The project is fully migrated to TypeScript with:
 
 ### Styling
 
-- **Tailwind + CSS variables** for most new UI work
-- **Legacy styled-components** still exists in parts of the codebase (migration in progress)
+- **Tailwind + CSS variables** for all new UI work; accent is sky-500 (`--color-accent`)
+- **shadcn-style primitives** (`src/components/ui/*`) for buttons, badges, cards, inputs
+- **Legacy styled-components** still present in parts of the codebase (kept but not extended)
 - **Dark-first theming** (respects `prefers-color-scheme` when no saved preference)
 
 ### Performance

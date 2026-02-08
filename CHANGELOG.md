@@ -4,6 +4,31 @@
 
 All notable changes to this project will be documented here. Dates are in YYYY-MM-DD.
 
+## v1.4.0 - 2025-07-15
+
+### Changed
+
+- **Design system overhaul** — unified accent color from neon cyan (`#00DBD8`) to sky-500 (`#0EA5E9`); single accent across CTAs, focus rings, links, and tag badges
+- **GlobalStyles.css** — removed `* { transition }` performance antipattern; replaced gradient scrollbar thumb with a neutral one
+- **AppShell & HeroVisual** — toned down radial background gradients (lower opacity, fewer saturated layers)
+- **Card component** — updated to `rounded-2xl` with subtle hover transition
+- **Input component** — focus ring now uses sky-500
+- **BackgroundAnimation** — canvas accent updated to `#0EA5E9`
+- **SEO** — theme-color meta updated to `#0EA5E9`
+- **MDX links** — blog post link colors changed to sky-400/sky-300
+- **Contact form** — card backgrounds switched from `bg-black/20` to `bg-white/5`; focus rings unified to sky-500
+
+### Added
+
+- **Badge `tech` variant** — reusable tag/chip style (`border-white/10 bg-white/5`) replacing ~30 inline badge spans across Home, Blog, Systems, and ProjectCard pages
+- **Light theme accent** — added sky-600 (`#0284C7`) for sufficient contrast on light backgrounds
+
+### Infrastructure
+
+- **Jenkins CI** — fixed kaniko container `PATH` so durable-task wrapper can find BusyBox applets (`touch`, `sleep`, etc.)
+
+---
+
 ## v1.3.1 - 2025-09-24
 
 ### Changed
