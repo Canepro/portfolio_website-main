@@ -41,6 +41,7 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
 - Keep the site recruiter-friendly: clear headings, obvious CTAs, scannable sections, no walls of text.
 - Preserve existing observability/analytics features unless explicitly removing them.
 - Do not commit secrets. Use `.env.local` (see `.env.example`).
+- Security: do not build outbound `fetch()` destination hostnames from request headers (for example `Origin`/`Host`) to avoid SSRF. Prefer a trusted env base URL (`DEPLOY_PRIME_URL`/`URL`/`SITE_URL`).
 - Keep accessibility non-negotiable: labels for inputs, keyboard navigation, readable contrast.
 - Treat all external URLs as untrusted even if stored in code/content.
 
