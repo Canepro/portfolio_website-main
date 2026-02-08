@@ -3,7 +3,9 @@
 pipeline {
   agent {
     kubernetes {
-      label 'node-build'
+      // Avoid colliding with any statically-configured Kubernetes pod templates in Jenkins.
+      // Some clusters define a global `node-build` template that may inject extra containers.
+      label 'portfolio-node-build'
       defaultContainer 'node'
       yaml '''
 apiVersion: v1

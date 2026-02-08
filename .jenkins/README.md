@@ -47,7 +47,7 @@ Jenkins is not the deploy mechanism for this site (Netlify handles deploys). The
 
 ## Notes (OKE)
 
-Jenkins is deployed on OKE, and the recommended pipeline (`Jenkinsfile`) uses a Kubernetes agent. Ensure the Jenkins Kubernetes plugin is configured (cloud, namespace, and permissions) so it can start the `node-build` pod template used by the pipeline.
+Jenkins is deployed on OKE, and the recommended pipeline (`Jenkinsfile`) uses a Kubernetes agent. Ensure the Jenkins Kubernetes plugin is configured (cloud, namespace, and permissions) so it can start the `portfolio-node-build` pod template used by the pipeline.
 
 If your cluster enforces short-name image resolution, keep images fully qualified (for example `docker.io/jenkins/inbound-agent:latest` instead of `jenkins/inbound-agent:latest`) to avoid `ErrImagePull` ambiguity.
 

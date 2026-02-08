@@ -42,10 +42,12 @@
               <strategyId>1</strategyId>
             </org.jenkinsci.plugins.github_branch_source.BranchDiscoveryTrait>
             <org.jenkinsci.plugins.github_branch_source.OriginPullRequestDiscoveryTrait>
-              <strategyId>1</strategyId>
+              <!-- Build PR head only to avoid transient GitHub "NOT_MERGEABLE" states blocking CI. -->
+              <strategyId>2</strategyId>
             </org.jenkinsci.plugins.github_branch_source.OriginPullRequestDiscoveryTrait>
             <org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait>
-              <strategyId>1</strategyId>
+              <!-- Build PR head only to avoid transient GitHub "NOT_MERGEABLE" states blocking CI. -->
+              <strategyId>2</strategyId>
               <trust class="org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustContributors"/>
             </org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait>
           </traits>

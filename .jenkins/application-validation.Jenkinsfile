@@ -8,7 +8,8 @@ pipeline {
     kubernetes {
       // Define a complete pod with both jnlp (required) and node (for builds) containers
       // This avoids issues with pod template inheritance/merging
-      label 'node-build'
+      // Avoid colliding with any statically-configured Kubernetes pod templates in Jenkins.
+      label 'portfolio-node-build'
       defaultContainer 'node'
       yaml '''
 apiVersion: v1
