@@ -47,12 +47,6 @@ spec:
         limits:
           cpu: "1500m"
           memory: "3Gi"
-      volumeMounts:
-        - name: kaniko-cache
-          mountPath: /kaniko/cache
-  volumes:
-    - name: kaniko-cache
-      emptyDir: {}
 '''
     }
   }
@@ -61,7 +55,7 @@ spec:
   // These match the project's package.json requirements
   environment {
     NODE_VERSION = '22'      // Node.js version (matches local dev)
-    BUN_TAG = 'bun-v1.3.6'   // Bun release tag (passed to installer). Override with BUN_TAG_OVERRIDE.
+    BUN_TAG = 'bun-v1.3.5'   // Bun release tag (passed to installer). Override with BUN_TAG_OVERRIDE.
   }
 
   stages {
@@ -204,9 +198,7 @@ spec:
               --dockerfile "$WORKSPACE/Dockerfile" \
               --destination "portfolio_website-main:ci" \
               --no-push \
-              --tarPath "$WORKSPACE/ci-image.tar" \
-              --cache=true \
-              --cache-dir=/kaniko/cache
+              --tarPath "$WORKSPACE/ci-image.tar"
 
             rm -f "$WORKSPACE/ci-image.tar" || true
           '''

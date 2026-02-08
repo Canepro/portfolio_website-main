@@ -42,12 +42,6 @@ spec:
         limits:
           cpu: "1500m"
           memory: "3Gi"
-      volumeMounts:
-        - name: kaniko-cache
-          mountPath: /kaniko/cache
-  volumes:
-    - name: kaniko-cache
-      emptyDir: {}
 '''
     }
   }
@@ -63,7 +57,7 @@ spec:
         sh '''
           # Jenkins executes `sh` steps using /bin/sh; avoid bash-only options like `pipefail`.
           set -eu
-          BUN_TAG="${BUN_TAG_OVERRIDE:-bun-v1.3.6}"
+          BUN_TAG="${BUN_TAG_OVERRIDE:-bun-v1.3.5}"
 
           apt-get update
           apt-get install -y --no-install-recommends unzip curl ca-certificates
