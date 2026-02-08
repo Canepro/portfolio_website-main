@@ -1,7 +1,7 @@
 ---
 title: "Welcome: Why This Portfolio Has a Blog"
 date: "2026-02-07"
-description: "What I’m optimizing for, and how I’ll use this space to show real engineering thinking."
+description: "What I'm optimizing for, and how I'll use this space to show real engineering thinking."
 tags: ["portfolio", "career", "writing"]
 ---
 
@@ -11,13 +11,26 @@ I built this portfolio to answer a simple question:
 
 Projects show outcomes. A blog shows *how you think*.
 
-## What You’ll See Here
+This site is a Next.js app with TypeScript, statically built and deployed to Netlify. The infrastructure behind it — Jenkins pipelines on Kubernetes, a [hub-and-spoke observability stack](/projects/central-observability-hub-stack), GitOps with ArgoCD — is the same stack I write about here. The blog is not separate from the work; it is part of it.
 
-- Build notes: tradeoffs, constraints, and the boring-but-important details
-- DevOps and platform engineering: Kubernetes, GitOps, observability, CI/CD
-- Frontend engineering: performance, accessibility, UI architecture
+## What You'll See Here
 
-## The Rule
+- **Build notes** — tradeoffs, constraints, and the boring-but-important details behind projects like the [Hybrid Cloud GitOps Control Plane](/projects/hybrid-cloud-gitops-control-plane) and [Rocket.Chat on AKS](/projects/rocketchat-kubernetes-enterprise)
+- **DevOps and platform engineering** — Kubernetes, GitOps, observability pipelines, CI/CD. Real patterns from running workloads across OCI and Azure, not contrived examples
+- **Frontend engineering** — performance, accessibility, UI architecture. This portfolio itself is the proving ground (see the [Systems](/systems) page for a live architecture diagram)
 
-Every post ends with something you can re-use: a checklist, a snippet, or a pattern.
+## How Posts Are Structured
 
+Each post follows a pattern:
+
+1. **Context** — what problem I was solving and why it matters
+2. **The approach** — what I tried, what I rejected, and what I shipped
+3. **The takeaway** — a checklist, snippet, or reusable pattern you can apply to your own work
+
+No filler. If a post does not end with something you can re-use, it should not exist.
+
+## What's Coming
+
+- How the Jenkins pipeline validates this site (lint, typecheck, build, Dockerfile lint, container build) without ever pushing an image on PRs
+- Setting up an LGTM observability stack (Grafana, Loki, Tempo) with OTLP ingestion on OKE
+- Lessons from migrating Rocket.Chat across Helm chart versions using Git-driven deploys
