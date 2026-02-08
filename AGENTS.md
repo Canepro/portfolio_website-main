@@ -101,6 +101,21 @@ tags: ['optional', 'array', 'of', 'strings']
 - Keep posts scannable: use headings to break up sections, bold for key phrases, and lists for enumerations. Recruiters skim.
 - Avoid walls of text. If a section has more than three consecutive paragraphs without a heading, list, or code block, break it up.
 
+### Voice & Tone
+
+- Direct, declarative opening — no "every engineer knows..." or rhetorical questions.
+- State the problem, then the approach, then what's next. No filler.
+- Prefer numbered lists for sequences/steps and bullet lists for unordered items (stack, tools, etc.).
+- Avoid ASCII art diagrams, marketing-style tables, and emoji in body text.
+- Keep descriptions factual. "Does not diagnose" over "it doesn't try to fix things."
+- Match the tone of existing posts — concise, evidence-driven, opinionated where earned.
+
+### Series Posts
+
+- Multi-part series (e.g., hackathon journey) should include a footer linking to the series tag: `*Post N of M in the [Series Name](/tags/tag) series.*`
+- Each post in a series must stand on its own — a reader should understand it without reading prior posts.
+- The blog roadmap lives at `content/blog/blog.md` — update status there when publishing or planning new posts.
+
 ### MDX + GFM Plugin Versioning
 
 The codebase uses `remark-gfm@4` for both:
