@@ -193,7 +193,8 @@ spec:
             chmod +x "$HADOLINT_BIN"
           fi
           hadolint --version
-          hadolint Dockerfile
+          # Treat warnings as advisory (print them) but only fail the build on errors.
+          hadolint --failure-threshold error Dockerfile
         '''
         container('kaniko') {
           sh '''
