@@ -14,9 +14,12 @@ export function generateStaticParams() {
   return getBlogSlugs().map(slug => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+type ParamsPromise = Promise<{ slug: string }>;
+
+export async function generateMetadata({ params }: { params: ParamsPromise }): Promise<Metadata> {
+  const { slug } = await params;
   try {
-    const { meta } = getBlogPostSource(params.slug);
+    const { meta } = getBlogPostSource(slug);
     return {
       title: meta.title,
       description: meta.description,
@@ -26,10 +29,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: ParamsPromise }) {
+  const { slug } = await params;
   let post;
   try {
-    post = getBlogPostSource(params.slug);
+    post = getBlogPostSource(slug);
   } catch {
     notFound();
   }

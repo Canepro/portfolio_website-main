@@ -3,7 +3,8 @@ import type { MetadataRoute } from 'next';
 import { projects } from '@/constants/constants';
 import { getBlogSlugs } from '@/lib/blog';
 
-export const revalidate = 60 * 60; // 1 hour
+// Next.js route config expects a literal here (not an expression).
+export const revalidate = 3600; // 1 hour
 
 function getSiteUrl(): string {
   const fallback = 'https://portfolio.canepro.me';

@@ -11,8 +11,11 @@ export function generateStaticParams() {
   return projects.map(p => ({ slug: p.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const project = projects.find(p => p.slug === params.slug);
+type ParamsPromise = Promise<{ slug: string }>;
+
+export async function generateMetadata({ params }: { params: ParamsPromise }): Promise<Metadata> {
+  const { slug } = await params;
+  const project = projects.find(p => p.slug === slug);
   if (!project) return {};
 
   return {
@@ -22,8 +25,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function ProjectDetailPage({ params }: { params: { slug: string } }) {
-  const project = projects.find(p => p.slug === params.slug);
+export default async function ProjectDetailPage({ params }: { params: ParamsPromise }) {
+  const { slug } = await params;
+  const project = projects.find(p => p.slug === slug);
   if (!project) notFound();
 
   const jsonLd = JSON.stringify(projectStructuredData(project));
@@ -31,7 +35,7 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
-      <ProjectDetailClient project={project} slug={params.slug} />
+      <ProjectDetailClient project={project} slug={slug} />
     </>
   );
 }

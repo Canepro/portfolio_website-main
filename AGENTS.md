@@ -8,7 +8,7 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
 - Dev: `bun run dev`
 - Build: `bun run build`
 - Start: `bun run start`
-- Lint: `bun run lint`
+- Lint: `bun run lint` (ESLint CLI; `next lint` is deprecated in Next 15+)
 - Typecheck: `bun run typecheck`
 - Format: `bun run format` (or `bun run format:check`)
 
@@ -102,12 +102,12 @@ tags: ['optional', 'array', 'of', 'strings']
 
 ### MDX + GFM Plugin Versioning
 
-The codebase intentionally uses two different GFM plugin versions:
+The codebase uses `remark-gfm@4` for both:
 
-- `remark-gfm` (v3) is used with `react-markdown` in a few legacy/Markdown-rendered pages.
-- `remark-gfm-mdx` is an npm alias to `remark-gfm@^4` and is used for MDX compilation in `next-mdx-remote/rsc`.
+- `react-markdown` rendering (a few legacy/Markdown-rendered components)
+- MDX compilation in `next-mdx-remote/rsc` (imported via `remark-gfm-mdx`, which is just an npm alias to `remark-gfm@^4`)
 
-Reason: `next-mdx-remote` compiles MDX using `@mdx-js/mdx` (newer `mdast-util-from-markdown`), and `remark-gfm@3` is incompatible there and will throw `this.getData is not a function` at build time.
+Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilation.
 
 ## Shipping / Branching
 
@@ -130,7 +130,8 @@ Reason: `next-mdx-remote` compiles MDX using `@mdx-js/mdx` (newer `mdast-util-fr
       - The kaniko stage writes to `"$WORKSPACE/.kaniko-build.log"` and tails periodically to keep logs readable and the durable-task heartbeat alive.
   - Tool versions are pinned for reproducibility:
     - Bun: `1.3.5` (matches `package.json` and `Dockerfile`)
-  - Typechecking uses `tsconfig.typecheck.json` so it does not depend on `.next/types` being present.
+  - Next.js 15 may add `/// <reference path="./.next/types/routes.d.ts" />` to `next-env.d.ts`.
+    - `bun run typecheck` runs `scripts/ensure-next-routes-types.js` first to create a tiny stub so typecheck is deterministic even in a clean workspace.
 
 ## Known Gotchas / Lessons Learned
 
