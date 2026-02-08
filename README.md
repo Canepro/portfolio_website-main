@@ -95,7 +95,7 @@ _The dual analytics provides both business insights and demonstrates advanced mo
 ### Prerequisites
 
 - Bun 1.3.5+ ([install Bun](https://bun.sh/docs/installation))
-- Node.js 20+ (recommended) - required for Next.js runtime
+- Node.js 20+ (recommended 22) - required for Next.js runtime
 
 ### Installation
 

@@ -28,7 +28,7 @@ We welcome various types of contributions:
 ### Prerequisites
 
 - Bun 1.3.5+ ([install Bun](https://bun.sh/docs/installation))
-- Node.js 18+ (recommended 20) - required for Next.js runtime
+- Node.js 20+ (recommended 22) - required for Next.js runtime
 - Git
 
 ### Local Development

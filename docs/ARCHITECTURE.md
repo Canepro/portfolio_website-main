@@ -339,4 +339,4 @@ const Button: React.FC<ButtonProps> = ({ variant, size, children }) => (
 
 ---
 
-**Last Updated**: July 2025
+**Last Updated**: 2026-02-08

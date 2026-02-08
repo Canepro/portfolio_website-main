@@ -4,7 +4,7 @@
 
 All notable changes to this project will be documented here. Dates are in YYYY-MM-DD.
 
-## v1.4.0 - 2025-07-15
+## v1.4.0 - 2026-02-08
 
 ### Changed
 
