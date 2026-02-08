@@ -203,16 +203,23 @@ spec:
         container('kaniko') {
           sh '''
             set -eu
+            export PATH="/busybox:$PATH"
             DESTINATION="${KANIKO_DESTINATION:-docker.io/library/portfolio_website-main:ci}"
+            echo "kaniko: starting build (no push) -> $DESTINATION"
+
             /kaniko/executor \
               --context "$WORKSPACE" \
               --dockerfile "$WORKSPACE/Dockerfile" \
               --destination "$DESTINATION" \
               --no-push \
-              --no-push-cache \
-              --tarPath "$WORKSPACE/ci-image.tar"
+              --no-push-cache &
 
-            rm -f "$WORKSPACE/ci-image.tar" || true
+            pid="$!"
+            while kill -0 "$pid" 2>/dev/null; do
+              echo "kaniko: still building..."
+              sleep 30
+            done
+            wait "$pid"
           '''
         }
       }

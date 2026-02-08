@@ -174,19 +174,27 @@ spec:
         container('kaniko') {
           sh '''
             set -eu
+            # Kaniko image is minimal; ensure BusyBox applets (sleep, rm, etc.) are available.
+            export PATH="/busybox:$PATH"
             DESTINATION="${KANIKO_DESTINATION:-docker.io/library/portfolio_website-main:ci}"
             # Kaniko builds container images from Dockerfile without requiring a Docker daemon.
             # We use --no-push so PR builds validate portability without publishing images.
+            echo "kaniko: starting build (no push) -> $DESTINATION"
+
+            # Keep the Jenkins durable-task heartbeat alive by emitting periodic output.
             /kaniko/executor \
               --context "$WORKSPACE" \
               --dockerfile "$WORKSPACE/Dockerfile" \
               --destination "$DESTINATION" \
               --no-push \
-              --no-push-cache \
-              --tarPath "$WORKSPACE/ci-image.tar"
+              --no-push-cache &
 
-            # Keep artifacts tidy: the image tar is only for validation.
-            rm -f "$WORKSPACE/ci-image.tar" || true
+            pid="$!"
+            while kill -0 "$pid" 2>/dev/null; do
+              echo "kaniko: still building..."
+              sleep 30
+            done
+            wait "$pid"
           '''
         }
       }
