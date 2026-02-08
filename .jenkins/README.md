@@ -62,3 +62,14 @@ The multibranch pipeline validates container readiness without requiring Docker-
 - **Dockerfile lint**: `hadolint` (downloaded per-build; architecture-aware for arm64/amd64)
   - Warnings are printed but do not fail the build.
 - **Image build (no push)**: `kaniko` builds the image in-cluster with `--no-push` to ensure the Dockerfile remains buildable.
+
+### Notes (kaniko + Jenkins durable-task)
+
+The `gcr.io/kaniko-project/executor:*` images are intentionally minimal. In some environments Jenkins' `durable-task`
+wrapper expects basic Unix utilities to be present on `PATH` to keep the step heartbeat alive (for example `touch`).
+
+The pod templates in `Jenkinsfile` and `.jenkins/application-validation.Jenkinsfile` set:
+
+- `PATH=/busybox:...`
+
+so BusyBox applets are available to Jenkins and the build step is stable on Kubernetes.

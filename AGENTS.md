@@ -111,6 +111,8 @@ Reason: `next-mdx-remote` compiles MDX using `@mdx-js/mdx` (newer `mdast-util-fr
   - Pipeline should be deterministic (`bun install --frozen-lockfile`) and run the three checks above.
   - Jenkins `sh` steps run under `/bin/sh` by default; avoid bash-only options like `set -o pipefail`.
   - On Kubernetes clusters enforcing short-name image resolution, keep agent images fully qualified (for example `docker.io/library/node:22-bullseye`).
+  - This Jenkins instance runs on Kubernetes (OKE) and uses Kubernetes agents; builds may run on arm64 nodes.
+    - Any downloaded binaries used in CI must be architecture-aware (for example `hadolint`).
   - Docker portability is validated in CI:
     - Dockerfile lint via `hadolint` (downloaded per-build; arch-aware for arm64/amd64)
     - Container build via `kaniko` with `--no-push` (builds without requiring Docker-in-Docker)

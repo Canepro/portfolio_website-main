@@ -41,6 +41,11 @@ spec:
       image: gcr.io/kaniko-project/executor:v1.23.2-debug
       command: ["/busybox/cat"]
       tty: true
+      env:
+        # The kaniko debug image is very minimal. Jenkins' durable-task wrapper relies on basic
+        # unix utilities (like `touch`) existing on PATH to keep the log heartbeat alive.
+        - name: PATH
+          value: "/busybox:/kaniko:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       resources:
         requests:
           cpu: "50m"
