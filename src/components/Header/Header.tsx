@@ -21,6 +21,7 @@ export default function Header() {
     () => [
       { href: '/', label: 'Home' },
       { href: '/projects', label: 'Projects' },
+      { href: '/systems', label: 'Systems' },
       { href: '/blog', label: 'Blog' },
       { href: '/contact', label: 'Contact' },
       { href: '/#tech', label: 'Technologies' },

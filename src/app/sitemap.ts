@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticUrls: MetadataRoute.Sitemap = [
     { url: `${siteUrl}/`, lastModified: now, changeFrequency: 'weekly', priority: 1 },
     { url: `${siteUrl}/projects`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${siteUrl}/systems`, lastModified: now, changeFrequency: 'weekly', priority: 0.75 },
     { url: `${siteUrl}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${siteUrl}/contact`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
   ];
