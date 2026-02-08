@@ -52,6 +52,26 @@ The codebase currently uses both `styled-components` and Tailwind utilities.
 - If creating a new component: prefer Tailwind in `src/app/*` for speed and consistency with the new pages.
 - Avoid generic template-y UI. Prefer evidence-driven copy, tight hierarchy, and intentional spacing.
 
+## Frontend Redesign Brief (Next Pass)
+
+Goal: modern, professional, and intentional. Avoid the “AI portfolio template” look.
+
+- Typography:
+  - Use a deliberate font system (non-default stack).
+  - Establish a clear type scale (h1/h2/body/label) and consistent line-lengths.
+- Color + background:
+  - Keep dark mode intentional (charcoal/ink), no purple haze gradients.
+  - Use 1 accent color (for CTAs, active states, chips) and keep it consistent.
+- Components:
+  - Prefer `shadcn/ui` style primitives where it makes sense (nav, buttons, cards, tabs, badges, dialog, form).
+  - Create/keep `src/components/ui/*` primitives and a `cn()` helper (tailwind-merge + clsx).
+  - Do not introduce a second component library.
+- Motion:
+  - Keep motion minimal and meaningful; respect `prefers-reduced-motion`.
+- Quality bar:
+  - Mobile layout must be first-class (nav, spacing, card density, readable font sizes).
+  - Accessibility is non-negotiable (labels, focus styles, contrast).
+
 ## Content Conventions (Portfolio)
 
 - Projects are defined in `src/constants/constants.ts` with `slug` used for routing/detail pages.
@@ -116,6 +136,7 @@ Reason: `next-mdx-remote` compiles MDX using `@mdx-js/mdx` (newer `mdast-util-fr
   - Docker portability is validated in CI:
     - Dockerfile lint via `hadolint` (downloaded per-build; arch-aware for arm64/amd64)
     - Container build via `kaniko` with `--no-push` (builds without requiring Docker-in-Docker)
+      - The kaniko stage writes to `"$WORKSPACE/.kaniko-build.log"` and tails periodically to keep logs readable and the durable-task heartbeat alive.
   - Tool versions are pinned for reproducibility:
     - Bun: `1.3.5` (matches `package.json` and `Dockerfile`)
   - Typechecking uses `tsconfig.typecheck.json` so it does not depend on `.next/types` being present.
@@ -138,3 +159,4 @@ Reason: `next-mdx-remote` compiles MDX using `@mdx-js/mdx` (newer `mdast-util-fr
 - `bun run typecheck`
 - `bun run build`
 - Verify key pages render: `/`, `/projects`, `/blog`, `/systems` (and any new routes added).
+- If the change affects layout/styling: verify both desktop + mobile (responsive nav, no overflow, readable type).
