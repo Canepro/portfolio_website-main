@@ -52,3 +52,13 @@ Jenkins is deployed on OKE, and the recommended pipeline (`Jenkinsfile`) uses a 
 If your cluster enforces short-name image resolution, keep images fully qualified (for example `docker.io/jenkins/inbound-agent:latest` instead of `jenkins/inbound-agent:latest`) to avoid `ErrImagePull` ambiguity.
 
 For build reproducibility, Bun is pinned in the Jenkinsfiles and can be overridden with `BUN_TAG_OVERRIDE` when you intentionally bump versions.
+
+## Docker Validation
+
+This repo includes a `Dockerfile` intended to be portable (Docker, Podman, k8s).
+
+The multibranch pipeline validates container readiness without requiring Docker-in-Docker:
+
+- **Dockerfile lint**: `hadolint` (downloaded per-build; architecture-aware for arm64/amd64)
+  - Warnings are printed but do not fail the build.
+- **Image build (no push)**: `kaniko` builds the image in-cluster with `--no-push` to ensure the Dockerfile remains buildable.

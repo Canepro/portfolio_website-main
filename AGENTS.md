@@ -15,7 +15,7 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
 ## Project Layout
 
 - App Router (primary): `src/app` (all main pages live here)
-- Legacy Pages Router (still present for a few endpoints): `src/pages`
+- Legacy Pages Router (API routes only): `src/pages`
 - API routes: `src/pages/api`
 - UI/components: `src/components`
 - Site content/data:
@@ -25,6 +25,15 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
   - Blog posts: `content/blog/*.mdx`
 - Styles/themes: `src/styles`, `src/themes`
 - Static assets: `public/` (images in `public/images`)
+
+## Key Routes
+
+- Home: `/` (`src/app/page.tsx`)
+- Projects: `/projects` + `/projects/[slug]`
+- Blog: `/blog` + `/blog/[slug]` (MDX)
+- Systems overview: `/systems` (high-level architecture map)
+- Contact: `/contact`
+- Sitemap: `/sitemap.xml` (`src/app/sitemap.ts`)
 
 ## Engineering Rules
 
@@ -60,6 +69,25 @@ The codebase currently uses both `styled-components` and Tailwind utilities.
   - Index: `src/app/blog/page.tsx`
   - Post: `src/app/blog/[slug]/page.tsx` (`generateStaticParams`, `generateMetadata`)
 - Slugs are derived from filenames and validated in `src/lib/blog.ts`.
+  - Filename format: `YYYY-MM-DD-slug-words.mdx` (slug must match `/^[a-z0-9]+(?:-[a-z0-9]+)*$/`).
+
+### Frontmatter Fields
+
+```yaml
+title: 'Required — displayed as the page heading and in metadata'
+date: 'YYYY-MM-DD — required, used for sort order (newest first)'
+description: 'Optional — shown on the blog index and in meta tags'
+tags: ['optional', 'array', 'of', 'strings']
+```
+
+### Content Guidelines
+
+- Every post should end with a reusable takeaway: a checklist, snippet, or pattern.
+- Cross-link to project pages (`/projects/<slug>`) and the [Systems](/systems) page where relevant — this strengthens both the blog and portfolio sections.
+- Tags are used by the Systems page to surface related posts (tags like `gitops`, `kubernetes`, `ci-cd`, `observability` are ranked highest).
+- MDX supports: headings (h1-h3), links (internal auto-use `next/link`, external open in new tab), ordered/unordered lists, blockquotes, inline `code`, and fenced code blocks.
+- Keep posts scannable: use headings to break up sections, bold for key phrases, and lists for enumerations. Recruiters skim.
+- Avoid walls of text. If a section has more than three consecutive paragraphs without a heading, list, or code block, break it up.
 
 ## Shipping / Branching
 
@@ -74,6 +102,11 @@ The codebase currently uses both `styled-components` and Tailwind utilities.
   - Pipeline should be deterministic (`bun install --frozen-lockfile`) and run the three checks above.
   - Jenkins `sh` steps run under `/bin/sh` by default; avoid bash-only options like `set -o pipefail`.
   - On Kubernetes clusters enforcing short-name image resolution, keep agent images fully qualified (for example `docker.io/library/node:22-bullseye`).
+  - Docker portability is validated in CI:
+    - Dockerfile lint via `hadolint` (downloaded per-build; arch-aware for arm64/amd64)
+    - Container build via `kaniko` with `--no-push` (builds without requiring Docker-in-Docker)
+  - Tool versions are pinned for reproducibility:
+    - Bun: `1.3.5` (matches `package.json` and `Dockerfile`)
 
 ## Known Gotchas / Lessons Learned
 
@@ -92,4 +125,4 @@ The codebase currently uses both `styled-components` and Tailwind utilities.
 - `bun run lint`
 - `bun run typecheck`
 - `bun run build`
-- Verify key pages render: `/`, `/projects`, and any new routes added.
+- Verify key pages render: `/`, `/projects`, `/blog`, `/systems` (and any new routes added).

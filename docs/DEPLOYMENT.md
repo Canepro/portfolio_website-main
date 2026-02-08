@@ -6,6 +6,11 @@
 
 This portfolio website is deployed on **Netlify** with automatic deployments from the main branch. It uses Netlify's Next.js runtime (serverless functions + edge) to support dynamic features like the contact API route and server-rendered sitemap.
 
+Notes:
+
+- **Production**: deploys from `main`
+- **Pull requests**: use Netlify Deploy Previews for review/QA
+
 ## 🚀 Quick Deploy
 
 ### Netlify (Recommended)
