@@ -31,17 +31,6 @@ spec:
         limits:
           cpu: "1000m"
           memory: "2Gi"
-    - name: hadolint
-      image: docker.io/hadolint/hadolint:v2.12.0
-      command: ["cat"]
-      tty: true
-      resources:
-        requests:
-          cpu: "5m"
-          memory: "32Mi"
-        limits:
-          cpu: "200m"
-          memory: "128Mi"
     - name: kaniko
       image: gcr.io/kaniko-project/executor:v1.23.2-debug
       command: ["/busybox/cat"]
@@ -144,12 +133,21 @@ spec:
         expression { fileExists('Dockerfile') }
       }
       steps {
-        container('hadolint') {
-          sh '''
-            set -eu
-            hadolint Dockerfile
-          '''
-        }
+        sh '''
+          set -eu
+
+          # hadolint image is minimal and not suitable as a long-running sidecar in Jenkins K8s agents.
+          # Install the pinned binary for this build only.
+          HADOLINT_VERSION="v2.12.0"
+          HADOLINT_BIN="/usr/local/bin/hadolint"
+          if [ ! -x "$HADOLINT_BIN" ]; then
+            curl -fsSL -o "$HADOLINT_BIN" \
+              "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64"
+            chmod +x "$HADOLINT_BIN"
+          fi
+          hadolint --version
+          hadolint Dockerfile
+        '''
       }
     }
 
