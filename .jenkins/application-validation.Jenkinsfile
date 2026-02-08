@@ -208,23 +208,35 @@ spec:
         container('kaniko') {
           sh '''
             set -eu
+            # Jenkins runs `sh` with xtrace enabled by default; disable it here to keep logs readable
+            # (the kaniko executor runs concurrently with the heartbeat loop).
+            set +x
+
             export PATH="/busybox:$PATH"
             DESTINATION="${KANIKO_DESTINATION:-docker.io/library/portfolio_website-main:ci}"
             echo "kaniko: starting build (no push) -> $DESTINATION"
+
+            LOG_FILE="$WORKSPACE/.kaniko-build.log"
+            : > "$LOG_FILE"
 
             /kaniko/executor \
               --context "$WORKSPACE" \
               --dockerfile "$WORKSPACE/Dockerfile" \
               --destination "$DESTINATION" \
               --no-push \
-              --no-push-cache &
+              --no-push-cache >"$LOG_FILE" 2>&1 &
 
             pid="$!"
             while kill -0 "$pid" 2>/dev/null; do
-              echo "kaniko: still building..."
+              echo "kaniko: still building... (last lines)"
+              tail -n 10 "$LOG_FILE" || true
               sleep 30
             done
             wait "$pid"
+
+            echo "kaniko: finished (tail)"
+            tail -n 50 "$LOG_FILE" || true
+            rm -f "$LOG_FILE" || true
           '''
         }
       }

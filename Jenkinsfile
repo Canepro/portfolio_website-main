@@ -179,31 +179,44 @@ spec:
         container('kaniko') {
           sh '''
             set -eu
-            # Kaniko image is minimal; ensure BusyBox applets (sleep, rm, etc.) are available.
+            # Jenkins runs `sh` with xtrace enabled by default; disable it here to keep logs readable
+            # (the kaniko executor runs concurrently with the heartbeat loop).
+            set +x
+
+            # Kaniko image is minimal; ensure BusyBox applets (sleep, tail, etc.) are available.
             export PATH="/busybox:$PATH"
             DESTINATION="${KANIKO_DESTINATION:-docker.io/library/portfolio_website-main:ci}"
             # Kaniko builds container images from Dockerfile without requiring a Docker daemon.
             # We use --no-push so PR builds validate portability without publishing images.
             echo "kaniko: starting build (no push) -> $DESTINATION"
 
-            # Keep the Jenkins durable-task heartbeat alive by emitting periodic output.
+            # Keep output bounded and readable: write kaniko logs to a file and tail periodically.
+            LOG_FILE="$WORKSPACE/.kaniko-build.log"
+            : > "$LOG_FILE"
+
             /kaniko/executor \
               --context "$WORKSPACE" \
               --dockerfile "$WORKSPACE/Dockerfile" \
               --destination "$DESTINATION" \
               --no-push \
-              --no-push-cache &
+              --no-push-cache >"$LOG_FILE" 2>&1 &
 
             pid="$!"
             while kill -0 "$pid" 2>/dev/null; do
-              echo "kaniko: still building..."
+              echo "kaniko: still building... (last lines)"
+              tail -n 10 "$LOG_FILE" || true
               sleep 30
             done
             wait "$pid"
+
+            echo "kaniko: finished (tail)"
+            tail -n 50 "$LOG_FILE" || true
+            rm -f "$LOG_FILE" || true
           '''
         }
       }
     }
+
   }
 
   post {
