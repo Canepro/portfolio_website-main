@@ -10,7 +10,7 @@ export const mdxComponents: MDXComponents = {
       return (
         <a
           {...props}
-          className={`text-[color:var(--color-accent)] underline underline-offset-4 hover:opacity-90 ${props.className || ''}`}
+          className={`text-sky-400 underline underline-offset-4 hover:text-sky-300 ${props.className || ''}`}
           target="_blank"
           rel="noopener noreferrer"
         />
@@ -20,7 +20,7 @@ export const mdxComponents: MDXComponents = {
     return (
       <Link
         href={href}
-        className={`text-[color:var(--color-accent)] underline underline-offset-4 hover:opacity-90 ${props.className || ''}`}
+        className={`text-sky-400 underline underline-offset-4 hover:text-sky-300 ${props.className || ''}`}
       >
         {props.children}
       </Link>

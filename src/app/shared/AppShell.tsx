@@ -16,7 +16,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="relative min-h-dvh overflow-x-clip bg-[color:var(--color-bg-primary)] text-[color:var(--color-text-primary)]">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-55 [background:radial-gradient(900px_circle_at_12%_12%,rgba(0,219,216,0.11),transparent_64%),radial-gradient(900px_circle_at_88%_18%,rgba(255,255,255,0.04),transparent_66%),radial-gradient(800px_circle_at_50%_120%,rgba(0,219,216,0.06),transparent_74%)]"
+            className="pointer-events-none absolute inset-0 opacity-40 [background:radial-gradient(900px_circle_at_12%_12%,rgba(14,165,233,0.07),transparent_64%),radial-gradient(900px_circle_at_88%_18%,rgba(255,255,255,0.03),transparent_66%)]"
           />
 
           <a

@@ -93,7 +93,7 @@ export const SectionDivider = styled.div<SectionDividerProps>`
   background: ${props =>
     props.colorAlt
       ? 'linear-gradient(270deg, #F59E0B 0%, #0EA5E9 100%)'
-      : 'linear-gradient(270deg, #13ADC7 0%, #2563EB 100%)'};
+      : 'linear-gradient(270deg, #0EA5E9 0%, #2563EB 100%)'};
 
   margin: ${props => (props.divider ? '4rem 0' : '')};
 

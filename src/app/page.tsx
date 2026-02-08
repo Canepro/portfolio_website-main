@@ -8,6 +8,7 @@ import { getAllBlogPostsMeta } from '@/lib/blog';
 import { safeExternalHref } from '@/lib/url';
 import { certifications, projects } from '@/constants/constants';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 export const dynamic = 'force-static';
 
@@ -50,18 +51,10 @@ export default function HomePage() {
             </div>
 
             <div className="mt-7 flex flex-wrap gap-2">
-              <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-xs font-semibold text-white/75">
-                2 clusters: OKE hub + AKS spoke
-              </span>
-              <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-xs font-semibold text-white/75">
-                GitOps: Argo CD
-              </span>
-              <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-xs font-semibold text-white/75">
-                CI: Jenkins multibranch
-              </span>
-              <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-xs font-semibold text-white/75">
-                Telemetry: OTLP → LGTM
-              </span>
+              <Badge variant="tech">2 clusters: OKE hub + AKS spoke</Badge>
+              <Badge variant="tech">GitOps: Argo CD</Badge>
+              <Badge variant="tech">CI: Jenkins multibranch</Badge>
+              <Badge variant="tech">Telemetry: OTLP → LGTM</Badge>
             </div>
           </div>
 
@@ -150,22 +143,16 @@ export default function HomePage() {
             >
               <div className="flex items-start justify-between gap-4">
                 <h3 className="text-lg font-semibold tracking-tight">{group.title}</h3>
-                <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs text-white/70">
-                  Core
-                </span>
+                <Badge variant="tech">Core</Badge>
               </div>
               <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
                 {group.description}
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {group.skills.map(s => (
-                  <span
-                    key={s.name}
-                    className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs text-white/80"
-                    title={s.notes}
-                  >
+                  <Badge key={s.name} variant="tech" title={s.notes}>
                     {s.name}
-                  </span>
+                  </Badge>
                 ))}
               </div>
 
@@ -298,12 +285,9 @@ export default function HomePage() {
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {p.tags.slice(0, 6).map(t => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs text-white/75"
-                    >
+                    <Badge key={t} variant="tech">
                       {t}
-                    </span>
+                    </Badge>
                   ))}
                 </div>
                 <div className="mt-6 flex items-center justify-between gap-4">

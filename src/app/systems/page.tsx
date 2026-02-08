@@ -272,12 +272,9 @@ export default function SystemsPage() {
                   ) : null}
                   <div className="mt-3 flex flex-wrap gap-2">
                     {(p.tags || []).slice(0, 4).map(t => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] font-mono text-white/60"
-                      >
+                      <Badge key={t} variant="tech" className="text-[10px] font-mono">
                         {t}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
                 </Link>

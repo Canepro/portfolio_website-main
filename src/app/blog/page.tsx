@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getAllBlogPostsMeta } from '@/lib/blog';
+import { Badge } from '@/components/ui/badge';
 
 export const dynamic = 'force-static';
 
@@ -63,12 +64,9 @@ export default function BlogIndexPage() {
                 {p.tags && p.tags.length ? (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {p.tags.map(t => (
-                      <span
-                        key={t}
-                        className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs text-white/80"
-                      >
+                      <Badge key={t} variant="tech">
                         {t}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
                 ) : null}

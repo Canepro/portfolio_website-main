@@ -45,7 +45,7 @@ export default function HeroVisual() {
       data-hero-visual
       className="relative h-[240px] w-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] md:h-full md:min-h-[440px]"
     >
-      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(circle_at_30%_20%,rgba(0,219,216,0.18),transparent_60%),radial-gradient(circle_at_75%_55%,rgba(255,255,255,0.05),transparent_65%),radial-gradient(circle_at_50%_110%,rgba(0,219,216,0.06),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(circle_at_30%_20%,rgba(14,165,233,0.10),transparent_60%),radial-gradient(circle_at_75%_55%,rgba(255,255,255,0.04),transparent_65%)]" />
 
       <motion.div
         aria-hidden="true"
@@ -70,7 +70,7 @@ export default function HeroVisual() {
             Systems Snapshot
           </div>
           <div className="hidden items-center gap-2 md:flex">
-            <span className="rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-[10px] font-mono text-white/55">
+            <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-mono text-white/55">
               Netlify: deploy previews
             </span>
             <span className="text-[10px] font-mono text-white/45">gitops · ci · k8s · obs</span>

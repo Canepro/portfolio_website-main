@@ -62,7 +62,7 @@ export default function ContactClient() {
                 value={form.name}
                 onChange={onChange}
                 placeholder="Your name"
-                className="mt-2 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/20 focus:ring-2 focus:ring-[color:var(--color-accent)]"
+                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/20 focus:ring-2 focus:ring-sky-500"
               />
             </div>
 
@@ -79,7 +79,7 @@ export default function ContactClient() {
                 value={form.email}
                 onChange={onChange}
                 placeholder="you@company.com"
-                className="mt-2 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/20 focus:ring-2 focus:ring-[color:var(--color-accent)]"
+                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/20 focus:ring-2 focus:ring-sky-500"
               />
             </div>
 
@@ -95,7 +95,7 @@ export default function ContactClient() {
                 onChange={onChange}
                 placeholder="What are you working on, and how can I help?"
                 rows={6}
-                className="mt-2 w-full resize-y rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/20 focus:ring-2 focus:ring-[color:var(--color-accent)]"
+                className="mt-2 w-full resize-y rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/20 focus:ring-2 focus:ring-sky-500"
               />
             </div>
 

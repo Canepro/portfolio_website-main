@@ -172,7 +172,7 @@ const BackgroundAnimation: React.FC = () => (
         rx="1.07433"
         ry="1.07306"
         transform="translate(-476.525 -363.313) rotate(90 476.525 363.313)"
-        fill="#13ADC7"
+        fill="#0EA5E9"
       >
         <animateMotion dur="12s" begin="4" repeatCount="indefinite" rotate="auto">
           <mpath xlinkHref="#path_0" />
@@ -284,8 +284,8 @@ const BackgroundAnimation: React.FC = () => (
           y2="276.118"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#13ADC7" />
-          <stop offset="1" stopColor="#13ADC7" stopOpacity="0" />
+          <stop stopColor="#0EA5E9" />
+          <stop offset="1" stopColor="#0EA5E9" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint9_linear"
@@ -295,8 +295,8 @@ const BackgroundAnimation: React.FC = () => (
           y2="291.454"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#13ADC7" />
-          <stop offset="1" stopColor="#13ADC7" stopOpacity="0" />
+          <stop stopColor="#0EA5E9" />
+          <stop offset="1" stopColor="#0EA5E9" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint10_linear"
@@ -317,8 +317,8 @@ const BackgroundAnimation: React.FC = () => (
           y2="338.272"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#13ADC7" />
-          <stop offset="1" stopColor="#13ADC7" stopOpacity="0" />
+          <stop stopColor="#0EA5E9" />
+          <stop offset="1" stopColor="#0EA5E9" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>

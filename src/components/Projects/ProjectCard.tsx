@@ -61,7 +61,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
       {/* Content Section */}
       <div className="flex flex-1 flex-col p-5">
         <Link href={projectHref} className="group/title">
-          <h3 className="mb-2 text-xl font-semibold tracking-tight text-white transition-colors group-hover/title:text-[color:var(--color-accent)]">
+          <h3 className="mb-2 text-xl font-semibold tracking-tight text-white transition-colors group-hover/title:text-sky-400">
             {project.title}
           </h3>
         </Link>
@@ -73,17 +73,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
         {/* Tags */}
         <div className="mb-6 flex flex-wrap gap-2">
           {project.tags.slice(0, 4).map((tag, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs font-medium text-white/80"
-            >
+            <Badge key={i} variant="tech">
               {tag}
-            </span>
+            </Badge>
           ))}
           {project.tags.length > 4 && (
-            <span className="inline-flex items-center rounded-full border border-white/10 bg-black/20 px-2.5 py-1 text-xs font-medium text-white/60">
+            <Badge variant="tech" className="text-white/60">
               +{project.tags.length - 4}
-            </span>
+            </Badge>
           )}
         </div>
 
