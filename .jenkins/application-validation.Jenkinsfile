@@ -178,9 +178,18 @@ spec:
           # Install the pinned binary for this build only.
           HADOLINT_VERSION="v2.12.0"
           HADOLINT_BIN="/usr/local/bin/hadolint"
+          ARCH="$(dpkg --print-architecture 2>/dev/null || true)"
+          if [ -z "$ARCH" ]; then
+            ARCH="$(uname -m)"
+          fi
+          case "$ARCH" in
+            amd64|x86_64) HADOLINT_ASSET="hadolint-Linux-x86_64" ;;
+            arm64|aarch64) HADOLINT_ASSET="hadolint-Linux-arm64" ;;
+            *) echo "Unsupported architecture for hadolint: $ARCH" >&2; exit 1 ;;
+          esac
           if [ ! -x "$HADOLINT_BIN" ]; then
             curl -fsSL -o "$HADOLINT_BIN" \
-              "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64"
+              "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/${HADOLINT_ASSET}"
             chmod +x "$HADOLINT_BIN"
           fi
           hadolint --version
