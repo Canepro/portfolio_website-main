@@ -15,6 +15,19 @@ export type BlogPostMeta = BlogFrontmatter & {
 
 const BLOG_DIR = path.join(process.cwd(), 'content', 'blog');
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function assertPlainText(label: string, value: unknown): string {
+  if (typeof value !== 'string') {
+    throw new Error(`Expected ${label} to be a string.`);
+  }
+  // Frontmatter is intended to be plain text. Reject angle brackets to prevent HTML injection.
+  // React escapes text nodes, but rejecting HTML here also helps static analysis tools.
+  if (/[<>]/.test(value)) {
+    throw new Error(`Frontmatter field ${label} contains disallowed characters (< or >).`);
+  }
+  return value.trim();
+}
 
 function assertBlogDirExists() {
   if (!fs.existsSync(BLOG_DIR)) return;
@@ -48,13 +61,22 @@ export function getBlogPostMeta(slug: string): BlogPostMeta {
   if (!fm.title || !fm.date) {
     throw new Error(`Missing required frontmatter (title/date) for blog post: ${slug}`);
   }
+  const title = assertPlainText('title', fm.title);
+  const date = assertPlainText('date', fm.date);
+  if (!DATE_RE.test(date)) {
+    throw new Error(`Invalid blog date format (expected YYYY-MM-DD): ${slug}`);
+  }
+  const description = fm.description ? assertPlainText('description', fm.description) : undefined;
+  const tags = Array.isArray(fm.tags)
+    ? (fm.tags as unknown[]).map(t => assertPlainText('tags[]', t))
+    : undefined;
 
   return {
     slug,
-    title: fm.title,
-    description: fm.description,
-    date: fm.date,
-    tags: Array.isArray(fm.tags) ? (fm.tags as string[]) : undefined,
+    title,
+    description,
+    date,
+    tags,
   };
 }
 
@@ -77,14 +99,23 @@ export function getBlogPostSource(slug: string): { meta: BlogPostMeta; source: s
   if (!fm.title || !fm.date) {
     throw new Error(`Missing required frontmatter (title/date) for blog post: ${slug}`);
   }
+  const title = assertPlainText('title', fm.title);
+  const date = assertPlainText('date', fm.date);
+  if (!DATE_RE.test(date)) {
+    throw new Error(`Invalid blog date format (expected YYYY-MM-DD): ${slug}`);
+  }
+  const description = fm.description ? assertPlainText('description', fm.description) : undefined;
+  const tags = Array.isArray(fm.tags)
+    ? (fm.tags as unknown[]).map(t => assertPlainText('tags[]', t))
+    : undefined;
 
   return {
     meta: {
       slug,
-      title: fm.title,
-      description: fm.description,
-      date: fm.date,
-      tags: Array.isArray(fm.tags) ? (fm.tags as string[]) : undefined,
+      title,
+      description,
+      date,
+      tags,
     },
     source: content,
   };
