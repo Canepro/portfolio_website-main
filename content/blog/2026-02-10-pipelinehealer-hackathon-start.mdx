@@ -1,106 +1,54 @@
 ---
-title: "Why I'm Building an AI Agent That Fixes CI/CD Pipelines"
+title: "PipelineHealer: An AI Agent That Fixes CI/CD Failures"
 date: "2026-02-10"
-description: "The start of my AI Dev Days Hackathon journey — building PipelineHealer, a multi-agent system that automatically detects, diagnoses, and fixes broken CI/CD pipelines."
+description: "Building a multi-agent system that detects, diagnoses, and remediates broken pipelines — for the AI Dev Days Hackathon."
 tags: ["hackathon", "ai-agents", "devops", "azure", "github-actions"]
 ---
 
-Every DevOps engineer knows the feeling. You push a commit, the pipeline goes red, and you spend the next 30 minutes scrolling through logs trying to figure out why. Was it a flaky test? A missing dependency? A config drift nobody noticed?
+CI/CD failures follow a predictable loop: pipeline goes red, someone scrolls through logs, finds the error, context-switches to fix it, pushes, waits. Steps two through five are repetitive and interruptible. They do not require a human — they require pattern matching and a structured response.
 
-Now multiply that across a team. Across dozens of repos. Across hundreds of runs per day.
+**PipelineHealer** automates that loop. A GitHub webhook fires on a failed workflow run, four AI agents analyze and diagnose the failure, and a pull request opens with the fix. No manual triage.
 
-**What if an AI agent could do that triage for you — and open a PR with the fix?**
+This is my entry for the [AI Dev Days Hackathon](https://github.com/Azure/AI-Dev-Days-Hackathon), targeting the **Agentic DevOps** grand prize.
 
-That's what I'm building for the [AI Dev Days Hackathon](https://github.com/Azure/AI-Dev-Days-Hackathon): **PipelineHealer**.
+## Why Multi-Agent
 
-## The Problem
+The single-prompt approach — "here are 500 lines of CI logs, fix it" — produces inconsistent results. The context is too broad, the task is too vague, and the output oscillates between useful and hallucinated.
 
-CI/CD failures are one of the biggest time sinks in engineering. The pattern is almost always the same:
+Breaking the problem into four focused agents changed the reliability entirely:
 
-1. Pipeline fails
-2. Someone notices (eventually)
-3. They click into the run, expand the failing step
-4. Read through noisy logs to find the actual error
-5. Context-switch to figure out the fix
-6. Push a commit and wait again
+1. **Log Analyzer** — parses raw output, extracts structured error patterns. Does not diagnose.
+2. **Diagnosis Agent** — maps extracted patterns to failure categories: dependency issues, test failures, config errors, build failures, infrastructure problems. Does not fix.
+3. **Remediation Agent** — generates a targeted fix based on a confirmed diagnosis. Does not guess from raw logs.
+4. **Orchestrator** — coordinates the pipeline, manages state, opens the PR or issue.
 
-Steps 2–5 are repetitive, interruptible, and often done by the wrong person — whoever happens to be watching, not the person best suited to fix it.
+Each agent has a narrow scope, structured inputs and outputs, and can be tested independently. The agents communicate through typed data models, not free-form text.
 
-## The Solution: A Multi-Agent Pipeline
+## The Stack
 
-PipelineHealer is a system of four AI agents, each with a focused role:
+- **Agents** — Microsoft Agent Framework, Azure OpenAI (GPT-4o)
+- **Backend** — Python, FastAPI
+- **Frontend** — React, TypeScript, Tailwind, TanStack Query
+- **Storage** — Azure Cosmos DB (serverless)
+- **Hosting** — Azure Container Apps, Azure Functions (webhook handler)
+- **Trigger** — GitHub `workflow_run.completed` webhook
 
-```
-GitHub Actions Failure
-        │
-        ▼
-┌──────────────────┐
-│   Log Analyzer   │  ← Parses raw logs, extracts error patterns
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│  Diagnosis Agent │  ← Identifies root cause from patterns
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│ Remediation Agent│  ← Generates the actual fix
-└────────┬─────────┘
-         │
-         ▼
-┌──────────────────┐
-│   Orchestrator   │  ← Coordinates the pipeline, opens PR/issue
-└──────────────────┘
-```
+The flow: GitHub sends the webhook → Azure Functions validates and routes it → the agent pipeline runs → a PR or issue is created on the source repo. Five supported failure types at launch.
 
-Each agent is specialized. The Log Analyzer doesn't try to fix things. The Remediation Agent doesn't parse logs. They communicate through structured data, not free-form text. This keeps each agent's job small enough to be reliable.
+## What's Built
 
-## Why Multi-Agent Over a Single Prompt?
+The scaffold is done — agents, GitHub integration, webhook handler, dashboard frontend, Docker setup. What remains is deploying to Azure, wiring the GitHub App to a live webhook URL, and testing against real failures.
 
-I tried the single-prompt approach first. "Here are 500 lines of CI logs, tell me what's wrong and fix it." The results were inconsistent — sometimes brilliant, sometimes hallucinated nonsense.
+## What's Coming
 
-Breaking it into stages changed everything:
+This is post one of six. The series will cover:
 
-- **Log Analyzer** extracts structured error patterns — it knows what to look for
-- **Diagnosis Agent** maps patterns to known failure categories — dependency issues, test failures, config errors, build failures, infrastructure problems
-- **Remediation Agent** generates targeted fixes based on a confirmed diagnosis — not guessing from raw logs
-
-Each agent can be tested, improved, and debugged independently.
-
-## The Tech Stack
-
-| Component | Technology |
-|-----------|-----------|
-| Agents | Microsoft Agent Framework + Azure OpenAI (GPT-4o) |
-| Backend | Python (FastAPI) |
-| Frontend | React + TypeScript + Tailwind |
-| Storage | Azure Cosmos DB |
-| Hosting | Azure Container Apps |
-| Webhooks | Azure Functions |
-| CI/CD trigger | GitHub webhooks on `workflow_run.completed` |
-
-The whole thing is deployed on Azure and triggered by GitHub — when a workflow fails, GitHub sends a webhook, PipelineHealer analyzes the failure, and opens a PR with the fix. No human intervention needed for common failures.
-
-## What I'm Targeting
-
-The hackathon has two grand prizes. I'm going for **Agentic DevOps** — best solution leveraging agentic AI to automate CI/CD, incident response, and reliability engineering. That's exactly what this is.
-
-## What's Next
-
-Over the next 5 weeks, I'll be documenting the entire build in this blog series:
-
-1. **This post** — Why and what
-2. **Designing the agent pipeline** — Architecture decisions
-3. **Deploying to Azure** — What went wrong (and right)
-4. **Teaching AI to read logs** — Prompt engineering for CI output
-5. **End-to-end walkthrough** — Webhook to pull request
-6. **Retrospective** — Lessons learned
-
-The code is already scaffolded — agents are built, frontend is done, GitHub integration is wired up. Now it's time to deploy, test with real failures, and polish.
-
-Let's see if an AI can actually fix pipelines faster than I can. 🚀
+- Architecture decisions behind the agent pipeline
+- Deploying to Azure — what broke and how it was fixed
+- Prompt engineering for CI log parsing
+- End-to-end walkthrough from webhook to pull request
+- Retrospective after submission
 
 ---
 
-*This is post 1 of 6 in my [AI Dev Days Hackathon](/tags/hackathon) series. Follow along as I build PipelineHealer.*
+*Post 1 of 6 in the [AI Dev Days Hackathon](/tags/hackathon) series.*
