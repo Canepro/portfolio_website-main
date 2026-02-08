@@ -183,8 +183,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         sizes={sizes}
         loaded={loaded}
         className={className}
-        // next/image fires `onLoadingComplete` reliably for cached images too.
-        onLoadingComplete={handleLoaded}
+        onLoad={handleLoaded}
         onError={handleError}
         placeholder={placeholder ? 'blur' : 'empty'}
         blurDataURL={blurDataURL}

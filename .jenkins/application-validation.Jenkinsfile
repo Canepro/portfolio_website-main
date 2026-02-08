@@ -185,6 +185,15 @@ spec:
           if [ ! -x "$HADOLINT_BIN" ]; then
             curl -fsSL -o "$HADOLINT_BIN" \
               "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/${HADOLINT_ASSET}"
+            # Verify supply-chain integrity before execution.
+            EXPECTED_SHA="$(curl -fsSL \
+              "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/${HADOLINT_ASSET}.sha256" \
+              | awk '{print $1}')"
+            ACTUAL_SHA="$(sha256sum "$HADOLINT_BIN" | awk '{print $1}')"
+            if [ -z "$EXPECTED_SHA" ] || [ "$EXPECTED_SHA" != "$ACTUAL_SHA" ]; then
+              echo "hadolint checksum mismatch for ${HADOLINT_ASSET} (${HADOLINT_VERSION})" >&2
+              exit 1
+            fi
             chmod +x "$HADOLINT_BIN"
           fi
           hadolint --version
@@ -194,11 +203,13 @@ spec:
         container('kaniko') {
           sh '''
             set -eu
+            DESTINATION="${KANIKO_DESTINATION:-docker.io/library/portfolio_website-main:ci}"
             /kaniko/executor \
               --context "$WORKSPACE" \
               --dockerfile "$WORKSPACE/Dockerfile" \
-              --destination "portfolio_website-main:ci" \
+              --destination "$DESTINATION" \
               --no-push \
+              --no-push-cache \
               --tarPath "$WORKSPACE/ci-image.tar"
 
             rm -f "$WORKSPACE/ci-image.tar" || true

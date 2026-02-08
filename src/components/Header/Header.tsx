@@ -150,9 +150,12 @@ export default function Header() {
           onClick={e => e.stopPropagation()}
           role="dialog"
           aria-modal="true"
+          aria-labelledby="mobile-menu-title"
         >
           <div className="flex items-center justify-between">
-            <div className="text-sm font-semibold text-white/90">Menu</div>
+            <div id="mobile-menu-title" className="text-sm font-semibold text-white/90">
+              Menu
+            </div>
             <Button
               type="button"
               variant="glass"
@@ -169,6 +172,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => setOpen(false)}
                 className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 hover:bg-white/[0.07]"
               >
                 {item.label}

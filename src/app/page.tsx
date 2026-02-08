@@ -172,10 +172,10 @@ export default function HomePage() {
               {group.evidence && group.evidence.length ? (
                 <div className="mt-6 flex flex-wrap gap-2">
                   {group.evidence.map(e => {
-                    const isExternal = /^https?:\/\//i.test(e.href);
-                    const safeHref = isExternal ? safeExternalHref(e.href) : e.href;
+                    const isInternal = e.href.startsWith('/') || e.href.startsWith('#');
+                    const safeHref = isInternal ? e.href : safeExternalHref(e.href);
                     if (!safeHref) return null;
-                    if (isExternal) {
+                    if (!isInternal) {
                       return (
                         <a
                           key={e.href}

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:3001": "next dev -p 3001",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

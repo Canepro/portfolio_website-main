@@ -10,7 +10,7 @@ GitOps is less about tools and more about **control loops**. After running ArgoC
 ## The Mental Model
 
 1. **Desired state lives in Git.** Every Helm values file, every Kustomize overlay, every namespace definition. If it is not in the repo, it does not exist.
-2. **A reconciler continuously compares desired vs actual.** Argo CD watches the repo and diffs against the live cluster. This is where drift becomes visible.
+2. **A reconciler continuously compares desired vs actual.** ArgoCD watches the repo and diffs against the live cluster. This is where drift becomes visible.
 3. **Drift is correctable, not catastrophic.** A misconfigured resource is not a crisis — it is a PR away from being fixed.
 
 The key insight: GitOps is not "infrastructure as code." It is *infrastructure as a feedback loop*. The value is not in storing YAML in Git; it is in the reconciler closing the gap automatically.

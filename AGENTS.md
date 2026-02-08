@@ -116,6 +116,7 @@ Reason: `next-mdx-remote` compiles MDX using `@mdx-js/mdx` (newer `mdast-util-fr
     - Container build via `kaniko` with `--no-push` (builds without requiring Docker-in-Docker)
   - Tool versions are pinned for reproducibility:
     - Bun: `1.3.5` (matches `package.json` and `Dockerfile`)
+  - Typechecking uses `tsconfig.typecheck.json` so it does not depend on `.next/types` being present.
 
 ## Known Gotchas / Lessons Learned
 

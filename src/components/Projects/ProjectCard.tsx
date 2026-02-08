@@ -14,6 +14,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   const visitHref = safeExternalHref(project.visit);
   const sourceHref = safeExternalHref(project.source);
   const hasSeparateLiveDemo = Boolean(visitHref && sourceHref && visitHref !== sourceHref);
+  const showLiveDemo = Boolean(visitHref && (!sourceHref || visitHref !== sourceHref));
 
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -112,7 +113,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
             </>
           ) : (
             <>
-              {hasSeparateLiveDemo && visitHref && (
+              {showLiveDemo && visitHref && (
                 <Button variant="accent" size="sm" className="w-full gap-2 sm:w-auto" asChild>
                   <a href={visitHref} target="_blank" rel="noopener noreferrer">
                     <ExternalLink className="h-4 w-4" /> Live Demo
@@ -121,7 +122,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
               )}
               {sourceHref && (
                 <Button
-                  variant={hasSeparateLiveDemo ? 'glass' : 'accent'}
+                  variant={showLiveDemo ? 'glass' : 'accent'}
                   size="sm"
                   className="w-full gap-2 sm:w-auto"
                   asChild
