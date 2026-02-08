@@ -8,7 +8,7 @@
 [![React](https://img.shields.io/badge/React-19.2.4-blue?style=flat&logo=react)](https://reactjs.org/)
 
 <div align="center">
-  <img src="public/images/readme-systems-map.svg" alt="Systems map: GitHub to Jenkins to OKE hub and AKS spoke" width="900" />
+  <img src="public/images/new-portfolio-site.png" alt="Portfolio site screenshot" width="800" />
 </div>
 
 ## 🚀 Featured: Hub-and-Spoke Platform (OKE Hub + AKS Spoke)
