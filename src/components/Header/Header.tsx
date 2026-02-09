@@ -129,7 +129,7 @@ export default function Header() {
             type="button"
             variant="glass"
             size="icon"
-            className="md:hidden"
+            className="shadow-sm md:hidden"
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-controls="mobile-menu"
             aria-expanded={open}
@@ -151,7 +151,7 @@ export default function Header() {
         >
           <div
             className={cn(
-              'absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-200',
+              'absolute inset-0 bg-black/55 backdrop-blur-sm transition-opacity duration-200',
               open ? 'opacity-100' : 'opacity-0'
             )}
             onClick={() => setOpen(false)}
@@ -160,7 +160,7 @@ export default function Header() {
           <div
             id="mobile-menu"
             className={cn(
-              'absolute right-0 top-0 h-full w-[86vw] max-w-sm border-l border-[color:var(--color-border)] bg-background/95 p-5 shadow-2xl transition-transform duration-200',
+              'absolute right-0 top-0 h-full w-[86vw] max-w-sm border-l border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)] p-5 shadow-2xl transition-transform duration-200',
               open ? 'translate-x-0' : 'translate-x-full'
             )}
             onClick={e => e.stopPropagation()}
@@ -168,7 +168,7 @@ export default function Header() {
             aria-modal="true"
             aria-labelledby="mobile-menu-title"
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between border-b border-[color:var(--color-border)] pb-4">
               <div
                 id="mobile-menu-title"
                 className="text-sm font-semibold text-[color:var(--color-text-primary)]"
@@ -192,7 +192,7 @@ export default function Header() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm font-medium text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]"
+                  className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-4 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-sm hover:bg-[color:var(--color-card-hover)]"
                 >
                   {item.label}
                 </Link>
