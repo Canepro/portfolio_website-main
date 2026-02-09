@@ -47,10 +47,13 @@ export default function ContactClient() {
           error logs), I can respond faster.
         </p>
 
-        <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8">
+        <div className="mt-10 rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 md:p-8">
           <form onSubmit={onSubmit} className="grid gap-5">
             <div>
-              <label htmlFor="contact-name" className="text-sm font-medium text-white/80">
+              <label
+                htmlFor="contact-name"
+                className="text-sm font-medium text-[color:var(--color-text-primary)]"
+              >
                 Name
               </label>
               <input
@@ -62,12 +65,15 @@ export default function ContactClient() {
                 value={form.name}
                 onChange={onChange}
                 placeholder="Your name"
-                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/20 focus:ring-2 focus:ring-sky-500"
+                className="mt-2 w-full rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-secondary)] placeholder:opacity-70 focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500"
               />
             </div>
 
             <div>
-              <label htmlFor="contact-email" className="text-sm font-medium text-white/80">
+              <label
+                htmlFor="contact-email"
+                className="text-sm font-medium text-[color:var(--color-text-primary)]"
+              >
                 Email
               </label>
               <input
@@ -79,12 +85,15 @@ export default function ContactClient() {
                 value={form.email}
                 onChange={onChange}
                 placeholder="you@company.com"
-                className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/20 focus:ring-2 focus:ring-sky-500"
+                className="mt-2 w-full rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-secondary)] placeholder:opacity-70 focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500"
               />
             </div>
 
             <div>
-              <label htmlFor="contact-message" className="text-sm font-medium text-white/80">
+              <label
+                htmlFor="contact-message"
+                className="text-sm font-medium text-[color:var(--color-text-primary)]"
+              >
                 Message
               </label>
               <textarea
@@ -95,7 +104,7 @@ export default function ContactClient() {
                 onChange={onChange}
                 placeholder="What are you working on, and how can I help?"
                 rows={6}
-                className="mt-2 w-full resize-y rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-white/20 focus:ring-2 focus:ring-sky-500"
+                className="mt-2 w-full resize-y rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-secondary)] placeholder:opacity-70 focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500"
               />
             </div>
 

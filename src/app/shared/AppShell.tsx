@@ -21,7 +21,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
           <a
             href="#content"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-black/80 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:border focus:border-[color:var(--color-border)] focus:bg-[color:var(--color-bg-secondary)] focus:px-4 focus:py-2 focus:text-sm focus:text-[color:var(--color-text-primary)] focus:shadow-sm"
           >
             Skip to content
           </a>

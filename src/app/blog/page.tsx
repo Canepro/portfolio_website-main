@@ -26,7 +26,7 @@ export default function BlogIndexPage() {
           </div>
           <Link
             href="/"
-            className="text-sm text-[color:var(--color-text-secondary)] hover:text-white underline underline-offset-4"
+            className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)] underline underline-offset-4"
           >
             Back home
           </Link>
@@ -34,14 +34,14 @@ export default function BlogIndexPage() {
 
         <div className="mt-10 space-y-4">
           {posts.length === 0 ? (
-            <div className="rounded-xl border border-white/10 bg-white/5 p-6 text-[color:var(--color-text-secondary)]">
+            <div className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 text-[color:var(--color-text-secondary)]">
               No posts yet.
             </div>
           ) : (
             posts.map(p => (
               <article
                 key={p.slug}
-                className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/[0.07] transition-colors"
+                className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 transition-colors hover:bg-[color:var(--color-card-hover)]"
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <h2 className="text-xl font-semibold tracking-tight">
@@ -52,7 +52,10 @@ export default function BlogIndexPage() {
                       {p.title}
                     </Link>
                   </h2>
-                  <time className="text-xs text-white/60" dateTime={p.date}>
+                  <time
+                    className="text-xs text-[color:var(--color-text-secondary)] opacity-80"
+                    dateTime={p.date}
+                  >
                     {p.date}
                   </time>
                 </div>

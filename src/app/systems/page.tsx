@@ -38,16 +38,22 @@ function NodeCard({
     <div
       className={[
         'min-w-0 rounded-2xl border px-4 py-3 shadow-sm backdrop-blur',
-        accent ? 'border-white/15 bg-white/[0.07]' : 'border-white/10 bg-black/20',
+        accent
+          ? 'border-[color:var(--color-border)] bg-[color:var(--color-card-hover)]'
+          : 'border-[color:var(--color-border)] bg-[color:var(--color-card-bg)]',
       ].join(' ')}
     >
       <div className="flex items-start gap-3">
-        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/5 text-white/80">
+        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]">
           {icon}
         </div>
         <div className="min-w-0">
-          <div className="truncate text-sm font-semibold text-white/90">{label}</div>
-          <div className="mt-1 text-xs leading-5 text-white/60">{sub}</div>
+          <div className="truncate text-sm font-semibold text-[color:var(--color-text-primary)]">
+            {label}
+          </div>
+          <div className="mt-1 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
+            {sub}
+          </div>
         </div>
       </div>
     </div>
@@ -56,22 +62,34 @@ function NodeCard({
 
 function SystemsDiagram() {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 md:p-6">
+    <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-5 md:p-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-xs font-semibold uppercase tracking-widest text-white/55">
+        <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
           Hub-and-Spoke Map
         </div>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="outline" className="border-white/15 bg-black/20 text-white/70">
+          <Badge
+            variant="outline"
+            className="border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]"
+          >
             OKE hub
           </Badge>
-          <Badge variant="outline" className="border-white/15 bg-black/20 text-white/70">
+          <Badge
+            variant="outline"
+            className="border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]"
+          >
             AKS spoke
           </Badge>
-          <Badge variant="outline" className="border-white/15 bg-black/20 text-white/70">
+          <Badge
+            variant="outline"
+            className="border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]"
+          >
             Jenkins multibranch
           </Badge>
-          <Badge variant="outline" className="border-white/15 bg-black/20 text-white/70">
+          <Badge
+            variant="outline"
+            className="border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]"
+          >
             OTLP → LGTM
           </Badge>
         </div>
@@ -80,7 +98,10 @@ function SystemsDiagram() {
       <div className="mt-5 grid gap-3">
         <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
           <NodeCard icon={<GitBranch className="h-5 w-5" />} label="GitHub" sub="main + PRs" />
-          <div className="flex items-center justify-center text-white/35" aria-hidden="true">
+          <div
+            className="flex items-center justify-center text-[color:var(--color-text-secondary)] opacity-50"
+            aria-hidden="true"
+          >
             <ArrowRight className="h-4 w-4" />
           </div>
           <NodeCard
@@ -89,7 +110,10 @@ function SystemsDiagram() {
             sub="Controller on OKE, multibranch CI for PRs and main"
             accent
           />
-          <div className="flex items-center justify-center text-white/35" aria-hidden="true">
+          <div
+            className="flex items-center justify-center text-[color:var(--color-text-secondary)] opacity-50"
+            aria-hidden="true"
+          >
             <ArrowRight className="h-4 w-4" />
           </div>
           <NodeCard
@@ -105,9 +129,11 @@ function SystemsDiagram() {
             label="AKS Spoke"
             sub="Rocket.Chat workload + metrics/traces/logs exported"
           />
-          <div className="flex shrink-0 flex-col items-center justify-center text-white/35">
+          <div className="flex shrink-0 flex-col items-center justify-center text-[color:var(--color-text-secondary)] opacity-50">
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            <div className="mt-1 text-[10px] font-mono text-white/45">OTLP</div>
+            <div className="mt-1 text-[10px] font-mono text-[color:var(--color-text-secondary)] opacity-70">
+              OTLP
+            </div>
           </div>
           <NodeCard
             icon={<BarChart3 className="h-5 w-5" />}
@@ -118,7 +144,7 @@ function SystemsDiagram() {
         </div>
       </div>
 
-      <p className="mt-5 text-xs leading-5 text-white/55">
+      <p className="mt-5 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
         This is a working demo system. Public endpoints may be gated or best-effort.
       </p>
     </div>
@@ -158,7 +184,9 @@ export default function SystemsPage() {
       <section className="mx-auto max-w-6xl">
         <div className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
-            <p className="text-sm font-medium tracking-wide text-white/70">Systems</p>
+            <p className="text-sm font-medium tracking-wide text-[color:var(--color-text-secondary)]">
+              Systems
+            </p>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight md:text-6xl">
               A 30-second map
             </h1>
@@ -179,8 +207,8 @@ export default function SystemsPage() {
           </div>
 
           <div className="w-full max-w-xl">
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-              <div className="text-xs font-semibold uppercase tracking-widest text-white/55">
+            <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6">
+              <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
                 Live Endpoints
               </div>
               <div className="mt-4 grid gap-2">
@@ -190,16 +218,16 @@ export default function SystemsPage() {
                     href={e.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/80 hover:bg-white/[0.06]"
+                    className="flex items-center justify-between rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]"
                   >
                     <span className="font-semibold">{e.label}</span>
-                    <span className="inline-flex items-center gap-2 text-white/55">
+                    <span className="inline-flex items-center gap-2 text-[color:var(--color-text-secondary)] opacity-80">
                       Open <ExternalLink className="h-4 w-4" />
                     </span>
                   </a>
                 ))}
               </div>
-              <p className="mt-4 text-xs leading-5 text-white/55">
+              <p className="mt-4 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
                 Some services require authentication or may be paused to control cost.
               </p>
             </div>
@@ -213,7 +241,7 @@ export default function SystemsPage() {
 
       <section className="mx-auto mt-16 max-w-6xl">
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+          <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8">
             <h2 className="text-3xl font-semibold tracking-tight">Repos</h2>
             <p className="mt-3 text-[color:var(--color-text-secondary)] leading-7">
               The two anchor repos that explain most of this setup end-to-end.
@@ -225,12 +253,12 @@ export default function SystemsPage() {
                   href={hubRepo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-2xl border border-white/10 bg-black/20 p-5 hover:bg-white/[0.06]"
+                  className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-5 hover:bg-[color:var(--color-card-hover)]"
                 >
-                  <div className="text-sm font-semibold text-white/90">
+                  <div className="text-sm font-semibold text-[color:var(--color-text-primary)]">
                     central-observability-hub-stack
                   </div>
-                  <div className="mt-2 text-sm text-white/65">
+                  <div className="mt-2 text-sm text-[color:var(--color-text-secondary)]">
                     Terraform-provisioned OKE hub + Argo CD GitOps + LGTM (Grafana/Loki/Tempo).
                   </div>
                 </a>
@@ -241,10 +269,12 @@ export default function SystemsPage() {
                   href={spokeRepo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-2xl border border-white/10 bg-black/20 p-5 hover:bg-white/[0.06]"
+                  className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-5 hover:bg-[color:var(--color-card-hover)]"
                 >
-                  <div className="text-sm font-semibold text-white/90">rocketchat-k8s</div>
-                  <div className="mt-2 text-sm text-white/65">
+                  <div className="text-sm font-semibold text-[color:var(--color-text-primary)]">
+                    rocketchat-k8s
+                  </div>
+                  <div className="mt-2 text-sm text-[color:var(--color-text-secondary)]">
                     Rocket.Chat on AKS with GitOps patterns, TLS, ops automation, and telemetry
                     exported to the hub.
                   </div>
@@ -253,7 +283,7 @@ export default function SystemsPage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+          <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8">
             <h2 className="text-3xl font-semibold tracking-tight">Related Writing</h2>
             <p className="mt-3 text-[color:var(--color-text-secondary)] leading-7">
               Deeper notes: tradeoffs, constraints, and the boring details that matter.
@@ -264,11 +294,15 @@ export default function SystemsPage() {
                 <Link
                   key={p.slug}
                   href={`/blog/${encodeURIComponent(p.slug)}`}
-                  className="rounded-2xl border border-white/10 bg-black/20 p-5 hover:bg-white/[0.06]"
+                  className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-5 hover:bg-[color:var(--color-card-hover)]"
                 >
-                  <div className="text-sm font-semibold text-white/90">{p.title}</div>
+                  <div className="text-sm font-semibold text-[color:var(--color-text-primary)]">
+                    {p.title}
+                  </div>
                   {p.description ? (
-                    <div className="mt-2 text-sm text-white/65">{p.description}</div>
+                    <div className="mt-2 text-sm text-[color:var(--color-text-secondary)]">
+                      {p.description}
+                    </div>
                   ) : null}
                   <div className="mt-3 flex flex-wrap gap-2">
                     {(p.tags || []).slice(0, 4).map(t => (

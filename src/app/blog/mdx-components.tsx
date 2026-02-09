@@ -10,7 +10,7 @@ export const mdxComponents: MDXComponents = {
       return (
         <a
           {...props}
-          className={`text-sky-400 underline underline-offset-4 hover:text-sky-300 ${props.className || ''}`}
+          className={`text-[color:var(--color-accent)] underline underline-offset-4 hover:opacity-90 ${props.className || ''}`}
           target="_blank"
           rel="noopener noreferrer"
         />
@@ -20,7 +20,7 @@ export const mdxComponents: MDXComponents = {
     return (
       <Link
         href={href}
-        className={`text-sky-400 underline underline-offset-4 hover:text-sky-300 ${props.className || ''}`}
+        className={`text-[color:var(--color-accent)] underline underline-offset-4 hover:opacity-90 ${props.className || ''}`}
       >
         {props.children}
       </Link>
@@ -65,19 +65,19 @@ export const mdxComponents: MDXComponents = {
   blockquote: props => (
     <blockquote
       {...props}
-      className={`mt-6 border-l-2 border-white/15 pl-4 italic text-[color:var(--color-text-secondary)] ${props.className || ''}`}
+      className={`mt-6 border-l-2 border-[color:var(--color-border)] pl-4 italic text-[color:var(--color-text-secondary)] ${props.className || ''}`}
     />
   ),
   code: props => (
     <code
       {...props}
-      className={`rounded bg-white/5 px-1.5 py-0.5 text-sm text-white/90 ${props.className || ''}`}
+      className={`rounded bg-[color:var(--color-card-bg)] px-1.5 py-0.5 text-sm text-[color:var(--color-text-primary)] ${props.className || ''}`}
     />
   ),
   pre: props => (
     <pre
       {...props}
-      className={`mt-6 overflow-x-auto rounded-xl border border-white/10 bg-black/30 p-4 text-sm ${props.className || ''}`}
+      className={`mt-6 overflow-x-auto rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)] p-4 text-sm ${props.className || ''}`}
     />
   ),
 };

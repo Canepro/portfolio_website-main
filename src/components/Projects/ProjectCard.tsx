@@ -26,7 +26,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   };
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/5 text-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/[0.07] hover:shadow-lg">
+    <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-[color:var(--color-card-hover)] hover:shadow-lg">
       {/* Image Section */}
       <Link href={projectHref} className="relative block aspect-video overflow-hidden">
         <ProjectMedia
@@ -51,7 +51,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
             </Badge>
           )}
           {project.category && (
-            <Badge variant="secondary" className="bg-white/90 text-black backdrop-blur-sm">
+            <Badge
+              variant="secondary"
+              className="bg-background/90 text-foreground backdrop-blur-sm"
+            >
               {project.category}
             </Badge>
           )}
@@ -61,7 +64,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
       {/* Content Section */}
       <div className="flex flex-1 flex-col p-5">
         <Link href={projectHref} className="group/title">
-          <h3 className="mb-2 text-xl font-semibold tracking-tight text-white transition-colors group-hover/title:text-sky-400">
+          <h3 className="mb-2 text-xl font-semibold tracking-tight transition-colors group-hover/title:text-[color:var(--color-accent)]">
             {project.title}
           </h3>
         </Link>
@@ -78,7 +81,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
             </Badge>
           ))}
           {project.tags.length > 4 && (
-            <Badge variant="tech" className="text-white/60">
+            <Badge variant="tech" className="opacity-70">
               +{project.tags.length - 4}
             </Badge>
           )}

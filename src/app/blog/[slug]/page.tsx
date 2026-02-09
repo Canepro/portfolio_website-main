@@ -44,11 +44,14 @@ export default async function BlogPostPage({ params }: { params: ParamsPromise }
         <div className="flex items-center justify-between gap-6">
           <Link
             href="/blog"
-            className="text-sm text-[color:var(--color-text-secondary)] hover:text-white underline underline-offset-4"
+            className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)] underline underline-offset-4"
           >
             Back to blog
           </Link>
-          <time className="text-xs text-white/60" dateTime={post.meta.date}>
+          <time
+            className="text-xs text-[color:var(--color-text-secondary)] opacity-80"
+            dateTime={post.meta.date}
+          >
             {post.meta.date}
           </time>
         </div>

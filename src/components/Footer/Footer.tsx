@@ -12,14 +12,14 @@ export default function Footer() {
   const twitterHref = safeExternalHref(profile.links.twitter);
 
   return (
-    <footer className="border-t border-white/10">
+    <footer className="border-t border-[color:var(--color-border)]">
       <div className="mx-auto max-w-6xl px-6 py-12 md:px-10">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-widest text-white/50">
+            <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-70">
               Get in touch
             </div>
-            <p className="mt-3 max-w-sm text-sm leading-6 text-white/70">
+            <p className="mt-3 max-w-sm text-sm leading-6 text-[color:var(--color-text-secondary)]">
               If you include context (links, repo, error logs), I can respond faster.
             </p>
 
@@ -40,33 +40,51 @@ export default function Footer() {
           </div>
 
           <div>
-            <div className="text-xs font-semibold uppercase tracking-widest text-white/50">
+            <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-70">
               Navigate
             </div>
             <div className="mt-4 grid gap-2">
-              <Link href="/projects" className="text-sm text-white/70 hover:text-white">
+              <Link
+                href="/projects"
+                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+              >
                 Projects
               </Link>
-              <Link href="/systems" className="text-sm text-white/70 hover:text-white">
+              <Link
+                href="/systems"
+                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+              >
                 Systems
               </Link>
-              <Link href="/blog" className="text-sm text-white/70 hover:text-white">
+              <Link
+                href="/blog"
+                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+              >
                 Blog
               </Link>
-              <Link href="/contact" className="text-sm text-white/70 hover:text-white">
+              <Link
+                href="/contact"
+                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+              >
                 Contact
               </Link>
-              <Link href="/#tech" className="text-sm text-white/70 hover:text-white">
+              <Link
+                href="/#tech"
+                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+              >
                 Technologies
               </Link>
-              <Link href="/#about" className="text-sm text-white/70 hover:text-white">
+              <Link
+                href="/#about"
+                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+              >
                 About
               </Link>
             </div>
           </div>
 
           <div>
-            <div className="text-xs font-semibold uppercase tracking-widest text-white/50">
+            <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-70">
               Elsewhere
             </div>
             <div className="mt-5 flex items-center gap-2">
@@ -93,13 +111,13 @@ export default function Footer() {
               ) : null}
             </div>
 
-            <p className="mt-5 text-xs leading-5 text-white/55">
+            <p className="mt-5 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
               Constant and never-ending progress. Ship, observe, explain.
             </p>
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
+        <div className="mt-10 flex flex-col gap-2 border-t border-[color:var(--color-border)] pt-6 text-xs text-[color:var(--color-text-secondary)] opacity-80 md:flex-row md:items-center md:justify-between">
           <div>
             © {new Date().getFullYear()} {profile.name}. Built with Next.js, Bun, and shadcn-style
             primitives.
