@@ -16,6 +16,7 @@ type NavItem = { href: string; label: string };
 export default function Header() {
   const pathname = usePathname() ?? '';
   const [open, setOpen] = useState(false);
+  const [renderMobileMenu, setRenderMobileMenu] = useState(false);
 
   const nav: NavItem[] = useMemo(
     () => [
@@ -50,18 +51,29 @@ export default function Header() {
   }, [open]);
 
   useEffect(() => {
+    if (open) {
+      setRenderMobileMenu(true);
+      return;
+    }
+
+    // Unmount after the close animation so the overlay can't steal taps on mobile.
+    const t = window.setTimeout(() => setRenderMobileMenu(false), 220);
+    return () => window.clearTimeout(t);
+  }, [open]);
+
+  useEffect(() => {
     // Close mobile menu on navigation.
     setOpen(false);
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50">
+    <header className="sticky top-0 z-50 border-b border-[color:var(--color-border)] bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-6 md:px-10">
         <Link href="/" className="group inline-flex items-center gap-3">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-sm font-semibold text-white/90 shadow-sm transition-colors group-hover:bg-white/[0.07]">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-sm font-semibold text-[color:var(--color-text-primary)] shadow-sm transition-colors group-hover:bg-[color:var(--color-card-hover)]">
             VM
           </span>
-          <span className="hidden text-sm font-semibold tracking-tight text-white/90 sm:inline">
+          <span className="hidden text-sm font-semibold tracking-tight text-[color:var(--color-text-primary)] sm:inline">
             {profile.name}
           </span>
         </Link>
@@ -79,8 +91,9 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'rounded-xl px-3 py-2 text-sm font-medium text-white/70 transition-colors hover:text-white',
-                  isActive && 'bg-white/5 text-white'
+                  'rounded-xl px-3 py-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition-colors hover:opacity-90',
+                  isActive &&
+                    'bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)]'
                 )}
               >
                 {item.label}
@@ -116,8 +129,9 @@ export default function Header() {
             type="button"
             variant="glass"
             size="icon"
-            className="md:hidden"
+            className="shadow-sm md:hidden"
             aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-controls="mobile-menu"
             aria-expanded={open}
             onClick={() => setOpen(v => !v)}
           >
@@ -127,87 +141,98 @@ export default function Header() {
       </div>
 
       {/* Mobile menu */}
-      <div
-        className={cn(
-          'fixed inset-0 z-50 md:hidden',
-          open ? 'pointer-events-auto' : 'pointer-events-none'
-        )}
-        aria-hidden={!open}
-      >
+      {renderMobileMenu ? (
         <div
           className={cn(
-            'absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity',
-            open ? 'opacity-100' : 'opacity-0'
+            'fixed inset-0 z-50 md:hidden',
+            open ? 'pointer-events-auto' : 'pointer-events-none'
           )}
-          onClick={() => setOpen(false)}
-        />
-
-        <div
-          className={cn(
-            'absolute right-0 top-0 h-full w-[86vw] max-w-sm border-l border-white/10 bg-background/95 p-5 shadow-2xl transition-transform',
-            open ? 'translate-x-0' : 'translate-x-full'
-          )}
-          onClick={e => e.stopPropagation()}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="mobile-menu-title"
+          aria-hidden={!open}
         >
-          <div className="flex items-center justify-between">
-            <div id="mobile-menu-title" className="text-sm font-semibold text-white/90">
-              Menu
-            </div>
-            <Button
-              type="button"
-              variant="glass"
-              size="icon"
-              aria-label="Close menu"
-              onClick={() => setOpen(false)}
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
+          <div
+            className={cn(
+              'absolute inset-0 bg-black/55 backdrop-blur-sm transition-opacity duration-200',
+              open ? 'opacity-100' : 'opacity-0'
+            )}
+            onClick={() => setOpen(false)}
+          />
 
-          <div className="mt-5 grid gap-1">
-            {nav.map(item => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-white/85 hover:bg-white/[0.07]"
+          <div
+            id="mobile-menu"
+            className={cn(
+              'absolute right-0 top-0 h-full w-[86vw] max-w-sm border-l border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)] p-5 shadow-2xl transition-transform duration-200',
+              open ? 'translate-x-0' : 'translate-x-full'
+            )}
+            onClick={e => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-menu-title"
+          >
+            <div className="flex items-center justify-between border-b border-[color:var(--color-border)] pb-4">
+              <div
+                id="mobile-menu-title"
+                className="text-sm font-semibold text-[color:var(--color-text-primary)]"
               >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-
-          <div className="mt-6 flex items-center gap-2">
-            <SimpleThemeToggle />
-            {githubHref ? (
-              <Button variant="glass" size="icon" asChild>
-                <a href={githubHref} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                  <Github className="h-4 w-4" />
-                </a>
+                Menu
+              </div>
+              <Button
+                type="button"
+                variant="glass"
+                size="icon"
+                aria-label="Close menu"
+                onClick={() => setOpen(false)}
+              >
+                <X className="h-5 w-5" />
               </Button>
-            ) : null}
-            {linkedinHref ? (
-              <Button variant="glass" size="icon" asChild>
-                <a
-                  href={linkedinHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
+            </div>
+
+            <div className="mt-5 grid gap-1">
+              {nav.map(item => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-4 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-sm hover:bg-[color:var(--color-card-hover)]"
                 >
-                  <Linkedin className="h-4 w-4" />
-                </a>
-              </Button>
-            ) : null}
-          </div>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
 
-          <p className="mt-6 text-xs leading-5 text-white/55">
-            Short, high-signal notes. Production-first engineering. Documentation over vibes.
-          </p>
+            <div className="mt-6 flex items-center gap-2">
+              <SimpleThemeToggle />
+              {githubHref ? (
+                <Button variant="glass" size="icon" asChild>
+                  <a
+                    href={githubHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub"
+                  >
+                    <Github className="h-4 w-4" />
+                  </a>
+                </Button>
+              ) : null}
+              {linkedinHref ? (
+                <Button variant="glass" size="icon" asChild>
+                  <a
+                    href={linkedinHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                  </a>
+                </Button>
+              ) : null}
+            </div>
+
+            <p className="mt-6 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
+              Short, high-signal notes. Production-first engineering. Documentation over vibes.
+            </p>
+          </div>
         </div>
-      </div>
+      ) : null}
     </header>
   );
 }

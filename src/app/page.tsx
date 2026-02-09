@@ -28,7 +28,9 @@ export default function HomePage() {
       <section className="mx-auto max-w-6xl">
         <div className="grid gap-10 md:grid-cols-2 md:items-stretch">
           <div>
-            <p className="text-sm font-medium tracking-wide text-white/70">{profile.headline}</p>
+            <p className="text-sm font-medium tracking-wide text-[color:var(--color-text-secondary)]">
+              {profile.headline}
+            </p>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight md:text-6xl">
               {profile.name}
             </h1>
@@ -64,7 +66,7 @@ export default function HomePage() {
 
       <section className="mx-auto mt-16 max-w-6xl">
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+          <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8">
             <h2 className="text-3xl font-semibold tracking-tight">Summary</h2>
             <div className="mt-4 space-y-3 text-[color:var(--color-text-secondary)] leading-7">
               {profile.summary.map(p => (
@@ -77,7 +79,7 @@ export default function HomePage() {
                   href={githubHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-white/85 hover:bg-white/[0.06]"
+                  className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-2 text-sm font-semibold text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]"
                 >
                   GitHub
                 </a>
@@ -87,18 +89,18 @@ export default function HomePage() {
                   href={linkedinHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-white/85 hover:bg-white/[0.06]"
+                  className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-2 text-sm font-semibold text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]"
                 >
                   LinkedIn
                 </a>
               ) : null}
-              <span className="rounded-xl border border-white/10 bg-black/20 px-4 py-2 text-sm text-white/70">
+              <span className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-2 text-sm text-[color:var(--color-text-secondary)]">
                 {profile.location}
               </span>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-8">
+          <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8">
             <h2 className="text-3xl font-semibold tracking-tight">Certifications</h2>
             <p className="mt-3 text-[color:var(--color-text-secondary)] leading-7">
               Selected licenses and certifications (details link on LinkedIn).
@@ -110,10 +112,12 @@ export default function HomePage() {
                   href={c.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block rounded-2xl border border-white/10 bg-black/20 p-4 hover:bg-white/[0.06]"
+                  className="block rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-4 hover:bg-[color:var(--color-card-hover)]"
                 >
                   <div className="text-sm font-semibold">{c.name}</div>
-                  <div className="mt-1 text-xs text-white/65">{c.issuer}</div>
+                  <div className="mt-1 text-xs text-[color:var(--color-text-secondary)]">
+                    {c.issuer}
+                  </div>
                 </a>
               ))}
             </div>
@@ -130,7 +134,7 @@ export default function HomePage() {
               me own a system end-to-end.
             </p>
           </div>
-          <div className="hidden text-sm text-white/60 md:block">
+          <div className="hidden text-sm text-[color:var(--color-text-secondary)] opacity-80 md:block">
             Recruiter-friendly. Evidence-driven.
           </div>
         </div>
@@ -139,7 +143,7 @@ export default function HomePage() {
           {skillGroups.map(group => (
             <div
               key={group.title}
-              className="rounded-3xl border border-white/10 bg-white/5 p-6 hover:bg-white/[0.07] transition-colors"
+              className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 transition-colors hover:bg-[color:var(--color-card-hover)]"
             >
               <div className="flex items-start justify-between gap-4">
                 <h3 className="text-lg font-semibold tracking-tight">{group.title}</h3>
@@ -169,7 +173,7 @@ export default function HomePage() {
                           href={safeHref}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-xs font-semibold text-white/80 hover:bg-white/[0.06]"
+                          className="rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-3 py-1 text-xs font-semibold text-[color:var(--color-text-secondary)] hover:bg-[color:var(--color-card-hover)]"
                         >
                           {e.label}
                         </a>
@@ -179,7 +183,7 @@ export default function HomePage() {
                       <Link
                         key={e.href}
                         href={safeHref}
-                        className="rounded-full border border-white/10 bg-black/30 px-3 py-1 text-xs font-semibold text-white/80 hover:bg-white/[0.06]"
+                        className="rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-3 py-1 text-xs font-semibold text-[color:var(--color-text-secondary)] hover:bg-[color:var(--color-card-hover)]"
                       >
                         {e.label}
                       </Link>
@@ -206,7 +210,7 @@ export default function HomePage() {
               href={linkedinHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden text-sm text-white/70 underline underline-offset-4 hover:text-white md:block"
+              className="hidden text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)] md:block"
             >
               Full history on LinkedIn
             </a>
@@ -217,20 +221,24 @@ export default function HomePage() {
           {experience.slice(0, 4).map(item => (
             <article
               key={`${item.company}-${item.role}-${item.start}`}
-              className="rounded-3xl border border-white/10 bg-white/5 p-6 hover:bg-white/[0.07] transition-colors"
+              className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 transition-colors hover:bg-[color:var(--color-card-hover)]"
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <div className="text-xs text-white/60">{item.company}</div>
+                  <div className="text-xs text-[color:var(--color-text-secondary)] opacity-80">
+                    {item.company}
+                  </div>
                   <h3 className="mt-1 text-lg font-semibold tracking-tight">{item.role}</h3>
                 </div>
-                <div className="text-xs text-white/60">
+                <div className="text-xs text-[color:var(--color-text-secondary)] opacity-80">
                   {item.start}
                   {item.end ? ` → ${item.end}` : ' → Present'}
                 </div>
               </div>
               {item.location ? (
-                <div className="mt-2 text-xs text-white/60">{item.location}</div>
+                <div className="mt-2 text-xs text-[color:var(--color-text-secondary)] opacity-80">
+                  {item.location}
+                </div>
               ) : null}
               <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-[color:var(--color-text-secondary)]">
                 {item.highlights.map(h => (
@@ -247,7 +255,7 @@ export default function HomePage() {
               href={linkedinHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block text-sm text-white/70 underline underline-offset-4 hover:text-white"
+              className="inline-block text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
             >
               Full history on LinkedIn
             </a>
@@ -265,7 +273,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/projects"
-            className="hidden text-sm text-white/70 underline underline-offset-4 hover:text-white md:block"
+            className="hidden text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)] md:block"
           >
             View all projects
           </Link>
@@ -277,7 +285,7 @@ export default function HomePage() {
             return (
               <article
                 key={p.slug}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6 hover:bg-white/[0.07] transition-colors"
+                className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 transition-colors hover:bg-[color:var(--color-card-hover)]"
               >
                 <h3 className="text-lg font-semibold tracking-tight">{p.title}</h3>
                 <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
@@ -293,7 +301,7 @@ export default function HomePage() {
                 <div className="mt-6 flex items-center justify-between gap-4">
                   <Link
                     href={`/projects/${encodeURIComponent(p.slug)}`}
-                    className="text-sm font-semibold text-white underline underline-offset-4 hover:opacity-90"
+                    className="text-sm font-semibold text-[color:var(--color-text-primary)] underline underline-offset-4 hover:opacity-90"
                   >
                     Read case study
                   </Link>
@@ -302,7 +310,7 @@ export default function HomePage() {
                       href={visitHref}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-white/70 hover:text-white"
+                      className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
                     >
                       Live
                     </a>
@@ -316,7 +324,7 @@ export default function HomePage() {
         <div className="mt-8 md:hidden">
           <Link
             href="/projects"
-            className="inline-block text-sm text-white/70 underline underline-offset-4 hover:text-white"
+            className="inline-block text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
           >
             View all projects
           </Link>
@@ -324,7 +332,7 @@ export default function HomePage() {
       </section>
 
       <section id="about" className="mx-auto mt-16 max-w-6xl scroll-mt-24">
-        <div className="grid gap-8 rounded-3xl border border-white/10 bg-white/5 p-8 md:grid-cols-2">
+        <div className="grid gap-8 rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8 md:grid-cols-2">
           <div>
             <h2 className="text-3xl font-semibold tracking-tight">About</h2>
             <p className="mt-3 text-[color:var(--color-text-secondary)] leading-7">
@@ -334,16 +342,22 @@ export default function HomePage() {
             </p>
           </div>
           <div className="grid gap-3">
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-              <div className="text-xs text-white/60">Default approach</div>
+            <div className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-4">
+              <div className="text-xs text-[color:var(--color-text-secondary)] opacity-80">
+                Default approach
+              </div>
               <div className="mt-2 text-sm font-semibold">Automate, observe, then simplify.</div>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-              <div className="text-xs text-white/60">What I optimize for</div>
+            <div className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-4">
+              <div className="text-xs text-[color:var(--color-text-secondary)] opacity-80">
+                What I optimize for
+              </div>
               <div className="mt-2 text-sm font-semibold">Boring runbooks. Fast recovery.</div>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-              <div className="text-xs text-white/60">Collaboration</div>
+            <div className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-4">
+              <div className="text-xs text-[color:var(--color-text-secondary)] opacity-80">
+                Collaboration
+              </div>
               <div className="mt-2 text-sm font-semibold">Write it down. Make it reproducible.</div>
             </div>
           </div>
@@ -360,7 +374,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/blog"
-            className="hidden text-sm text-white/70 underline underline-offset-4 hover:text-white md:block"
+            className="hidden text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)] md:block"
           >
             View all posts
           </Link>
@@ -370,7 +384,7 @@ export default function HomePage() {
           {posts.map(p => (
             <article
               key={p.slug}
-              className="rounded-3xl border border-white/10 bg-white/5 p-6 hover:bg-white/[0.07] transition-colors"
+              className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 transition-colors hover:bg-[color:var(--color-card-hover)]"
             >
               <div className="flex items-center justify-between gap-4">
                 <h3 className="text-lg font-semibold tracking-tight">
@@ -381,7 +395,10 @@ export default function HomePage() {
                     {p.title}
                   </Link>
                 </h3>
-                <time className="text-xs text-white/60" dateTime={p.date}>
+                <time
+                  className="text-xs text-[color:var(--color-text-secondary)] opacity-80"
+                  dateTime={p.date}
+                >
                   {p.date}
                 </time>
               </div>
@@ -393,7 +410,7 @@ export default function HomePage() {
               <div className="mt-5">
                 <Link
                   href={`/blog/${encodeURIComponent(p.slug)}`}
-                  className="text-sm font-semibold text-white underline underline-offset-4 hover:opacity-90"
+                  className="text-sm font-semibold text-[color:var(--color-text-primary)] underline underline-offset-4 hover:opacity-90"
                 >
                   Read post
                 </Link>
@@ -405,7 +422,7 @@ export default function HomePage() {
         <div className="mt-8 md:hidden">
           <Link
             href="/blog"
-            className="inline-block text-sm text-white/70 underline underline-offset-4 hover:text-white"
+            className="inline-block text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
           >
             View all posts
           </Link>

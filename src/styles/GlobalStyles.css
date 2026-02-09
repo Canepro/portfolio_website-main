@@ -129,6 +129,12 @@ html.light-theme {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* Light theme glass: invert the tint so it reads on light surfaces. */
+html.light-theme .glass {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
@@ -150,4 +156,12 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.25);
+}
+
+html.light-theme ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+html.light-theme ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.28);
 }

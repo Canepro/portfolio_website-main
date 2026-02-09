@@ -55,9 +55,14 @@ export default function ProjectsPageClient() {
         </p>
 
         {liveOnly ? (
-          <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white/70">
-            Showing <span className="font-semibold text-white/85">live demos</span> only.{' '}
-            <Link href="/projects" className="underline underline-offset-4 hover:text-white">
+          <div className="mt-6 rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-4 text-sm text-[color:var(--color-text-secondary)]">
+            Showing{' '}
+            <span className="font-semibold text-[color:var(--color-text-primary)]">live demos</span>{' '}
+            only.{' '}
+            <Link
+              href="/projects"
+              className="underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
+            >
               Show all
             </Link>
             .
@@ -94,7 +99,15 @@ export default function ProjectsPageClient() {
                   disabled={isDisabled}
                 >
                   {category.label}
-                  <span className={isActive ? 'text-black/70' : 'text-white/60'}>{count}</span>
+                  <span
+                    className={
+                      isActive
+                        ? 'opacity-70'
+                        : 'text-[color:var(--color-text-secondary)] opacity-80'
+                    }
+                  >
+                    {count}
+                  </span>
                 </Button>
               );
             })}
@@ -108,9 +121,13 @@ export default function ProjectsPageClient() {
             ))}
           </div>
         ) : (
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-8 text-center">
-            <div className="text-lg font-semibold text-white/85">No projects found</div>
-            <p className="mt-2 text-sm text-white/60">Try adjusting your search or filters.</p>
+          <div className="mt-10 rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8 text-center">
+            <div className="text-lg font-semibold text-[color:var(--color-text-primary)]">
+              No projects found
+            </div>
+            <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] opacity-80">
+              Try adjusting your search or filters.
+            </p>
           </div>
         )}
       </div>
