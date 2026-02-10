@@ -1,0 +1,137 @@
+---
+title: "Designing a Multi-Agent Pipeline: Log Analyzer -> Diagnosis -> Remediation"
+date: "2026-02-11"
+description: "How I split CI healing into four agents with typed contracts, confidence gating, and deterministic fallbacks."
+tags: ["hackathon", "ai-agents", "ci-cd", "github-actions", "azure", "fastapi"]
+---
+
+PipelineHealer is not "one prompt that fixes CI". It is a pipeline with constraints.
+
+I learned quickly that if you give an LLM a raw GitHub Actions log dump and ask for a fix, you will get a mix of:
+
+- plausible guesses
+- half-right fixes
+- confident hallucinations
+
+So I designed PipelineHealer as a set of narrow agents that pass typed data between them. The goal is to make the system *boringly correct* for common failure modes, and only use the model where it adds real value.
+
+## The Pipeline
+
+The core flow is a simple chain:
+
+1. **Log Analyzer**: fetches CI logs and extracts structured signals (error lines, warning lines, key events). Does not diagnose.
+2. **Diagnosis**: maps those signals into a failure category with confidence. Does not fix.
+3. **Remediation**: generates a plan and either opens a PR or creates an issue. Does not guess from raw logs.
+4. **Orchestrator**: coordinates the steps, persists state, and enforces guardrails.
+
+This chain is described on my [Systems](/systems) page, but the important part is the interface between agents: everything is a Pydantic model, not free-form text.
+
+## The Rules That Prevent Hallucinations
+
+These are the constraints that made the system behave:
+
+- The **Log Analyzer** only extracts. If it starts diagnosing, you lose debuggability immediately.
+- The **Diagnosis** agent sees a *summary* (error lines + job names + key events), not full raw logs.
+- The **Remediation** agent is gated on diagnosis confidence. Low confidence means "create an issue", not "ship a PR".
+- Pattern-based detection runs first for obvious cases; the model is a fallback for nuance.
+- The orchestrator always has a safe default outcome: when uncertain, create an issue with context.
+
+A multi-agent system is only as safe as its defaults.
+
+## Typed Contracts (Not Vibes)
+
+This is the shape of the data that flows between steps:
+
+```python
+# Simplified view
+class LogAnalysis(BaseModel):
+    job_name: str
+    error_lines: list[str]
+    warning_lines: list[str]
+    key_events: list[str]
+    summary: str
+
+class Diagnosis(BaseModel):
+    failure_type: FailureType
+    root_cause: str
+    confidence: float
+    is_auto_fixable: bool
+    affected_files: list[str]
+    suggested_fix: str
+    error_details: dict[str, Any]
+
+class RemediationPlan(BaseModel):
+    action: RemediationAction  # create_pr | create_issue | retry_workflow
+    description: str
+    file_changes: list[dict[str, Any]] | None
+    issue_title: str | None
+    issue_body: str | None
+```
+
+Typed contracts give you two advantages:
+
+- You can write unit tests for the pipeline without calling the model.
+- You can evolve the system without accidentally changing the meaning of a field.
+
+## Remediation Actions (What the System Is Allowed to Do)
+
+PipelineHealer supports five failure types. The action policy is intentionally conservative:
+
+- **Dependency issues**: PR (auto-fix)
+- **Lint/format issues**: PR (auto-fix)
+- **Test failures**: issue
+- **Build config errors**: issue
+- **Timeouts**: issue
+
+The key point is that the system does not try to "auto-fix everything". It auto-fixes what is predictable, and files an issue for what needs human judgment.
+
+## How I Validate Locally (Fast Feedback Loop)
+
+The fastest way to iterate is to run everything locally and forward GitHub webhooks into your laptop.
+
+Backend:
+
+```bash
+cd /mnt/d/repos/pipelinehealer/backend
+source .venv/bin/activate
+python3 scripts/aoai_smoke.py
+uvicorn src.main:app --reload --port 8000
+```
+
+Webhook forwarding (recommended for local dev):
+
+```bash
+bunx smee-client --url https://smee.io/<your-channel> --target http://127.0.0.1:8000/webhook/github
+```
+
+Trigger failures in the demo repo:
+
+```bash
+cd /mnt/d/repos/pipelinehealer/demo-repo
+gh workflow run CI -R Canepro/pipelinehealer-demo -f failure_type=build_config
+```
+
+One concrete milestone from this loop: a failed run produced a real remediation issue in the demo repo (no manual triage).
+
+## What’s Next
+
+Now that the pipeline works end-to-end locally, the next two phases are about demo safety:
+
+- **Security**: protect `/api/*` (recommended: `X-API-Key`), and make webhook verification policy explicit.
+- **Reliability**: add retries/backoff for GitHub API calls, and add timeouts per agent step.
+
+Then comes the real deployment work: `azd up` and aligning infra to deploy the actual backend/frontend images.
+
+## Takeaway: A Multi-Agent Checklist
+
+When a system is going to open PRs on your behalf, design it like production software:
+
+- Split responsibilities so each agent is narrow and testable.
+- Use typed contracts; do not pass free-form text as your "API".
+- Default to safe actions when uncertain.
+- Add confidence gating and deterministic fallbacks.
+- Make local E2E cheap (webhook forwarding + a demo repo).
+
+---
+
+*Post 2 of 6 in the [AI Dev Days Hackathon](/tags/hackathon) series.*
