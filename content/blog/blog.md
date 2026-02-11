@@ -13,7 +13,7 @@ diagnoses, and fixes CI/CD pipeline failures.
 | #   | Title                                                                      | Target Publish            | Status       |
 | --- | -------------------------------------------------------------------------- | ------------------------- | ------------ |
 | 1   | PipelineHealer: An AI Agent That Fixes CI/CD Failures                      | Week 1 (Feb 10-16)        | ✅ Published |
-| 2   | Designing a Multi-Agent Pipeline: Log Analyzer -> Diagnosis -> Remediation | Week 2 (Feb 17-23)        | 🔶 Draft     |
+| 2   | Designing a Multi-Agent Pipeline: Log Analyzer to Diagnosis to Remediation | Week 1 (Feb 10-16)        | ✅ Published |
 | 3   | Deploying PipelineHealer to Azure: What Went Wrong (and Right)             | Week 3 (Feb 24-Mar 2)     | ❌ TODO      |
 | 4   | Teaching an AI to Read GitHub Actions Logs                                 | Week 3-4                  | ❌ TODO      |
 | 5   | From Webhook to Pull Request: End-to-End Agent Walkthrough                 | Week 4 (Mar 3-9)          | ❌ TODO      |
