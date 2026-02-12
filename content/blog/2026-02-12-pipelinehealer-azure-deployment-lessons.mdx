@@ -132,6 +132,58 @@ Fix:
 
 Lesson: automation still needs idempotency strategy for branch naming and reruns.
 
+## Post-Publish Updates (Feb 12, evening)
+
+After publishing this post, I shipped a few meaningful reliability upgrades worth capturing here.
+
+### 1) One-command operator workflow
+
+I added a single entrypoint script for daily operations:
+
+```bash
+bash scripts/ph.sh help
+```
+
+This now wraps deploy/demo/scale/status actions without bouncing between multiple runbooks:
+
+- `deploy` (full rebuild + push + container app update + verification)
+- `deploy:env` (runtime env updates only)
+- `demo:e2e`, `demo:reset`
+- `warm`, `lowcost`, `status`
+- `settings:check`
+
+### 2) Admin settings flow and auth validation
+
+The new admin settings flow is now practical in deployed environments:
+
+- Settings endpoint and page are protected by admin auth.
+- Deploy verification now checks both API and admin headers.
+- Runtime values can be confirmed quickly with:
+
+```bash
+bash scripts/ph.sh settings:check
+```
+
+### 3) WSL/Podman deploy script hardening
+
+I fixed two real operator pain points:
+
+- Guarded against accidentally sourcing deploy scripts (which could terminate shell sessions).
+- Normalized compose env-file paths for Podman-on-WSL external compose providers.
+
+This removed a class of "script ran locally but failed in shell/runtime boundary" issues.
+
+### 4) Azure OpenAI compatibility correction
+
+A subset of runs failed diagnosis with `400 API version not supported`.
+
+Fix:
+
+- Aligned runtime to a supported API version for the active endpoint.
+- Re-deployed env config and re-verified from live settings.
+
+This restored stable diagnosis behavior for non-deterministic paths.
+
 ## What Worked Well
 
 - Once identity + proxy + webhook controls were correct, the system stabilized quickly.
@@ -140,7 +192,7 @@ Lesson: automation still needs idempotency strategy for branch naming and reruns
   - webhook signature verification enabled
 - Azure OpenAI deployment switch to `gpt-5-mini` was straightforward after config alignment.
 
-## Operational Pattern I’ll Keep
+## Operational Pattern I Will Keep
 
 I now use a warm/low-cost toggle for demo reliability:
 
@@ -165,4 +217,4 @@ This was the difference between a cool local prototype and a demo-ready platform
 
 ---
 
-*Post 3 of 6 in the AI Dev Days Hackathon series.*
+*Post 3 of 6 in the [AI Dev Days Hackathon](/tags/hackathon) series.*
