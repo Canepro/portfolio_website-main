@@ -14,7 +14,8 @@ If you paste 500+ lines of mixed output into one LLM call and ask for "the fix,"
 
 For PipelineHealer, I needed a path that was explainable and testable, not just sometimes-correct.
 
-If you want broader system context, see the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture).
+If you want broader system context, see the <a href="https://github.com/Canepro/pipelinehealer#architecture" target="_blank" rel="noopener noreferrer">PipelineHealer architecture diagram</a>.
+You can also browse the [PipelineHealer project](/projects/pipelinehealer) and the [systems overview](/systems).
 
 This post covers the design I ended up with: pattern-first analysis, typed handoffs, fallback model reasoning, and explicit reliability guardrails.
 
@@ -30,7 +31,7 @@ GitHub Actions logs are not a single narrative. They are many narratives interle
 
 The actual failure signal is often 1-3 lines buried inside everything else.
 
-The right question is not "what model should I use?" The right question is: *what is the smallest, highest-signal payload the model should see?*
+The right question is not "what model should I use?" The right consideration is the *smallest, highest-signal payload* the model should see.
 
 ## Step 1: Structured Extraction Before Diagnosis
 
@@ -100,22 +101,17 @@ After these changes, the system behavior became far more consistent:
 
 Most importantly, I can now reason about *why* an outcome happened, not just whether it happened.
 
-## Practical Lesson
+## What's Next
 
-If you're building an AI workflow around CI logs, treat "reading logs" as a systems problem, not a prompt-writing problem.
+Next post: **From Webhook to Pull Request** - a concrete walkthrough of the end-to-end execution path from `workflow_run.completed` to persisted activity and remediation output.
 
-A reliable flow is usually:
+## Reusable Takeaway Checklist
 
-1. extract structure
-2. classify deterministically where possible
-3. fallback to model reasoning only for ambiguity
-4. gate unsafe actions behind confidence and policy
-
-That pattern is what made PipelineHealer viable as an Agentic DevOps demo rather than just an interesting prototype.
-
-## What’s Next
-
-Next post: **From Webhook to Pull Request** — a concrete walkthrough of the end-to-end execution path from `workflow_run.completed` to persisted activity and remediation output.
+- Extract structure first: errors, warnings, key events, and job context.
+- Classify deterministically for known failure patterns before using AI.
+- Use model fallback only when ambiguity remains after pattern checks.
+- Gate remediation actions by confidence and explicit policy.
+- Degrade safely to structured issue creation when confidence is low.
 
 ---
 
