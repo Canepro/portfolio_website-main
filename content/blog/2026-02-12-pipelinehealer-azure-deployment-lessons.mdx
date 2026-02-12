@@ -1,0 +1,168 @@
+---
+title: "Deploying PipelineHealer to Azure: What Went Wrong (and Right)"
+date: "2026-02-12"
+description: "Local was easy. Azure was where the real systems work started: ACR auth, Container Apps revisions, webhook signatures, and production-safe defaults."
+tags: ["hackathon", "azure", "container-apps", "ci-cd", "devops", "github-actions"]
+---
+
+I expected deployment to be mostly plumbing.
+
+It was not.
+
+PipelineHealer worked locally, but moving it to Azure exposed all the gaps that local dev hides:
+
+- identity and registry permissions
+- runtime config drift
+- webhook authenticity
+- frontend-to-backend proxy assumptions
+- cloud-specific behavior like scale-to-zero and revision health
+
+This post is a practical breakdown of what failed and what fixed it.
+
+## Target Architecture
+
+I kept the deployment intentionally simple:
+
+- **Azure Container Apps** for backend + frontend
+- **Azure Container Registry (ACR)** for images
+- **Azure OpenAI** for model inference
+- **Azure Cosmos DB** for activity storage
+- **Key Vault + App Insights** for secrets and telemetry
+
+For this demo stage, I used a PAT in backend runtime for GitHub API calls and enforced API/webhook controls in production mode.
+
+## Failure 1: Provisioning Blocked by Key Vault Name Rules
+
+Initial `azd provision` failed on Key Vault naming validation. The generated name exceeded constraints.
+
+Fix:
+
+- Updated Bicep naming strategy to stay within Key Vault limits (3-24 chars, alphanumeric/hyphen rules).
+- Re-ran provisioning with deterministic names.
+
+Lesson: naming constraints are not a detail, they are deployment blockers.
+
+## Failure 2: Backend Container App Revision Timed Out
+
+`azd provision` kept failing with:
+
+- `ContainerAppOperationError`
+- `Operation expired`
+
+Root cause was image pull permissions from ACR.
+
+Fix:
+
+1. Added a user-assigned managed identity for ACR pull.
+2. Granted `AcrPull` role assignment on ACR scope.
+3. Updated Container App registry config to use that identity.
+4. Re-provisioned.
+
+After this, backend and frontend container apps provisioned cleanly.
+
+Lesson: "Operation expired" often means dependency auth/identity is wrong, not just timeout.
+
+## Failure 3: Frontend Looked Up But API Proxy Broke
+
+Frontend initially loaded inconsistently and `/api/*` behavior was unstable in Azure.
+
+Root causes:
+
+- Nginx proxy assumed static backend host.
+- Host/SNI forwarding was incomplete.
+- Backend API auth needed `X-API-Key`, but frontend proxy did not inject it.
+
+Fix:
+
+- Switched frontend container to runtime-templated Nginx config.
+- Added `entrypoint.sh` to render backend upstream dynamically.
+- Forwarded Host correctly and enabled SNI for TLS upstream.
+- Injected `X-API-Key` from frontend runtime env for `/api/*`.
+
+Lesson: cloud runtime config must be injected at container start, not baked as static assumptions.
+
+## Failure 4: Webhooks Delivered But No Activities
+
+I had valid CI failures in GitHub, but dashboard activity list was empty.
+
+Root causes:
+
+- Multiple active hooks (legacy `smee.io` + Azure hook) caused confusion.
+- Azure hook secret mismatch produced delivery `401` responses.
+
+Fix:
+
+- Disabled stale `smee` hook for Azure-mode testing.
+- Kept one active `workflow_run` hook pointing directly to Azure backend.
+- Re-synced `GITHUB_WEBHOOK_SECRET` between GitHub hook and backend runtime.
+- Verified delivery ping/status `200`.
+
+Lesson: one environment path, one active hook. Anything else creates ambiguous signal flow.
+
+## Failure 5: Dashboard Stats Endpoints Failed in Cloud
+
+After deployment, dashboard charts showed loading/errors while raw activities existed.
+
+Root cause:
+
+- Async Cosmos path hit an unsupported query kwarg (`enable_cross_partition_query`) in this runtime path.
+
+Fix:
+
+- Hardened backend aggregation logic for stats/failure-breakdown.
+- Removed unsupported async query option in affected paths.
+- Verified `/api/stats` and `/api/failure-breakdown` from frontend route and direct API.
+
+Lesson: "works locally" on one storage mode does not guarantee production datastore path correctness.
+
+## Failure 6: PR Creation 422 on Repeated Demo Runs
+
+Dependency/lint remediation sometimes failed with:
+
+- `422 Unprocessable Entity` on `POST /repos/.../git/refs`
+
+Root cause:
+
+- Target remediation branch names already existed from prior runs (`fix/update-left-pad`, `fix/lint-eslint-config`).
+
+Fix:
+
+- Merge/close old fix PRs before rerunning same scenario.
+- Treat this as expected duplicate-run behavior in demo reset flow.
+
+Lesson: automation still needs idempotency strategy for branch naming and reruns.
+
+## What Worked Well
+
+- Once identity + proxy + webhook controls were correct, the system stabilized quickly.
+- Production security defaults held:
+  - API key required for `/api/*`
+  - webhook signature verification enabled
+- Azure OpenAI deployment switch to `gpt-5-mini` was straightforward after config alignment.
+
+## Operational Pattern I’ll Keep
+
+I now use a warm/low-cost toggle for demo reliability:
+
+- **warm mode**: `min-replicas=1` on backend/frontend during demos
+- **low-cost mode**: `min-replicas=0` after demos
+
+This keeps spend low while avoiding cold-start surprises during recordings.
+
+## Takeaway
+
+Local success proved the product idea.
+Azure deployment proved the engineering.
+
+If you are building an agentic DevOps system, treat deployment as part of the product:
+
+- identity is product behavior
+- webhook authenticity is product behavior
+- runtime config is product behavior
+- retry/idempotency is product behavior
+
+This was the difference between a cool local prototype and a demo-ready platform.
+
+---
+
+*Post 3 of 6 in the AI Dev Days Hackathon series.*
