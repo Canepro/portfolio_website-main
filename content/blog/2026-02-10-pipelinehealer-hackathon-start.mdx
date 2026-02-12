@@ -37,14 +37,14 @@ The flow: GitHub sends the webhook → Azure Functions validates and routes it �
 
 ## What's Built
 
-The scaffold is done — agents, GitHub integration, webhook handler, dashboard frontend, Docker setup. What remains is deploying to Azure, wiring the GitHub App to a live webhook URL, and testing against real failures.
+The scaffold is done — agents, GitHub integration, webhook handler, dashboard frontend, Docker setup. Next phase is production hardening and Azure deployment, including live webhook wiring and real-failure validation.
 
 ## What's Coming
 
 This is post one of six. The series will cover:
 
 - Architecture decisions behind the agent pipeline
-- Deploying to Azure — what broke and how it was fixed
+- Deploying to Azure — failure modes discovered during deployment and mitigations
 - Prompt engineering for CI log parsing
 - End-to-end walkthrough from webhook to pull request
 - Retrospective after submission
