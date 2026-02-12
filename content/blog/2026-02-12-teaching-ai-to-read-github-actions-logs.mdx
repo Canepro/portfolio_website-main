@@ -1,0 +1,120 @@
+---
+title: "Teaching an AI to Read GitHub Actions Logs Without Hallucinations"
+date: "2026-02-12"
+description: "How PipelineHealer moved from raw log dumps to structured extraction, confidence gating, and deterministic remediation paths."
+tags: ["hackathon", "ai-agents", "github-actions", "observability", "prompt-engineering", "devops"]
+---
+
+Most CI logs are noisy, repetitive, and hostile to naïve prompting.
+
+If you paste 500+ lines of mixed output into one LLM call and ask for "the fix," you usually get one of two outcomes:
+
+- vague summaries that miss root cause
+- confident but unsafe recommendations
+
+For PipelineHealer, I needed a path that was explainable and testable, not just sometimes-correct.
+
+This post covers the design I ended up with: pattern-first analysis, typed handoffs, fallback model reasoning, and explicit reliability guardrails.
+
+## Why Raw Logs Break AI Workflows
+
+GitHub Actions logs are not a single narrative. They are many narratives interleaved:
+
+- install output
+- test runner output
+- lint tool diagnostics
+- shell script traces
+- platform retries and metadata
+
+The actual failure signal is often 1-3 lines buried inside everything else.
+
+The right question is not "what model should I use?" The right question is: *what is the smallest, highest-signal payload the model should see?*
+
+## Step 1: Structured Extraction Before Diagnosis
+
+PipelineHealer's Log Analyzer does not diagnose. It only extracts signal:
+
+- error lines
+- warning lines
+- key events
+- job context
+- compact summary
+
+That extracted structure is then passed forward as typed data. No free-form agent-to-agent conversation.
+
+This gave me two immediate benefits:
+
+1. reproducible test fixtures for log parsing
+2. debuggable boundaries between extraction and diagnosis
+
+## Step 2: Pattern-First, Model-Second
+
+Before any model fallback, the diagnosis path checks deterministic patterns for known failure modes:
+
+- dependency failures
+- lint failures
+- test failures
+- build config failures
+- timeout failures
+
+If pattern confidence is high, PipelineHealer acts deterministically.
+
+If confidence is low, model-based diagnosis is used as a fallback with typed output constraints.
+
+This ordering is the key reliability move: use AI where ambiguity exists, not where deterministic logic already works.
+
+## Step 3: Keep Prompt Context Budgeted and Useful
+
+Another failure mode in CI remediation systems is prompt overloading.
+
+To avoid this, PipelineHealer uses bounded log prompt budgets and preserves both head and tail segments instead of blindly truncating from one side.
+
+Why head+tail matters:
+
+- the head often contains setup and environment context
+- the tail often contains the exact terminal failure
+
+Losing either side can destroy diagnosis quality.
+
+## Step 4: Reliability Controls Around Log and API IO
+
+Even perfect parsing fails if data retrieval is unstable.
+
+I added reliability controls around the pipeline:
+
+- retries/backoff for transient GitHub API failures (429/5xx/network)
+- per-step timeouts in the orchestrator
+- explicit handling for `timed_out` workflows
+
+This shifted failures from "mysterious" to "observable and bounded." If remediation cannot run safely, the system degrades to structured issue creation.
+
+## What This Changed in Practice
+
+After these changes, the system behavior became far more consistent:
+
+- dependency/lint paths produce deterministic fix PRs
+- test/build_config/timeout paths produce structured issues
+- dashboard activity remains explainable end-to-end
+
+Most importantly, I can now reason about *why* an outcome happened, not just whether it happened.
+
+## Practical Lesson
+
+If you're building an AI workflow around CI logs, treat "reading logs" as a systems problem, not a prompt-writing problem.
+
+A reliable flow is usually:
+
+1. extract structure
+2. classify deterministically where possible
+3. fallback to model reasoning only for ambiguity
+4. gate unsafe actions behind confidence and policy
+
+That pattern is what made PipelineHealer viable as an Agentic DevOps demo rather than just an interesting prototype.
+
+## What’s Next
+
+Next post: **From Webhook to Pull Request** — a concrete walkthrough of the end-to-end execution path from `workflow_run.completed` to persisted activity and remediation output.
+
+---
+
+*Post 4 of 6 in the AI Dev Days Hackathon series.*
