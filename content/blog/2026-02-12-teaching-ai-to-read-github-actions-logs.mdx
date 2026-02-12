@@ -1,11 +1,11 @@
 ---
 title: "Teaching an AI to Read GitHub Actions Logs Without Hallucinations"
-date: "2026-02-12"
+date: "2026-02-13"
 description: "How PipelineHealer moved from raw log dumps to structured extraction, confidence gating, and deterministic remediation paths."
-tags: ["hackathon", "ai-agents", "github-actions", "observability", "prompt-engineering", "devops"]
+tags: ["hackathon", "ai-agents", "ci-cd", "github-actions", "observability", "prompt-engineering", "devops"]
 ---
 
-Most CI logs are noisy, repetitive, and hostile to naïve prompting.
+Most CI logs are noisy, repetitive, and hostile to naive prompting.
 
 If you paste 500+ lines of mixed output into one LLM call and ask for "the fix," you usually get one of two outcomes:
 
@@ -13,6 +13,8 @@ If you paste 500+ lines of mixed output into one LLM call and ask for "the fix,"
 - confident but unsafe recommendations
 
 For PipelineHealer, I needed a path that was explainable and testable, not just sometimes-correct.
+
+If you want broader system context, the architecture is also summarized on my [Systems](/systems) page.
 
 This post covers the design I ended up with: pattern-first analysis, typed handoffs, fallback model reasoning, and explicit reliability guardrails.
 
@@ -117,4 +119,4 @@ Next post: **From Webhook to Pull Request** — a concrete walkthrough of the en
 
 ---
 
-*Post 4 of 6 in the AI Dev Days Hackathon series.*
+*Post 4 of 6 in the [AI Dev Days Hackathon](/tags/hackathon) series.*
