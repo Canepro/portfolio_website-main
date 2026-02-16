@@ -1,0 +1,189 @@
+---
+title: "From Webhook to Pull Request: The Full Healing Loop (Including the Parts That Surprised Me)"
+date: "2026-03-03"
+description: "A concrete walkthrough of PipelineHealer processing a real CI failure — from webhook delivery through diagnosis, external diagnostics, remediation, and the backfill system I didn't plan to build."
+tags: ["hackathon", "ai-agents", "ci-cd", "github-actions", "azure", "devops"]
+---
+
+I triggered a dependency failure in the demo repo at 10:42 PM on a Saturday night. Eleven minutes later, a fix PR was open, a tracking issue was filed, and a separate AI workflow had published its own diagnosis. The dashboard showed the full story in one place.
+
+That sounds clean. Getting there was not.
+
+![PipelineHealer dashboard showing 81 processed activities, safety gating ratios, and explainability snapshot](/images/Pipelinehealer-dashboard.png)
+
+This post traces the actual execution path of that run — every step from webhook to merged output — and covers an entire subsystem I had to build because external diagnostics do not arrive on your schedule.
+
+For system context, see the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture) and the [project page](/projects/pipelinehealer).
+
+## The Trigger
+
+I ran this from my terminal:
+
+```bash
+gh workflow run CI -R Canepro/pipelinehealer-demo -f failure_type=dependency
+```
+
+The demo repo's CI workflow has a dispatch input that injects a specific failure. For `dependency`, it adds `left-pad@999.0.0` to `package.json` — a version that does not exist. The workflow fails at `npm install`.
+
+GitHub fires a `workflow_run.completed` webhook to PipelineHealer's backend on Azure Container Apps.
+
+## Webhook Reception and Gating
+
+The webhook handler is the first filter. Before any agent work happens, it checks:
+
+1. **Signature verification** — HMAC-SHA256 against `GITHUB_WEBHOOK_SECRET`. Invalid signatures get a `401` immediately.
+2. **Event type** — only `workflow_run` events with `conclusion: failure` proceed. Successful runs, in-progress runs, and non-workflow events are ignored.
+3. **Repo allowlist** — `PH_ALLOWED_REPOS` is enforced here. If the source repo is not on the list, the event is dropped with a reason code. This prevents the PAT from being used against unintended repositories.
+4. **Idempotency** — duplicate `workflow_run` IDs are caught before creating a new activity.
+
+If all gates pass, an `ActivityRecord` is created with status `processing` and the orchestrator takes over.
+
+## Log Extraction
+
+The orchestrator's first step is fetching the failure data.
+
+PipelineHealer calls the GitHub API to get the workflow run's jobs, then fetches logs for each failed job. The raw log output is structured into error lines, warning lines, key events, and a compact summary. This is the Log Analyzer agent's only job — extraction, not diagnosis.
+
+For this run, the extracted signal was clear:
+
+- error line: `npm ERR! 404 Not Found - GET https://registry.npmjs.org/left-pad/999.0.0`
+- key event: `Process completed with exit code 1`
+
+That is a tight signal. No ambiguity about what broke.
+
+## Diagnosis: Pattern Match, Not Model Call
+
+The diagnosis step ran the extracted summary through deterministic pattern checks first.
+
+The `dependency` pattern matched immediately: a missing or unresolvable npm package. Confidence: high. Failure type: `dependency`. Auto-fixable: yes.
+
+No LLM call was needed. The model fallback exists for ambiguous cases — test failures with unclear assertions, config errors in unfamiliar build tools — but for known patterns, deterministic wins every time.
+
+This is one of the design decisions I keep reinforcing: pattern-first, model-second. Every failure type that can be resolved with string matching should be.
+
+## Remediation: Branch, Commit, PR
+
+With a high-confidence dependency diagnosis, the remediation agent built a fix:
+
+1. Created a branch (`fix/update-left-pad`) from the failing commit's base
+2. Generated a corrected `package.json` that removes the bad dependency entry
+3. Committed the change
+4. Opened [PR #91](https://github.com/Canepro/pipelinehealer-demo/pull/91) against `main`
+
+Simultaneously, it filed [Issue #90](https://github.com/Canepro/pipelinehealer-demo/issues/90) as a tracking artifact with the full diagnosis context: failure type, confidence, evidence lines, and the remediation action taken.
+
+The PR body includes the root cause, the specific change, and a link back to the failing workflow run. A reviewer can verify the fix without re-reading logs.
+
+At this point, PipelineHealer's own work is done. The activity record is updated to `completed`, remediation outputs are stored, and the dashboard reflects the full chain.
+
+![Activities list showing completed runs with Doctor Signal badges and Findings links](/images/Pipelinehealer-activities.png)
+
+But there is another actor in the system.
+
+## ci-doctor: The External Diagnostic That Runs on Its Own Clock
+
+When GitHub Agentic Workflows are installed on a repository, `ci-doctor` fires automatically on `workflow_run` failures. It is an independent AI analysis workflow maintained by GitHub — separate from PipelineHealer.
+
+PipelineHealer treats `ci-doctor` as an optional, additive signal. The integration is passive: PipelineHealer never dispatches `ci-doctor`. It only checks whether findings exist after the fact.
+
+During the orchestrator's diagnosis phase, PipelineHealer polls for `ci-doctor` issues that correlate with the current run (by `run_id`, `head_sha`, and bounded time window). The polling window is about 8 minutes with backoff.
+
+Here is where I hit a real problem.
+
+## The Timing Gap I Did Not Anticipate
+
+`ci-doctor` takes time. It fetches logs, runs its own AI analysis, and publishes an issue. For my test run, PipelineHealer's diagnosis completed in under 2 minutes. `ci-doctor` was still running 11 minutes later.
+
+PipelineHealer's bounded polling window expired. It stored a `poll_window_exhausted` status for external diagnostics and continued with its own native diagnosis — which was already sufficient.
+
+But that meant the dashboard showed "External diagnostics: poll window exhausted" even after `ci-doctor` eventually published [Issue #89](https://github.com/Canepro/pipelinehealer-demo/issues/89) with a thorough analysis.
+
+This was not a bug. The system correctly prioritized its own diagnosis and did not block on an external tool. But the result was incomplete information in the activity record. A user looking at the dashboard later would not see `ci-doctor`'s findings.
+
+I needed a backfill mechanism.
+
+## Building the Backfill Sweep
+
+The fix was straightforward in concept: periodically re-check completed activities that have `poll_window_exhausted` external diagnostics and see if findings have arrived since.
+
+Implementation:
+
+1. A **background task** runs every 10 minutes, queries storage for backfill candidates, and re-fetches external diagnostics via the GitHub API.
+2. A **manual endpoint** (`POST /api/backfill-diagnostics`) allows immediate on-demand backfill for impatient operators.
+3. A **CLI command** (`bash scripts/ph.sh backfill`) wraps that endpoint.
+4. A **UI button** ("Backfill Diagnostics") on the activity detail page does the same thing from the browser.
+
+When backfill finds a `ci-doctor` issue that correlates with the activity, it replaces the `poll_window_exhausted` entry with the real findings.
+
+This was not in the original plan. I built it because the E2E test showed me a real gap. That is what end-to-end testing is for.
+
+## Deep Enrichment: Not Just a Link
+
+The first version of external diagnostics stored a link to the `ci-doctor` issue and some metadata. Useful, but shallow.
+
+I wanted the dashboard to show what `ci-doctor` actually found — not just that it found something.
+
+So I added structured extraction from `ci-doctor` issue bodies. The parser pulls out:
+
+- **Summary** — one-line problem statement
+- **Root cause** — detailed analysis
+- **Recommended actions** — specific fix steps
+- **Historical context** — related failures and patterns
+- **Doctor metadata** — which AI engine and model produced the diagnosis
+
+These fields are stored in `external_diagnostics[].metadata.details` on the activity record.
+
+There was a catch: `ci-doctor` issue bodies include internal boilerplate — HTML comments, AI attribution footers, setup hints, expiry markers, temp-file paths. All of that needed to be stripped before storage. I wrote a sanitizer with regex patterns for each category of noise. Then I wrote tests for the sanitizer, because regex sanitizers are the kind of code that breaks silently.
+
+## The External Findings Panel
+
+With structured data available, the frontend needed a way to render it.
+
+I added a collapsible "External Findings Details" panel inside the activity detail view. It renders each extracted section with proper formatting — bullet lists, inline code, bold text, links — instead of raw whitespace. Long sections are truncated with "Show more" to keep the card scannable.
+
+The panel auto-expands when the diagnostic status is `available` and details exist. If the diagnostic is still `poll_window_exhausted` or errored, it stays collapsed. Users can always expand or collapse manually.
+
+One detail that mattered: the panel had to handle missing sections gracefully. Not every `ci-doctor` issue has every section. Empty sections are hidden, not rendered as empty boxes.
+
+## The Full Picture
+
+For the E2E run that validated all of this, the activity detail page showed:
+
+- **Status**: completed
+- **Failure type**: dependency (confidence: high)
+- **Action taken**: Create PR
+- **PR link**: [#91](https://github.com/Canepro/pipelinehealer-demo/pull/91)
+- **Issue link**: [#90](https://github.com/Canepro/pipelinehealer-demo/issues/90)
+- **External diagnostics**: available (ci-doctor)
+- **External findings panel**: summary, root cause, recommended actions, historical context — all rendered cleanly
+
+![External Findings Details panel showing ci-doctor's structured analysis — summary, root cause, recommended actions, historical context, and AI metadata badges](/images/external-dianostics.png)
+
+That is the full loop. Webhook to PR, with an independent AI second opinion enriching the record after the fact.
+
+## What I Would Not Have Built Without E2E Testing
+
+The backfill sweep, the deep enrichment parser, and the sanitizer all came out of running the real system end-to-end and watching what happened.
+
+If I had only tested components in isolation, I would have shipped a system that:
+
+- correctly diagnosed and fixed failures (good)
+- showed "poll window exhausted" for external diagnostics permanently (bad)
+- stored raw `ci-doctor` boilerplate in the database (bad)
+- rendered internal HTML comments in the UI (bad)
+
+Every one of those gaps was caught by a real run against the deployed system. The lesson is not "test more" — it is "test the thing users will actually see."
+
+## Reusable Takeaway Checklist
+
+- Gate webhooks early: signature, event type, repo allowlist, idempotency — before any compute.
+- Extract structure before diagnosis. Never pass raw logs to a decision agent.
+- Use deterministic pattern matching first. Reserve model calls for genuine ambiguity.
+- Treat external tool integration as eventual-consistency, not request-response.
+- Build backfill mechanisms for any data that might arrive after your processing window.
+- Sanitize third-party content before storage. Internal boilerplate will leak into your UI.
+- Test the deployed system end-to-end. Component tests do not catch timing and integration gaps.
+
+---
+
+*Post 5 of 6 in the [AI Dev Days Hackathon](/tags/hackathon) series.*
