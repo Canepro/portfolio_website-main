@@ -1,0 +1,151 @@
+---
+title: "Hackathon Retrospective: What I'd Do Differently Building PipelineHealer"
+date: "2026-03-16"
+description: "Five weeks of building a multi-agent CI healing system for the AI Dev Days Hackathon. What worked, what surprised me, and what I would change if I started over."
+tags: ["hackathon", "ai-agents", "ci-cd", "devops", "azure", "retrospective"]
+---
+
+PipelineHealer started as a weekend idea during the AI Dev Days Hackathon kickoff: what if CI failures could fix themselves?
+
+Five weeks later, it is a deployed multi-agent system on Azure that receives GitHub webhooks, diagnoses failures, opens fix PRs, files tracking issues, ingests third-party AI diagnostics, and renders the full story in a dashboard. It works. It is also very different from what I planned on day one.
+
+This post is an honest look back at the build. What paid off, what I would skip, what caught me off guard, and what I would change if I started over tomorrow.
+
+## What Went Right
+
+### 1. Pattern-first, model-second
+
+This was the single best architectural decision.
+
+The instinct with an AI hackathon project is to put the model at the center of everything. I almost did. Early prototypes sent full log dumps to GPT and asked for fixes. The results were inconsistent and hard to debug.
+
+Flipping the order — deterministic pattern matching first, LLM fallback only for ambiguity — made the system predictable. Dependency failures, lint errors, and build config issues are resolved without a model call. The model handles genuinely ambiguous cases where pattern rules run out of signal.
+
+This also made testing dramatically easier. I can unit test the pattern matchers with fixtures. I cannot meaningfully unit test "does the model give a good answer today."
+
+### 2. Typed contracts between agents
+
+Every agent-to-agent handoff is a Pydantic model. `LogAnalysis`, `Diagnosis`, `RemediationPlan` — all typed, all validatable, all testable without running the full pipeline.
+
+This sounds obvious. In practice, most multi-agent demos I have seen pass free-form text between agents and hope for the best. Typed contracts prevented an entire class of "agent 2 misunderstood agent 1" bugs.
+
+### 3. One-command operator interface
+
+I built `scripts/ph.sh` as a single entrypoint for every operation: deploy, demo, scale, logs, settings, backfill. This was not in the original plan — I added it after getting tired of re-reading runbooks for common tasks.
+
+It turned out to be one of the most useful things in the project. During demo recording, I could run `bash scripts/ph.sh warm` before starting and `bash scripts/ph.sh lowcost` after. During debugging, `bash scripts/ph.sh logs:grep --pattern "error"` replaced multiple Azure CLI incantations.
+
+If I were advising someone on a hackathon project: build your operator CLI early. You will use it more than your UI during development.
+
+### 4. Treating deployment as product work
+
+I deployed to Azure on day three — before the agents were polished, before the dashboard was pretty, before half the features existed. This was uncomfortable but correct.
+
+Deploying early surfaced identity issues, proxy failures, webhook configuration mistakes, and cold-start behavior that I never would have found locally. Every one of those became a lesson that shaped the final system. Post 3 in this series covers the specific failures, but the meta-lesson is: if your project runs on cloud infrastructure, deploy to that infrastructure immediately. Do not wait until "the code is ready."
+
+### 5. Safe defaults everywhere
+
+PipelineHealer's default posture is conservative. Low-confidence diagnoses create issues, not PRs. Repo allowlists are enforced in the webhook handler. Healing mode defaults to `safe`. Admin settings require dual-key auth.
+
+I never had a moment during the hackathon where the system did something unexpected to a repository. That peace of mind was worth the extra gating logic.
+
+## What Surprised Me
+
+### 1. External tools run on their own schedule
+
+Integrating GitHub's `ci-doctor` agentic workflow taught me something I should have anticipated: external tools do not respect your processing window.
+
+PipelineHealer completes diagnosis in 1-2 minutes. `ci-doctor` can take 10-20 minutes. I built an 8-minute polling window, which was not enough. The system correctly fell back to native diagnosis, but the dashboard showed incomplete external diagnostic data.
+
+I ended up building a full backfill subsystem — background sweep, manual endpoint, CLI command, UI button — to handle late-arriving diagnostics. That entire subsystem was not in the plan. It exists because I ran a real E2E test and watched the gap happen.
+
+### 2. Sanitization is a feature
+
+When I started parsing `ci-doctor` issue bodies for structured content, I expected clean markdown sections. What I got included HTML comments, AI attribution footers, setup hints, expiry markers, and temp-file paths. All of that leaked into the UI on the first render.
+
+I wrote a sanitizer with specific regex patterns for each category of noise, then wrote tests for the sanitizer. This felt like unglamorous work, but it is the difference between a demo that looks polished and one where a judge sees `<!-- AI generated by copilot -->` in your dashboard.
+
+Third-party content is never clean. Budget time for sanitization.
+
+### 3. Documentation is a forcing function
+
+I wrote six blog posts during the hackathon. That was not originally planned as part of the build — I did it because the hackathon judges value documented thinking, and because my portfolio site needed content.
+
+What I did not expect: writing about the system forced me to clarify decisions I had been hand-waving. "Why is the polling window 8 minutes?" is a question you can avoid in code but not in a blog post. Every post made the system slightly better because it made me justify choices out loud.
+
+### 4. The CLI became the most-used interface
+
+I built a dashboard with charts, filters, and an admin settings page. During development, I used the CLI for almost everything. Deploy, check status, inspect logs, trigger backfill, run E2E tests — all from the terminal.
+
+The dashboard matters for the demo and for ongoing visibility. But the CLI is what I actually operated with. If I had to choose one, I would build the CLI first and the dashboard second.
+
+## What I Would Do Differently
+
+### 1. Start with the E2E test, not the agents
+
+I built agents first, then wired them together, then deployed, then tested end-to-end. The right order is the reverse: define the E2E scenario first ("webhook arrives, PR opens"), build the thinnest possible path that achieves it, then improve each step.
+
+Every major insight came from E2E testing. The backfill system, the sanitizer, the polling window tuning, the UI panel design — all of them came from watching the deployed system process a real failure. I would have found these sooner if I had started from the outside in.
+
+### 2. Build backfill from day one
+
+Any system that depends on external data arriving within a window needs a backfill mechanism from the start. I treated external diagnostics polling as "poll and move on." That was fine for the primary path but left stale data in the activity record.
+
+The backfill pattern — periodic sweep for incomplete records, re-fetch, patch in place — is generic enough that I should have scaffolded it early and specialized it later.
+
+### 3. Fewer healing modes
+
+PipelineHealer has three modes: `safe`, `demo`, and `debug`. In practice, I used `safe` for everything real and `debug` when something was broken. `demo` mode exists but I rarely switched to it.
+
+If I started over, I would have `safe` and `debug` only. Two modes are easier to reason about and test than three.
+
+### 4. Pin the demo repo fixture set earlier
+
+The demo repository went through several iterations of its CI workflow — adding failure types, changing dispatch inputs, cleaning up dead files. Each time, I had to re-validate the E2E flow.
+
+I should have frozen the demo fixture set after the first successful E2E run and only added new failure types in planned batches. Incremental fixture changes created unnecessary re-testing cycles.
+
+## By the Numbers
+
+- **120** backend tests passing
+- **7** demo failure types (dependency, lint, test, build_config, timeout, prettier, docker)
+- **4** specialized agents (Log Analyzer, Diagnosis, Remediation, Orchestrator)
+- **1** CLI entrypoint with 20+ commands
+- **1** background sweep running every 10 minutes
+- **0** unintended repository modifications during the entire hackathon
+
+## What Is Still on the Table
+
+These are real gaps, not aspirational features:
+
+- **Lockfile-aware dependency fixes** — the current dependency remediation edits `package.json` but does not regenerate lockfiles. A production version would need to handle `package-lock.json`, `pnpm-lock.yaml`, and `bun.lockb`.
+- **GitHub App auth** — I used a PAT throughout. A GitHub App with scoped permissions would be the right production auth model.
+- **Metrics for external diagnostics** — I track status and reason codes, but I do not have invocation counters or latency metrics for the `ci-doctor` integration. That would matter at scale.
+- **Multi-provider CI support** — PipelineHealer is GitHub Actions only. The adapter pattern exists, but GitLab CI and Jenkins adapters are not built.
+
+{/* Room for additions: add items here as the hackathon concludes */}
+
+## The Honest Summary
+
+PipelineHealer works. It does what the pitch says: detect CI failures, diagnose them, and open fix PRs or structured issues. The deployed system on Azure processes real webhook events and produces real remediation artifacts.
+
+But the interesting parts of the build were not the agent logic. They were the deployment failures, the timing gaps, the sanitization edge cases, and the operator workflow that emerged from actually using the system.
+
+The agents are maybe 30% of the code. The other 70% is infrastructure, safety gating, observability, CLI tooling, and integration plumbing. That ratio surprised me, and I think it is the most useful thing I can share with anyone building agentic systems.
+
+AI is the capability. Engineering is the product.
+
+## Reusable Takeaway Checklist
+
+- Deploy to your target infrastructure on day one, not after the code is "ready."
+- Use deterministic logic first. Reserve AI for genuine ambiguity.
+- Type your agent-to-agent contracts. Free-form text handoffs are a debugging nightmare.
+- Build your operator CLI before your dashboard. You will use it more.
+- Budget time for sanitizing third-party content. It is never clean.
+- Test end-to-end against the deployed system. Component tests miss timing and integration gaps.
+- Default to safe. Conservative defaults prevent surprises during demos and in production.
+- Write about what you are building. It forces clarity you will not get from code alone.
+
+---
+
+*Post 6 of 6 in the [AI Dev Days Hackathon](/tags/hackathon) series.*
