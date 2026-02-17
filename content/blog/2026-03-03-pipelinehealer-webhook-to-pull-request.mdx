@@ -70,7 +70,7 @@ With a high-confidence dependency diagnosis, the remediation agent built a fix:
 3. Committed the change
 4. Opened [PR #91](https://github.com/Canepro/pipelinehealer-demo/pull/91) against `main`
 
-Simultaneously, it filed [Issue #90](https://github.com/Canepro/pipelinehealer-demo/issues/90) as a tracking artifact with the full diagnosis context: failure type, confidence, evidence lines, and the remediation action taken.
+For this run configuration (), it also filed [Issue #90](https://github.com/Canepro/pipelinehealer-demo/issues/90) as a tracking artifact with the full diagnosis context: failure type, confidence, evidence lines, and the remediation action taken.
 
 The PR body includes the root cause, the specific change, and a link back to the failing workflow run. A reviewer can verify the fix without re-reading logs.
 
@@ -157,7 +157,7 @@ For the E2E run that validated all of this, the activity detail page showed:
 - **External diagnostics**: available (ci-doctor)
 - **External findings panel**: summary, root cause, recommended actions, historical context — all rendered cleanly
 
-![External Findings Details panel showing ci-doctor's structured analysis — summary, root cause, recommended actions, historical context, and AI metadata badges](/images/external-dianostics.png)
+![External Findings Details panel showing ci-doctor's structured analysis — summary, root cause, recommended actions, historical context, and AI metadata badges](/images/external-diagnostics.png)
 
 That is the full loop. Webhook to PR, with an independent AI second opinion enriching the record after the fact.
 
