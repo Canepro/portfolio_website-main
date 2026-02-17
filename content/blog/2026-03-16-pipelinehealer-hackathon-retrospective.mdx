@@ -45,7 +45,7 @@ Deploying early surfaced identity issues, proxy failures, webhook configuration 
 
 ### 5. Safe defaults everywhere
 
-PipelineHealer's default posture is conservative. Low-confidence diagnoses create issues, not PRs. Repo allowlists are enforced in the webhook handler. Healing mode defaults to `safe`. Admin settings require dual-key auth.
+PipelineHealer's default posture is conservative. Low-confidence diagnoses create issues, not PRs. Repo allowlists are enforced in the webhook handler. Healing mode defaults to `safe`. Admin settings routes support key-based auth in `api_key`/`hybrid` mode and Entra role-based auth in `entra`/`hybrid` mode.
 
 I never had a moment during the hackathon where the system did something unexpected to a repository. That peace of mind was worth the extra gating logic.
 
@@ -107,7 +107,7 @@ I should have frozen the demo fixture set after the first successful E2E run and
 
 ## By the Numbers
 
-- **120** backend tests passing
+- **135+** backend tests passing at the time of writing
 - **7** demo failure types (dependency, lint, test, build_config, timeout, prettier, docker)
 - **4** specialized agents (Log Analyzer, Diagnosis, Remediation, Orchestrator)
 - **1** CLI entrypoint with 20+ commands
@@ -123,7 +123,6 @@ These are real gaps, not aspirational features:
 - **Metrics for external diagnostics** — I track status and reason codes, but I do not have invocation counters or latency metrics for the `ci-doctor` integration. That would matter at scale.
 - **Multi-provider CI support** — PipelineHealer is GitHub Actions only. The adapter pattern exists, but GitLab CI and Jenkins adapters are not built.
 
-{/* Room for additions: add items here as the hackathon concludes */}
 
 ## The Honest Summary
 
