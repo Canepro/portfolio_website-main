@@ -2,7 +2,7 @@
 title: "From Webhook to Pull Request: The Full Healing Loop (Including the Parts That Surprised Me)"
 date: "2026-03-03"
 description: "A concrete walkthrough of PipelineHealer processing a real CI failure — from webhook delivery through diagnosis, external diagnostics, remediation, and the backfill system I didn't plan to build."
-tags: ["hackathon", "ai-agents", "ci-cd", "github-actions", "azure", "devops"]
+tags: ["hackathon", "ai-agents", "ci-cd", "github-actions", "azure", "devops", "observability"]
 ---
 
 I triggered a dependency failure in the demo repo at 10:42 PM on a Saturday night. Eleven minutes later, a fix PR was open, a tracking issue was filed, and a separate AI workflow had published its own diagnosis. The dashboard showed the full story in one place.
@@ -13,7 +13,7 @@ That sounds clean. Getting there was not.
 
 This post traces the actual execution path of that run — every step from webhook to merged output — and covers an entire subsystem I had to build because external diagnostics do not arrive on your schedule.
 
-For system context, see the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture) and the [project page](/projects/pipelinehealer).
+For system context, see the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture), the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer), and the [Systems page](/systems).
 
 ## The Trigger
 
@@ -55,7 +55,12 @@ That is a tight signal. No ambiguity about what broke.
 
 The diagnosis step ran the extracted summary through deterministic pattern checks first.
 
-The `dependency` pattern matched immediately: a missing or unresolvable npm package. Confidence: high. Failure type: `dependency`. Auto-fixable: yes.
+Result:
+
+- **Pattern**: `dependency` (missing or unresolvable npm package)
+- **Confidence**: high
+- **Failure type**: `dependency`
+- **Auto-fixable**: yes
 
 No LLM call was needed. The model fallback exists for ambiguous cases — test failures with unclear assertions, config errors in unfamiliar build tools — but for known patterns, deterministic wins every time.
 
@@ -88,7 +93,10 @@ PipelineHealer treats `ci-doctor` as an optional, additive signal. In this run, 
 
 During this run, the orchestrator polled for `ci-doctor` issues that correlated with the activity (`run_id`, `head_sha`, bounded time window) with an ~8 minute window and backoff.
 
-**Update (v0.2.9):** External diagnostics now support `GH_AW_INGESTION_MODE=hybrid`, where passive `ci-doctor` findings and direct GitHub MCP context can coexist in one activity. The default wait budget is now 60 seconds with async backfill, and passive matching was hardened for label-drift cases.
+Current behavior supports `GH_AW_INGESTION_MODE=hybrid`, where passive `ci-doctor` findings and direct GitHub MCP context can coexist in one activity.
+
+- Default wait budget is 60 seconds with async backfill.
+- Passive matching is hardened for label-drift cases.
 
 Here is where I hit a real problem.
 
@@ -188,4 +196,4 @@ Every one of those gaps was caught by a real run against the deployed system. Th
 
 ---
 
-*Post 5 of 6 in the [AI Dev Days Hackathon](/tags/hackathon) series.*
+*Post 5 of 6 in the [AI Dev Days Hackathon](/blog) series.*
