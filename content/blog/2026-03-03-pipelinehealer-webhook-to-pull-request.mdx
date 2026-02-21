@@ -70,7 +70,7 @@ With a high-confidence dependency diagnosis, the remediation agent built a fix:
 3. Committed the change
 4. Opened [PR #91](https://github.com/Canepro/pipelinehealer-demo/pull/91) against `main`
 
-For this run configuration (), it also filed [Issue #90](https://github.com/Canepro/pipelinehealer-demo/issues/90) as a tracking artifact with the full diagnosis context: failure type, confidence, evidence lines, and the remediation action taken.
+For this run configuration (`AUTO_CREATE_TRACKING_ISSUE_FOR_PRS=true`), it also filed [Issue #90](https://github.com/Canepro/pipelinehealer-demo/issues/90) as a tracking artifact with the full diagnosis context: failure type, confidence, evidence lines, and the remediation action taken.
 
 The PR body includes the root cause, the specific change, and a link back to the failing workflow run. A reviewer can verify the fix without re-reading logs.
 
@@ -84,9 +84,11 @@ But there is another actor in the system.
 
 When GitHub Agentic Workflows are installed on a repository, `ci-doctor` fires automatically on `workflow_run` failures. It is an independent AI analysis workflow maintained by GitHub — separate from PipelineHealer.
 
-PipelineHealer treats `ci-doctor` as an optional, additive signal. The integration is passive: PipelineHealer never dispatches `ci-doctor`. It only checks whether findings exist after the fact.
+PipelineHealer treats `ci-doctor` as an optional, additive signal. In this run, integration mode was passive: PipelineHealer never dispatched `ci-doctor`; it only checked whether findings existed after the fact.
 
-During the orchestrator's diagnosis phase, PipelineHealer polls for `ci-doctor` issues that correlate with the current run (by `run_id`, `head_sha`, and bounded time window). The polling window is about 8 minutes with backoff.
+During this run, the orchestrator polled for `ci-doctor` issues that correlated with the activity (`run_id`, `head_sha`, bounded time window) with an ~8 minute window and backoff.
+
+**Update (v0.2.9):** External diagnostics now support `GH_AW_INGESTION_MODE=hybrid`, where passive `ci-doctor` findings and direct GitHub MCP context can coexist in one activity. The default wait budget is now 60 seconds with async backfill, and passive matching was hardened for label-drift cases.
 
 Here is where I hit a real problem.
 
