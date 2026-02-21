@@ -2,14 +2,16 @@
 title: "Hackathon Retrospective: What I'd Do Differently Building PipelineHealer"
 date: "2026-03-16"
 description: "Five weeks of building a multi-agent CI healing system for the AI Dev Days Hackathon. What worked, what surprised me, and what I would change if I started over."
-tags: ["hackathon", "ai-agents", "ci-cd", "devops", "azure", "retrospective"]
+tags: ["hackathon", "ai-agents", "ci-cd", "devops", "azure", "retrospective", "observability"]
 ---
 
-PipelineHealer started as a weekend idea during the AI Dev Days Hackathon kickoff: what if CI failures could fix themselves?
+PipelineHealer started as a weekend idea during the AI Dev Days Hackathon kickoff to build a system where CI failures can fix themselves.
 
 Five weeks later, it is a deployed multi-agent system on Azure that receives GitHub webhooks, diagnoses failures, opens fix PRs, files tracking issues, ingests third-party AI diagnostics, and renders the full story in a dashboard. It works. It is also very different from what I planned on day one.
 
 This post is an honest look back at the build. What paid off, what I would skip, what caught me off guard, and what I would change if I started over tomorrow.
+
+For full context, see the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer) and the [Systems page](/systems).
 
 ## What Went Right
 
@@ -19,9 +21,12 @@ This was the single best architectural decision.
 
 The instinct with an AI hackathon project is to put the model at the center of everything. I almost did. Early prototypes sent full log dumps to GPT and asked for fixes. The results were inconsistent and hard to debug.
 
-Flipping the order — deterministic pattern matching first, LLM fallback only for ambiguity — made the system predictable. Dependency failures, lint errors, and build config issues are resolved without a model call. The model handles genuinely ambiguous cases where pattern rules run out of signal.
+Flipping the order — deterministic pattern matching first, LLM fallback only for ambiguity — made the system predictable.
 
-This also made testing dramatically easier. I can unit test the pattern matchers with fixtures. I cannot meaningfully unit test "does the model give a good answer today."
+Benefits:
+- Dependency failures, lint errors, and build config issues are resolved without a model call.
+- The model handles ambiguous cases where pattern rules run out of signal.
+- Pattern matchers are unit-testable with fixtures; model output quality is not unit-testable in the same way.
 
 ### 2. Typed contracts between agents
 
@@ -41,7 +46,7 @@ If I were advising someone on a hackathon project: build your operator CLI early
 
 I deployed to Azure on day three — before the agents were polished, before the dashboard was pretty, before half the features existed. This was uncomfortable but correct.
 
-Deploying early surfaced identity issues, proxy failures, webhook configuration mistakes, and cold-start behavior that I never would have found locally. Every one of those became a lesson that shaped the final system. Post 3 in this series covers the specific failures, but the meta-lesson is: if your project runs on cloud infrastructure, deploy to that infrastructure immediately. Do not wait until "the code is ready."
+Deploying early surfaced identity issues, proxy failures, webhook configuration mistakes, and cold-start behavior that I never would have found locally. Every one of those became a lesson that shaped the final system. [Post 3 in this series](/blog/2026-02-12-pipelinehealer-azure-deployment-lessons) covers the specific failures, but the meta-lesson is: if your project runs on cloud infrastructure, deploy to that infrastructure immediately. Do not wait until "the code is ready."
 
 ### 5. Safe defaults everywhere
 
@@ -59,7 +64,10 @@ PipelineHealer completes diagnosis in 1-2 minutes. `ci-doctor` can take 10-20 mi
 
 I ended up building a full backfill subsystem — background sweep, manual endpoint, CLI command, UI button — to handle late-arriving diagnostics. That entire subsystem was not in the plan. It exists because I ran a real E2E test and watched the gap happen.
 
-By `v0.2.9`, this path matured into a hybrid model: fast-path polling defaults to 60 seconds, async backfill remains in place, and activities can carry both passive GH-AW findings and direct GitHub MCP context with per-finding source metadata.
+By `v0.2.9`, this path matured into a hybrid model:
+- fast-path polling defaults to 60 seconds
+- async backfill remains in place for late arrivals
+- activities can carry both passive GH-AW findings and direct GitHub MCP context with per-finding source metadata
 
 ### 2. Sanitization is a feature
 
@@ -73,7 +81,7 @@ Third-party content is never clean. Budget time for sanitization.
 
 I wrote six blog posts during the hackathon. That was not originally planned as part of the build — I did it because the hackathon judges value documented thinking, and because my portfolio site needed content.
 
-What I did not expect: writing about the system forced me to clarify decisions I had been hand-waving. "What is the diagnostics wait policy and why?" is a question you can avoid in code but not in a blog post. Every post made the system slightly better because it made me justify choices out loud.
+What I did not expect: writing about the system forced me to clarify decisions I had been hand-waving. The diagnostics wait policy and its rationale are easy to gloss over in code but impossible to skip in a blog post. Every post made the system slightly better because it made me justify choices out loud.
 
 ### 4. The CLI became the most-used interface
 
@@ -130,9 +138,9 @@ These are real gaps, not aspirational features:
 
 PipelineHealer works. It does what the pitch says: detect CI failures, diagnose them, and open fix PRs or structured issues. The deployed system on Azure processes real webhook events and produces real remediation artifacts.
 
-But the interesting parts of the build were not the agent logic. They were the deployment failures, the timing gaps, the sanitization edge cases, and the operator workflow that emerged from actually using the system.
-
-The agents are maybe 30% of the code. The other 70% is infrastructure, safety gating, observability, CLI tooling, and integration plumbing. That ratio surprised me, and I think it is the most useful thing I can share with anyone building agentic systems.
+The most valuable lessons came from everything around the agent logic:
+- deployment failures, timing gaps, sanitization edge cases, and operator workflow surfaced only in real usage
+- agents are roughly 30% of the code, while infrastructure, safety gating, observability, CLI tooling, and integration plumbing make up the rest
 
 AI is the capability. Engineering is the product.
 
@@ -149,4 +157,4 @@ AI is the capability. Engineering is the product.
 
 ---
 
-*Post 6 of 6 in the [AI Dev Days Hackathon](/tags/hackathon) series.*
+*Post 6 of 6 in the [AI Dev Days Hackathon](/blog) series.*
