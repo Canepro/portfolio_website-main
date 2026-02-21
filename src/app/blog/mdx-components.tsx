@@ -71,6 +71,7 @@ export const mdxComponents: MDXComponents = {
   img: props => (
     <img
       {...props}
+      alt={typeof props.alt === 'string' ? props.alt : ''}
       className={`mt-6 rounded-xl border border-[color:var(--color-border)] shadow-md ${props.className || ''}`}
       loading="lazy"
     />
