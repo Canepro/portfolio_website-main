@@ -55,9 +55,11 @@ I never had a moment during the hackathon where the system did something unexpec
 
 Integrating GitHub's `ci-doctor` agentic workflow taught me something I should have anticipated: external tools do not respect your processing window.
 
-PipelineHealer completes diagnosis in 1-2 minutes. `ci-doctor` can take 10-20 minutes. I built an 8-minute polling window, which was not enough. The system correctly fell back to native diagnosis, but the dashboard showed incomplete external diagnostic data.
+PipelineHealer completes diagnosis in 1-2 minutes. `ci-doctor` can take 10-20 minutes. During this incident, an ~8-minute polling window was not enough, so the system correctly fell back to native diagnosis while external findings arrived later.
 
 I ended up building a full backfill subsystem — background sweep, manual endpoint, CLI command, UI button — to handle late-arriving diagnostics. That entire subsystem was not in the plan. It exists because I ran a real E2E test and watched the gap happen.
+
+By `v0.2.9`, this path matured into a hybrid model: fast-path polling defaults to 60 seconds, async backfill remains in place, and activities can carry both passive GH-AW findings and direct GitHub MCP context with per-finding source metadata.
 
 ### 2. Sanitization is a feature
 
@@ -71,7 +73,7 @@ Third-party content is never clean. Budget time for sanitization.
 
 I wrote six blog posts during the hackathon. That was not originally planned as part of the build — I did it because the hackathon judges value documented thinking, and because my portfolio site needed content.
 
-What I did not expect: writing about the system forced me to clarify decisions I had been hand-waving. "Why is the polling window 8 minutes?" is a question you can avoid in code but not in a blog post. Every post made the system slightly better because it made me justify choices out loud.
+What I did not expect: writing about the system forced me to clarify decisions I had been hand-waving. "What is the diagnostics wait policy and why?" is a question you can avoid in code but not in a blog post. Every post made the system slightly better because it made me justify choices out loud.
 
 ### 4. The CLI became the most-used interface
 
@@ -120,7 +122,7 @@ These are real gaps, not aspirational features:
 
 - **Lockfile-aware dependency fixes** — the current dependency remediation edits `package.json` but does not regenerate lockfiles. A production version would need to handle `package-lock.json`, `pnpm-lock.yaml`, and `bun.lockb`.
 - **GitHub App auth** — I used a PAT throughout. A GitHub App with scoped permissions would be the right production auth model.
-- **Metrics for external diagnostics** — I track status and reason codes, but I do not have invocation counters or latency metrics for the `ci-doctor` integration. That would matter at scale.
+- **Notification delivery channels** — diagnostics are strongest in the app today; chat delivery to Slack/Teams/Rocket.Chat is still a planned extension for non-admin stakeholders.
 - **Multi-provider CI support** — PipelineHealer is GitHub Actions only. The adapter pattern exists, but GitLab CI and Jenkins adapters are not built.
 
 
