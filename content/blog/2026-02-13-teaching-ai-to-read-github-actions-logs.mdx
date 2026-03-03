@@ -15,7 +15,7 @@ If you paste 500+ lines of mixed output into one LLM call and ask for "the fix,"
 For PipelineHealer, I needed a path that was explainable and testable, not just sometimes-correct.
 
 If you want broader system context, see the <a href="https://github.com/Canepro/pipelinehealer#architecture" target="_blank" rel="noopener noreferrer">PipelineHealer architecture diagram</a>.
-You can also browse the [PipelineHealer project](/projects/pipelinehealer) and the [systems overview](/systems).
+You can also browse the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer) and the [systems overview](/systems).
 
 This post covers the design I ended up with: pattern-first analysis, typed handoffs, fallback model reasoning, and explicit reliability guardrails.
 
@@ -33,7 +33,7 @@ GitHub Actions logs are not a single narrative. They are many narratives interle
 
 The actual failure signal is often 1-3 lines buried inside everything else.
 
-The right question is not "what model should I use?" The right consideration is the *smallest, highest-signal payload* the model should see.
+Model choice matters less than sending the *smallest, highest-signal payload* to the model.
 
 ## Step 1: Structured Extraction Before Diagnosis
 
@@ -119,4 +119,4 @@ Next post: **From Webhook to Pull Request** - a concrete walkthrough of the end-
 
 ---
 
-*Post 4 of 6 in the [AI Dev Days Hackathon](/tags/hackathon) series.*
+*Post 4 of 6 in the [AI Dev Days Hackathon](/blog) series.*
