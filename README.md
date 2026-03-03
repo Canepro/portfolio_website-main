@@ -21,6 +21,8 @@ This portfolio highlights hands-on **Kubernetes + SRE** work with a clear **Infr
 
 For a skimmable overview of how these pieces fit together, see `/systems` in the site.
 
+For PipelineHealer internals, use the architecture diagram in the project repo: `https://github.com/Canepro/pipelinehealer#architecture`.
+
 ## ✨ Features
 
 - **Project demos & links** - Recruiter-friendly live endpoints where available (clearly labeled when authentication is required)

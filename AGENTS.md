@@ -31,7 +31,7 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
 - Home: `/` (`src/app/page.tsx`)
 - Projects: `/projects` + `/projects/[slug]`
 - Blog: `/blog` + `/blog/[slug]` (MDX)
-- Systems overview: `/systems` (high-level architecture map)
+- Systems overview: `/systems` (high-level portfolio infrastructure map; not per-project architecture docs)
 - Contact: `/contact`
 - Sitemap: `/sitemap.xml` (`src/app/sitemap.ts`)
 
@@ -95,7 +95,9 @@ tags: ['optional', 'array', 'of', 'strings']
 ### Content Guidelines
 
 - Every post should end with a reusable takeaway: a checklist, snippet, or pattern.
-- Cross-link to project pages (`/projects/<slug>`) and the [Systems](/systems) page where relevant — this strengthens both the blog and portfolio sections.
+- Cross-link to project pages (`/projects/<slug>`) where relevant.
+- Use [Systems](/systems) for portfolio infrastructure context (OKE/AKS/Jenkins/LGTM).
+- For PipelineHealer architecture references, link to `https://github.com/Canepro/pipelinehealer#architecture`.
 - Tags are used by the Systems page to surface related posts (tags like `gitops`, `kubernetes`, `ci-cd`, `observability` are ranked highest).
 - MDX supports: headings (h1-h3), links (internal auto-use `next/link`, external open in new tab), ordered/unordered lists, blockquotes, inline `code`, and fenced code blocks.
 - Keep posts scannable: use headings to break up sections, bold for key phrases, and lists for enumerations. Recruiters skim.

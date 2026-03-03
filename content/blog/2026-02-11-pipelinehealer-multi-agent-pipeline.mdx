@@ -24,7 +24,7 @@ The core flow is a simple chain:
 3. **Remediation**: generates a plan and either opens a PR or creates an issue. Does not guess from raw logs.
 4. **Orchestrator**: coordinates the steps, persists state, and enforces guardrails.
 
-This chain is described on my [Systems](/systems) page, but the important part is the interface between agents: everything is a Pydantic model, not free-form text.
+This chain is documented in the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture), but the important part is the interface between agents: everything is a Pydantic model, not free-form text.
 
 ## The Rules That Prevent Hallucinations
 
