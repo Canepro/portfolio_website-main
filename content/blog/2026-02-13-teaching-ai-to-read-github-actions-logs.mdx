@@ -19,6 +19,8 @@ You can also browse the [PipelineHealer project](/projects/pipelinehealer) and t
 
 This post covers the design I ended up with: pattern-first analysis, typed handoffs, fallback model reasoning, and explicit reliability guardrails.
 
+Current baseline is `v0.3.0`, and this pattern-first architecture is still the core path behind activity diagnosis/remediation decisions.
+
 ## Why Raw Logs Break AI Workflows
 
 GitHub Actions logs are not a single narrative. They are many narratives interleaved:
@@ -52,13 +54,15 @@ This gave me two immediate benefits:
 
 ## Step 2: Pattern-First, Model-Second
 
-Before any model fallback, the diagnosis path checks deterministic patterns for known failure modes:
+Before any model fallback, the diagnosis path checks deterministic patterns for known failure modes (examples):
 
 - dependency failures
 - lint failures
 - test failures
 - build config failures
 - timeout failures
+- prettier failures
+- docker failures
 
 If pattern confidence is high, PipelineHealer acts deterministically.
 
@@ -96,7 +100,7 @@ This shifted failures from "mysterious" to "observable and bounded." If remediat
 After these changes, the system behavior became far more consistent:
 
 - dependency/lint paths produce deterministic fix PRs
-- test/build_config/timeout paths produce structured issues
+- test/build_config/timeout/prettier/docker paths produce structured issues
 - dashboard activity remains explainable end-to-end
 
 Most importantly, I can now reason about *why* an outcome happened, not just whether it happened.
