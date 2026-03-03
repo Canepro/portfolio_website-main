@@ -13,6 +13,8 @@ That sounds clean. Getting there was not.
 
 This post traces the actual execution path of that run — every step from webhook to merged output — and covers an entire subsystem I had to build because external diagnostics do not arrive on your schedule.
 
+Current project baseline is `v0.3.0`, which adds Activity Detail `Copy Context` and a visible `Assign to Agent` (`Coming Soon`) handoff affordance. This write-up focuses on the webhook-to-remediation reliability path that underpins those UX layers.
+
 For system context, see the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture), the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer), and the [Systems page](/systems).
 
 ## The Trigger
@@ -20,7 +22,7 @@ For system context, see the [PipelineHealer architecture diagram](https://github
 I ran this from my terminal:
 
 ```bash
-gh workflow run CI -R Canepro/pipelinehealer-demo -f failure_type=dependency
+gh workflow run CI --repo Canepro/pipelinehealer-demo --field failure_type=dependency
 ```
 
 The demo repo's CI workflow has a dispatch input that injects a specific failure. For `dependency`, it adds `left-pad@999.0.0` to `package.json` — a version that does not exist. The workflow fails at `npm install`.
