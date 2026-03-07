@@ -7,7 +7,9 @@ tags: ["hackathon", "ai-agents", "ci-cd", "devops", "azure", "retrospective", "o
 
 PipelineHealer started as a weekend idea during the AI Dev Days Hackathon kickoff to build a system where CI failures can fix themselves.
 
-Five weeks later, it is a deployed multi-agent system on Azure that receives GitHub webhooks, diagnoses failures, opens fix PRs, files tracking issues, ingests third-party AI diagnostics, and renders the full story in a dashboard. As of `v0.3.0`, Activity Detail also supports one-click `Copy Context` handoff payloads with a visible `Assign to Agent` (`Coming Soon`) path. It works. It is also very different from what I planned on day one.
+> Editor's note (March 6, 2026): this retrospective is intentionally anchored to the hackathon submission baseline from March 2, 2026 (`v0.3.0`). PipelineHealer has since moved through `v0.3.2`, `v0.4.0`, and `v0.5.2`, adding Jenkins bridge support, a reference Assign-to-Agent receiver, and notification sinks for Slack, Teams, Rocket.Chat, and email.
+
+By the end of the hackathon, it was a deployed multi-agent system on Azure that received GitHub webhooks, diagnosed failures, opened fix PRs, filed tracking issues, ingested third-party AI diagnostics, and rendered the full story in a dashboard. As of `v0.3.0`, Activity Detail also supported one-click `Copy Context` handoff payloads with a visible `Assign to Agent` (`Coming Soon`) path. It worked. It was also very different from what I planned on day one.
 
 ![Activity Detail with Copy Context and Assign to Agent (Coming Soon)](/images/Activity_page_copy_context.png)
 
@@ -15,7 +17,9 @@ Five weeks later, it is a deployed multi-agent system on Azure that receives Git
 
 This post is an honest look back at the build. What paid off, what I would skip, what caught me off guard, and what I would change if I started over tomorrow.
 
-For full context, see the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer) and the [Systems page](/systems).
+If you want the implementation-level detail behind the biggest lessons here, [Post 4](/blog/2026-02-13-teaching-ai-to-read-github-actions-logs) covers the log-parsing and confidence-gating path, while [Post 5](/blog/2026-03-03-pipelinehealer-webhook-to-pull-request) walks through the end-to-end webhook, remediation, and backfill flow.
+
+For full context, see the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer) and the [architecture diagram](https://github.com/Canepro/pipelinehealer#architecture).
 
 ## What Went Right
 
@@ -121,7 +125,7 @@ The backfill pattern — periodic sweep for incomplete records, re-fetch, patch 
 
 PipelineHealer has four modes: `safe`, `demo`, `freestyle`, and `debug`. In practice, I used `safe` for everything real and `debug` when something was broken. `demo`/`freestyle` exist for more aggressive automation, but I rarely switched to them.
 
-If I started over, I would have `safe` and `debug` only. Two modes are easier to reason about and test than three.
+If I started over, I would have `safe` and `debug` only. Two modes are easier to reason about and test than four.
 
 ### 4. Pin the demo repo fixture set earlier
 
@@ -131,21 +135,22 @@ I should have frozen the demo fixture set after the first successful E2E run and
 
 ## By the Numbers
 
-- **208** backend tests collected at the time of writing
-- **7** demo failure types (dependency, lint, test, build_config, timeout, prettier, docker)
+Some of these numbers moved after the hackathon, so these are the current repo-level counts where the codebase changed materially:
+
+- **268** backend tests collected in the current repo
+- **6** demo failure types in the current fixture set (dependency, lint, prettier, test, build_config, timeout)
 - **4** specialized agents (Log Analyzer, Diagnosis, Remediation, Orchestrator)
 - **1** CLI entrypoint with 20+ commands
 - **1** background sweep running every 10 minutes
-- **0** unintended repository modifications during the entire hackathon
 
-## What Is Still on the Table
+## What Was Still on the Table at Submission Time
 
-These are real gaps, not aspirational features:
+These were real gaps in the `v0.3.0` submission baseline, not aspirational features:
 
 - **Lockfile-aware dependency fixes** — the current dependency remediation edits `package.json` but does not regenerate lockfiles. A production version would need to handle `package-lock.json`, `pnpm-lock.yaml`, and `bun.lockb`.
-- **GitHub App auth** — I used a PAT throughout. A GitHub App with scoped permissions would be the right production auth model.
-- **Notification delivery channels** — diagnostics are strongest in the app today; chat delivery to Slack/Teams/Rocket.Chat is still a planned extension for non-admin stakeholders.
-- **Multi-provider CI support** — PipelineHealer is GitHub Actions only. The adapter pattern exists, but GitLab CI and Jenkins adapters are not built.
+- **GitHub App auth** — I used a PAT throughout. The current repo surfaces GitHub App readiness in operator views, but the active GitHub client path still uses a PAT or externally supplied token, so full App-native auth remains unfinished.
+- **Notification delivery channels** — at submission time, diagnostics were strongest in the app and chat delivery to Slack/Teams/Rocket.Chat was still a planned extension for non-admin stakeholders. This later shipped in `v0.5.0` alongside email delivery.
+- **Multi-provider CI support** — at submission time, PipelineHealer was GitHub Actions only. The adapter pattern existed, but GitLab CI and Jenkins adapters were not built. Jenkins bridge support later landed in `v0.3.2`; broader provider coverage is still open.
 
 
 ## The Honest Summary
