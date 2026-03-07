@@ -24,7 +24,7 @@ The core flow is a simple chain:
 3. **Remediation**: generates a plan and either opens a PR or creates an issue. Does not guess from raw logs.
 4. **Orchestrator**: coordinates the steps, persists state, and enforces guardrails.
 
-This chain is described on my [Systems](/systems) page, but the important part is the interface between agents: everything is a Pydantic model, not free-form text.
+This chain is documented in the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture), but the important part is the interface between agents: everything is a Pydantic model, not free-form text.
 
 ## The Rules That Prevent Hallucinations
 
@@ -75,7 +75,7 @@ Typed contracts give you two advantages:
 
 ## Remediation Actions (What the System Is Allowed to Do)
 
-PipelineHealer supports five failure types. The action policy is intentionally conservative:
+At this early stage, PipelineHealer's action policy covered five core failure types:
 
 - **Dependency issues**: PR (auto-fix)
 - **Lint/format issues**: PR (auto-fix)
@@ -107,7 +107,6 @@ bunx smee-client --url https://smee.io/<your-channel> --target http://127.0.0.1:
 Trigger failures in the demo repo:
 
 ```bash
-cd /mnt/d/repos/pipelinehealer/demo-repo
 gh workflow run CI -R Canepro/pipelinehealer-demo -f failure_type=build_config
 ```
 
@@ -120,7 +119,7 @@ Now that the pipeline works end-to-end locally, the next two phases are about de
 - **Security**: protect `/api/*` (recommended: `X-API-Key`), and make webhook verification policy explicit.
 - **Reliability**: add retries/backoff for GitHub API calls, and add timeouts per agent step.
 
-Then comes the real deployment work: `azd up` and aligning infra to deploy the actual backend/frontend images.
+Then comes the real deployment work: aligning the infrastructure and deploy path so the actual backend/frontend images can run in Azure reliably.
 
 ## Takeaway: A Multi-Agent Checklist
 

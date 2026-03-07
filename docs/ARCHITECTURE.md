@@ -10,7 +10,8 @@ Key product surfaces:
 
 - **Projects**: case studies + live endpoints where available
 - **Blog**: static-first MDX writing (`content/blog/*.mdx`)
-- **Systems**: a skimmable architecture map at `/systems` (OKE hub + AKS spoke + CI + telemetry)
+- **Systems**: a skimmable architecture map at `/systems` (OKE hub + AKS spoke + CI + telemetry).
+- Note: this is a portfolio infrastructure map; project-specific architecture (for example PipelineHealer) should link to the project repository docs.
 
 ## 🎯 Architecture Principles
 

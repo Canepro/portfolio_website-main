@@ -18,7 +18,7 @@ The single-prompt approach — "here are 500 lines of CI logs, fix it" — produ
 Breaking the problem into four focused agents changed the reliability entirely:
 
 1. **Log Analyzer** — parses raw output, extracts structured error patterns. Does not diagnose.
-2. **Diagnosis Agent** — maps extracted patterns to failure categories: dependency issues, test failures, config errors, build failures, infrastructure problems. Does not fix.
+2. **Diagnosis Agent** — maps extracted patterns to early failure categories: dependency issues, lint/format failures, test failures, build config errors, and timeouts. Does not fix.
 3. **Remediation Agent** — generates a targeted fix based on a confirmed diagnosis. Does not guess from raw logs.
 4. **Orchestrator** — coordinates the pipeline, manages state, opens the PR or issue.
 
@@ -33,7 +33,7 @@ Each agent has a narrow scope, structured inputs and outputs, and can be tested 
 - **Hosting** — Azure Container Apps
 - **Trigger** — GitHub `workflow_run.completed` webhook
 
-The flow: GitHub sends the webhook → the backend validates and persists the failed run → the agent pipeline runs → a PR or issue is created on the source repo. Five supported failure types at launch.
+The flow: GitHub sends the webhook → the backend validates and persists the failed run → the agent pipeline runs → a PR or issue is created on the source repo. The launch scope covered five core failure types.
 
 ## What's Built
 
