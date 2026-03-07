@@ -15,7 +15,7 @@ This post traces the actual execution path of that run — every step from webho
 
 Current project baseline is `v0.3.0`, which adds Activity Detail `Copy Context` and a visible `Assign to Agent` (`Coming Soon`) handoff affordance. This write-up focuses on the webhook-to-remediation reliability path that underpins those UX layers.
 
-For system context, see the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture), the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer), and the [Systems page](/systems).
+For system context, see the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture) and the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer).
 
 ## The Trigger
 
@@ -93,7 +93,7 @@ When GitHub Agentic Workflows are installed on a repository, `ci-doctor` fires a
 
 PipelineHealer treats `ci-doctor` as an optional, additive signal. In this run, integration mode was passive: PipelineHealer never dispatched `ci-doctor`; it only checked whether findings existed after the fact.
 
-During this run, the orchestrator polled for `ci-doctor` issues that correlated with the activity (`run_id`, `head_sha`, bounded time window) with an ~8 minute window and backoff.
+During this run, the orchestrator polled for `ci-doctor` issues that correlated with the activity (`run_id`, `head_sha`, bounded time window) using the then-current ~8 minute window and backoff.
 
 Current behavior supports `GH_AW_INGESTION_MODE=hybrid`, where passive `ci-doctor` findings and direct GitHub MCP context can coexist in one activity.
 

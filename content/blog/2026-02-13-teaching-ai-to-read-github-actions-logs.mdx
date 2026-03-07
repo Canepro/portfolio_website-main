@@ -15,7 +15,7 @@ If you paste 500+ lines of mixed output into one LLM call and ask for "the fix,"
 For PipelineHealer, I needed a path that was explainable and testable, not just sometimes-correct.
 
 If you want broader system context, see the <a href="https://github.com/Canepro/pipelinehealer#architecture" target="_blank" rel="noopener noreferrer">PipelineHealer architecture diagram</a>.
-You can also browse the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer) and the [systems overview](/systems).
+You can also browse the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer).
 
 This post covers the design I ended up with: pattern-first analysis, typed handoffs, fallback model reasoning, and explicit reliability guardrails.
 
@@ -54,16 +54,13 @@ This gave me two immediate benefits:
 
 ## Step 2: Pattern-First, Model-Second
 
-Before any model fallback, the diagnosis path checks deterministic patterns for known failure modes (examples):
+Before any model fallback, the diagnosis path checks deterministic patterns for the core failure taxonomy:
 
 - dependency failures
 - lint failures
 - test failures
 - build config failures
 - timeout failures
-- prettier failures
-- docker failures
-
 If pattern confidence is high, PipelineHealer acts deterministically.
 
 If confidence is low, model-based diagnosis is used as a fallback with typed output constraints.
@@ -100,7 +97,7 @@ This shifted failures from "mysterious" to "observable and bounded." If remediat
 After these changes, the system behavior became far more consistent:
 
 - dependency/lint paths produce deterministic fix PRs
-- test/build_config/timeout/prettier/docker paths produce structured issues
+- test/build_config/timeout paths produce structured issues
 - dashboard activity remains explainable end-to-end
 
 Most importantly, I can now reason about *why* an outcome happened, not just whether it happened.

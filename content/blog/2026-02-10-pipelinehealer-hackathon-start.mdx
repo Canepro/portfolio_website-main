@@ -7,7 +7,7 @@ tags: ["hackathon", "ai-agents", "devops", "azure", "github-actions"]
 
 CI/CD failures follow a predictable loop: pipeline goes red, someone scrolls through logs, finds the error, context-switches to fix it, pushes, waits. Steps two through five are repetitive and interruptible. They do not require a human — they require pattern matching and a structured response.
 
-**PipelineHealer** automates that loop. A GitHub webhook fires on a failed workflow run, four AI agents analyze and diagnose the failure, and a pull request opens with the fix. No manual triage.
+**PipelineHealer** automates the repetitive part of that loop. A GitHub webhook fires on a failed workflow run, the system analyzes the failure, and PipelineHealer either opens a fix PR for deterministic cases or files a structured issue when confidence is low.
 
 This is my entry for the [AI Dev Days Hackathon](https://github.com/Azure/AI-Dev-Days-Hackathon), targeting the **Agentic DevOps** grand prize.
 
@@ -18,7 +18,7 @@ The single-prompt approach — "here are 500 lines of CI logs, fix it" — produ
 Breaking the problem into four focused agents changed the reliability entirely:
 
 1. **Log Analyzer** — parses raw output, extracts structured error patterns. Does not diagnose.
-2. **Diagnosis Agent** — maps extracted patterns to failure categories: dependency issues, test failures, config errors, build failures, infrastructure problems. Does not fix.
+2. **Diagnosis Agent** — maps extracted patterns to early failure categories: dependency issues, lint/format failures, test failures, build config errors, and timeouts. Does not fix.
 3. **Remediation Agent** — generates a targeted fix based on a confirmed diagnosis. Does not guess from raw logs.
 4. **Orchestrator** — coordinates the pipeline, manages state, opens the PR or issue.
 
@@ -26,14 +26,14 @@ Each agent has a narrow scope, structured inputs and outputs, and can be tested 
 
 ## The Stack
 
-- **Agents** — Microsoft Agent Framework, Azure OpenAI (GPT-4o)
+- **Agents** — Microsoft Agent Framework workflows, Azure OpenAI
 - **Backend** — Python, FastAPI
 - **Frontend** — React, TypeScript, Tailwind, TanStack Query
 - **Storage** — Azure Cosmos DB (serverless)
-- **Hosting** — Azure Container Apps, Azure Functions (webhook handler)
+- **Hosting** — Azure Container Apps
 - **Trigger** — GitHub `workflow_run.completed` webhook
 
-The flow: GitHub sends the webhook → Azure Functions validates and routes it → the agent pipeline runs → a PR or issue is created on the source repo. Five supported failure types at launch.
+The flow: GitHub sends the webhook → the backend validates and persists the failed run → the agent pipeline runs → a PR or issue is created on the source repo. The launch scope covered five core failure types.
 
 ## What's Built
 
