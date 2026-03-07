@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { ProjectCardProps } from '../../types/components';
-import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Github, ExternalLink, BarChart3 } from 'lucide-react';
 import ProjectMedia from '../ProjectMedia/ProjectMedia';
@@ -13,7 +12,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   const projectHref = `/projects/${encodeURIComponent(project.slug)}`;
   const visitHref = safeExternalHref(project.visit);
   const sourceHref = safeExternalHref(project.source);
-  const hasSeparateLiveDemo = Boolean(visitHref && sourceHref && visitHref !== sourceHref);
   const showLiveDemo = Boolean(visitHref && (!sourceHref || visitHref !== sourceHref));
 
   const handleDashboardClick = (e: React.MouseEvent) => {
@@ -26,8 +24,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   };
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:bg-[color:var(--color-card-hover)] hover:shadow-lg">
-      {/* Image Section */}
+    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)] shadow-sm transition-colors hover:bg-[color:var(--color-card-hover)]">
       <Link href={projectHref} className="relative block aspect-video overflow-hidden">
         <ProjectMedia
           src={previewSrc}
@@ -37,107 +34,83 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
           priority={index < 4}
           poster={project.image}
           fit="cover"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="object-cover"
         />
-
-        {/* Badges Overlay */}
-        <div className="absolute left-3 top-3 flex gap-2">
-          {project.featured && (
-            <Badge
-              variant="default"
-              className="border-none bg-yellow-500 text-white hover:bg-yellow-600"
-            >
-              Featured
-            </Badge>
-          )}
-          {project.category && (
-            <Badge
-              variant="secondary"
-              className="bg-background/90 text-foreground backdrop-blur-sm"
-            >
-              {project.category}
-            </Badge>
-          )}
-        </div>
       </Link>
 
-      {/* Content Section */}
       <div className="flex flex-1 flex-col p-5">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
+          {project.category ? <span>{project.category}</span> : null}
+          {project.featured ? <span>Featured</span> : null}
+        </div>
+
         <Link href={projectHref} className="group/title">
-          <h3 className="mb-2 text-xl font-semibold tracking-tight transition-colors group-hover/title:text-[color:var(--color-accent)]">
+          <h3 className="mt-3 text-xl font-semibold tracking-tight transition-colors group-hover/title:text-[color:var(--color-accent)]">
             {project.title}
           </h3>
         </Link>
 
-        <p className="mb-4 line-clamp-3 text-sm text-[color:var(--color-text-secondary)]">
+        <p className="mt-2 line-clamp-3 text-sm leading-6 text-[color:var(--color-text-secondary)]">
           {project.description}
         </p>
 
-        {/* Tags */}
-        <div className="mb-6 flex flex-wrap gap-2">
-          {project.tags.slice(0, 4).map((tag, i) => (
-            <Badge key={i} variant="tech">
-              {tag}
-            </Badge>
+        <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[color:var(--color-text-secondary)]">
+          {project.tags.slice(0, 3).map(tag => (
+            <span key={tag}>{tag}</span>
           ))}
-          {project.tags.length > 4 && (
-            <Badge variant="tech" className="opacity-70">
-              +{project.tags.length - 4}
-            </Badge>
-          )}
+          {project.tags.length > 3 && <span>+{project.tags.length - 3} more</span>}
         </div>
 
-        {/* Actions Footer */}
-        <div className="mt-auto flex flex-wrap gap-2 pt-2">
-          {isGrafanaProject ? (
-            <>
-              {visitHref && (
-                <Button variant="accent" size="sm" className="w-full gap-2 sm:w-auto" asChild>
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-4 pt-6">
+          <Button variant="accent" size="sm" className="min-w-[10rem] justify-center" asChild>
+            <Link href={projectHref}>Read case study</Link>
+          </Button>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+            {isGrafanaProject ? (
+              <>
+                {visitHref ? (
                   <a
                     href={visitHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={handleDashboardClick}
+                    className="inline-flex items-center gap-1 text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
                   >
                     <BarChart3 className="h-4 w-4" /> Open Grafana
                   </a>
-                </Button>
-              )}
-              {sourceHref && (
-                <Button variant="glass" size="sm" className="w-full gap-2 sm:w-auto" asChild>
+                ) : null}
+                {sourceHref ? (
                   <a href={sourceHref} target="_blank" rel="noopener noreferrer">
-                    <Github className="h-4 w-4" /> Code
+                    <span className="inline-flex items-center gap-1 text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]">
+                      <Github className="h-4 w-4" /> Code
+                    </span>
                   </a>
-                </Button>
-              )}
-            </>
-          ) : (
-            <>
-              {showLiveDemo && visitHref && (
-                <Button variant="accent" size="sm" className="w-full gap-2 sm:w-auto" asChild>
+                ) : null}
+              </>
+            ) : (
+              <>
+                {showLiveDemo && visitHref ? (
                   <a href={visitHref} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="h-4 w-4" /> Live Demo
+                    <span className="inline-flex items-center gap-1 text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]">
+                      <ExternalLink className="h-4 w-4" /> Live demo
+                    </span>
                   </a>
-                </Button>
-              )}
-              {sourceHref && (
-                <Button
-                  variant={showLiveDemo ? 'glass' : 'accent'}
-                  size="sm"
-                  className="w-full gap-2 sm:w-auto"
-                  asChild
-                >
+                ) : null}
+                {sourceHref ? (
                   <a href={sourceHref} target="_blank" rel="noopener noreferrer">
-                    <Github className="h-4 w-4" />
-                    {visitHref && visitHref === sourceHref ? 'View Source' : 'Code'}
+                    <span className="inline-flex items-center gap-1 text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]">
+                      <Github className="h-4 w-4" />
+                      {visitHref && visitHref === sourceHref ? 'Source' : 'Code'}
+                    </span>
                   </a>
-                </Button>
-              )}
-            </>
-          )}
+                ) : null}
+              </>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

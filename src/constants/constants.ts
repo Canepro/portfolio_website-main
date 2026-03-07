@@ -2,6 +2,52 @@ import type { Project } from '../types/project';
 
 export const projects: Project[] = [
   {
+    title: 'PipelineHealer',
+    slug: 'pipelinehealer',
+    description:
+      'Policy-aware remediation control plane for failed pipelines: diagnose root causes, open safe fix PRs when deterministic, and fall back to auditable issues when risk is unclear.',
+    longDescription: `OSS-first remediation platform for software-delivery pipelines.
+
+- Ingests failed runs from GitHub Actions and a signed Jenkins bridge
+- Normalizes failure context into reviewable diagnostics
+- Applies controlled remediation with policy gates and audit trails
+- Supports local, container, Kubernetes, and Azure deployment paths`,
+    image: '/images/pipelinehealer-dashboard-current.png',
+    tags: [
+      'Python',
+      'FastAPI',
+      'React',
+      'GitHub Actions',
+      'Jenkins',
+      'Azure Container Apps',
+      'PostgreSQL',
+      'Automation',
+    ],
+    category: 'DevOps',
+    featured: true,
+    source: 'https://github.com/Canepro/pipelinehealer',
+    visit: 'https://ca-canepro-ph-frontend.kinddune-53ac219d.eastus2.azurecontainerapps.io',
+    id: 7,
+  },
+  {
+    title: 'Rocket.Chat Logs Viewer App',
+    slug: 'rocketchat-app-logs-viewer',
+    description:
+      'Rocket.Chat-native logs workflow that restores fast, private incident triage with guarded Loki queries, RBAC-aware actions, and a focused deep-inspection web UI.',
+    longDescription: `Rocket.Chat workflow layer for production log triage.
+
+- Slash-first operator flow with room and thread context
+- Server-side Loki query proxy with validation, rate limits, and redaction
+- Chat-native sharing actions plus a separate React web UI for deeper inspection
+- Designed to complement observability platforms, not replace them`,
+    image: '/images/rocketchat-logs-viewer-web-ui.png',
+    tags: ['Rocket.Chat', 'TypeScript', 'Node.js', 'React', 'Vite', 'Tailwind', 'Loki', 'RBAC'],
+    category: 'Backend',
+    featured: true,
+    source: 'https://github.com/Canepro/rocketchat-app-logs-viewer',
+    id: 8,
+  },
+  {
     title: 'Hybrid Cloud GitOps Control Plane (Terraform + ArgoCD)',
     slug: 'hybrid-cloud-gitops-control-plane',
     description:

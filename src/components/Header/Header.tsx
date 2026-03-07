@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Github, Linkedin, Menu, X } from 'lucide-react';
 
 import SimpleThemeToggle from '@/components/ThemeToggle/SimpleThemeToggle';
@@ -18,18 +18,13 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [renderMobileMenu, setRenderMobileMenu] = useState(false);
 
-  const nav: NavItem[] = useMemo(
-    () => [
-      { href: '/', label: 'Home' },
-      { href: '/projects', label: 'Projects' },
-      { href: '/systems', label: 'Systems' },
-      { href: '/blog', label: 'Blog' },
-      { href: '/contact', label: 'Contact' },
-      { href: '/#tech', label: 'Technologies' },
-      { href: '/#about', label: 'About' },
-    ],
-    []
-  );
+  const nav: NavItem[] = [
+    { href: '/', label: 'Home' },
+    { href: '/projects', label: 'Projects' },
+    { href: '/systems', label: 'Systems' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/contact', label: 'Contact' },
+  ];
 
   const githubHref = safeExternalHref(profile.links.github);
   const linkedinHref = safeExternalHref(profile.links.linkedin);
@@ -83,13 +78,12 @@ export default function Header() {
             const isActive =
               item.href === '/'
                 ? pathname === '/'
-                : item.href.startsWith('/#')
-                  ? pathname === '/'
-                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   'rounded-xl px-3 py-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition-colors hover:opacity-90',
                   isActive &&

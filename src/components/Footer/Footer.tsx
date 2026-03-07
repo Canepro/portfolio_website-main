@@ -10,6 +10,18 @@ export default function Footer() {
   const githubHref = safeExternalHref(profile.links.github);
   const linkedinHref = safeExternalHref(profile.links.linkedin);
   const twitterHref = safeExternalHref(profile.links.twitter);
+  const quickLinks = [
+    { href: '/projects', label: 'Projects' },
+    { href: '/systems', label: 'Systems' },
+    { href: '/blog', label: 'Blog' },
+    { href: '/contact', label: 'Contact' },
+  ];
+  const homeSections = [
+    { href: '/#projects', label: 'Selected work' },
+    { href: '/#experience', label: 'Experience' },
+    { href: '/#tech', label: 'Capabilities' },
+    { href: '/#writing', label: 'Writing' },
+  ];
 
   return (
     <footer className="border-t border-[color:var(--color-border)]">
@@ -44,42 +56,30 @@ export default function Footer() {
               Navigate
             </div>
             <div className="mt-4 grid gap-2">
-              <Link
-                href="/projects"
-                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
-              >
-                Projects
-              </Link>
-              <Link
-                href="/systems"
-                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
-              >
-                Systems
-              </Link>
-              <Link
-                href="/blog"
-                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
-              >
-                Blog
-              </Link>
-              <Link
-                href="/contact"
-                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
-              >
-                Contact
-              </Link>
-              <Link
-                href="/#tech"
-                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
-              >
-                Technologies
-              </Link>
-              <Link
-                href="/#about"
-                className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
-              >
-                About
-              </Link>
+              {quickLinks.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-6 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-70">
+              Home sections
+            </div>
+            <div className="mt-4 grid gap-2">
+              {homeSections.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -112,17 +112,16 @@ export default function Footer() {
             </div>
 
             <p className="mt-5 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
-              Constant and never-ending progress. Ship, observe, explain.
+              Best contact path: email or LinkedIn. Include context if you want a faster response.
             </p>
           </div>
         </div>
 
         <div className="mt-10 flex flex-col gap-2 border-t border-[color:var(--color-border)] pt-6 text-xs text-[color:var(--color-text-secondary)] opacity-80 md:flex-row md:items-center md:justify-between">
           <div>
-            © {new Date().getFullYear()} {profile.name}. Built with Next.js, Bun, and shadcn-style
-            primitives.
+            © {new Date().getFullYear()} {profile.name}. Built with Next.js, Bun, and typed content.
           </div>
-          <div className="font-mono">jenkins.canepro.me · oke · gitops</div>
+          <div className="font-mono">UK · kubernetes · gitops · observability</div>
         </div>
       </div>
     </footer>

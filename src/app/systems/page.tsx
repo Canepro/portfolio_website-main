@@ -10,7 +10,6 @@ import {
   Waypoints,
 } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getAllBlogPostsMeta } from '@/lib/blog';
 import { safeExternalHref } from '@/lib/url';
@@ -63,36 +62,14 @@ function NodeCard({
 function SystemsDiagram() {
   return (
     <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-5 md:p-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div>
         <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
-          Hub-and-Spoke Map
+          System map
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Badge
-            variant="outline"
-            className="border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]"
-          >
-            OKE hub
-          </Badge>
-          <Badge
-            variant="outline"
-            className="border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]"
-          >
-            AKS spoke
-          </Badge>
-          <Badge
-            variant="outline"
-            className="border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]"
-          >
-            Jenkins multibranch
-          </Badge>
-          <Badge
-            variant="outline"
-            className="border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]"
-          >
-            OTLP → LGTM
-          </Badge>
-        </div>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-[color:var(--color-text-secondary)]">
+          GitHub changes flow through Jenkins, workloads run on the AKS spoke, and telemetry lands
+          in the OKE hub for shared observability.
+        </p>
       </div>
 
       <div className="mt-5 grid gap-3">
@@ -178,6 +155,20 @@ export default function SystemsPage() {
       .map(x => x.p);
     return picks.length ? picks : all.slice(0, 3);
   })();
+  const systemFacts = [
+    {
+      label: 'Control plane',
+      value: 'OKE hub for Argo CD, Jenkins, and LGTM',
+    },
+    {
+      label: 'Workload path',
+      value: 'AKS spoke for app runtime and constrained build work',
+    },
+    {
+      label: 'Telemetry',
+      value: 'Metrics, logs, and traces forwarded into the hub',
+    },
+  ];
 
   return (
     <div className="px-6 py-10 md:px-10">
@@ -188,13 +179,28 @@ export default function SystemsPage() {
               Systems
             </p>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight md:text-6xl">
-              A 30-second map
+              How the portfolio runs
             </h1>
             <p className="mt-5 text-[color:var(--color-text-secondary)] leading-7">
-              The portfolio is backed by a hub-and-spoke Kubernetes setup: an OKE hub for GitOps and
-              observability, and an AKS spoke for workloads and constrained build agents. This page
-              is the high-level view; the case studies and writing cover the details.
+              The site is backed by a hub-and-spoke Kubernetes setup: OKE hosts the shared control
+              plane and observability stack, while AKS carries workloads and constrained build
+              agents. This page is the orientation layer; the project pages and posts carry the
+              implementation detail.
             </p>
+
+            <ul className="mt-6 grid gap-2 text-sm text-[color:var(--color-text-secondary)]">
+              {systemFacts.map(item => (
+                <li key={item.label} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--color-accent)]" />
+                  <span>
+                    <span className="font-semibold text-[color:var(--color-text-primary)]">
+                      {item.label}:
+                    </span>{' '}
+                    {item.value}
+                  </span>
+                </li>
+              ))}
+            </ul>
 
             <div className="mt-7 flex flex-wrap gap-3">
               <Button variant="accent" size="lg" className="h-11" asChild>
@@ -209,23 +215,47 @@ export default function SystemsPage() {
           <div className="w-full max-w-xl">
             <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6">
               <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
-                Live Endpoints
+                Start here
               </div>
-              <div className="mt-4 grid gap-2">
-                {endpoints.map(e => (
-                  <a
-                    key={e.label}
-                    href={e.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]"
-                  >
-                    <span className="font-semibold">{e.label}</span>
-                    <span className="inline-flex items-center gap-2 text-[color:var(--color-text-secondary)] opacity-80">
-                      Open <ExternalLink className="h-4 w-4" />
-                    </span>
-                  </a>
-                ))}
+              <div className="mt-4 grid gap-3">
+                <div className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-4 py-3">
+                  <div className="text-sm font-semibold text-[color:var(--color-text-primary)]">
+                    Systems page
+                  </div>
+                  <div className="mt-1 text-sm text-[color:var(--color-text-secondary)]">
+                    The quick map of how GitOps, CI, runtime, and observability connect.
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-4 py-3">
+                  <div className="text-sm font-semibold text-[color:var(--color-text-primary)]">
+                    Projects
+                  </div>
+                  <div className="mt-1 text-sm text-[color:var(--color-text-secondary)]">
+                    Use the case studies for concrete outcomes, tradeoffs, and implementation
+                    detail.
+                  </div>
+                </div>
+              </div>
+              <div className="mt-6 border-t border-[color:var(--color-border)] pt-5">
+                <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
+                  Live endpoints
+                </div>
+                <div className="mt-4 grid gap-2">
+                  {endpoints.map(e => (
+                    <a
+                      key={e.label}
+                      href={e.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]"
+                    >
+                      <span className="font-semibold">{e.label}</span>
+                      <span className="inline-flex items-center gap-2 text-[color:var(--color-text-secondary)] opacity-80">
+                        Open <ExternalLink className="h-4 w-4" />
+                      </span>
+                    </a>
+                  ))}
+                </div>
               </div>
               <p className="mt-4 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
                 Some services require authentication or may be paused to control cost.
@@ -242,9 +272,9 @@ export default function SystemsPage() {
       <section className="mx-auto mt-16 max-w-6xl">
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8">
-            <h2 className="text-3xl font-semibold tracking-tight">Repos</h2>
+            <h2 className="text-3xl font-semibold tracking-tight">Anchor repos</h2>
             <p className="mt-3 text-[color:var(--color-text-secondary)] leading-7">
-              The two anchor repos that explain most of this setup end-to-end.
+              These are the two repositories that explain most of the platform end-to-end.
             </p>
 
             <div className="mt-6 grid gap-3">
@@ -284,9 +314,9 @@ export default function SystemsPage() {
           </div>
 
           <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8">
-            <h2 className="text-3xl font-semibold tracking-tight">Related Writing</h2>
+            <h2 className="text-3xl font-semibold tracking-tight">Related writing</h2>
             <p className="mt-3 text-[color:var(--color-text-secondary)] leading-7">
-              Deeper notes: tradeoffs, constraints, and the boring details that matter.
+              Use these posts for tradeoffs, constraints, and rollout detail.
             </p>
 
             <div className="mt-6 grid gap-3">
@@ -304,12 +334,8 @@ export default function SystemsPage() {
                       {p.description}
                     </div>
                   ) : null}
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {(p.tags || []).slice(0, 4).map(t => (
-                      <Badge key={t} variant="tech" className="text-[10px] font-mono">
-                        {t}
-                      </Badge>
-                    ))}
+                  <div className="mt-3 text-xs text-[color:var(--color-text-secondary)] opacity-80">
+                    {(p.tags || []).slice(0, 4).join(' · ')}
                   </div>
                 </Link>
               ))}

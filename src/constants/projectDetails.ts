@@ -1,6 +1,117 @@
 import type { ProjectDetail } from '../types/project';
 
 export const projectDetails: Record<string, ProjectDetail> = {
+  pipelinehealer: {
+    slug: 'pipelinehealer',
+    longDescription: `## Overview
+
+PipelineHealer is a **policy-aware remediation control plane** for failed delivery pipelines.
+
+The core workflow is deliberate:
+
+1. Ingest failure evidence from a pipeline provider.
+2. Normalize the failure into concrete diagnostics.
+3. Apply remediation only when the path is deterministic and policy allows it.
+4. Fall back to a structured, auditable issue when the safer answer is **"do not auto-edit."**
+
+## What makes it worth showing
+
+- **Provider coverage today:** GitHub Actions plus a signed Jenkins bridge path
+- **Safety model:** policy gates, repo allowlists, explicit remediation modes, and auditable outcomes
+- **Operator value:** less repetitive triage, clearer evidence, and controlled automation instead of blind self-healing claims
+- **Deployment flexibility:** local, Docker/Podman, Helm/Kubernetes, and Azure Container Apps
+
+## Live proof
+
+- **Live demo:** https://ca-canepro-ph-frontend.kinddune-53ac219d.eastus2.azurecontainerapps.io
+- **Source:** https://github.com/Canepro/pipelinehealer
+
+## Why it matters
+
+This is not a toy "AI fixes CI" demo. The interesting part is the **control model**:
+
+- deterministic fixes can open or reuse PRs
+- ambiguous cases open issues instead of unsafe edits
+- actions stay tied to run evidence, reason codes, and policy state
+
+That framing is much closer to how automation has to behave in real delivery systems.`,
+    challenges: [
+      'Reducing failed-pipeline triage without overselling unsafe full autonomy',
+      'Supporting more than one provider path while keeping a shared diagnosis and policy core',
+      'Making remediation explainable enough for operators to trust or reject it quickly',
+      'Keeping deployment portable across local, containers, Kubernetes, and managed cloud hosting',
+    ],
+    solutions: [
+      'Built a shared remediation control plane with provider-specific ingress adapters for GitHub Actions and Jenkins',
+      'Used policy gates, remediation modes, and allowlists so automation stays reviewable and bounded',
+      'Normalized run evidence into explicit diagnostics, failure context, and auditable artifacts',
+      'Documented and supported multiple deployment paths, including Azure Container Apps and Helm/Kubernetes',
+    ],
+    impact:
+      'Shows end-to-end product and platform ownership: diagnosis pipeline, policy boundary, operator UX, deployment portability, and concrete remediation outcomes tied to real run evidence.',
+    technologies: {
+      Backend: ['Python', 'FastAPI'],
+      Frontend: ['React', 'TypeScript'],
+      Integrations: ['GitHub Actions', 'Jenkins bridge', 'Webhook notifications'],
+      Storage: ['PostgreSQL', 'Cosmos DB', 'In-memory development mode'],
+      Deployment: ['Azure Container Apps', 'Docker/Podman', 'Helm/Kubernetes'],
+    },
+  },
+  'rocketchat-app-logs-viewer': {
+    slug: 'rocketchat-app-logs-viewer',
+    longDescription: `## Overview
+
+Rocket.Chat Logs Viewer is a **chat-native incident triage workflow** for operators who need log access where the incident is already being discussed.
+
+The product boundary is disciplined:
+
+- keep **Loki/Grafana** as the observability backend
+- restore a fast in-chat workflow with **\`/logs\`**
+- push all sensitive query logic through a **server-side guarded proxy**
+
+## What the app does
+
+- \`/logs\` slash command with room and thread context
+- private app API endpoints for query, audit, actions, saved views, and targets
+- RBAC-aware access checks and request audit trail
+- focused React web UI for deep inspection, filtering, and row-level actions
+- validation, rate limits, selector enforcement, and redaction
+
+## Why it stands out
+
+The interesting part is not "another log viewer." It is the **workflow design**:
+
+- triage starts in chat, not in a separate dashboard
+- deeper inspection moves to the web UI only when needed
+- sharing is bounded and contextual rather than dumping raw logs into public channels
+
+## Source
+
+- **Repository:** https://github.com/Canepro/rocketchat-app-logs-viewer
+
+The repo already includes redacted public screenshots and packaging flow for private Rocket.Chat app deployment, which makes it portfolio-ready rather than just concept-stage.`,
+    challenges: [
+      'Restoring a fast operator workflow after Rocket.Chat moved log visibility away from the app UI',
+      'Allowing useful log access without exposing direct client-side Loki queries or bypassing workspace permissions',
+      'Handling large result sets and row-level actions without turning the UI into a noisy observability clone',
+      'Keeping in-chat sharing safe, private, and traceable',
+    ],
+    solutions: [
+      'Built a slash-first flow that carries room and thread context into triage actions',
+      'Moved query execution behind a server-side proxy with RBAC checks, validation, bounds, and audit logging',
+      'Used a focused React web UI with virtualization and readability controls for deeper inspection',
+      'Added snapshot-backed share flows and chat-native actions so operators can share only the right evidence',
+    ],
+    impact:
+      'Demonstrates backend guardrail design, operator-focused workflow thinking, and a cleaner product boundary between chat UX and the underlying observability stack.',
+    technologies: {
+      Backend: ['TypeScript', 'Node.js', 'Rocket.Chat Apps-Engine'],
+      Frontend: ['React', 'Vite', 'Tailwind'],
+      Observability: ['Loki'],
+      Security: ['RBAC', 'Rate limiting', 'Audit trail', 'Redaction'],
+      Packaging: ['Bun', 'Private app packaging', 'Optional same-origin deployment'],
+    },
+  },
   'hybrid-cloud-gitops-control-plane': {
     slug: 'hybrid-cloud-gitops-control-plane',
     longDescription: `## Overview

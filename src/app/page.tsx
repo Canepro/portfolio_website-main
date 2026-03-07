@@ -16,12 +16,24 @@ export default function HomePage() {
   const posts = getAllBlogPostsMeta().slice(0, 2);
   const featured = projects.filter(p => p.featured).slice(0, 3);
   const featuredCerts = certifications.slice(0, 4);
+  const currentRole = experience[0];
   const githubHref = safeExternalHref(profile.links.github);
   const linkedinHref = safeExternalHref(profile.links.linkedin);
   type CertificationWithHref = (typeof featuredCerts)[number] & { href: string };
   const featuredCertsSafe: CertificationWithHref[] = featuredCerts
     .map(c => ({ ...c, href: safeExternalHref(c.link) }))
     .filter((c): c is CertificationWithHref => Boolean(c.href));
+  const homeJumpLinks = [
+    { href: '/#projects', label: 'Selected work' },
+    { href: '/#experience', label: 'Experience' },
+    { href: '/#tech', label: 'Capabilities' },
+    { href: '/#writing', label: 'Writing' },
+  ];
+  const workPrinciples = [
+    'Automate, observe, then simplify.',
+    'Boring runbooks beat clever recovery.',
+    'Write it down and make it reproducible.',
+  ];
 
   return (
     <div className="px-6 py-10 md:px-10">
@@ -58,145 +70,212 @@ export default function HomePage() {
               <Badge variant="tech">CI: Jenkins multibranch</Badge>
               <Badge variant="tech">Telemetry: OTLP → LGTM</Badge>
             </div>
+
+            <nav
+              aria-label="Home sections"
+              className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-[color:var(--color-text-secondary)]"
+            >
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] opacity-70">
+                Start with
+              </span>
+              {homeJumpLinks.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           </div>
 
           <HeroVisual />
         </div>
       </section>
 
-      <section className="mx-auto mt-16 max-w-6xl">
-        <div className="grid gap-4 md:grid-cols-2">
+      <section id="about" className="mx-auto mt-14 max-w-6xl scroll-mt-24">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
           <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8">
-            <h2 className="text-3xl font-semibold tracking-tight">Summary</h2>
-            <div className="mt-4 space-y-3 text-[color:var(--color-text-secondary)] leading-7">
+            <p className="text-sm font-medium tracking-wide text-[color:var(--color-text-secondary)]">
+              Profile
+            </p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">
+              Cloud, identity, and platform reliability
+            </h2>
+            <div className="mt-5 space-y-3 text-[color:var(--color-text-secondary)] leading-7">
               {profile.summary.map(p => (
                 <p key={p}>{p}</p>
               ))}
             </div>
+            <p className="mt-5 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
+              I prefer tight feedback loops: infrastructure as code, GitOps, dashboards that answer
+              questions, and interfaces that stay readable under pressure.
+            </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {githubHref ? (
-                <a
-                  href={githubHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-2 text-sm font-semibold text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]"
-                >
-                  GitHub
-                </a>
+                <Button variant="glass" asChild>
+                  <a href={githubHref} target="_blank" rel="noopener noreferrer">
+                    GitHub
+                  </a>
+                </Button>
               ) : null}
               {linkedinHref ? (
-                <a
-                  href={linkedinHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-2 text-sm font-semibold text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]"
-                >
-                  LinkedIn
-                </a>
+                <Button variant="glass" asChild>
+                  <a href={linkedinHref} target="_blank" rel="noopener noreferrer">
+                    LinkedIn
+                  </a>
+                </Button>
               ) : null}
-              <span className="rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-2 text-sm text-[color:var(--color-text-secondary)]">
+              <Button variant="glass" asChild>
+                <Link href="/contact">Contact</Link>
+              </Button>
+              <span className="inline-flex items-center rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-2 text-sm text-[color:var(--color-text-secondary)]">
                 {profile.location}
               </span>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8">
-            <h2 className="text-3xl font-semibold tracking-tight">Certifications</h2>
-            <p className="mt-3 text-[color:var(--color-text-secondary)] leading-7">
-              Selected licenses and certifications (details link on LinkedIn).
-            </p>
-            <div className="mt-6 space-y-3">
-              {featuredCertsSafe.map(c => (
-                <a
-                  key={c.name}
-                  href={c.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-4 hover:bg-[color:var(--color-card-hover)]"
-                >
-                  <div className="text-sm font-semibold">{c.name}</div>
-                  <div className="mt-1 text-xs text-[color:var(--color-text-secondary)]">
-                    {c.issuer}
+          <div className="grid gap-4">
+            {currentRole ? (
+              <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6">
+                <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
+                  Current role
+                </div>
+                <div className="mt-3 text-lg font-semibold tracking-tight">{currentRole.role}</div>
+                <div className="mt-1 text-sm text-[color:var(--color-text-secondary)]">
+                  {currentRole.company}
+                </div>
+                {currentRole.location ? (
+                  <div className="mt-1 text-xs text-[color:var(--color-text-secondary)] opacity-80">
+                    {currentRole.location}
                   </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="tech" className="mx-auto mt-16 max-w-6xl scroll-mt-24">
-        <div className="flex items-end justify-between gap-6">
-          <div>
-            <h2 className="text-3xl font-semibold tracking-tight">Skills</h2>
-            <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-              The goal is not to list tools. It is to show the small set of capabilities that lets
-              me own a system end-to-end.
-            </p>
-          </div>
-          <div className="hidden text-sm text-[color:var(--color-text-secondary)] opacity-80 md:block">
-            Recruiter-friendly. Evidence-driven.
-          </div>
-        </div>
-
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
-          {skillGroups.map(group => (
-            <div
-              key={group.title}
-              className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 transition-colors hover:bg-[color:var(--color-card-hover)]"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="text-lg font-semibold tracking-tight">{group.title}</h3>
-                <Badge variant="tech">Core</Badge>
+                ) : null}
+                <ul className="mt-4 space-y-2 text-sm text-[color:var(--color-text-secondary)]">
+                  {currentRole.highlights.slice(0, 2).map(highlight => (
+                    <li key={highlight} className="flex gap-2">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--color-accent)]" />
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
-                {group.description}
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {group.skills.map(s => (
-                  <Badge key={s.name} variant="tech" title={s.notes}>
-                    {s.name}
-                  </Badge>
+            ) : null}
+
+            <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6">
+              <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
+                How I work
+              </div>
+              <div className="mt-4 grid gap-3">
+                {workPrinciples.map(item => (
+                  <div
+                    key={item}
+                    className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-4 py-3 text-sm font-medium text-[color:var(--color-text-primary)]"
+                  >
+                    {item}
+                  </div>
                 ))}
               </div>
-
-              {group.evidence && group.evidence.length ? (
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {group.evidence.map(e => {
-                    const isInternal = e.href.startsWith('/') || e.href.startsWith('#');
-                    const safeHref = isInternal ? e.href : safeExternalHref(e.href);
-                    if (!safeHref) return null;
-                    if (!isInternal) {
-                      return (
-                        <a
-                          key={e.href}
-                          href={safeHref}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-3 py-1 text-xs font-semibold text-[color:var(--color-text-secondary)] hover:bg-[color:var(--color-card-hover)]"
-                        >
-                          {e.label}
-                        </a>
-                      );
-                    }
-                    return (
-                      <Link
-                        key={e.href}
-                        href={safeHref}
-                        className="rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-3 py-1 text-xs font-semibold text-[color:var(--color-text-secondary)] hover:bg-[color:var(--color-card-hover)]"
-                      >
-                        {e.label}
-                      </Link>
-                    );
-                  })}
-                </div>
-              ) : null}
             </div>
-          ))}
+
+            <div className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6">
+              <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
+                Selected certifications
+              </div>
+              <div className="mt-4 space-y-3">
+                {featuredCertsSafe.slice(0, 3).map(c => (
+                  <a
+                    key={c.name}
+                    href={c.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-4 py-3 hover:bg-[color:var(--color-card-hover)]"
+                  >
+                    <div className="text-sm font-semibold">{c.name}</div>
+                    <div className="mt-1 text-xs text-[color:var(--color-text-secondary)]">
+                      {c.issuer}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto mt-16 max-w-6xl">
+      <section id="projects" className="mx-auto mt-16 max-w-6xl scroll-mt-24">
+        <div className="flex items-end justify-between gap-6">
+          <div>
+            <h2 className="text-3xl font-semibold tracking-tight">Selected work</h2>
+            <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
+              Start here: recent projects that show product thinking, platform ownership, and
+              measurable operational outcomes.
+            </p>
+          </div>
+          <Link
+            href="/projects"
+            className="hidden text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)] md:block"
+          >
+            View all projects
+          </Link>
+        </div>
+
+        <div className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {featured.map(p => {
+            const visitHref = safeExternalHref(p.visit);
+            return (
+              <article
+                key={p.slug}
+                className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 transition-colors hover:bg-[color:var(--color-card-hover)]"
+              >
+                <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
+                  {p.category}
+                </div>
+                <h3 className="mt-3 text-lg font-semibold tracking-tight">{p.title}</h3>
+                <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
+                  {p.description}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {p.tags.slice(0, 4).map(t => (
+                    <Badge key={t} variant="tech">
+                      {t}
+                    </Badge>
+                  ))}
+                </div>
+                <div className="mt-6 flex items-center justify-between gap-4">
+                  <Link
+                    href={`/projects/${encodeURIComponent(p.slug)}`}
+                    className="text-sm font-semibold text-[color:var(--color-text-primary)] underline underline-offset-4 hover:opacity-90"
+                  >
+                    Read case study
+                  </Link>
+                  {visitHref ? (
+                    <a
+                      href={visitHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+                    >
+                      Live
+                    </a>
+                  ) : null}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="mt-8 md:hidden">
+          <Link
+            href="/projects"
+            className="inline-block text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
+          >
+            View all projects
+          </Link>
+        </div>
+      </section>
+
+      <section id="experience" className="mx-auto mt-16 max-w-6xl scroll-mt-24">
         <div className="flex items-end justify-between gap-6">
           <div>
             <h2 className="text-3xl font-semibold tracking-tight">Experience</h2>
@@ -263,108 +342,91 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="projects" className="mx-auto mt-16 max-w-6xl scroll-mt-24">
+      <section id="tech" className="mx-auto mt-16 max-w-6xl scroll-mt-24">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <h2 className="text-3xl font-semibold tracking-tight">Featured Projects</h2>
+            <h2 className="text-3xl font-semibold tracking-tight">Capabilities</h2>
             <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-              Each project is written to be scannable: problem, approach, and what changed.
+              The point is not tool collection. It is the small set of skills that lets me own a
+              system from deployment through troubleshooting.
             </p>
           </div>
-          <Link
-            href="/projects"
-            className="hidden text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)] md:block"
-          >
-            View all projects
-          </Link>
+          <div className="hidden text-sm text-[color:var(--color-text-secondary)] opacity-80 md:block">
+            Evidence over keyword stuffing.
+          </div>
         </div>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
-          {featured.map(p => {
-            const visitHref = safeExternalHref(p.visit);
-            return (
-              <article
-                key={p.slug}
-                className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 transition-colors hover:bg-[color:var(--color-card-hover)]"
-              >
-                <h3 className="text-lg font-semibold tracking-tight">{p.title}</h3>
-                <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
-                  {p.description}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {p.tags.slice(0, 6).map(t => (
-                    <Badge key={t} variant="tech">
-                      {t}
-                    </Badge>
-                  ))}
-                </div>
-                <div className="mt-6 flex items-center justify-between gap-4">
-                  <Link
-                    href={`/projects/${encodeURIComponent(p.slug)}`}
-                    className="text-sm font-semibold text-[color:var(--color-text-primary)] underline underline-offset-4 hover:opacity-90"
-                  >
-                    Read case study
-                  </Link>
-                  {visitHref ? (
-                    <a
-                      href={visitHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
-                    >
-                      Live
-                    </a>
-                  ) : null}
-                </div>
-              </article>
-            );
-          })}
-        </div>
+        <div className="mt-10 grid gap-4 lg:grid-cols-2">
+          {skillGroups.map(group => (
+            <article
+              key={group.title}
+              className="rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 transition-colors hover:bg-[color:var(--color-card-hover)]"
+            >
+              <h3 className="text-lg font-semibold tracking-tight">{group.title}</h3>
+              <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
+                {group.description}
+              </p>
 
-        <div className="mt-8 md:hidden">
-          <Link
-            href="/projects"
-            className="inline-block text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
-          >
-            View all projects
-          </Link>
+              <ul className="mt-5 grid gap-2 text-sm text-[color:var(--color-text-secondary)] sm:grid-cols-2">
+                {group.skills.slice(0, 6).map(skill => (
+                  <li key={skill.name} className="flex gap-2">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--color-accent)]" />
+                    <span>{skill.name}</span>
+                  </li>
+                ))}
+                {group.skills.length > 6 ? (
+                  <li className="text-xs font-semibold uppercase tracking-widest opacity-70">
+                    +{group.skills.length - 6} more used in day-to-day work
+                  </li>
+                ) : null}
+              </ul>
+
+              {group.evidence && group.evidence.length ? (
+                <div className="mt-5 border-t border-[color:var(--color-border)] pt-4 text-sm text-[color:var(--color-text-secondary)]">
+                  <span className="font-semibold text-[color:var(--color-text-primary)]">
+                    Evidence:
+                  </span>{' '}
+                  {group.evidence.map((e, index) => {
+                    const isInternal = e.href.startsWith('/') || e.href.startsWith('#');
+                    const safeHref = isInternal ? e.href : safeExternalHref(e.href);
+                    if (!safeHref) return null;
+
+                    const linkEl = isInternal ? (
+                      <Link
+                        key={e.href}
+                        href={safeHref}
+                        className="underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
+                      >
+                        {e.label}
+                      </Link>
+                    ) : (
+                      <a
+                        key={e.href}
+                        href={safeHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
+                      >
+                        {e.label}
+                      </a>
+                    );
+
+                    return (
+                      <span key={e.href}>
+                        {index > 0 ? ', ' : null}
+                        {linkEl}
+                      </span>
+                    );
+                  })}
+                  .
+                </div>
+              ) : null}
+            </article>
+          ))}
         </div>
       </section>
 
-      <section id="about" className="mx-auto mt-16 max-w-6xl scroll-mt-24">
-        <div className="grid gap-8 rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-8 md:grid-cols-2">
-          <div>
-            <h2 className="text-3xl font-semibold tracking-tight">About</h2>
-            <p className="mt-3 text-[color:var(--color-text-secondary)] leading-7">
-              I’m a hands-on engineer who likes tight feedback loops: infrastructure as code,
-              GitOps, dashboards that answer questions, and UIs that respect performance and
-              accessibility. I value clarity, operational ownership, and repeatability.
-            </p>
-          </div>
-          <div className="grid gap-3">
-            <div className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-4">
-              <div className="text-xs text-[color:var(--color-text-secondary)] opacity-80">
-                Default approach
-              </div>
-              <div className="mt-2 text-sm font-semibold">Automate, observe, then simplify.</div>
-            </div>
-            <div className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-4">
-              <div className="text-xs text-[color:var(--color-text-secondary)] opacity-80">
-                What I optimize for
-              </div>
-              <div className="mt-2 text-sm font-semibold">Boring runbooks. Fast recovery.</div>
-            </div>
-            <div className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-4">
-              <div className="text-xs text-[color:var(--color-text-secondary)] opacity-80">
-                Collaboration
-              </div>
-              <div className="mt-2 text-sm font-semibold">Write it down. Make it reproducible.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto mt-16 max-w-6xl">
+      <section id="writing" className="mx-auto mt-16 max-w-6xl scroll-mt-24">
         <div className="flex items-end justify-between gap-6">
           <div>
             <h2 className="text-3xl font-semibold tracking-tight">Writing</h2>
