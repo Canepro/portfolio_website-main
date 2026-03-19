@@ -1,0 +1,199 @@
+---
+title: "Moving Rocket.Chat to a Personal AKS Cluster Without Breaking the GitOps Loop"
+date: "2026-03-19"
+description: "A practical migration of Rocket.Chat from an older AKS environment into a new personal AKS cluster, while keeping ArgoCD, Terraform remote state, Jenkins validation, and DNS cutover under control."
+tags: ["kubernetes", "gitops", "argocd", "terraform", "aks", "jenkins", "migration"]
+---
+
+This migration looked like routine platform work:
+
+- keep **ArgoCD and Jenkins** on the existing OKE control plane
+- move the **Rocket.Chat runtime** onto a new personal AKS cluster
+- preserve the database
+- cut DNS only after the new stack was proven healthy
+
+It turned into something more useful than a normal cluster move. It became a live test of whether the GitOps model was actually real, or whether I had just built a nice-looking story around a pile of runtime exceptions.
+
+This sits directly on top of the work behind the [Rocket.Chat Kubernetes sandbox](/projects/rocketchat-kubernetes-enterprise), the [GitOps migration case study](/projects/rocketchat-microservices-migration), and the broader [hybrid cloud control plane](/projects/hybrid-cloud-gitops-control-plane).
+
+## The Intended End State
+
+The shape I wanted was simple:
+
+- **OKE stays the control plane**
+  - ArgoCD stays there
+  - Jenkins controller stays there
+  - multi-cluster orchestration stays centralized
+- **AKS becomes the runtime**
+  - Rocket.Chat runs there
+  - MongoDB runs there
+  - Traefik, External Secrets, and the shared ops stack run there
+  - the static Jenkins validation agent also runs there
+- **Terraform state moves to Azure Storage**
+  - separate from the AKS workload resource group
+  - shared and locked through the remote backend
+
+That separation is the whole point. The control plane should be stable. The workload cluster should be replaceable. Terraform should not keep its own state next to the thing it manages.
+
+## What Had to Be True Before Cutover
+
+There were four non-negotiable pieces.
+
+### 1. Terraform state had to stop being local
+
+Before the migration could touch identities, Key Vault, schedules, or cluster configuration, the main stack had to be on a real remote backend:
+
+- resource group: `rg-canepro-tfstate`
+- storage account: `caneprotfgmhl5a`
+- container: `tfstate`
+- key: `aks.terraform.tfstate`
+
+This was the first move because every other step depended on it being safe to collaborate on state and impossible to trample it accidentally.
+
+### 2. ArgoCD had to target the new AKS cluster explicitly
+
+The first operator trap was familiar:
+
+- stale DNS
+- a reused kube context name
+- two AKS clusters with similar enough identities to be confusing under pressure
+
+The fix was not clever. I stopped treating kube context names as identity and used API server URLs as identity instead. The new AKS cluster was registered separately in ArgoCD, application destinations were updated deliberately, and the old cluster stayed intact until the new one was verified.
+
+That preserved rollback options instead of gambling them away early.
+
+### 3. The database had to move after the platform, not during it
+
+The safe sequence was:
+
+1. get the new AKS platform healthy
+2. get operator-managed MongoDB running
+3. restore the rescued Rocket.Chat data
+4. restart Rocket.Chat against the restored database
+5. validate real application behavior
+6. only then move traffic
+
+That discipline mattered. Mixing cluster migration, data restore, and application version change in the same step is how “simple” migrations become postmortems.
+
+### 4. Jenkins had to be treated as part of the migration
+
+I kept the controller on OKE, but the static validation agent moved to AKS. That meant the new cluster was not considered “done” until Jenkins PR validation was running from it.
+
+That turned out to be the right call, because CI immediately started exposing real infra defects:
+
+- missing Azure RBAC for the workload identity
+- stale backend handling in the Jenkinsfile
+- Terraform budget validation edge cases
+- schedule reconciliation bugs that had been hiding in plain sight
+
+CI was not an extra. It was part of proving the new runtime was real.
+
+## The Most Useful Failure: GitOps Exposed Drift
+
+This was the part I was happiest to find, even though it made the migration slower.
+
+I expected a mostly clean rebuild from Git. Instead, the new cluster surfaced exactly what GitOps is supposed to surface: **things that had once existed in the live environment but were not actually represented in the repository anymore.**
+
+MongoDB was the clearest example.
+
+The operator deployed fine, but Rocket.Chat still failed because the actual `MongoDBCommunity` resource was not in the active Git-managed app path. The application was trying to connect to a Mongo service that did not exist yet.
+
+That is not random failure. That is historic drift becoming visible.
+
+The repair path was clean once it was obvious:
+
+- add the missing MongoDB cluster resource to Git
+- fix namespace and app ordering
+- remove a dead cert-manager-dependent blocker from the ops app
+- re-sync until the desired state was complete again
+
+That is exactly why rebuilds are valuable. They flush out the difference between “what the cluster currently has” and “what the repository can actually recreate.”
+
+## The Data Restore Was Boring, Which Is the Goal
+
+After the platform shape was right, the database move was intentionally boring.
+
+MongoDB came up on the new cluster, the rescued dump restored cleanly, and Rocket.Chat recovered on restart. I verified that the data was actually present before moving on:
+
+- users
+- rooms
+- messages
+
+If a migration step is handling state, boring is success.
+
+## The Subtle Bug Was the Automation Schedule
+
+The most interesting Terraform bug was not about compute, networking, or identity. It was about time.
+
+The intended AKS schedule was:
+
+- start: `13:30` Europe/London
+- stop: `16:15` Europe/London
+- weekdays only
+
+But Azure was still running the old window. The root cause was a classic “stability hack becomes a correctness bug” problem:
+
+- `start_time` had originally been seeded from `timestamp()`
+- Terraform was told to ignore changes to that field
+- that prevented daily plan churn
+- it also prevented legitimate time updates from ever reconciling
+
+The fix was to replace the unstable seed with a stable `time_static` anchor and let real schedule changes flow through normally.
+
+That bug is a good reminder that suppressing drift is not the same thing as modeling intent correctly.
+
+## DNS Was the Final Step
+
+Only after the following were true did I move traffic:
+
+- ArgoCD healthy on the new cluster
+- Rocket.Chat healthy on the new cluster
+- Mongo restored
+- Jenkins validation running from AKS
+- Terraform state and automation schedules reconciled
+
+Then the DNS change was simple:
+
+- point `k8.canepro.me` at the new Traefik public IP
+- confirm public resolution
+- confirm `HTTP 200`
+- retire the old AKS registration afterward
+
+DNS is not the migration plan. DNS is the last five minutes of a migration plan.
+
+## What This Migration Reinforced
+
+### 1. GitOps is most valuable when it becomes inconvenient
+
+If a rebuild exposes drift, that is the system helping you.
+
+### 2. Cluster identity matters more than kube context naming
+
+Context names are convenience. API server identity is reality.
+
+### 3. CI belongs inside platform migrations
+
+If Jenkins validates from the old runtime while you migrate to the new one, you are testing the wrong thing.
+
+### 4. Separate control plane, runtime, and Terraform state
+
+That separation made rollback and recovery dramatically safer.
+
+### 5. Rebuilds are the fastest way to discover what was never really in source control
+
+There is no better audit of declarative truth than standing the environment up again.
+
+## Final State
+
+The end result is stronger than “Rocket.Chat now runs on a different cluster”:
+
+- Rocket.Chat is live on the new personal AKS cluster
+- OKE still owns the GitOps control plane
+- Jenkins PR validation now runs from the AKS static agent
+- Terraform is consistently using the Azure remote backend
+- the weekday auto-start and auto-stop window now matches the intended schedule
+- the stale old migration dump and cluster-specific leftovers are gone
+
+The migration was useful because it forced the platform to prove that its control loops were real.
+
+That is the standard I care about: not whether the architecture diagram looks neat, but whether a real cutover can be done with Git, Terraform, ArgoCD, Jenkins, and DNS all moving in the same direction.
