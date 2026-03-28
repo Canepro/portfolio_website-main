@@ -1,23 +1,24 @@
 # Blog Content Roadmap
 
-> Last Updated: March 7, 2026
+> Last Updated: March 28, 2026
 
 ---
 
-## Series 1: PipelineHealer Hackathon Journey (5-6 posts)
+## Series 1: PipelineHealer Hackathon Journey (7 posts)
 
 The AI Dev Days Hackathon runs Feb 10 – Mar 15, 2026. These posts document the journey
 of building PipelineHealer — an AI-powered multi-agent system that automatically detects,
 diagnoses, and fixes CI/CD pipeline failures.
 
-| #   | Title                                                                      | Target Publish            | Status            |
-| --- | -------------------------------------------------------------------------- | ------------------------- | ----------------- |
-| 1   | PipelineHealer: An AI Agent That Fixes CI/CD Failures                      | Week 1 (Feb 10-16)        | ✅ Published      |
-| 2   | Designing a Multi-Agent Pipeline: Log Analyzer to Diagnosis to Remediation | Week 1 (Feb 10-16)        | ✅ Published      |
-| 3   | Deploying PipelineHealer to Azure: What Went Wrong (and Right)             | Week 1-2 (Feb 12)         | ✅ Published      |
-| 4   | Teaching an AI to Read GitHub Actions Logs                                 | Week 3 (Feb 17-23)        | ✅ Published      |
-| 5   | From Webhook to Pull Request: The Full Healing Loop                        | Week 4 (Mar 3-9)          | ✅ Published      |
-| 6   | Hackathon Retrospective: What I'd Do Differently                           | Post-submission (Mar 16+) | 📝 Ready (PR #75) |
+| #   | Title                                                                      | Target Publish            | Status       |
+| --- | -------------------------------------------------------------------------- | ------------------------- | ------------ |
+| 1   | PipelineHealer: An AI Agent That Fixes CI/CD Failures                      | Week 1 (Feb 10-16)        | ✅ Published |
+| 2   | Designing a Multi-Agent Pipeline: Log Analyzer to Diagnosis to Remediation | Week 1 (Feb 10-16)        | ✅ Published |
+| 3   | Deploying PipelineHealer to Azure: What Went Wrong (and Right)             | Week 1-2 (Feb 12)         | ✅ Published |
+| 4   | Teaching an AI to Read GitHub Actions Logs                                 | Week 3 (Feb 17-23)        | ✅ Published |
+| 5   | From Webhook to Pull Request: The Full Healing Loop                        | Week 4 (Mar 3-9)          | ✅ Published |
+| 6   | Hackathon Retrospective: What I'd Do Differently                           | Post-submission (Mar 16+) | ✅ Published |
+| 7   | Why Pattern-First Beat Model-First in PipelineHealer                       | Post-submission (Mar 28)  | ✅ Published |
 
 ---
 
@@ -27,11 +28,11 @@ Real posts drawn from actual projects and repos.
 
 | #   | Title                                                                                | Source Repo                                | Status  |
 | --- | ------------------------------------------------------------------------------------ | ------------------------------------------ | ------- |
-| 7   | Building a Centralized Observability Stack: Prometheus + Grafana Across Environments | `central-observability-hub-stack`          | ❌ TODO |
-| 8   | Rocket.Chat on K3s: Running Enterprise Chat with Prometheus Agent                    | `rocketchat-k8s`                           | ❌ TODO |
-| 9   | I Inherited a Terraform Repo — Here's How I Reviewed and Hardened It                 | `Aws-3tier-Infrastructure-using-Terraform` | ❌ TODO |
-| 10  | Automating Linux Server Audits with Bash                                             | `server-audit-kit`                         | ❌ TODO |
-| 11  | My Portable DevOps Workstation: Tools That Follow Me Everywhere                      | `portable-lab-setup`                       | ❌ TODO |
+| 8   | Building a Centralized Observability Stack: Prometheus + Grafana Across Environments | `central-observability-hub-stack`          | ❌ TODO |
+| 9   | Rocket.Chat on K3s: Running Enterprise Chat with Prometheus Agent                    | `rocketchat-k8s`                           | ❌ TODO |
+| 10  | I Inherited a Terraform Repo — Here's How I Reviewed and Hardened It                 | `Aws-3tier-Infrastructure-using-Terraform` | ❌ TODO |
+| 11  | Automating Linux Server Audits with Bash                                             | `server-audit-kit`                         | ❌ TODO |
+| 12  | My Portable DevOps Workstation: Tools That Follow Me Everywhere                      | `portable-lab-setup`                       | ❌ TODO |
 
 ---
 
@@ -41,10 +42,10 @@ Short-form posts (~500 words) on specific gotchas and tips.
 
 | #   | Title                                                      | Status  |
 | --- | ---------------------------------------------------------- | ------- |
-| 12  | The Kubernetes Secret That Was Double-Encoded (and Why)    | ❌ TODO |
-| 13  | Cleaning Up 22 GitHub Repos in 5 Minutes                   | ❌ TODO |
-| 14  | Terraform State Locking: The DynamoDB Table You're Missing | ❌ TODO |
-| 15  | Why `terraform destroy` Was Running on Every Push to Main  | ❌ TODO |
+| 13  | The Kubernetes Secret That Was Double-Encoded (and Why)    | ❌ TODO |
+| 14  | Cleaning Up 22 GitHub Repos in 5 Minutes                   | ❌ TODO |
+| 15  | Terraform State Locking: The DynamoDB Table You're Missing | ❌ TODO |
+| 16  | Why `terraform destroy` Was Running on Every Push to Main  | ❌ TODO |
 
 ---
 
