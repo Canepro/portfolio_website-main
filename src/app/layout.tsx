@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     template: `%s | ${profile.name}`,
   },
   description:
-    'Portfolio of Vincent Mogah: Azure infrastructure, DevOps and GitOps, identity reliability (Entra ID / Microsoft 365), and observability.',
+    'Portfolio of Vincent Mogah: AI-native reliability systems, operator diagnostics tooling, and production platform engineering.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

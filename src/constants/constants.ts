@@ -30,6 +30,24 @@ export const projects: Project[] = [
     id: 7,
   },
   {
+    title: 'SignalForge',
+    slug: 'signalforge',
+    description:
+      'Evidence-first infrastructure diagnostics for production teams. Produces deterministic findings and operator-ready AI explanation for prioritization.',
+    longDescription: `Operator-first infrastructure diagnostics for platform reliability.
+
+- Ingests infrastructure evidence artifacts with strong validation
+- Produces deterministic findings for comparison and replay
+- Adds one constrained AI pass for explanation and triage prioritization
+- Keeps remediation out of scope while trust boundaries are established`,
+    image: '/images/rocketchat-logs-viewer-web-ui.png',
+    tags: ['Python', 'React', 'TypeScript', 'Observability', 'OpenTelemetry', 'LLM'],
+    category: 'DevOps',
+    featured: true,
+    source: 'https://github.com/Canepro/signalforge',
+    id: 9,
+  },
+  {
     title: 'Rocket.Chat Logs Viewer App',
     slug: 'rocketchat-app-logs-viewer',
     description:
@@ -43,7 +61,7 @@ export const projects: Project[] = [
     image: '/images/rocketchat-logs-viewer-web-ui.png',
     tags: ['Rocket.Chat', 'TypeScript', 'Node.js', 'React', 'Vite', 'Tailwind', 'Loki', 'RBAC'],
     category: 'Backend',
-    featured: true,
+    featured: false,
     source: 'https://github.com/Canepro/rocketchat-app-logs-viewer',
     id: 8,
   },
@@ -61,7 +79,7 @@ export const projects: Project[] = [
     image: '/images/ArgoCD_set-up.png',
     tags: ['OCI', 'OKE', 'K3s', 'Terraform', 'ArgoCD', 'GitOps', 'Helm', 'Kustomize', 'LGTM'],
     category: 'Cloud',
-    featured: true,
+    featured: false,
     source: 'https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd',
     visit: 'https://argocd.canepro.me',
     id: 5,
@@ -132,7 +150,7 @@ export const projects: Project[] = [
       'Grafana',
     ],
     category: 'Cloud',
-    featured: true,
+    featured: false,
     source: 'https://github.com/Canepro/rocketchat-k8s',
     visit: 'https://k8.canepro.me',
     id: 0,
@@ -160,7 +178,7 @@ export const projects: Project[] = [
       'NATS',
     ],
     category: 'DevOps',
-    featured: true,
+    featured: false,
     source: 'https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd',
     visit: 'https://argocd.canepro.me',
     id: 6,
@@ -180,7 +198,7 @@ export const projects: Project[] = [
     image: '/images/rocketchat-analyzer.png',
     tags: ['Python', 'Flask', 'Automation', 'Data Analysis', 'Docker'],
     category: 'DevOps',
-    featured: true,
+    featured: false,
     source: 'https://github.com/Canepro/rocketchat-log-analyzer',
     visit: 'https://github.com/Canepro/rocketchat-log-analyzer',
     id: 1,

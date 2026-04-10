@@ -222,7 +222,7 @@ export default function Header() {
             </div>
 
             <p className="mt-6 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
-              Short, high-signal notes. Production-first engineering. Documentation over vibes.
+              Short, high-signal notes on production-safe tooling. AI supports, systems decide.
             </p>
           </div>
         </div>

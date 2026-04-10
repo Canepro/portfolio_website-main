@@ -57,6 +57,61 @@ That framing is much closer to how automation has to behave in real delivery sys
       Deployment: ['Azure Container Apps', 'Docker/Podman', 'Helm/Kubernetes'],
     },
   },
+  signalforge: {
+    slug: 'signalforge',
+    longDescription: `## Overview
+
+SignalForge is an **operator-first infrastructure diagnostics system**.
+
+The design is deliberate:
+
+1. Ingest evidence artifacts from observability and platform systems.
+2. Normalize what is known into deterministic findings.
+3. Use a constrained AI pass only for explanation, prioritization, and context.
+4. Keep remediation out of scope until confidence and safety gates are explicit.
+
+## What it is designed for
+
+- reduce repeated ambiguity in incident follow-up
+- compare structured diagnostic signals across environments quickly
+- produce operator-facing findings with a clear source trail
+- support bounded automation decisions instead of broad model autonomy
+
+## Why this is a flagship line
+
+The project pushes the same trust model used in production systems:
+
+- deterministic facts are primary, model output is secondary
+- evidence objects are normalized before they are explained
+- operator choice remains the control point for impactful actions
+
+## Source
+
+- **Repository:** https://github.com/Canepro/signalforge
+
+SignalForge is positioned as the diagnostics-first sibling to PipelineHealer, with a narrower action boundary and stronger explainability focus.`,
+    challenges: [
+      'Turning messy evidence streams into comparable diagnostics without adding noise',
+      'Making findings explainable enough to speed operator decision-making',
+      'Keeping model output constrained to support trust and reversibility',
+      'Avoiding silent scope creep between diagnostics and remediation paths',
+    ],
+    solutions: [
+      'Built a strict evidence ingest and normalisation path before any AI enrichment',
+      'Separated deterministic findings from LLM explanation and prioritization',
+      'Added bounded explanation pass with explicit trust boundaries',
+      'Designed workflows so operators remain in control of escalation and action decisions',
+    ],
+    impact:
+      'Introduces a product-style diagnostics line with reproducible outputs and explicit operator control, demonstrating reusable tooling for incident handling without replacing human decision authority.',
+    technologies: {
+      Backend: ['Python'],
+      Frontend: ['React', 'TypeScript'],
+      AI: ['LLM (constrained pass)'],
+      Observability: ['OpenTelemetry'],
+      Platform: ['OTLP ingestion', 'Structured diagnostics artifacts'],
+    },
+  },
   'rocketchat-app-logs-viewer': {
     slug: 'rocketchat-app-logs-viewer',
     longDescription: `## Overview

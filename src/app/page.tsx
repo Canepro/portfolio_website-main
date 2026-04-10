@@ -19,10 +19,21 @@ export default function HomePage() {
   const currentRole = experience[0];
   const githubHref = safeExternalHref(profile.links.github);
   const linkedinHref = safeExternalHref(profile.links.linkedin);
+  const profileLeads = [
+    'I build AI-native reliability systems that turn recurring pain into reusable tooling.',
+    'Evidence, deterministic defaults, and escalation boundaries gate all automation.',
+    'The result is product-style reliability work grounded in real cloud and CI/CD operations.',
+  ];
   type CertificationWithHref = (typeof featuredCerts)[number] & { href: string };
   const featuredCertsSafe: CertificationWithHref[] = featuredCerts
     .map(c => ({ ...c, href: safeExternalHref(c.link) }))
     .filter((c): c is CertificationWithHref => Boolean(c.href));
+  const heroHighlights = [
+    'Evidence-first diagnostics',
+    'Policy-aware remediation',
+    'Bounded AI explanation',
+    'Reusable platform tooling',
+  ];
   const homeJumpLinks = [
     { href: '/#projects', label: 'Selected work' },
     { href: '/#experience', label: 'Experience' },
@@ -30,9 +41,9 @@ export default function HomePage() {
     { href: '/#writing', label: 'Writing' },
   ];
   const workPrinciples = [
-    'Automate, observe, then simplify.',
+    'Automate once evidence is deterministic.',
     'Boring runbooks beat clever recovery.',
-    'Write it down and make it reproducible.',
+    'If it is not repeatable, it is not done.',
   ];
 
   return (
@@ -41,15 +52,13 @@ export default function HomePage() {
         <div className="grid gap-10 md:grid-cols-2 md:items-stretch">
           <div>
             <p className="text-sm font-medium tracking-wide text-[color:var(--color-text-secondary)]">
-              {profile.headline}
+              AI-native reliability builder
             </p>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight md:text-6xl">
-              {profile.name}
+              {profile.name} builds reusable reliability systems
             </h1>
             <p className="mt-5 max-w-xl text-[color:var(--color-text-secondary)] leading-7">
-              I design and operate production systems: GitOps-driven Kubernetes, identity
-              reliability, and observability. Measured in safe deploys, clean dashboards, and boring
-              on-call.
+              I turn recurring failures into reusable diagnostics and operator tooling.
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
@@ -65,10 +74,11 @@ export default function HomePage() {
             </div>
 
             <div className="mt-7 flex flex-wrap gap-2">
-              <Badge variant="tech">2 clusters: OKE hub + AKS spoke</Badge>
-              <Badge variant="tech">GitOps: Argo CD</Badge>
-              <Badge variant="tech">CI: Jenkins multibranch</Badge>
-              <Badge variant="tech">Telemetry: OTLP → LGTM</Badge>
+              {heroHighlights.map(highlight => (
+                <Badge key={highlight} variant="tech">
+                  {highlight}
+                </Badge>
+              ))}
             </div>
 
             <nav
@@ -101,16 +111,15 @@ export default function HomePage() {
               Profile
             </p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">
-              Cloud, identity, and platform reliability
+              Reliability, diagnostics, and reusable tooling
             </h2>
             <div className="mt-5 space-y-3 text-[color:var(--color-text-secondary)] leading-7">
-              {profile.summary.map(p => (
+              {profileLeads.map(p => (
                 <p key={p}>{p}</p>
               ))}
             </div>
             <p className="mt-5 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-              I prefer tight feedback loops: infrastructure as code, GitOps, dashboards that answer
-              questions, and interfaces that stay readable under pressure.
+              I convert incident patterns into workflows with clearer ownership and less ambiguity.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {githubHref ? (
@@ -208,8 +217,7 @@ export default function HomePage() {
           <div>
             <h2 className="text-3xl font-semibold tracking-tight">Selected work</h2>
             <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-              Start here: recent projects that show product thinking, platform ownership, and
-              measurable operational outcomes.
+              Flagships are PipelineHealer and SignalForge. Platform work is supporting depth.
             </p>
           </div>
           <Link
@@ -280,8 +288,8 @@ export default function HomePage() {
           <div>
             <h2 className="text-3xl font-semibold tracking-tight">Experience</h2>
             <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-              A reliability-first track record across identity platforms and cloud-native
-              operations.
+              A reliability-first track record in cloud-native operations, CI/CD, and incident
+              response.
             </p>
           </div>
           {linkedinHref ? (
@@ -347,8 +355,7 @@ export default function HomePage() {
           <div>
             <h2 className="text-3xl font-semibold tracking-tight">Capabilities</h2>
             <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-              The point is not tool collection. It is the small set of skills that lets me own a
-              system from deployment through troubleshooting.
+              The point is ownership: one system from deployment to incident response.
             </p>
           </div>
           <div className="hidden text-sm text-[color:var(--color-text-secondary)] opacity-80 md:block">
@@ -431,7 +438,8 @@ export default function HomePage() {
           <div>
             <h2 className="text-3xl font-semibold tracking-tight">Writing</h2>
             <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-              Short, practical notes. The goal is to make my thinking reviewable.
+              Short, practical notes from production systems. Each post records evidence and
+              trade-offs.
             </p>
           </div>
           <Link
