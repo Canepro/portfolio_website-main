@@ -2,7 +2,7 @@ export const profile = {
   name: 'Vincent Mogah',
   // Keep this aligned with the latest LinkedIn headline (but trimmed for readability).
   headline:
-    'Azure Infrastructure & Cloud Engineer | DevOps | Microsoft 365 & Entra ID | PowerShell Automation | ITIL',
+    'AI-native Reliability Engineer | Product-minded Platform Builder | Diagnostics & Remediation Tooling',
   location: 'United Kingdom',
   email: 'mogah.vincent@hotmail.com',
   links: {
@@ -11,8 +11,8 @@ export const profile = {
     twitter: 'https://twitter.com/Canepro',
   },
   summary: [
-    'Cloud Engineer and DevOps professional focused on dependable systems, automation, and secure delivery.',
-    'Experienced with CI/CD, infrastructure as code (Terraform), container platforms (Docker/Kubernetes), and GitOps (Argo CD).',
-    'I optimize for reliability, observability, and removing operational friction through runbooks and scripted workflows.',
+    'I build reliability systems that turn recurring pain into reusable diagnostics.',
+    'I ship tooling with deterministic defaults, evidence-first triage, and bounded AI.',
+    'Recent work focuses on product-quality systems for remediation, diagnostics, and operator confidence.',
   ],
 } as const;

@@ -34,6 +34,7 @@ export const skillGroups: SkillGroup[] = [
     evidence: [
       { label: 'Observability Hub', href: '/projects/central-observability-hub-stack' },
       { label: 'Rocket.Chat on K8s', href: '/projects/rocketchat-kubernetes-enterprise' },
+      { label: 'SignalForge', href: '/projects/signalforge' },
     ],
   },
   {
