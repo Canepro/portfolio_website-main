@@ -63,15 +63,15 @@ That separation is useful because it makes the boundaries more legible:
 
 The goal is not to hide the complexity behind a chatbot surface. The goal is to make the system easier to inspect.
 
-Here is the kind of diagnostics surface I want this product line to make normal: structured findings, explicit evidence, and clear operator-facing next actions instead of vague assistant output.
+Here is the kind of diagnostics surface I want this product line to make normal: a clear overview, inspectable run detail, and compare workflows that help an operator reason about drift instead of guessing.
 
-![Representative diagnostics surface showing structured findings from external evidence.](/images/external-diagnostics.png)
+![SignalForge diagnostics overview page from the live app.](/images/signalforge-home-real.png)
 
-*Representative diagnostics surface for reviewing structured findings from external evidence.*
+*Live SignalForge overview showing recent runs, sources, and operator entry points.*
 
-![Expanded diagnostics panel showing summary, root cause, failed jobs, investigation findings, and recommended actions.](/images/external-diagnostics-enriched-panel.png)
+![SignalForge run detail page from the live app.](/images/signalforge-run-real.png)
 
-*Expanded diagnostics view with explicit findings, root cause, and operator actions.*
+*Live run detail page showing findings, operator signals, and analysis metadata for a specific target.*
 
 ## The Hard Parts
 
@@ -105,11 +105,11 @@ The public evidence is still early, but it is now coherent enough to support the
 
 That matters because under-packaged projects often look weaker than they are. A lot of technical work gets undervalued simply because the public surface does not explain what the system actually is.
 
-There is also a proof problem here. If the system is supposed to be evidence-first, the public artifacts should make that visible. Even a simple terminal-level proof of failed runs, related issues, and traceable follow-up is more useful than a polished claim with nothing underneath it.
+There is also a proof problem here. If the system is supposed to be evidence-first, the public artifacts should make that visible. A compare view is more convincing than marketing copy because it shows where drift analysis begins to matter operationally.
 
-![Repository-level proof showing failed runs, related issues, and pull requests.](/images/demo-proof-terminal-output.png)
+![SignalForge compare view from the live app.](/images/signalforge-compare-real.png)
 
-*Repository-level proof that the diagnostics flow produces traceable artifacts, not just narrative summaries.*
+*Live compare page showing the product’s drift-analysis path from one run to the next.*
 
 ## What I Would Keep
 
