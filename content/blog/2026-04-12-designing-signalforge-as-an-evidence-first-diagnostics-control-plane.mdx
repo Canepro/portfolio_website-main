@@ -63,6 +63,16 @@ That separation is useful because it makes the boundaries more legible:
 
 The goal is not to hide the complexity behind a chatbot surface. The goal is to make the system easier to inspect.
 
+Here is the kind of diagnostics surface I want this product line to make normal: structured findings, explicit evidence, and clear operator-facing next actions instead of vague assistant output.
+
+![Representative diagnostics surface showing structured findings from external evidence.](/images/external-diagnostics.png)
+
+*Representative diagnostics surface for reviewing structured findings from external evidence.*
+
+![Expanded diagnostics panel showing summary, root cause, failed jobs, investigation findings, and recommended actions.](/images/external-diagnostics-enriched-panel.png)
+
+*Expanded diagnostics view with explicit findings, root cause, and operator actions.*
+
 ## The Hard Parts
 
 The hardest part is not implementation mechanics. It is resisting the wrong story.
@@ -94,6 +104,12 @@ The public evidence is still early, but it is now coherent enough to support the
 - the README framing has been tightened so the repo explains the operator-first diagnostics direction more clearly
 
 That matters because under-packaged projects often look weaker than they are. A lot of technical work gets undervalued simply because the public surface does not explain what the system actually is.
+
+There is also a proof problem here. If the system is supposed to be evidence-first, the public artifacts should make that visible. Even a simple terminal-level proof of failed runs, related issues, and traceable follow-up is more useful than a polished claim with nothing underneath it.
+
+![Repository-level proof showing failed runs, related issues, and pull requests.](/images/demo-proof-terminal-output.png)
+
+*Repository-level proof that the diagnostics flow produces traceable artifacts, not just narrative summaries.*
 
 ## What I Would Keep
 
