@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * Cross-platform Husky install that won't fail in environments without .git
  * (e.g., some CI/build environments).
