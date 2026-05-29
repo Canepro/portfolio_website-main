@@ -173,9 +173,21 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
 
 ## Agent Skills
 
-Portable skill library: [Canepro/codex-skills](https://github.com/Canepro/codex-skills) at `~/src/codex-skills`. Refresh with `bash ~/src/codex-skills/scripts/bootstrap.sh`.
+Portable skill library: [Canepro/codex-skills](https://github.com/Canepro/codex-skills) at `~/src/codex-skills`.
 
-This repo symlinks portfolio-relevant skills under `.cursor/skills/` (see `.cursor/skills/codex-skills/SKILL.md` for routing). Read the linked `SKILL.md` before using a skill.
+Skills install **globally for Cursor** (all projects) via bootstrap:
+
+```bash
+bash ~/src/codex-skills/scripts/bootstrap.sh
+```
+
+After install, Cursor reads skills from `~/.cursor/skills/<skill-name>/SKILL.md`. Use the `skill-library` skill for routing. Do not duplicate skills inside individual repos unless a project needs a one-off override.
+
+Refresh or verify:
+
+```bash
+bash ~/src/codex-skills/scripts/check-drift.sh
+```
 
 | When                                    | Skill                       |
 | --------------------------------------- | --------------------------- |
@@ -192,7 +204,7 @@ This repo symlinks portfolio-relevant skills under `.cursor/skills/` (see `.curs
 | Post-task delivery notes                | `codex-closeout`            |
 | Discover or install new skills          | `find-skills`               |
 
-Cursor-only helpers (not in codex-skills): `babysit`, `split-to-prs`, `create-rule`, `create-hook` under `~/.cursor/skills-cursor/`.
+Cursor built-in helpers (not in codex-skills): `babysit`, `split-to-prs`, `create-rule`, `create-hook` under `~/.cursor/skills-cursor/`.
 
 ## Learned User Preferences
 
@@ -207,4 +219,4 @@ Cursor-only helpers (not in codex-skills): `babysit`, `split-to-prs`, `create-ru
 - Use shared layout components under `src/components/layout/` (`PageShell`, `SectionCard`, `SectionLabel`, `SectionHeader`) for page structure consistency.
 - Long-form typography for blog and project markdown lives in `src/lib/prose.ts` (`proseClasses`).
 - Avoid AI-slop UI chrome: decorative blur/motion haze, badge/pill overload, shouty uppercase section eyebrows, and glass/backdrop-blur header treatments.
-- Agent skills: library checkout at `~/src/codex-skills`; project symlinks in `.cursor/skills/`; run `bash ~/src/codex-skills/scripts/check-drift.sh` if skills look stale.
+- Agent skills: install globally via `bash ~/src/codex-skills/scripts/bootstrap.sh` into `~/.cursor/skills/`; run `check-drift.sh` if skills look stale.
