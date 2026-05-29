@@ -211,9 +211,11 @@ Cursor built-in helpers (not in codex-skills): `babysit`, `split-to-prs`, `creat
 ## Learned User Preferences
 
 - Aim for a professional, polished portfolio that stays engaging—not flat, boring, or generic template UI.
-- Reject generic AI portfolio patterns in copy and visuals; tighten user-facing text with a direct, factual tone (anti-AI pass when polishing).
+- Run `anti-ai-writing` on all user-visible prose in every Cursor session (chat, docs, commits, PRs); reject generic AI tone in copy and visuals. Use project `.cursor/rules/anti-ai-writing.mdc` and paste `~/src/codex-skills/cursor-rules/USER-RULE-anti-ai.txt` into Cursor User Rules for global coverage.
+- Prefer minimal, useful README and docs without badge or emoji clutter; run anti-AI pass on documentation.
 - Keep UI/UX consistent site-wide: shared layout primitives, unified spacing, hierarchy, and mobile behavior.
 - After copy or content tightening, continue with UI/UX and frontend consistency work rather than stopping at text-only edits.
+- When shipping finished work: open a PR, merge to `main`, then delete local and remote feature branches when asked.
 
 ## Learned Workspace Facts
 
@@ -221,4 +223,5 @@ Cursor built-in helpers (not in codex-skills): `babysit`, `split-to-prs`, `creat
 - Use shared layout components under `src/components/layout/` (`PageShell`, `SectionCard`, `SectionLabel`, `SectionHeader`) for page structure consistency.
 - Long-form typography for blog and project markdown lives in `src/lib/prose.ts` (`proseClasses`).
 - Avoid AI-slop UI chrome: decorative blur/motion haze, badge/pill overload, shouty uppercase section eyebrows, and glass/backdrop-blur header treatments.
-- Agent skills: install globally via `bash ~/src/codex-skills/scripts/bootstrap.sh` into `~/.cursor/skills/`; run `check-drift.sh` if skills look stale.
+- Codex skills install globally to `~/.cursor/skills/` via `bash ~/src/codex-skills/scripts/bootstrap.sh`; do not add per-repo skill symlinks unless a one-off override is needed. Run `check-drift.sh` if skills look stale.
+- `.cursor/rules/anti-ai-writing.mdc` has `alwaysApply: true` for mandatory anti-AI pass on user-visible prose in this repo.
