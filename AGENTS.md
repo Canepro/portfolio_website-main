@@ -170,3 +170,41 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
 - `bun run build`
 - Verify key pages render: `/`, `/projects`, `/blog`, `/systems` (and any new routes added).
 - If the change affects layout/styling: verify both desktop + mobile (responsive nav, no overflow, readable type).
+
+## Agent Skills
+
+Portable skill library: [Canepro/codex-skills](https://github.com/Canepro/codex-skills) at `~/src/codex-skills`. Refresh with `bash ~/src/codex-skills/scripts/bootstrap.sh`.
+
+This repo symlinks portfolio-relevant skills under `.cursor/skills/` (see `.cursor/skills/codex-skills/SKILL.md` for routing). Read the linked `SKILL.md` before using a skill.
+
+| When                                    | Skill                       |
+| --------------------------------------- | --------------------------- |
+| Copy or blog polish; remove AI tone     | `anti-ai-writing`           |
+| UI polish; avoid generic/template look  | `frontend-uncodixfy`        |
+| Pre-ship UX audit                       | `frontend-review`           |
+| Mobile/responsive layout                | `responsive-design`         |
+| Browser verification after UI changes   | `webapp-testing`            |
+| Component/token consistency             | `design-system-maintenance` |
+| GitHub Actions CI red on a PR           | `gh-fix-ci`                 |
+| PR review comments                      | `gh-address-comments`       |
+| Jenkins / multibranch pipeline failures | `ci-pipeline-triage`        |
+| Commit hooks / lint-staged              | `setup-pre-commit`          |
+| Post-task delivery notes                | `codex-closeout`            |
+| Discover or install new skills          | `find-skills`               |
+
+Cursor-only helpers (not in codex-skills): `babysit`, `split-to-prs`, `create-rule`, `create-hook` under `~/.cursor/skills-cursor/`.
+
+## Learned User Preferences
+
+- Aim for a professional, polished portfolio that stays engaging—not flat, boring, or generic template UI.
+- Reject generic AI portfolio patterns in copy and visuals; tighten user-facing text with a direct, factual tone (anti-AI pass when polishing).
+- Keep UI/UX consistent site-wide: shared layout primitives, unified spacing, hierarchy, and mobile behavior.
+- After copy or content tightening, continue with UI/UX and frontend consistency work rather than stopping at text-only edits.
+
+## Learned Workspace Facts
+
+- Frontend styling is Tailwind utilities plus CSS variables only; `styled-components` was removed from application code.
+- Use shared layout components under `src/components/layout/` (`PageShell`, `SectionCard`, `SectionLabel`, `SectionHeader`) for page structure consistency.
+- Long-form typography for blog and project markdown lives in `src/lib/prose.ts` (`proseClasses`).
+- Avoid AI-slop UI chrome: decorative blur/motion haze, badge/pill overload, shouty uppercase section eyebrows, and glass/backdrop-blur header treatments.
+- Agent skills: library checkout at `~/src/codex-skills`; project symlinks in `.cursor/skills/`; run `bash ~/src/codex-skills/scripts/check-drift.sh` if skills look stale.
