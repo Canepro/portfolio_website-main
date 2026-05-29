@@ -77,6 +77,12 @@ The design is deliberate:
 - produce operator-facing findings with a clear source trail
 - support bounded automation decisions instead of broad model autonomy
 
+## What it looks like
+
+![SignalForge run detail with ranked operator priorities, findings, and analysis metadata](/images/signalforge-run-real.png)
+
+![SignalForge compare view showing deterministic finding drift between two runs](/images/signalforge-compare-real.png)
+
 ## Why this is a flagship line
 
 The project pushes the same trust model used in production systems:
