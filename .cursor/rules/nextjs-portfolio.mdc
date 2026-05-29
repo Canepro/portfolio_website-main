@@ -1,0 +1,22 @@
+---
+description: Next.js (portfolio_website-main) conventions
+alwaysApply: false
+---
+
+## Project
+- Name: `portfolio_nextjs`
+- Stack: Next.js + React + TypeScript (has `typecheck`, `lint`, `format` scripts)
+
+## AI editing guidelines
+- Prefer edits that use the repo’s existing patterns under `src/` and avoid introducing new top-level folders.
+- When you need to validate changes, run `npm run typecheck` (this repo has Next-route type generation).
+- Keep formatting consistent with the existing `prettier`/`format` scripts.
+
+## Suggested repo commands
+- `npm run dev`
+- `npm run build`
+- `npm run start`
+- `npm run lint`
+- `npm run typecheck`
+- `npm run format` / `npm run format:check`
+
