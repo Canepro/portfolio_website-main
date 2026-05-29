@@ -1,0 +1,82 @@
+---
+title: "Giving an AI Agent Just Enough Access in SignalForge"
+date: "2026-05-29"
+description: "How SignalForge lets an AI agent trigger diagnostics and even propose a fix without ever holding cluster credentials: the three-actor trust model, source-bound tokens, and a deterministic safe-fix path."
+tags: ["ai", "security", "kubernetes", "diagnostics", "platform-engineering"]
+---
+
+Most "AI for operations" demos quietly assume the agent has the keys.
+
+It can read the cluster, run commands, open a shell, apply changes. That demos well. It is also how you get a 2 a.m. incident caused by the thing that was supposed to prevent them.
+
+I wanted SignalForge to let an agent genuinely help: trigger a diagnosis, read the findings, even propose a fix, all without ever holding production credentials. This post is about how that access model works, and why the boundaries sit where they do.
+
+It builds on the [evidence-first framing](/blog/2026-04-12-designing-signalforge-as-an-evidence-first-diagnostics-control-plane) I wrote about earlier. That post argued for deterministic analysis underneath the AI layer. This one is about what happens when you let an external agent near the system at all.
+
+## The Problem
+
+An agent is good at some parts of operations and risky at others.
+
+It reads evidence well, spots a pattern, and writes a clear recommendation. It gets dangerous the moment it can execute. An LLM that can run `kubectl apply` with a manifest it wrote itself is one hallucination away from breaking the workload it was asked to fix.
+
+The two obvious answers are both weak. Give the agent broad access and hope the prompt holds. Or give it nothing and lose the value. I wanted a third option: real capability, scoped tightly enough that a wrong decision cannot turn into a destructive action.
+
+## The Context
+
+SignalForge already splits collection, analysis, and operator workflows across separate repos: the [control plane](https://github.com/Canepro/signalforge), the [runtime agent](https://github.com/Canepro/signalforge-agent), and the [collectors](https://github.com/Canepro/signalforge-collectors). Collection and execution live outside the app on purpose. SignalForge does not SSH into hosts or run `kubectl` itself.
+
+That spine made access control easier to reason about. The real question was narrower: who are the actors, and what is each one allowed to touch?
+
+## The Change: three actors, three trust levels
+
+SignalForge has three actors, and they never share a credential.
+
+- The **operator** creates Sources and issues tokens. Highest trust, human-driven.
+- The **execution agent** (`signalforge-agent`) runs next to the target. It heartbeats, claims jobs, runs collectors, and uploads artifacts. It holds local access to the host or cluster, and it lives entirely outside SignalForge.
+- The **automation agent** is the external AI agent. It asks SignalForge to collect diagnostics for one bound Source and reads the findings back. It talks only to SignalForge, over HTTP. It never touches the collector or the target.
+
+The automation agent's token is the part I spent the most time on. It is source-bound: the token decides which Source it can act on and which artifact family gets collected. The caller cannot override `source_id`, `artifact_type`, or `collection_scope`. So even a fully compromised automation agent can only request the diagnostics it was already authorized for, on the one target it was bound to. It cannot pivot to another Source.
+
+Two routes are the entire surface it gets:
+
+```text
+POST /api/automation-agent/diagnostic-requests        # queue a request
+GET  /api/automation-agent/diagnostic-requests/{id}   # poll for the result
+```
+
+What it reads back is a structured findings envelope: severity counts, a summary, the ranked top actions, and the individual findings. The same evidence an operator sees on the run-detail page, handed to the agent as data instead of a screenshot.
+
+![SignalForge run detail page showing findings, operator signals, and analysis metadata.](/images/signalforge-run-real.png)
+
+*The run detail an operator reads is also the structured payload an automation agent polls back: findings, severity, and top actions, not a freeform chat answer.*
+
+The line I kept returning to: **SignalForge diagnoses, the agent recommends, neither one executes through that channel.** There is a small handoff helper that wraps a SignalForge result into a recommendation-only prompt with the no-execution constraint baked in, so a downstream agent is told plainly that it has no live access and should only advise.
+
+## The Hard Parts: letting an agent fix something, safely
+
+Recommendation-only is easy to keep safe. The hard question is the next one. Can an agent ever trigger a real fix without crossing the line?
+
+For one narrow, opt-in case, yes. That design is the part I am most happy with, and it works by never letting the agent author the change.
+
+- The automation agent cannot patch anything. After a fresh diagnostic run, it can only *ask* SignalForge to create a fix action for a specific finding.
+- SignalForge, not the agent, builds the exact `action_payload`: the policy id, the target workload and namespace, the server-side apply manifest, and the precise fields that change. That payload comes from a deterministic allowlist, not from a model.
+- The execution agent, the one that actually has cluster access, claims the action, runs a dry-run, applies it, and uploads the evidence back through SignalForge.
+- SignalForge marks the action `verified` only after a post-fix diagnostic no longer contains the finding that triggered it.
+
+The first allowlisted policy is deliberately boring: disable automatic service-account token mounting on a workload that does not need it (`kubernetes.disable-service-account-token-automount.v1`). One finding maps to one known-safe patch template. There is no free-form command and no LLM-authored YAML anywhere on that path.
+
+So the agent's "fix" power is really just this: trigger a pre-approved, deterministic change, then watch SignalForge confirm it worked. The model never holds the manifest, the credentials, or the apply step.
+
+## What I Would Keep
+
+Separating *who decides* from *who executes*.
+
+The agent decides something is worth fixing. A deterministic policy decides what the fix is. A separate, cluster-local agent executes it. SignalForge verifies the outcome. No single party holds the whole chain, least of all the LLM. That is more moving parts than "let the agent run kubectl," and it is also the difference between a capable system and a liability.
+
+## What I Would Change
+
+Widen the allowlist carefully, and make the audit trail more visible.
+
+Today there is exactly one safe-fix policy, which is the right place to start. The interesting work is growing that set without loosening the model: each new policy needs a deterministic mapping from a specific finding to a specific, reversible change, plus the same dry-run-then-verify loop.
+
+I would also surface the action history more prominently. The trust story only lands if an operator can see, per Source, exactly what was requested, what was applied, and whether the follow-up diagnostic confirmed it. The safety is already in the system. The next job is making it legible.
