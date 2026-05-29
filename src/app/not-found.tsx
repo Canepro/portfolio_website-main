@@ -18,7 +18,13 @@ export default function NotFound() {
           <Link href="/projects">Projects</Link>
         </Button>
         <Button variant="glass" asChild>
+          <Link href="/systems">Systems</Link>
+        </Button>
+        <Button variant="glass" asChild>
           <Link href="/blog">Blog</Link>
+        </Button>
+        <Button variant="glass" asChild>
+          <Link href="/contact">Contact</Link>
         </Button>
       </div>
     </PageShell>

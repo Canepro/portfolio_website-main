@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ArrowRight, BarChart3, Boxes, GitBranch, Server, Waypoints } from 'lucide-react';
 
 function Node({
@@ -76,7 +77,7 @@ export default function HeroVisual() {
                 />
                 <div className="flex shrink-0 flex-col items-center justify-center text-[color:var(--color-text-secondary)]">
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                  <div className="mt-1 text-[10px] font-mono">OTLP</div>
+                  <div className="mt-1 font-mono text-[10px]">OTLP</div>
                 </div>
                 <Node
                   label="OKE hub"
@@ -116,8 +117,13 @@ export default function HeroVisual() {
 
       <div className="absolute inset-x-0 bottom-0 border-t border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-4 py-3">
         <p className="text-xs text-[color:var(--color-text-secondary)]">
-          Netlify deploys production. Jenkins runs CI. Details on{' '}
-          <span className="text-[color:var(--color-text-primary)]">/systems</span>.
+          Netlify deploys production. Jenkins runs CI.{' '}
+          <Link
+            href="/systems"
+            className="font-medium text-[color:var(--color-text-primary)] underline underline-offset-4"
+          >
+            Full systems map
+          </Link>
         </p>
       </div>
     </div>

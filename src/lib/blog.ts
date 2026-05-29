@@ -88,6 +88,18 @@ export function getAllBlogPostsMeta(): BlogPostMeta[] {
   return posts;
 }
 
+export function getBlogTagsWithCounts(): { tag: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const post of getAllBlogPostsMeta()) {
+    for (const tag of post.tags ?? []) {
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+  }
+  return [...counts.entries()]
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+}
+
 export function getBlogPostSource(slug: string): { meta: BlogPostMeta; source: string } {
   if (!SLUG_RE.test(slug)) {
     throw new Error(`Invalid blog slug: ${slug}`);

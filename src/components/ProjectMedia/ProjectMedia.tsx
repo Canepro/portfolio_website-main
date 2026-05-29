@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useRef, useState } from 'react';
 import OptimizedImage from '../OptimizedImage/OptimizedImage';
 
 type MediaFit = 'cover' | 'contain';
@@ -32,8 +34,17 @@ const ProjectMedia: React.FC<ProjectMediaProps> = ({
   fit = 'cover',
   poster,
 }) => {
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReduceMotion(media.matches);
+    sync();
+    media.addEventListener('change', sync);
+    return () => media.removeEventListener('change', sync);
+  }, []);
+
   if (isVideoSrc(src)) {
-    // For "fill" layout we need a positioned wrapper that matches next/image behavior.
     const wrapperClassName = fill ? 'absolute inset-0' : undefined;
     const objectFitClass = fit === 'contain' ? 'object-contain' : 'object-cover';
     const preload = priority ? 'auto' : 'metadata';
@@ -43,9 +54,9 @@ const ProjectMedia: React.FC<ProjectMediaProps> = ({
         <video
           aria-label={alt}
           className={['h-full w-full', objectFitClass, className].filter(Boolean).join(' ')}
-          autoPlay
+          autoPlay={!reduceMotion}
           muted
-          loop
+          loop={!reduceMotion}
           playsInline
           preload={preload}
           poster={poster}

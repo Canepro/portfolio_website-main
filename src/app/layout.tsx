@@ -4,6 +4,7 @@ import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 
 import AppShell from '@/app/shared/AppShell';
 import { profile } from '@/content/profile';
+import { getSiteUrl } from '@/lib/site';
 
 import '@/styles/GlobalStyles.css';
 import '@/styles/globals.css';
@@ -23,11 +24,33 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: profile.name,
     template: `%s | ${profile.name}`,
   },
   description: 'Vincent Mogah: platform engineering, CI/CD tooling, and Kubernetes operations.',
+  openGraph: {
+    type: 'website',
+    locale: 'en_GB',
+    siteName: profile.name,
+    title: profile.name,
+    description: 'Platform reliability work: case studies, systems map, and technical writing.',
+    images: [
+      {
+        url: '/images/new-portfolio-site.png',
+        width: 1280,
+        height: 800,
+        alt: 'Portfolio homepage',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: profile.name,
+    description: 'Platform reliability work: case studies, systems map, and technical writing.',
+    images: ['/images/new-portfolio-site.png'],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -44,7 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script id="theme-init" src="/theme-init.js?v=2" strategy="beforeInteractive" />
 
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/images/profile.jpeg" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
         <meta name="color-scheme" content="dark light" />

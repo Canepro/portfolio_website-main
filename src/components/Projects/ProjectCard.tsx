@@ -4,11 +4,13 @@ import { ProjectCardProps } from '../../types/components';
 import { Button } from '../ui/button';
 import { Github, ExternalLink, BarChart3 } from 'lucide-react';
 import ProjectMedia from '../ProjectMedia/ProjectMedia';
+import { projectMediaFit } from '@/lib/project-media';
 import { safeExternalHref } from '@/lib/url';
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   const isGrafanaProject = project.slug === 'central-observability-hub-stack';
   const previewSrc = project.media || project.image;
+  const mediaFit = projectMediaFit(previewSrc);
   const projectHref = `/projects/${encodeURIComponent(project.slug)}`;
   const visitHref = safeExternalHref(project.visit);
   const sourceHref = safeExternalHref(project.source);
@@ -26,7 +28,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
 
   return (
     <article className="relative flex flex-col overflow-hidden rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)] transition-colors hover:bg-[color:var(--color-card-hover)]">
-      <Link href={projectHref} className="relative block aspect-video overflow-hidden">
+      <Link
+        href={projectHref}
+        className="relative block aspect-video overflow-hidden bg-[color:var(--color-bg-primary)]"
+      >
         <ProjectMedia
           src={previewSrc}
           alt={`${project.title} thumbnail`}
@@ -34,8 +39,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
           sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
           priority={index < 4}
           poster={project.image}
-          fit="cover"
-          className="object-cover"
+          fit={mediaFit}
+          className={mediaFit === 'contain' ? 'object-contain p-2' : 'object-cover'}
         />
       </Link>
 

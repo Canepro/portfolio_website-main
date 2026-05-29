@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type ChangeEvent, type FormEvent, useState } from 'react';
+import React, { type ChangeEvent, type FormEvent, useEffect, useRef, useState } from 'react';
 
 import { PageShell } from '@/components/layout/PageShell';
 import { SectionCard } from '@/components/layout/SectionCard';
@@ -19,6 +19,13 @@ interface ContactForm {
 export default function ContactClient() {
   const [status, setStatus] = useState<FormStatus>('idle');
   const [form, setForm] = useState<ContactForm>({ name: '', email: '', message: '' });
+  const statusRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (status === 'error' || status === 'success') {
+      statusRef.current?.focus();
+    }
+  }, [status]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -50,7 +57,7 @@ export default function ContactClient() {
       description="Send a message below. A repo link, job description, or error log helps."
     >
       <SectionCard className="mt-10" padding="lg">
-        <form onSubmit={onSubmit} className="grid gap-5">
+        <form onSubmit={onSubmit} className="grid gap-5" aria-describedby="contact-form-status">
           <div>
             <label htmlFor="contact-name" className="text-sm font-medium">
               Name
@@ -107,16 +114,28 @@ export default function ContactClient() {
             </Button>
           </div>
 
-          {status === 'success' ? (
-            <p role="status" className="text-sm text-[color:var(--color-accent)]">
-              Message sent successfully.
-            </p>
-          ) : null}
-          {status === 'error' ? (
-            <p role="status" className="text-sm text-red-500">
-              Something went wrong. Please try again.
-            </p>
-          ) : null}
+          <div id="contact-form-status" aria-live="polite" aria-atomic="true">
+            {status === 'success' ? (
+              <p
+                ref={statusRef}
+                tabIndex={-1}
+                role="status"
+                className="text-sm text-[color:var(--color-accent)] outline-none"
+              >
+                Message sent successfully.
+              </p>
+            ) : null}
+            {status === 'error' ? (
+              <p
+                ref={statusRef}
+                tabIndex={-1}
+                role="alert"
+                className="text-sm text-red-500 outline-none"
+              >
+                Something went wrong. Please try again.
+              </p>
+            ) : null}
+          </div>
         </form>
       </SectionCard>
     </PageShell>

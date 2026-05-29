@@ -3,6 +3,7 @@
 import Link from 'next/link';
 
 import ProjectMedia from '@/components/ProjectMedia/ProjectMedia';
+import { projectMediaFit } from '@/lib/project-media';
 import { Button } from '@/components/ui/button';
 import { safeExternalHref } from '@/lib/url';
 import type { Project } from '@/types/project';
@@ -20,6 +21,7 @@ export default function ProjectPreviewCard({
   className,
 }: ProjectPreviewCardProps) {
   const previewSrc = project.media || project.image;
+  const mediaFit = projectMediaFit(previewSrc);
   const projectHref = `/projects/${encodeURIComponent(project.slug)}`;
   const visitHref = safeExternalHref(project.visit);
   const meta = [project.category, project.featured ? 'Featured' : null].filter(Boolean).join(' · ');
@@ -31,7 +33,10 @@ export default function ProjectPreviewCard({
         className
       )}
     >
-      <Link href={projectHref} className="relative block aspect-video overflow-hidden">
+      <Link
+        href={projectHref}
+        className="relative block aspect-video overflow-hidden bg-[color:var(--color-bg-primary)]"
+      >
         <ProjectMedia
           src={previewSrc}
           alt={`${project.title} preview`}
@@ -39,8 +44,8 @@ export default function ProjectPreviewCard({
           sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
           priority={priority}
           poster={project.image}
-          fit="cover"
-          className="object-cover"
+          fit={mediaFit}
+          className={mediaFit === 'contain' ? 'object-contain p-2' : 'object-cover'}
         />
       </Link>
 

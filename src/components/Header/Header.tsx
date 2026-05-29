@@ -65,6 +65,14 @@ export default function Header() {
   }, [pathname]);
 
   useEffect(() => {
+    if (open) {
+      document.body.classList.add('mobile-nav-open');
+      return () => document.body.classList.remove('mobile-nav-open');
+    }
+    document.body.classList.remove('mobile-nav-open');
+  }, [open]);
+
+  useEffect(() => {
     if (!open || !menuRef.current) return;
 
     const panel = menuRef.current;

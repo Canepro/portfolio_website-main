@@ -197,3 +197,9 @@ html.light-theme .image-shimmer {
   );
   background-size: 200% 100%;
 }
+
+@media (max-width: 767px) {
+  body.mobile-nav-open iframe[src*='livechat'] {
+    visibility: hidden !important;
+  }
+}
