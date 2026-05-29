@@ -47,7 +47,7 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
 
 ## Styling Conventions
 
-The codebase uses Tailwind utilities (primary) and `styled-components` (legacy).
+The codebase uses Tailwind utilities (primary) with CSS variables in `GlobalStyles.css` / `globals.css`. UI primitives live in `src/components/ui/*`.
 
 - If changing an existing component: stick to its current styling approach.
 - If creating a new component: prefer Tailwind in `src/app/*` for speed and consistency with the new pages.

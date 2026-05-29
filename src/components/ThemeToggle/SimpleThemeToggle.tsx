@@ -51,8 +51,21 @@ const SimpleThemeToggle: React.FC<SimpleThemeToggleProps> = ({ className }) => {
     setIsDark(nextIsDark);
   };
 
-  // Don't render on server
-  if (!mounted) return null;
+  // Reserve space before hydration to avoid header layout shift.
+  if (!mounted) {
+    return (
+      <Button
+        type="button"
+        variant="glass"
+        size="icon"
+        aria-hidden="true"
+        tabIndex={-1}
+        className={cn('pointer-events-none rounded-xl opacity-0', className)}
+      >
+        <Sun className="h-4 w-4" />
+      </Button>
+    );
+  }
 
   return (
     <Button

@@ -33,15 +33,12 @@
     "remark-gfm": "4.0.1",
     "remark-gfm-mdx": "npm:remark-gfm@^4.0.0",
     "sharp": "^0.34.3",
-    "styled-components": "^5.3.11",
-    "styled-normalize": "^8.0.7",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@types/node": "^24.2.1",
     "@types/react": "19.2.13",
     "@types/react-dom": "19.2.3",
-    "@types/styled-components": "^5.1.36",
     "autoprefixer": "^10.4.21",
     "@eslint/eslintrc": "^3.3.1",
     "eslint": "^9.22.0",

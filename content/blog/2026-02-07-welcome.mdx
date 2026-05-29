@@ -1,36 +1,32 @@
 ---
 title: "Welcome: Why This Portfolio Has a Blog"
 date: "2026-02-07"
-description: "What I'm optimizing for, and how I'll use this space to show real engineering thinking."
+description: "What this blog covers and how posts are structured."
 tags: ["portfolio", "career", "writing"]
 ---
 
-I built this portfolio to answer a simple question:
+This portfolio is a Next.js app on Netlify. Jenkins on Kubernetes runs CI. The [hub-and-spoke observability stack](/projects/central-observability-hub-stack) and Argo CD setup are the same infrastructure I write about here.
 
-> Can you ship, operate, and explain systems clearly?
-
-Projects show outcomes. A blog shows *how you think*.
-
-This site is a Next.js app with TypeScript, statically built and deployed to Netlify. The infrastructure behind it, Jenkins pipelines on Kubernetes, a [hub-and-spoke observability stack](/projects/central-observability-hub-stack), GitOps with ArgoCD, is the same stack I write about here. The blog is not separate from the work; it is part of it.
+The blog records how those systems were built: tradeoffs, failures, and the parts that were boring but load-bearing.
 
 ## What You'll See Here
 
-- **Build notes**: tradeoffs, constraints, and the boring-but-important details behind projects like the [Hybrid Cloud GitOps Control Plane](/projects/hybrid-cloud-gitops-control-plane) and [Rocket.Chat on AKS](/projects/rocketchat-kubernetes-enterprise)
-- **DevOps and platform engineering**: Kubernetes, GitOps, observability pipelines, CI/CD. Real patterns from running workloads across OCI and Azure, not contrived examples
-- **Frontend engineering**: performance, accessibility, UI architecture. This portfolio itself is the proving ground (see the [Systems](/systems) page for a live architecture diagram)
+- **Build notes** on projects like the [Hybrid Cloud GitOps Control Plane](/projects/hybrid-cloud-gitops-control-plane) and [Rocket.Chat on AKS](/projects/rocketchat-kubernetes-enterprise)
+- **Platform work**: Kubernetes, GitOps, observability, CI/CD from running workloads on OCI and Azure
+- **Frontend work**: performance, accessibility, and layout on this site ([Systems](/systems) has the architecture map)
 
 ## How Posts Are Structured
 
-Each post follows a pattern:
+Each post covers:
 
-1. **Context**: what problem I was solving and why it matters
-2. **The approach**: what I tried, what I rejected, and what I shipped
-3. **The takeaway**: a checklist, snippet, or reusable pattern you can apply to your own work
+1. **Context**: the problem and constraints
+2. **Approach**: what shipped and what did not
+3. **Takeaway**: a checklist, snippet, or pattern you can reuse
 
-No filler. If a post does not end with something you can re-use, it should not exist.
+If a post does not end with something concrete, it should not go up.
 
 ## What's Coming
 
-- How the Jenkins pipeline validates this site (lint, typecheck, build, Dockerfile lint, container build) without ever pushing an image on PRs
-- Setting up an LGTM observability stack (Grafana, Loki, Tempo) with OTLP ingestion on OKE
-- Lessons from migrating Rocket.Chat across Helm chart versions using Git-driven deploys
+- How the Jenkins pipeline validates this site (lint, typecheck, build, Dockerfile lint, container build) without pushing images on PRs
+- Setting up an LGTM stack (Grafana, Loki, Tempo) with OTLP ingestion on OKE
+- Migrating Rocket.Chat across Helm chart versions with Git-driven deploys

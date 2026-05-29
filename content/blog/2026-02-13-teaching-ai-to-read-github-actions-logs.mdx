@@ -1,25 +1,17 @@
 ---
 title: "Teaching an AI to Read GitHub Actions Logs Without Hallucinations"
 date: "2026-02-13"
-description: "How PipelineHealer moved from raw log dumps to structured extraction, confidence gating, and deterministic remediation paths."
+description: "How PipelineHealer parses GitHub Actions logs and gates remediation on confidence."
 tags: ["hackathon", "ai-agents", "ci-cd", "github-actions", "observability", "prompt-engineering", "devops"]
 ---
 
-Most CI logs are noisy, repetitive, and hostile to naive prompting.
+Most CI logs are noisy. Pasting 500+ lines into one LLM call and asking for "the fix" usually yields vague summaries or unsafe recommendations.
 
-If you paste 500+ lines of mixed output into one LLM call and ask for "the fix," you usually get one of two outcomes:
+PipelineHealer needed a path that was explainable and testable.
 
-- vague summaries that miss root cause
-- confident but unsafe recommendations
+For system context, see the [PipelineHealer architecture diagram](https://github.com/Canepro/pipelinehealer#architecture) and the [repository](https://github.com/Canepro/pipelinehealer).
 
-For PipelineHealer, I needed a path that was explainable and testable, not just sometimes-correct.
-
-If you want broader system context, see the <a href="https://github.com/Canepro/pipelinehealer#architecture" target="_blank" rel="noopener noreferrer">PipelineHealer architecture diagram</a>.
-You can also browse the [PipelineHealer repository](https://github.com/Canepro/pipelinehealer).
-
-This post covers the design I ended up with: pattern-first analysis, typed handoffs, fallback model reasoning, and explicit reliability guardrails.
-
-Current baseline is `v0.3.0`, and this pattern-first architecture is still the core path behind activity diagnosis/remediation decisions.
+This post covers the design: pattern-first analysis, typed handoffs, model fallback, and IO guardrails. Baseline at write time was `v0.3.0`.
 
 ## Why Raw Logs Break AI Workflows
 
@@ -31,9 +23,9 @@ GitHub Actions logs are not a single narrative. They are many narratives interle
 - shell script traces
 - platform retries and metadata
 
-The actual failure signal is often 1-3 lines buried inside everything else.
+The failure signal is often 1-3 lines buried in install output, test traces, and retries.
 
-Model choice matters less than sending the *smallest, highest-signal payload* to the model.
+Model choice matters less than sending a small, focused payload.
 
 ## Step 1: Structured Extraction Before Diagnosis
 
@@ -61,11 +53,9 @@ Before any model fallback, the diagnosis path checks deterministic patterns for 
 - test failures
 - build config failures
 - timeout failures
-If pattern confidence is high, PipelineHealer acts deterministically.
+If pattern confidence is high, PipelineHealer acts without a model call. Low confidence routes to the model with typed output constraints.
 
-If confidence is low, model-based diagnosis is used as a fallback with typed output constraints.
-
-This ordering is the key reliability move: use AI where ambiguity exists, not where deterministic logic already works.
+Use the model where ambiguity remains, not where string matching already works.
 
 ## Step 3: Keep Prompt Context Budgeted and Useful
 
@@ -90,17 +80,17 @@ I added reliability controls around the pipeline:
 - per-step timeouts in the orchestrator
 - explicit handling for `timed_out` workflows
 
-This shifted failures from "mysterious" to "observable and bounded." If remediation cannot run safely, the system degrades to structured issue creation.
+Failures become observable: retries, timeouts, and safe fallback to issue creation when remediation cannot run.
 
 ## What This Changed in Practice
 
-After these changes, the system behavior became far more consistent:
+After these changes:
 
-- dependency/lint paths produce deterministic fix PRs
-- test/build_config/timeout paths produce structured issues
-- dashboard activity remains explainable end-to-end
+- dependency/lint paths open fix PRs
+- test/build_config/timeout paths file structured issues
+- dashboard activity traces the full chain
 
-Most importantly, I can now reason about *why* an outcome happened, not just whether it happened.
+I can see why an outcome happened, not just that it happened.
 
 ## What's Next
 

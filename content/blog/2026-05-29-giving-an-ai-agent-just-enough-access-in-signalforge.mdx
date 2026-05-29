@@ -1,7 +1,7 @@
 ---
 title: "Giving an AI Agent Just Enough Access in SignalForge"
 date: "2026-05-29"
-description: "How SignalForge lets an AI agent trigger diagnostics and even propose a fix without ever holding cluster credentials: the three-actor trust model, source-bound tokens, and a deterministic safe-fix path."
+description: "SignalForge access model: source-bound tokens, three actors, one allowlisted fix policy."
 tags: ["ai", "security", "kubernetes", "diagnostics", "platform-engineering"]
 ---
 
@@ -11,7 +11,7 @@ It can read the cluster, run commands, open a shell, apply changes. That demos w
 
 I wanted SignalForge to let an agent genuinely help: trigger a diagnosis, read the findings, even propose a fix, all without ever holding production credentials. This post is about how that access model works, and why the boundaries sit where they do.
 
-It builds on the [evidence-first framing](/blog/2026-04-12-designing-signalforge-as-an-evidence-first-diagnostics-control-plane) I wrote about earlier. That post argued for deterministic analysis underneath the AI layer. This one is about what happens when you let an external agent near the system at all.
+It builds on the [earlier SignalForge design post](/blog/2026-04-12-designing-signalforge-as-an-evidence-first-diagnostics-control-plane). That one covered structured analysis before AI. This one covers external agent access.
 
 ## The Problem
 
@@ -71,12 +71,12 @@ So the agent's "fix" power is really just this: trigger a pre-approved, determin
 
 Separating *who decides* from *who executes*.
 
-The agent decides something is worth fixing. A deterministic policy decides what the fix is. A separate, cluster-local agent executes it. SignalForge verifies the outcome. No single party holds the whole chain, least of all the LLM. That is more moving parts than "let the agent run kubectl," and it is also the difference between a capable system and a liability.
+The agent flags a finding. A fixed policy defines the patch. A cluster-local agent applies it. SignalForge verifies the result. The LLM never holds credentials or writes YAML on that path.
 
 ## What I Would Change
 
 Widen the allowlist carefully, and make the audit trail more visible.
 
-Today there is exactly one safe-fix policy, which is the right place to start. The interesting work is growing that set without loosening the model: each new policy needs a deterministic mapping from a specific finding to a specific, reversible change, plus the same dry-run-then-verify loop.
+Today there is one safe-fix policy. Each new policy needs a fixed mapping from finding to reversible change, plus dry-run and verify steps before it ships.
 
-I would also surface the action history more prominently. The trust story only lands if an operator can see, per Source, exactly what was requested, what was applied, and whether the follow-up diagnostic confirmed it. The safety is already in the system. The next job is making it legible.
+Surface action history per Source: what was requested, what was applied, and whether the follow-up diagnostic confirmed it.

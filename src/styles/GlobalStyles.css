@@ -165,3 +165,35 @@ html.light-theme ::-webkit-scrollbar-thumb {
 html.light-theme ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.28);
 }
+
+@keyframes imageShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.image-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: imageShimmer 1.1s ease-in-out infinite;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+html.light-theme .image-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.03) 0%,
+    rgba(0, 0, 0, 0.06) 50%,
+    rgba(0, 0, 0, 0.03) 100%
+  );
+  background-size: 200% 100%;
+}

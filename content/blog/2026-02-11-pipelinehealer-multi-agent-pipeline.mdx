@@ -1,19 +1,15 @@
 ---
 title: "Designing a Multi-Agent Pipeline: Log Analyzer to Diagnosis to Remediation"
 date: "2026-02-11"
-description: "How I split CI healing into four agents with typed contracts, confidence gating, and deterministic fallbacks."
+description: "Four PipelineHealer agents with typed contracts and pattern matching before LLM fallback."
 tags: ["hackathon", "ai-agents", "ci-cd", "github-actions", "azure", "fastapi"]
 ---
 
-PipelineHealer is not "one prompt that fixes CI". It is a pipeline with constraints.
+PipelineHealer is a pipeline with constraints, not one prompt over a log dump.
 
-I learned quickly that if you give an LLM a raw GitHub Actions log dump and ask for a fix, you will get a mix of:
+Early experiments sent raw GitHub Actions output to a model and asked for a fix. Results mixed plausible guesses, half-right fixes, and confident hallucinations.
 
-- plausible guesses
-- half-right fixes
-- confident hallucinations
-
-So I designed PipelineHealer as a set of narrow agents that pass typed data between them. The goal is to make the system *boringly correct* for common failure modes, and only use the model where it adds real value.
+The fix: narrow agents passing typed data between steps. Common failure modes should resolve without a model; the model handles the rest.
 
 ## The Pipeline
 
@@ -34,13 +30,13 @@ These are the constraints that made the system behave:
 - The **Diagnosis** agent sees a *summary* (error lines + job names + key events), not full raw logs.
 - The **Remediation** agent is gated on diagnosis confidence. Low confidence means "create an issue", not "ship a PR".
 - Pattern-based detection runs first for obvious cases; the model is a fallback for nuance.
-- The orchestrator always has a safe default outcome: when uncertain, create an issue with context.
+- The orchestrator defaults to creating an issue when uncertain.
 
-A multi-agent system is only as safe as its defaults.
+Default outcomes matter more than agent count.
 
-## Typed Contracts (Not Vibes)
+## Typed contracts
 
-This is the shape of the data that flows between steps:
+Data shape between steps:
 
 ```python
 # Simplified view
@@ -83,7 +79,7 @@ At this early stage, PipelineHealer's action policy covered five core failure ty
 - **Build config errors**: issue
 - **Timeouts**: issue
 
-The key point is that the system does not try to "auto-fix everything". It auto-fixes what is predictable, and files an issue for what needs human judgment.
+The system auto-fixes predictable cases (dependency, lint) and files issues for the rest (tests, build config, timeouts).
 
 ## How I Validate Locally (Fast Feedback Loop)
 
@@ -121,9 +117,9 @@ Now that the pipeline works end-to-end locally, the next two phases are about de
 
 Then comes the real deployment work: aligning the infrastructure and deploy path so the actual backend/frontend images can run in Azure reliably.
 
-## Takeaway: A Multi-Agent Checklist
+## Checklist
 
-When a system is going to open PRs on your behalf, design it like production software:
+When a system opens PRs on your behalf:
 
 - Split responsibilities so each agent is narrow and testable.
 - Use typed contracts; do not pass free-form text as your "API".

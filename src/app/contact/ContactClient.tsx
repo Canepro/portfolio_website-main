@@ -2,7 +2,11 @@
 
 import React, { type ChangeEvent, type FormEvent, useState } from 'react';
 
+import { PageShell } from '@/components/layout/PageShell';
+import { SectionCard } from '@/components/layout/SectionCard';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
@@ -39,94 +43,82 @@ export default function ContactClient() {
   };
 
   return (
-    <section className="px-6 py-10 md:px-10">
-      <div className="mx-auto max-w-3xl">
-        <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">Contact</h1>
-        <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-          Prefer email? Send a message using the form below. If you include context (links, repo,
-          error logs), I can respond faster.
-        </p>
+    <PageShell
+      width="narrow"
+      eyebrow="Contact"
+      title="Get in touch"
+      description="Send a message below. A repo link, job description, or error log helps."
+    >
+      <SectionCard className="mt-10" padding="lg">
+        <form onSubmit={onSubmit} className="grid gap-5">
+          <div>
+            <label htmlFor="contact-name" className="text-sm font-medium">
+              Name
+            </label>
+            <Input
+              id="contact-name"
+              required
+              type="text"
+              name="name"
+              autoComplete="name"
+              value={form.name}
+              onChange={onChange}
+              placeholder="Your name"
+              className="mt-2 h-11"
+            />
+          </div>
 
-        <div className="mt-10 rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] p-6 md:p-8">
-          <form onSubmit={onSubmit} className="grid gap-5">
-            <div>
-              <label
-                htmlFor="contact-name"
-                className="text-sm font-medium text-[color:var(--color-text-primary)]"
-              >
-                Name
-              </label>
-              <input
-                id="contact-name"
-                required
-                type="text"
-                name="name"
-                autoComplete="name"
-                value={form.name}
-                onChange={onChange}
-                placeholder="Your name"
-                className="mt-2 w-full rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-secondary)] placeholder:opacity-70 focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
+          <div>
+            <label htmlFor="contact-email" className="text-sm font-medium">
+              Email
+            </label>
+            <Input
+              id="contact-email"
+              required
+              type="email"
+              name="email"
+              autoComplete="email"
+              value={form.email}
+              onChange={onChange}
+              placeholder="you@company.com"
+              className="mt-2 h-11"
+            />
+          </div>
 
-            <div>
-              <label
-                htmlFor="contact-email"
-                className="text-sm font-medium text-[color:var(--color-text-primary)]"
-              >
-                Email
-              </label>
-              <input
-                id="contact-email"
-                required
-                type="email"
-                name="email"
-                autoComplete="email"
-                value={form.email}
-                onChange={onChange}
-                placeholder="you@company.com"
-                className="mt-2 w-full rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-secondary)] placeholder:opacity-70 focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
+          <div>
+            <label htmlFor="contact-message" className="text-sm font-medium">
+              Message
+            </label>
+            <Textarea
+              id="contact-message"
+              required
+              name="message"
+              value={form.message}
+              onChange={onChange}
+              placeholder="What are you working on, and how can I help?"
+              rows={6}
+              className="mt-2"
+            />
+          </div>
 
-            <div>
-              <label
-                htmlFor="contact-message"
-                className="text-sm font-medium text-[color:var(--color-text-primary)]"
-              >
-                Message
-              </label>
-              <textarea
-                id="contact-message"
-                required
-                name="message"
-                value={form.message}
-                onChange={onChange}
-                placeholder="What are you working on, and how can I help?"
-                rows={6}
-                className="mt-2 w-full resize-y rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 text-sm text-[color:var(--color-text-primary)] outline-none placeholder:text-[color:var(--color-text-secondary)] placeholder:opacity-70 focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500"
-              />
-            </div>
+          <div className="flex flex-wrap items-center gap-4">
+            <Button variant="accent" type="submit" disabled={status === 'loading'}>
+              {status === 'loading' ? 'Sending…' : 'Send message'}
+            </Button>
+          </div>
 
-            <div className="flex flex-wrap items-center gap-4">
-              <Button variant="accent" size="default" type="submit" disabled={status === 'loading'}>
-                {status === 'loading' ? 'Sending…' : 'Send Message'}
-              </Button>
-            </div>
-
-            {status === 'success' && (
-              <p role="status" className="text-sm text-emerald-400">
-                Message sent successfully.
-              </p>
-            )}
-            {status === 'error' && (
-              <p role="status" className="text-sm text-red-400">
-                Something went wrong. Please try again.
-              </p>
-            )}
-          </form>
-        </div>
-      </div>
-    </section>
+          {status === 'success' ? (
+            <p role="status" className="text-sm text-[color:var(--color-accent)]">
+              Message sent successfully.
+            </p>
+          ) : null}
+          {status === 'error' ? (
+            <p role="status" className="text-sm text-red-500">
+              Something went wrong. Please try again.
+            </p>
+          ) : null}
+        </form>
+      </SectionCard>
+    </PageShell>
   );
 }

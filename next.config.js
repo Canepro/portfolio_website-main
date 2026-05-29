@@ -2,9 +2,6 @@
 
 module.exports = {
   reactStrictMode: true,
-  compiler: {
-    styledComponents: true,
-  },
   async headers() {
     return [
       {

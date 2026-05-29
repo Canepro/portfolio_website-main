@@ -5,50 +5,39 @@ export const projectDetails: Record<string, ProjectDetail> = {
     slug: 'pipelinehealer',
     longDescription: `## Overview
 
-PipelineHealer is a **policy-aware remediation control plane** for failed delivery pipelines.
+PipelineHealer handles failed GitHub Actions and Jenkins runs.
 
-The core workflow is deliberate:
+1. Ingest the failure from the provider.
+2. Normalize it into diagnostics.
+3. Open a fix PR when policy allows it.
+4. File a structured issue when auto-edit is not safe.
 
-1. Ingest failure evidence from a pipeline provider.
-2. Normalize the failure into concrete diagnostics.
-3. Apply remediation only when the path is deterministic and policy allows it.
-4. Fall back to a structured, auditable issue when the safer answer is **"do not auto-edit."**
+## Stack and deployment
 
-## What makes it worth showing
+- GitHub Actions plus a signed Jenkins bridge
+- Policy gates, repo allowlists, remediation modes, audit trail
+- Local, Docker/Podman, Helm/Kubernetes, Azure Container Apps
 
-- **Provider coverage today:** GitHub Actions plus a signed Jenkins bridge path
-- **Safety model:** policy gates, repo allowlists, explicit remediation modes, and auditable outcomes
-- **Operator value:** less repetitive triage, clearer evidence, and controlled automation instead of blind self-healing claims
-- **Deployment flexibility:** local, Docker/Podman, Helm/Kubernetes, and Azure Container Apps
-
-## Live proof
+## Links
 
 - **Live demo:** https://ca-canepro-ph-frontend.kinddune-53ac219d.eastus2.azurecontainerapps.io
 - **Source:** https://github.com/Canepro/pipelinehealer
 
-## Why it matters
-
-This is not a toy "AI fixes CI" demo. The interesting part is the **control model**:
-
-- deterministic fixes can open or reuse PRs
-- ambiguous cases open issues instead of unsafe edits
-- actions stay tied to run evidence, reason codes, and policy state
-
-That framing is much closer to how automation has to behave in real delivery systems.`,
+Auto-fix runs only when the failure maps to a known safe change. Everything else becomes a reviewable issue with run context attached.`,
     challenges: [
-      'Reducing failed-pipeline triage without overselling unsafe full autonomy',
-      'Supporting more than one provider path while keeping a shared diagnosis and policy core',
-      'Making remediation explainable enough for operators to trust or reject it quickly',
-      'Keeping deployment portable across local, containers, Kubernetes, and managed cloud hosting',
+      'Reducing failed-pipeline triage without auto-editing repos on ambiguous failures',
+      'Supporting GitHub Actions and Jenkins with one shared diagnosis and policy core',
+      'Explaining remediation decisions clearly enough to accept or reject quickly',
+      'Keeping deployment portable across local, containers, Kubernetes, and Azure',
     ],
     solutions: [
-      'Built a shared remediation control plane with provider-specific ingress adapters for GitHub Actions and Jenkins',
-      'Used policy gates, remediation modes, and allowlists so automation stays reviewable and bounded',
-      'Normalized run evidence into explicit diagnostics, failure context, and auditable artifacts',
-      'Documented and supported multiple deployment paths, including Azure Container Apps and Helm/Kubernetes',
+      'Shared remediation core with provider-specific ingress for GitHub Actions and Jenkins',
+      'Policy gates, remediation modes, and allowlists on every auto-fix path',
+      'Run context stored as explicit diagnostics and auditable artifacts',
+      'Documented deploy paths for Azure Container Apps and Helm/Kubernetes',
     ],
     impact:
-      'Shows end-to-end product and platform ownership: diagnosis pipeline, policy boundary, operator UX, deployment portability, and concrete remediation outcomes tied to real run evidence.',
+      'Diagnosis pipeline, policy gates, Azure Container Apps deployment, and fix PRs tied to real CI runs.',
     technologies: {
       Backend: ['Python', 'FastAPI'],
       Frontend: ['React', 'TypeScript'],
@@ -61,55 +50,42 @@ That framing is much closer to how automation has to behave in real delivery sys
     slug: 'signalforge',
     longDescription: `## Overview
 
-SignalForge is an **operator-first infrastructure diagnostics system**.
+SignalForge collects infra snapshots and telemetry, ranks findings, and adds an optional AI summary for triage.
 
-The design is deliberate:
+1. Ingest artifacts from observability and platform systems.
+2. Normalize them into comparable findings.
+3. Run one AI pass for explanation and prioritization.
+4. Leave remediation out of scope until the safety model is defined.
 
-1. Ingest evidence artifacts from observability and platform systems.
-2. Normalize what is known into deterministic findings.
-3. Use a constrained AI pass only for explanation, prioritization, and context.
-4. Keep remediation out of scope until confidence and safety gates are explicit.
+## Screenshots
 
-## What it is designed for
+![SignalForge run detail with ranked priorities, findings, and analysis metadata](/images/signalforge-run-real.png)
 
-- reduce repeated ambiguity in incident follow-up
-- compare structured diagnostic signals across environments quickly
-- produce operator-facing findings with a clear source trail
-- support bounded automation decisions instead of broad model autonomy
+![SignalForge compare view showing finding drift between two runs](/images/signalforge-compare-real.png)
 
-## What it looks like
+## Design choices
 
-![SignalForge run detail with ranked operator priorities, findings, and analysis metadata](/images/signalforge-run-real.png)
-
-![SignalForge compare view showing deterministic finding drift between two runs](/images/signalforge-compare-real.png)
-
-## Why this is a flagship line
-
-The project pushes the same trust model used in production systems:
-
-- deterministic facts are primary, model output is secondary
-- evidence objects are normalized before they are explained
-- operator choice remains the control point for impactful actions
+- Structured findings come first; model output is secondary.
+- Artifacts are normalized before any AI enrichment.
+- A human approves any follow-up action.
 
 ## Source
 
-- **Repository:** https://github.com/Canepro/signalforge
-
-SignalForge is positioned as the diagnostics-first sibling to PipelineHealer, with a narrower action boundary and stronger explainability focus.`,
+- **Repository:** https://github.com/Canepro/signalforge`,
     challenges: [
-      'Turning messy evidence streams into comparable diagnostics without adding noise',
-      'Making findings explainable enough to speed operator decision-making',
-      'Keeping model output constrained to support trust and reversibility',
-      'Avoiding silent scope creep between diagnostics and remediation paths',
+      'Turning messy telemetry into comparable findings without extra noise',
+      'Making findings readable enough to act on quickly',
+      'Keeping model output in a narrow, reviewable role',
+      'Keeping diagnostics separate from remediation until the safety model is defined',
     ],
     solutions: [
-      'Built a strict evidence ingest and normalisation path before any AI enrichment',
-      'Separated deterministic findings from LLM explanation and prioritization',
-      'Added bounded explanation pass with explicit trust boundaries',
-      'Designed workflows so operators remain in control of escalation and action decisions',
+      'Strict ingest and normalisation before any AI enrichment',
+      'Structured findings stored separately from LLM explanation and ranking',
+      'One optional AI pass with explicit trust boundaries',
+      'Humans approve any follow-up action',
     ],
     impact:
-      'Introduces a product-style diagnostics line with reproducible outputs and explicit operator control, demonstrating reusable tooling for incident handling without replacing human decision authority.',
+      'Reproducible infra findings with a separate AI explanation pass. Humans approve any action.',
     technologies: {
       Backend: ['Python'],
       Frontend: ['React', 'TypeScript'],
@@ -122,49 +98,42 @@ SignalForge is positioned as the diagnostics-first sibling to PipelineHealer, wi
     slug: 'rocketchat-app-logs-viewer',
     longDescription: `## Overview
 
-Rocket.Chat Logs Viewer is a **chat-native incident triage workflow** for operators who need log access where the incident is already being discussed.
+Rocket.Chat app for log triage during incidents.
 
-The product boundary is disciplined:
+- **Loki/Grafana** stay the observability backend
+- **\`/logs\`** slash command with room and thread context
+- Query logic runs through a **server-side guarded proxy**
 
-- keep **Loki/Grafana** as the observability backend
-- restore a fast in-chat workflow with **\`/logs\`**
-- push all sensitive query logic through a **server-side guarded proxy**
-
-## What the app does
+## Features
 
 - \`/logs\` slash command with room and thread context
-- private app API endpoints for query, audit, actions, saved views, and targets
-- RBAC-aware access checks and request audit trail
-- focused React web UI for deep inspection, filtering, and row-level actions
-- validation, rate limits, selector enforcement, and redaction
+- Private app API endpoints for query, audit, actions, saved views, and targets
+- RBAC checks and request audit trail
+- React web UI for filtering and row-level actions
+- Validation, rate limits, selector enforcement, and redaction
 
-## Why it stands out
+## Workflow
 
-The interesting part is not "another log viewer." It is the **workflow design**:
-
-- triage starts in chat, not in a separate dashboard
-- deeper inspection moves to the web UI only when needed
-- sharing is bounded and contextual rather than dumping raw logs into public channels
+- Triage starts in chat
+- Longer reads move to the web UI when needed
+- Shared snapshots stay scoped to the room or thread
 
 ## Source
 
-- **Repository:** https://github.com/Canepro/rocketchat-app-logs-viewer
-
-The repo already includes redacted public screenshots and packaging flow for private Rocket.Chat app deployment, which makes it portfolio-ready rather than just concept-stage.`,
+- **Repository:** https://github.com/Canepro/rocketchat-app-logs-viewer`,
     challenges: [
-      'Restoring a fast operator workflow after Rocket.Chat moved log visibility away from the app UI',
-      'Allowing useful log access without exposing direct client-side Loki queries or bypassing workspace permissions',
-      'Handling large result sets and row-level actions without turning the UI into a noisy observability clone',
-      'Keeping in-chat sharing safe, private, and traceable',
+      'Restoring fast log access after Rocket.Chat removed in-app log visibility',
+      'Blocking direct client-side Loki queries and permission bypasses',
+      'Handling large result sets without cloning a full observability UI',
+      'Keeping in-chat sharing scoped and traceable',
     ],
     solutions: [
-      'Built a slash-first flow that carries room and thread context into triage actions',
-      'Moved query execution behind a server-side proxy with RBAC checks, validation, bounds, and audit logging',
-      'Used a focused React web UI with virtualization and readability controls for deeper inspection',
-      'Added snapshot-backed share flows and chat-native actions so operators can share only the right evidence',
+      'Slash command carries room and thread context into triage actions',
+      'Server-side Loki proxy with RBAC checks, validation, bounds, and audit logging',
+      'React web UI with virtualization for longer reads',
+      'Snapshot-backed share flows scoped to the room or thread',
     ],
-    impact:
-      'Demonstrates backend guardrail design, operator-focused workflow thinking, and a cleaner product boundary between chat UX and the underlying observability stack.',
+    impact: 'Guarded Loki queries inside Rocket.Chat, plus a web UI for longer log reads.',
     technologies: {
       Backend: ['TypeScript', 'Node.js', 'Rocket.Chat Apps-Engine'],
       Frontend: ['React', 'Vite', 'Tailwind'],
@@ -177,37 +146,33 @@ The repo already includes redacted public screenshots and packaging flow for pri
     slug: 'hybrid-cloud-gitops-control-plane',
     longDescription: `## Overview
 
-A **hub-and-spoke GitOps control plane** that connects **OCI OKE (Hub)** with a **remote K3s cluster (Spoke)** using a single Git repository.
+Hub-and-spoke GitOps: **OCI OKE (hub)** manages a **remote K3s cluster (spoke)** from one Git repository.
 
-This project is intentionally framed as **Infrastructure vs. Application**:
+- **Terraform** provisions OCI resources and cluster primitives
+- **Argo CD** reconciles application and observability state from Git
 
-- **Terraform (Foundation)** provisions the OCI resources and cluster primitives.
-- **ArgoCD (Orchestrator)** continuously reconciles **100% of application state** from Git, including observability and workloads.
+## Always Free constraints
 
-## Always Free constraints (designed, not accidental)
+Runs the LGTM stack (Loki, Grafana, Tempo, Mimir) within an OCI Always Free **200GB storage** budget.
 
-Engineered to run the full LGTM stack (**Loki, Grafana, Tempo, Mimir**) within an OCI Always Free-style **200GB storage envelope**.
+- Persistent volumes only where state matters
+- Ephemeral \`emptyDir\` for transient components such as Alertmanager
 
-- Used **persistent volumes** only where it matters (stateful data).
-- Used **ephemeral \`emptyDir\`** for appropriate transient components (example: **Alertmanager** state), keeping storage usage predictable.
+## Multi-cluster GitOps
 
-## Multi-cluster GitOps bridge
+- Argo CD on the OKE hub manages the remote K3s spoke
+- One Git repository for infra, ops, and apps
+- Argo CD Multi-Source splits \`ops/\` from app charts and manifests
 
-- **ArgoCD runs on the OKE Hub** and manages a **remote K3s Spoke**.
-- A **single Git repository** is the source of truth for infra + ops + apps.
-- Uses **ArgoCD Multi-Source** patterns to separate concerns cleanly (e.g. \`ops/\` vs app charts/manifests).
+## Links
 
-## Live demo + source
+- **Argo CD UI**: https://argocd.canepro.me *(authentication required)*
+- **Source**: https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd
 
-- **ArgoCD UI**: https://argocd.canepro.me *(authentication required)*
-- **ArgoCD code**: https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd
+## Cost and recovery
 
-## Cost + reliability guardrails
-
-- Implemented an **egress tracker** aligned to a **10TB/month** limit using PromQL-style queries as an operational cost-control signal.
-- Stateful workloads (MongoDB/NATS) use **Retain policies** for disaster recovery, managed via an \`ops/\` Kustomize app adopted by ArgoCD.
-
-## Infrastructure Flow
+- Egress tracker aligned to a **10TB/month** limit via PromQL queries
+- Stateful workloads (MongoDB/NATS) use Retain policies; \`ops/\` Kustomize app adopted by Argo CD
 
 ![Hybrid Cloud GitOps Architecture showing Terraform provisioning OCI OKE and ArgoCD managing K3s Rocket.Chat deployments](/images/infra-flow.svg)
 `,
@@ -224,7 +189,7 @@ Engineered to run the full LGTM stack (**Loki, Grafana, Tempo, Mimir**) within a
       'Cost-control instrumentation (egress tracking) and Retain policies for stateful recovery',
     ],
     impact:
-      'Demonstrates end-to-end platform engineering: constraints-first design, GitOps multi-cluster operations, and measurable efficiency improvements without misleading production claims.',
+      'Terraform + Argo CD across OKE and K3s, with Always Free storage budgeting and multi-source app layout.',
     technologies: {
       Kubernetes: ['OCI OKE', 'K3s', 'Helm', 'Kustomize'],
       GitOps: ['ArgoCD', 'ArgoCD Multi-Source'],
@@ -261,13 +226,14 @@ Centralized observability hub deployed on **Oracle Kubernetes Engine (OKE)** to 
 
 ## Storage
 
-- **Object storage** used for Loki/Tempo persistence (OCI Object Storage / S3-compatible backend).
+- Object storage for Loki/Tempo persistence (OCI Object Storage / S3-compatible backend)
 
-## Why it matters for SRE
+## SRE notes
 
-- Demonstrates **centralized telemetry** as a platform capability (shared service for multiple deployments).
-- Enables faster incident response by correlating **metrics + logs + traces** in one hub.
-- Establishes a repeatable pattern for secure ingestion, long-term storage, and cost-aware operation on a small cluster.`,
+- One hub aggregates telemetry from multiple clusters
+- Metrics, logs, and traces correlate in one place
+- Ingestion endpoints require auth; internal services stay ClusterIP unless exposed through ingress
+`,
     challenges: [
       'Designing a single hub to aggregate telemetry from multiple clusters/environments safely',
       'Exposing ingestion endpoints publicly without allowing anonymous writes',
@@ -283,7 +249,7 @@ Centralized observability hub deployed on **Oracle Kubernetes Engine (OKE)** to 
       'Used Terraform for OCI/OKE lifecycle and ArgoCD for continuous reconciliation of the observability stack',
     ],
     impact:
-      'A centralized, secure observability platform for multi-environment telemetry, demonstrating SRE practices around secure ingestion, storage design, and operational readiness, with Terraform + ArgoCD patterns for repeatable infrastructure and application changes.',
+      'Grafana/Loki/Tempo hub on OKE with authenticated ingestion, object storage, and Terraform + Argo CD deploy.',
     technologies: {
       Kubernetes: ['OKE', 'NGINX Ingress', 'cert-manager', 'Helm'],
       Observability: ['Grafana', 'Prometheus', 'Loki', 'Tempo', 'Alertmanager'],
@@ -305,16 +271,16 @@ Sandbox Rocket.Chat deployment on Kubernetes designed for hands-on platform oper
 
 - https://k8.canepro.me *(availability may vary)*
 
-## What this demonstrates
+## What is included
 
-- Helm-based deploy/upgrade/rollback workflows
+- Helm deploy, upgrade, and rollback workflows
 - Ingress routing and TLS via NGINX Ingress + cert-manager
 - Resource sizing, health checks, and recovery drills
-- Practical troubleshooting: logs, events, probes, and config validation
+- Troubleshooting notes: logs, events, probes, config validation
 
 ## Notes
 
-This is a sandbox/lab environment. It is **not** presented as a production SLO/uptime claim.`,
+Sandbox/lab environment. No production SLO or uptime claim.`,
     challenges: [
       'Providing a realistic Rocket.Chat deployment that is safe to run as a sandbox',
       'Hardening ingress exposure with TLS while keeping internal services private by default',
@@ -328,7 +294,7 @@ This is a sandbox/lab environment. It is **not** presented as a production SLO/u
       'Added operational guardrails: probes, resource requests/limits, and clear troubleshooting steps',
     ],
     impact:
-      'Demonstrates practical Kubernetes platform operations and troubleshooting skills using a realistic sandbox Rocket.Chat deployment.',
+      'Helm-based Rocket.Chat sandbox on Kubernetes with TLS ingress and documented troubleshooting steps.',
     technologies: {
       Kubernetes: ['Kubernetes', 'Helm'],
       Networking: ['NGINX Ingress', 'cert-manager', 'TLS'],
@@ -341,30 +307,30 @@ This is a sandbox/lab environment. It is **not** presented as a production SLO/u
     slug: 'rocketchat-microservices-migration',
     longDescription: `## Overview
 
-A **high-signal GitOps migration** that turns Rocket.Chat operations into a predictable, declarative workflow.
+GitOps migration for Rocket.Chat: static manifests replaced with Argo CD + Helm.
 
-The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Source** pattern where upgrades become a **single version change**.
+Goal: upgrades become a single version bump instead of manifest rewrites.
 
-## What changed (the efficiency metric)
+## What changed
 
-- **10,355 lines of YAML deleted** by collapsing static manifests into Helm + GitOps composition.
-- Result: “one-commit” upgrades and faster, safer day-2 operations.
+- **10,355 lines of YAML deleted** by moving to Helm + GitOps composition
+- One-commit upgrades for day-2 operations
 
-## Upgrade story (risk-minimized)
+## Upgrade path
 
-- Adopted existing in-cluster stateful resources (**MongoDB / NATS**) without downtime.
-- Performed a clean upgrade from **Rocket.Chat v7.12.2 → v7.13.2** using the Multi-Source pattern (no sprawling manifest rewrites).
+- Adopted existing in-cluster MongoDB and NATS without downtime
+- Upgraded Rocket.Chat **v7.12.2 → v7.13.2** via Multi-Source apps
 
-## Live demo + source
+## Links
 
-- **ArgoCD UI**: https://argocd.canepro.me *(authentication required)*
-- **Rocket.Chat workspace**: https://k8.canepro.me *(best effort availability)*
-- **ArgoCD code**: https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd
+- **Argo CD UI**: https://argocd.canepro.me *(authentication required)*
+- **Rocket.Chat**: https://k8.canepro.me *(best effort)*
+- **Source**: https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd
 
-## Operational safety
+## Safety
 
-- Stateful volumes use **Retain policies** for disaster recovery.
-- An \`ops/\` Kustomize app is used to manage shared cluster primitives cleanly (adopted and reconciled by ArgoCD).`,
+- Stateful volumes use Retain policies
+- \`ops/\` Kustomize app manages shared cluster primitives under Argo CD`,
     challenges: [
       'Reducing operational overhead without breaking running stateful services',
       'Adopting existing resources under GitOps control safely (no surprise deletes)',
@@ -376,7 +342,7 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
       'Helm-driven version bump workflow to make upgrades a single, reviewable change',
     ],
     impact:
-      'Deleted 10,355 lines of YAML and replaced manual drift-prone ops with a repeatable GitOps upgrade workflow, demonstrating real-world efficiency and risk control.',
+      'Removed 10,355 lines of YAML; Rocket.Chat upgrades now run through Argo CD Multi-Source and Helm.',
     technologies: {
       GitOps: ['ArgoCD', 'ArgoCD Multi-Source'],
       Kubernetes: ['Kubernetes', 'Helm'],
@@ -425,8 +391,7 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
       'Grafana provisioning with pre-baked dashboards',
       'Documented support for Podman and Docker engines',
     ],
-    impact:
-      'Improved monitoring visibility and accelerated troubleshooting for Rocket.Chat environments',
+    impact: 'Local Rocket.Chat observability stack with Prometheus, Grafana, and Traefik routing.',
     technologies: {
       Orchestration: ['Docker Compose', 'Podman Compose'],
       Monitoring: ['Prometheus', 'Grafana', 'Alertmanager'],
@@ -436,11 +401,11 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
   },
   'dockerized-portfolio': {
     slug: 'dockerized-portfolio',
-    longDescription: `This project showcases modern containerization practices for Next.js applications with a focus on production readiness and developer experience.
-    
-    The implementation features a multi-stage Docker build that reduces the final image size by 70%, uses non-root user for security, and includes health checks for orchestration platforms.
-    
-    The Makefile provides a unified interface that automatically detects and uses either Podman or Docker, making it truly engine-agnostic.`,
+    longDescription: `Multi-stage Docker build for this Next.js site.
+
+- Alpine-based image with a non-root runtime user
+- Health check endpoint for orchestrators
+- Makefile detects Docker or Podman automatically`,
     challenges: [
       'Optimizing Docker image size for faster deployments',
       'Ensuring compatibility with both Docker and Podman',
@@ -454,7 +419,7 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
       'Build-time ARGs and runtime ENV separation',
     ],
     impact:
-      'Reduced deployment time by 40% and enabled consistent development environments across the team',
+      'Multi-stage Docker image with non-root user, health checks, and Docker/Podman Makefile targets.',
     technologies: {
       Containerization: ['Docker', 'Podman', 'Alpine Linux'],
       'Build Tools': ['Multi-stage builds', 'Makefile', 'Bun'],
@@ -464,11 +429,12 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
   },
   'ci-pipeline-github': {
     slug: 'ci-pipeline-github',
-    longDescription: `Automated continuous integration pipeline that ensures code quality and prevents broken builds from reaching production.
-    
-    The workflow runs on every push and pull request, executing parallel jobs for different Node.js versions, caching dependencies for speed, and uploading build artifacts for debugging.
-    
-    This implementation follows GitHub Actions best practices with proper concurrency control and permissions management.`,
+    longDescription: `GitHub Actions workflow for this portfolio repo.
+
+- Runs on push and pull request
+- Parallel jobs across Node.js versions
+- Dependency caching and build artifact upload
+- Concurrency groups cancel stale runs`,
     challenges: [
       'Optimizing build times with effective caching strategies',
       'Running tests across multiple Node.js versions',
@@ -482,7 +448,7 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
       'Artifact upload with 7-day retention for build outputs',
     ],
     impact:
-      'Caught 95% of build issues before merge, saving 10+ hours weekly in debugging production issues',
+      'GitHub Actions CI with matrix builds, dependency caching, and artifact retention for failed runs.',
     technologies: {
       'CI/CD': ['GitHub Actions', 'YAML', 'Workflow automation'],
       Testing: ['Node.js matrix builds', 'bun scripts'],
@@ -521,7 +487,7 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
       'Conventional resource naming and baseline tags',
       'Guidance on remote state and workspaces for team use',
     ],
-    impact: 'Provides a simple baseline for Azure IaC and fast onboarding to Terraform',
+    impact: 'Minimal Azure Resource Group + Storage Account example for learning Terraform.',
     technologies: {
       IaC: ['Terraform'],
       Azure: ['Resource Group', 'Storage Account'],
@@ -573,7 +539,7 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
       'Named volumes for persistence and quick cleanup options',
       'Engine-agnostic compose usage documented',
     ],
-    impact: 'Accelerates local development and testing for Rocket.Chat',
+    impact: 'One-command local Rocket.Chat stack with Docker or Podman.',
     technologies: {
       Orchestration: ['Docker Compose', 'Podman Compose'],
       Services: ['Rocket.Chat', 'MongoDB', 'Redis'],
@@ -582,11 +548,11 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
   },
   'rocketchat-troubleshooting': {
     slug: 'rocketchat-troubleshooting',
-    longDescription: `Comprehensive toolset for analyzing and troubleshooting Rocket.Chat deployments through automated log analysis and pattern recognition.
-    
-    The tool parses various log formats, identifies common issues like memory leaks and connection problems, and provides actionable remediation steps.
-    
-    Features regex-based pattern matching, statistical analysis of error frequencies, and automated report generation.`,
+    longDescription: `Scripts for parsing Rocket.Chat logs and surfacing common failure patterns.
+
+- Regex patterns for multiple log formats
+- Error frequency counts and summary reports
+- Stream processing for large files`,
     challenges: [
       'Parsing multiple log formats and structures',
       'Identifying patterns in noisy log data',
@@ -599,7 +565,7 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
       'Knowledge base of common issues and solutions',
       'Stream processing for large files with minimal memory usage',
     ],
-    impact: 'Reduced average troubleshooting time by 75%, from hours to minutes for common issues',
+    impact: 'Parses Rocket.Chat logs and groups errors by pattern for faster triage.',
     technologies: {
       Languages: ['Python', 'PowerShell', 'Bash'],
       Analysis: ['Regex', 'Pattern matching', 'Statistical analysis'],
@@ -609,11 +575,11 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
   },
   'log-analysis-dashboard': {
     slug: 'log-analysis-dashboard',
-    longDescription: `Web-based dashboard for real-time Rocket.Chat log analysis with interactive visualizations and filtering capabilities.
-    
-    Built with Flask backend for log processing and Chart.js for dynamic visualizations, providing insights into system health, error trends, and usage patterns.
-    
-    Features include real-time updates, customizable alerts, and export functionality for reports.`,
+    longDescription: `Flask dashboard for Rocket.Chat log analysis.
+
+- Chart.js visualizations for error trends
+- Filtering and search over parsed log data
+- Export for post-mortem reports`,
     challenges: [
       'Processing logs in real-time without performance impact',
       'Creating intuitive visualizations for complex data',
@@ -626,7 +592,7 @@ The core goal: move from “hand-managed manifests” to an **ArgoCD Multi-Sourc
       'Indexed search with Elasticsearch integration',
       'Pagination and virtual scrolling for large results',
     ],
-    impact: 'Enabled proactive monitoring leading to 50% reduction in critical incidents',
+    impact: 'Flask + Chart.js dashboard for filtering and visualizing parsed Rocket.Chat logs.',
     technologies: {
       Backend: ['Python', 'Flask', 'WebSockets'],
       Frontend: ['JavaScript', 'Chart.js', 'Bootstrap'],

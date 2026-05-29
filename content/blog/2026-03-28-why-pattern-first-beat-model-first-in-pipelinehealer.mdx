@@ -1,13 +1,13 @@
 ---
 title: "Why Pattern-First Beat Model-First in PipelineHealer"
 date: "2026-03-28"
-description: "The most important design decision in PipelineHealer was not using more AI, but deciding exactly where AI should stop and deterministic logic should start."
+description: "Where PipelineHealer uses pattern matching vs an LLM, and why the split matters."
 tags: ["hackathon", "ai-agents", "ci-cd", "devops", "azure", "architecture"]
 ---
 
-PipelineHealer started as my entry for the Microsoft AI Dev Days Hackathon. The most useful decision in the entire build was not the choice of model, framework, or cloud service. It was deciding that the model should **not** be the first layer in the system.
+PipelineHealer started as my entry for the [AI Dev Days Hackathon](https://github.com/Azure/AI-Dev-Days-Hackathon). The most useful decision was not the model or cloud service. It was keeping the model out of the first layer.
 
-That sounds minor until the product touches real repositories.
+That matters once the product touches real repositories.
 
 PipelineHealer ingests failed CI runs, normalizes the evidence, diagnoses likely root causes, and takes a policy-safe remediation path. In practice, that means deterministic cases can open or reuse fix PRs, while ambiguous or risky cases fall back to structured issues with explicit reasoning. That boundary ended up mattering more than any prompt tweak.
 
@@ -113,50 +113,33 @@ It held up when the product became more operational, more governed, and more hon
 
 This lesson is not staying inside PipelineHealer.
 
-It is one of the reasons I wanted to mention [SignalForge](https://github.com/Canepro/signalforge) in the X Article too.
+SignalForge is the diagnostics sibling to PipelineHealer. Current scope:
 
-SignalForge is an operator-first infrastructure diagnostics product. Its current boundary is deliberately narrower:
+- ingest infra artifacts
+- produce structured findings
+- one optional LLM pass for explanation and ranking
+- no remediation yet
 
-- ingest infrastructure evidence artifacts
-- produce deterministic findings
-- use one LLM pass for explanation and prioritization
-- keep remediation out of current scope
-
-That is not an accident.
-
-PipelineHealer taught me that read-heavy diagnostics and write-heavy remediation are different trust classes. SignalForge keeps deterministic findings as the source of truth and does not pretend every AI-flavored operations tool needs write access on day one.
-
-That is a direct carry-forward from the PipelineHealer build.
+PipelineHealer handles write paths. SignalForge stays read-only until the safety model is clear. Same lesson, narrower boundary.
 
 ## What I Would Reuse
 
-If I were building another AI-heavy operations product tomorrow, and in practice I already am with SignalForge, I would keep the same rule:
+Same rule for the next ops tool with AI in the loop:
 
-**use deterministic logic first, and reserve the model for genuine ambiguity.**
+**Pattern matching first. LLM only when the failure does not match a known class.**
 
-That makes the system:
-
-- easier to trust
-- easier to explain
-- easier to test
-- easier to evolve without hiding behind vague model behavior
-
-AI is the capability.
-
-Engineering is the product.
+That keeps the system easier to test, explain, and roll back.
 
 ## Reusable Takeaway Checklist
 
-If you are building an AI-heavy operations tool, this is the checklist I would reuse:
+1. Define what the model cannot do before wiring what it can.
+2. Extract structured evidence before free-form diagnosis.
+3. Treat low-confidence outcomes as review tasks, not auto-fix wins.
+4. Build the CLI/runbook path early; it surfaces gaps faster than UI polish.
+5. Deploy to the real environment early enough to catch identity and integration failures.
+6. Keep read-only diagnostics separate from write-capable remediation.
 
-1. Decide what the model is not allowed to do before you celebrate what it can do.
-2. Put deterministic evidence extraction ahead of free-form diagnosis.
-3. Treat low-confidence outcomes as review tasks, not automation victories.
-4. Build the operator path early. CLI and runbooks usually expose the real product gaps faster than the UI.
-5. Deploy to the real environment early enough to find identity, runtime, and integration failures before they become narrative debt.
-6. Separate read-only diagnostics trust from write-capable remediation trust.
-
-That was the most durable lesson from PipelineHealer. It mattered during the hackathon, and it matters even more now that the project has outlived the submission window.
+That rule held from hackathon submission through v0.7.2.
 
 ---
 

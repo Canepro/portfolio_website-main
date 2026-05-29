@@ -90,7 +90,7 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     title: 'Frontend Engineering',
-    description: 'Modern UI, performance, and product-minded polish.',
+    description: 'Next.js UI for this site and side projects.',
     skills: [
       { name: 'Next.js' },
       { name: 'React' },
