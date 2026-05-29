@@ -277,7 +277,7 @@ Centralized observability hub deployed on **Oracle Kubernetes Engine (OKE)** to 
       'Used Terraform for OCI/OKE lifecycle and ArgoCD for continuous reconciliation of the observability stack',
     ],
     impact:
-      'A centralized, secure observability platform for multi-environment telemetry, demonstrating SRE practices around secure ingestion, storage design, and operational readiness—with Terraform + ArgoCD patterns for repeatable infrastructure and application changes.',
+      'A centralized, secure observability platform for multi-environment telemetry, demonstrating SRE practices around secure ingestion, storage design, and operational readiness, with Terraform + ArgoCD patterns for repeatable infrastructure and application changes.',
     technologies: {
       Kubernetes: ['OKE', 'NGINX Ingress', 'cert-manager', 'Helm'],
       Observability: ['Grafana', 'Prometheus', 'Loki', 'Tempo', 'Alertmanager'],

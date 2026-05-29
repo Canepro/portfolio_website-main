@@ -1,11 +1,11 @@
 ---
 title: "PipelineHealer: An AI Agent That Fixes CI/CD Failures"
 date: "2026-02-10"
-description: "Building a multi-agent system that detects, diagnoses, and remediates broken pipelines — for the AI Dev Days Hackathon."
+description: "Building a multi-agent system that detects, diagnoses, and remediates broken pipelines, for the AI Dev Days Hackathon."
 tags: ["hackathon", "ai-agents", "devops", "azure", "github-actions"]
 ---
 
-CI/CD failures follow a predictable loop: pipeline goes red, someone scrolls through logs, finds the error, context-switches to fix it, pushes, waits. Steps two through five are repetitive and interruptible. They do not require a human — they require pattern matching and a structured response.
+CI/CD failures follow a predictable loop: pipeline goes red, someone scrolls through logs, finds the error, context-switches to fix it, pushes, waits. Steps two through five are repetitive and interruptible. They do not require a human. They require pattern matching and a structured response.
 
 **PipelineHealer** automates the repetitive part of that loop. A GitHub webhook fires on a failed workflow run, the system analyzes the failure, and PipelineHealer either opens a fix PR for deterministic cases or files a structured issue when confidence is low.
 
@@ -13,38 +13,38 @@ This is my entry for the [AI Dev Days Hackathon](https://github.com/Azure/AI-Dev
 
 ## Why Multi-Agent
 
-The single-prompt approach — "here are 500 lines of CI logs, fix it" — produces inconsistent results. The context is too broad, the task is too vague, and the output oscillates between useful and hallucinated.
+The single-prompt approach, "here are 500 lines of CI logs, fix it", produces inconsistent results. The context is too broad, the task is too vague, and the output oscillates between useful and hallucinated.
 
 Breaking the problem into four focused agents changed the reliability entirely:
 
-1. **Log Analyzer** — parses raw output, extracts structured error patterns. Does not diagnose.
-2. **Diagnosis Agent** — maps extracted patterns to early failure categories: dependency issues, lint/format failures, test failures, build config errors, and timeouts. Does not fix.
-3. **Remediation Agent** — generates a targeted fix based on a confirmed diagnosis. Does not guess from raw logs.
-4. **Orchestrator** — coordinates the pipeline, manages state, opens the PR or issue.
+1. **Log Analyzer**: parses raw output, extracts structured error patterns. Does not diagnose.
+2. **Diagnosis Agent**: maps extracted patterns to early failure categories: dependency issues, lint/format failures, test failures, build config errors, and timeouts. Does not fix.
+3. **Remediation Agent**: generates a targeted fix based on a confirmed diagnosis. Does not guess from raw logs.
+4. **Orchestrator**: coordinates the pipeline, manages state, opens the PR or issue.
 
 Each agent has a narrow scope, structured inputs and outputs, and can be tested independently. The agents communicate through typed data models, not free-form text.
 
 ## The Stack
 
-- **Agents** — Microsoft Agent Framework workflows, Azure OpenAI
-- **Backend** — Python, FastAPI
-- **Frontend** — React, TypeScript, Tailwind, TanStack Query
-- **Storage** — Azure Cosmos DB (serverless)
-- **Hosting** — Azure Container Apps
-- **Trigger** — GitHub `workflow_run.completed` webhook
+- **Agents**: Microsoft Agent Framework workflows, Azure OpenAI
+- **Backend**: Python, FastAPI
+- **Frontend**: React, TypeScript, Tailwind, TanStack Query
+- **Storage**: Azure Cosmos DB (serverless)
+- **Hosting**: Azure Container Apps
+- **Trigger**: GitHub `workflow_run.completed` webhook
 
 The flow: GitHub sends the webhook → the backend validates and persists the failed run → the agent pipeline runs → a PR or issue is created on the source repo. The launch scope covered five core failure types.
 
 ## What's Built
 
-The scaffold is done — agents, GitHub integration, webhook handler, dashboard frontend, Docker setup. Next phase is production hardening and Azure deployment, including live webhook wiring and real-failure validation.
+The scaffold is done, agents, GitHub integration, webhook handler, dashboard frontend, Docker setup. Next phase is production hardening and Azure deployment, including live webhook wiring and real-failure validation.
 
 ## What's Coming
 
 This is post one of six. The series will cover:
 
 - Architecture decisions behind the agent pipeline
-- Deploying to Azure — failure modes discovered during deployment and mitigations
+- Deploying to Azure, failure modes discovered during deployment and mitigations
 - Prompt engineering for CI log parsing
 - End-to-end walkthrough from webhook to pull request
 - Retrospective after submission

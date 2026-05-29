@@ -29,7 +29,7 @@ This was the single best architectural decision.
 
 The instinct with an AI hackathon project is to put the model at the center of everything. I almost did. Early prototypes sent full log dumps to GPT and asked for fixes. The results were inconsistent and hard to debug.
 
-Flipping the order — deterministic pattern matching first, LLM fallback only for ambiguity — made the system predictable.
+Flipping the order, deterministic pattern matching first, LLM fallback only for ambiguity, made the system predictable.
 
 Benefits:
 - Dependency failures, lint errors, and build config issues are resolved without a model call.
@@ -38,13 +38,13 @@ Benefits:
 
 ### 2. Typed contracts between agents
 
-Every agent-to-agent handoff is a Pydantic model. `LogAnalysis`, `Diagnosis`, `RemediationPlan` — all typed, all validatable, all testable without running the full pipeline.
+Every agent-to-agent handoff is a Pydantic model. `LogAnalysis`, `Diagnosis`, `RemediationPlan`, all typed, all validatable, all testable without running the full pipeline.
 
 This sounds obvious. In practice, most multi-agent demos I have seen pass free-form text between agents and hope for the best. Typed contracts prevented an entire class of "agent 2 misunderstood agent 1" bugs.
 
 ### 3. One-command operator interface
 
-I built `scripts/ph.sh` as a single entrypoint for every operation: deploy, demo, scale, logs, settings, backfill. This was not in the original plan — I added it after getting tired of re-reading runbooks for common tasks.
+I built `scripts/ph.sh` as a single entrypoint for every operation: deploy, demo, scale, logs, settings, backfill. This was not in the original plan, I added it after getting tired of re-reading runbooks for common tasks.
 
 It turned out to be one of the most useful things in the project. During demo recording, I could run `bash scripts/ph.sh warm` before starting and `bash scripts/ph.sh lowcost` after. During debugging, `bash scripts/ph.sh logs:grep --pattern "error"` replaced multiple Azure CLI incantations.
 
@@ -52,7 +52,7 @@ If I were advising someone on a hackathon project: build your operator CLI early
 
 ### 4. Treating deployment as product work
 
-I deployed to Azure on day three — before the agents were polished, before the dashboard was pretty, before half the features existed. This was uncomfortable but correct.
+I deployed to Azure on day three, before the agents were polished, before the dashboard was pretty, before half the features existed. This was uncomfortable but correct.
 
 Deploying early surfaced identity issues, proxy failures, webhook configuration mistakes, and cold-start behavior that I never would have found locally. Every one of those became a lesson that shaped the final system. [Post 3 in this series](/blog/2026-02-12-pipelinehealer-azure-deployment-lessons) covers the specific failures, but the meta-lesson is: if your project runs on cloud infrastructure, deploy to that infrastructure immediately. Do not wait until "the code is ready."
 
@@ -70,7 +70,7 @@ Integrating GitHub's `ci-doctor` agentic workflow taught me something I should h
 
 PipelineHealer completes diagnosis in 1-2 minutes. `ci-doctor` can take 10-20 minutes. During this incident, an ~8-minute polling window was not enough, so the system correctly fell back to native diagnosis while external findings arrived later.
 
-I ended up building a full backfill subsystem — background sweep, manual endpoint, CLI command, UI button — to handle late-arriving diagnostics. That entire subsystem was not in the plan. It exists because I ran a real E2E test and watched the gap happen.
+I ended up building a full backfill subsystem, background sweep, manual endpoint, CLI command, UI button, to handle late-arriving diagnostics. That entire subsystem was not in the plan. It exists because I ran a real E2E test and watched the gap happen.
 
 By `v0.2.9`, this path matured into a hybrid model:
 - fast-path polling defaults to 60 seconds
@@ -91,13 +91,13 @@ Third-party content is never clean. Budget time for sanitization.
 
 ### 3. Documentation is a forcing function
 
-I wrote six blog posts during the hackathon. That was not originally planned as part of the build — I did it because the hackathon judges value documented thinking, and because my portfolio site needed content.
+I wrote six blog posts during the hackathon. That was not originally planned as part of the build, I did it because the hackathon judges value documented thinking, and because my portfolio site needed content.
 
 What I did not expect: writing about the system forced me to clarify decisions I had been hand-waving. The diagnostics wait policy and its rationale are easy to gloss over in code but impossible to skip in a blog post. Every post made the system slightly better because it made me justify choices out loud.
 
 ### 4. The CLI became the most-used interface
 
-I built a dashboard with charts, filters, and an admin settings page. During development, I used the CLI for almost everything. Deploy, check status, inspect logs, trigger backfill, run E2E tests — all from the terminal.
+I built a dashboard with charts, filters, and an admin settings page. During development, I used the CLI for almost everything. Deploy, check status, inspect logs, trigger backfill, run E2E tests, all from the terminal.
 
 The dashboard matters for the demo and for ongoing visibility. But the CLI is what I actually operated with. If I had to choose one, I would build the CLI first and the dashboard second.
 
@@ -113,13 +113,13 @@ The dashboard matters for the demo and for ongoing visibility. But the CLI is wh
 
 I built agents first, then wired them together, then deployed, then tested end-to-end. The right order is the reverse: define the E2E scenario first ("webhook arrives, PR opens"), build the thinnest possible path that achieves it, then improve each step.
 
-Every major insight came from E2E testing. The backfill system, the sanitizer, the polling window tuning, the UI panel design — all of them came from watching the deployed system process a real failure. I would have found these sooner if I had started from the outside in.
+Every major insight came from E2E testing. The backfill system, the sanitizer, the polling window tuning, the UI panel design, all of them came from watching the deployed system process a real failure. I would have found these sooner if I had started from the outside in.
 
 ### 2. Build backfill from day one
 
 Any system that depends on external data arriving within a window needs a backfill mechanism from the start. I treated external diagnostics polling as "poll and move on." That was fine for the primary path but left stale data in the activity record.
 
-The backfill pattern — periodic sweep for incomplete records, re-fetch, patch in place — is generic enough that I should have scaffolded it early and specialized it later.
+The backfill pattern, periodic sweep for incomplete records, re-fetch, patch in place, is generic enough that I should have scaffolded it early and specialized it later.
 
 ### 3. Fewer healing modes
 
@@ -129,7 +129,7 @@ If I started over, I would have `safe` and `debug` only. Two modes are easier to
 
 ### 4. Pin the demo repo fixture set earlier
 
-The demo repository went through several iterations of its CI workflow — adding failure types, changing dispatch inputs, cleaning up dead files. Each time, I had to re-validate the E2E flow.
+The demo repository went through several iterations of its CI workflow, adding failure types, changing dispatch inputs, cleaning up dead files. Each time, I had to re-validate the E2E flow.
 
 I should have frozen the demo fixture set after the first successful E2E run and only added new failure types in planned batches. Incremental fixture changes created unnecessary re-testing cycles.
 
@@ -147,10 +147,10 @@ Some of these numbers moved after the hackathon, so these are the current repo-l
 
 These were real gaps in the `v0.3.0` submission baseline, not aspirational features:
 
-- **Lockfile-aware dependency fixes** — the current dependency remediation edits `package.json` but does not regenerate lockfiles. A production version would need to handle `package-lock.json`, `pnpm-lock.yaml`, and `bun.lockb`.
-- **GitHub App auth** — I used a PAT throughout. The current repo surfaces GitHub App readiness in operator views, but the active GitHub client path still uses a PAT or externally supplied token, so full App-native auth remains unfinished.
-- **Notification delivery channels** — at submission time, diagnostics were strongest in the app and chat delivery to Slack/Teams/Rocket.Chat was still a planned extension for non-admin stakeholders. This later shipped in `v0.5.0` alongside email delivery.
-- **Multi-provider CI support** — at submission time, PipelineHealer was GitHub Actions only. The adapter pattern existed, but GitLab CI and Jenkins adapters were not built. Jenkins bridge support later landed in `v0.3.2`; broader provider coverage is still open.
+- **Lockfile-aware dependency fixes**: the current dependency remediation edits `package.json` but does not regenerate lockfiles. A production version would need to handle `package-lock.json`, `pnpm-lock.yaml`, and `bun.lockb`.
+- **GitHub App auth**: I used a PAT throughout. The current repo surfaces GitHub App readiness in operator views, but the active GitHub client path still uses a PAT or externally supplied token, so full App-native auth remains unfinished.
+- **Notification delivery channels**: at submission time, diagnostics were strongest in the app and chat delivery to Slack/Teams/Rocket.Chat was still a planned extension for non-admin stakeholders. This later shipped in `v0.5.0` alongside email delivery.
+- **Multi-provider CI support**: at submission time, PipelineHealer was GitHub Actions only. The adapter pattern existed, but GitLab CI and Jenkins adapters were not built. Jenkins bridge support later landed in `v0.3.2`; broader provider coverage is still open.
 
 
 ## The Honest Summary
