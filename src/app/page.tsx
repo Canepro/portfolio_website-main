@@ -1,6 +1,8 @@
 import Link from 'next/link';
+import { Mail } from 'lucide-react';
 
 import HeroVisual from '@/app/home/HeroVisual';
+import HomeJumpNav from '@/app/home/HomeJumpNav';
 import { PageSection } from '@/components/layout/PageShell';
 import { SectionHeader, SectionHeaderMobileAction } from '@/components/layout/SectionHeader';
 import { SectionCard } from '@/components/layout/SectionCard';
@@ -19,7 +21,7 @@ export const dynamic = 'force-static';
 export default function HomePage() {
   const posts = getAllBlogPostsMeta().slice(0, 2);
   const featured = projects.filter(p => p.featured).slice(0, 3);
-  const featuredCerts = certifications.slice(0, 4);
+  const featuredCerts = certifications.slice(0, 2);
   const currentRole = experience[0];
   const githubHref = safeExternalHref(profile.links.github);
   const linkedinHref = safeExternalHref(profile.links.linkedin);
@@ -35,8 +37,8 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="px-6 py-10 md:px-10">
-      <PageSection spacing="none">
+    <div className="mx-auto max-w-6xl px-6 py-10 md:px-10">
+      <PageSection spacing="none" className="max-w-none px-0">
         <div className="grid gap-10 md:grid-cols-2 md:items-stretch">
           <div className="border-l-2 border-[color:var(--color-accent)] pl-6">
             <SectionLabel>Reliability engineer · UK</SectionLabel>
@@ -60,9 +62,10 @@ export default function HomePage() {
 
           <HeroVisual />
         </div>
+        <HomeJumpNav />
       </PageSection>
 
-      <PageSection id="about" spacing="default" className="mt-14">
+      <PageSection id="about" spacing="default" className="mt-14 max-w-none px-0">
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
           <SectionCard padding="lg">
             <SectionLabel>Profile</SectionLabel>
@@ -131,7 +134,7 @@ export default function HomePage() {
             <SectionCard>
               <SectionLabel>Certifications</SectionLabel>
               <div className="mt-3 space-y-2">
-                {featuredCertsSafe.slice(0, 3).map(c => (
+                {featuredCertsSafe.map(c => (
                   <a
                     key={c.name}
                     href={c.href}
@@ -146,12 +149,17 @@ export default function HomePage() {
                   </a>
                 ))}
               </div>
+              {certifications.length > featuredCertsSafe.length ? (
+                <p className="mt-3 text-xs text-[color:var(--color-text-secondary)]">
+                  +{certifications.length - featuredCertsSafe.length} more on LinkedIn.
+                </p>
+              ) : null}
             </SectionCard>
           </div>
         </div>
       </PageSection>
 
-      <PageSection id="projects">
+      <PageSection id="projects" className="max-w-none px-0">
         <SectionHeader
           title="Selected work"
           description="PipelineHealer and SignalForge first. Other entries are platform depth."
@@ -167,7 +175,7 @@ export default function HomePage() {
         <SectionHeaderMobileAction href="/projects" label="View all projects" />
       </PageSection>
 
-      <PageSection id="experience">
+      <PageSection id="experience" className="max-w-none px-0">
         <SectionHeader
           title="Experience"
           description="Enterprise support and platform roles across cloud, CI/CD, and incident response."
@@ -179,7 +187,7 @@ export default function HomePage() {
         />
 
         <div className="mt-10 grid gap-4 md:grid-cols-2">
-          {experience.slice(0, 4).map(item => (
+          {experience.slice(0, 2).map(item => (
             <SectionCard key={`${item.company}-${item.role}-${item.start}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
@@ -199,7 +207,7 @@ export default function HomePage() {
                 </div>
               ) : null}
               <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-[color:var(--color-text-secondary)]">
-                {item.highlights.map(h => (
+                {item.highlights.slice(0, 2).map(h => (
                   <li key={h}>{h}</li>
                 ))}
               </ul>
@@ -216,7 +224,7 @@ export default function HomePage() {
         ) : null}
       </PageSection>
 
-      <PageSection id="skills">
+      <PageSection id="skills" className="max-w-none px-0">
         <SectionHeader
           title="Skills"
           description="Grouped by area, with links to the project pages where each shows up."
@@ -286,7 +294,7 @@ export default function HomePage() {
         </div>
       </PageSection>
 
-      <PageSection id="writing">
+      <PageSection id="writing" className="max-w-none px-0">
         <SectionHeader
           title="Writing"
           description="Notes from migrations, CI changes, and production failures."
@@ -330,6 +338,36 @@ export default function HomePage() {
         </div>
 
         <SectionHeaderMobileAction href="/blog" label="View all posts" />
+      </PageSection>
+
+      <PageSection id="contact" className="max-w-none px-0">
+        <SectionCard padding="lg">
+          <SectionLabel>Contact</SectionLabel>
+          <h2 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
+            Hiring or have a platform problem?
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--color-text-secondary)] md:text-base">
+            Email works best. Include a repo link, job description, or error log if you have one.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button variant="accent" size="lg" className="h-11 gap-2" asChild>
+              <Link href="/contact">Send a message</Link>
+            </Button>
+            <Button variant="glass" size="lg" className="h-11 gap-2" asChild>
+              <a href={`mailto:${profile.email}`}>
+                <Mail className="h-4 w-4" aria-hidden="true" />
+                Email
+              </a>
+            </Button>
+            {linkedinHref ? (
+              <Button variant="glass" size="lg" className="h-11" asChild>
+                <a href={linkedinHref} target="_blank" rel="noopener noreferrer">
+                  LinkedIn
+                </a>
+              </Button>
+            ) : null}
+          </div>
+        </SectionCard>
       </PageSection>
     </div>
   );

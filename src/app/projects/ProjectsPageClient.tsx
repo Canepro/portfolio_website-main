@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { PageShell } from '@/components/layout/PageShell';
 import { SectionCard } from '@/components/layout/SectionCard';
@@ -21,13 +21,40 @@ function hasLiveDemo(project: Project): boolean {
   return true;
 }
 
+function readCategoryParam(value: string | null): string {
+  if (!value) return 'all';
+  return projectCategories.some(c => c.value === value) ? value : 'all';
+}
+
 export default function ProjectsPageClient() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const mode = searchParams?.get('mode');
   const liveOnly = mode === 'live';
 
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState(() => searchParams?.get('q') ?? '');
+  const [selectedCategory, setSelectedCategory] = useState(() =>
+    readCategoryParam(searchParams?.get('category') ?? null)
+  );
+
+  useEffect(() => {
+    setSearchTerm(searchParams?.get('q') ?? '');
+    setSelectedCategory(readCategoryParam(searchParams?.get('category') ?? null));
+  }, [searchParams]);
+
+  const syncUrl = (next: { q?: string; category?: string; live?: boolean }) => {
+    const params = new URLSearchParams();
+    const q = next.q ?? searchTerm;
+    const category = next.category ?? selectedCategory;
+    const live = next.live ?? liveOnly;
+
+    if (live) params.set('mode', 'live');
+    if (category !== 'all') params.set('category', category);
+    if (q.trim()) params.set('q', q.trim());
+
+    const qs = params.toString();
+    router.replace(qs ? `/projects?${qs}` : '/projects', { scroll: false });
+  };
 
   const filteredProjects = useMemo((): Project[] => {
     return projects.filter(project => {
@@ -97,7 +124,11 @@ export default function ProjectsPageClient() {
               type="text"
               placeholder="Search by project, stack, or problem space"
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={e => {
+                const q = e.target.value;
+                setSearchTerm(q);
+                syncUrl({ q });
+              }}
               aria-label="Search projects"
               className="mt-3 h-11"
             />
@@ -120,7 +151,10 @@ export default function ProjectsPageClient() {
                   <button
                     key={category.value}
                     type="button"
-                    onClick={() => setSelectedCategory(category.value)}
+                    onClick={() => {
+                      setSelectedCategory(category.value);
+                      syncUrl({ category: category.value });
+                    }}
                     aria-pressed={isActive}
                     className={
                       isActive
@@ -154,6 +188,7 @@ export default function ProjectsPageClient() {
               onClick={() => {
                 setSearchTerm('');
                 setSelectedCategory('all');
+                syncUrl({ q: '', category: 'all' });
               }}
             >
               Clear filters

@@ -2,20 +2,7 @@ import type { MetadataRoute } from 'next';
 
 import { projects } from '@/constants/constants';
 import { getBlogSlugs } from '@/lib/blog';
-
-// Next.js route config expects a literal here (not an expression).
-export const revalidate = 3600; // 1 hour
-
-function getSiteUrl(): string {
-  const fallback = 'https://portfolio.canepro.me';
-  const raw = process.env.NEXT_PUBLIC_SITE_URL || process.env.SITE_URL || fallback;
-  try {
-    const url = new URL(raw);
-    return url.toString().replace(/\/$/, '');
-  } catch {
-    return fallback;
-  }
-}
+import { getSiteUrl } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = getSiteUrl();
