@@ -13,6 +13,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   const visitHref = safeExternalHref(project.visit);
   const sourceHref = safeExternalHref(project.source);
   const showLiveDemo = Boolean(visitHref && (!sourceHref || visitHref !== sourceHref));
+  const meta = [project.category, project.featured ? 'Featured' : null].filter(Boolean).join(' · ');
 
   const handleDashboardClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -24,7 +25,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
   };
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)] shadow-sm transition-colors hover:bg-[color:var(--color-card-hover)]">
+    <article className="relative flex flex-col overflow-hidden rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)] transition-colors hover:bg-[color:var(--color-card-hover)]">
       <Link href={projectHref} className="relative block aspect-video overflow-hidden">
         <ProjectMedia
           src={previewSrc}
@@ -39,29 +40,24 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index = 0 }) => {
       </Link>
 
       <div className="flex flex-1 flex-col p-5">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
-          {project.category ? <span>{project.category}</span> : null}
-          {project.featured ? <span>Featured</span> : null}
-        </div>
+        {meta ? <p className="text-xs text-[color:var(--color-text-secondary)]">{meta}</p> : null}
 
-        <Link href={projectHref} className="group/title">
-          <h3 className="mt-3 text-xl font-semibold tracking-tight transition-colors group-hover/title:text-[color:var(--color-accent)]">
-            {project.title}
-          </h3>
+        <Link href={projectHref}>
+          <h3 className="mt-2 text-xl font-semibold tracking-tight">{project.title}</h3>
         </Link>
 
         <p className="mt-2 line-clamp-3 text-sm leading-6 text-[color:var(--color-text-secondary)]">
           {project.description}
         </p>
 
-        <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[color:var(--color-text-secondary)]">
-          {project.tags.slice(0, 3).map(tag => (
-            <span key={tag}>{tag}</span>
-          ))}
-          {project.tags.length > 3 && <span>+{project.tags.length - 3} more</span>}
-        </div>
+        {project.tags.length ? (
+          <p className="mt-3 text-xs text-[color:var(--color-text-secondary)]">
+            {project.tags.slice(0, 4).join(' · ')}
+            {project.tags.length > 4 ? ` · +${project.tags.length - 4}` : ''}
+          </p>
+        ) : null}
 
-        <div className="mt-auto flex flex-wrap items-center justify-between gap-4 pt-6">
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-4 pt-5">
           <Button variant="accent" size="sm" className="min-w-[10rem] justify-center" asChild>
             <Link href={projectHref}>Read case study</Link>
           </Button>

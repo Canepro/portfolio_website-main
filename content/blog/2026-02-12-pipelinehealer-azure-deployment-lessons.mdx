@@ -5,19 +5,15 @@ description: "Local was easy. Azure was where the real systems work started: ACR
 tags: ["hackathon", "azure", "container-apps", "ci-cd", "devops", "github-actions"]
 ---
 
-I expected deployment to be mostly plumbing.
-
-It was not.
-
-PipelineHealer worked locally, but moving it to Azure exposed all the gaps that local dev hides:
+Local dev hid gaps that showed up immediately in Azure:
 
 - identity and registry permissions
 - runtime config drift
 - webhook authenticity
 - frontend-to-backend proxy assumptions
-- cloud-specific behavior like scale-to-zero and revision health
+- scale-to-zero and revision health on Container Apps
 
-This post is a practical breakdown of what failed and what fixed it.
+Below: what failed and what fixed it.
 
 ## Target Architecture
 
@@ -38,9 +34,9 @@ Initial `azd provision` failed on Key Vault naming validation. The generated nam
 Fix:
 
 - Updated Bicep naming strategy to stay within Key Vault limits (3-24 chars, alphanumeric/hyphen rules).
-- Re-ran provisioning with deterministic names.
+- Re-ran provisioning with shorter deterministic names.
 
-Lesson: naming constraints are not a detail, they are deployment blockers.
+Naming limits block deploys; treat them as hard constraints.
 
 ## Failure 2: Backend Container App Revision Timed Out
 
@@ -60,7 +56,7 @@ Fix:
 
 After this, backend and frontend container apps provisioned cleanly.
 
-Lesson: "Operation expired" often means dependency auth/identity is wrong, not just timeout.
+`Operation expired` often means ACR pull auth is wrong, not just a timeout.
 
 ## Failure 3: Frontend Looked Up But API Proxy Broke
 
@@ -79,7 +75,7 @@ Fix:
 - Forwarded Host correctly and enabled SNI for TLS upstream.
 - Injected `X-API-Key` from frontend runtime env for `/api/*`.
 
-Lesson: cloud runtime config must be injected at container start, not baked as static assumptions.
+Render Nginx config at container start; do not bake backend host assumptions into the image.
 
 ## Failure 4: Webhooks Delivered But No Activities
 
@@ -97,7 +93,7 @@ Fix:
 - Re-synced `GITHUB_WEBHOOK_SECRET` between GitHub hook and backend runtime.
 - Verified delivery ping/status `200`.
 
-Lesson: one environment path, one active hook. Anything else creates ambiguous signal flow.
+One environment, one active hook. Extra hooks create ambiguous signal flow.
 
 ## Failure 5: Dashboard Stats Endpoints Failed in Cloud
 
@@ -113,7 +109,7 @@ Fix:
 - Removed unsupported async query option in affected paths.
 - Verified `/api/stats` and `/api/failure-breakdown` from frontend route and direct API.
 
-Lesson: "works locally" on one storage mode does not guarantee production datastore path correctness.
+Local storage mode passing does not guarantee the production Cosmos query path.
 
 ## Failure 6: PR Creation 422 on Repeated Demo Runs
 
@@ -128,9 +124,9 @@ Root cause:
 Fix:
 
 - Merge/close old fix PRs before rerunning same scenario.
-- Treat this as expected duplicate-run behavior in demo reset flow.
+- Treat as expected duplicate-run behavior in demo reset flow.
 
-Lesson: automation still needs idempotency strategy for branch naming and reruns.
+Branch naming needs an idempotency plan for reruns.
 
 ## Post-Publish Updates (Feb 12, evening)
 
@@ -203,17 +199,9 @@ This keeps spend low while avoiding cold-start surprises during recordings.
 
 ## Takeaway
 
-Local success proved the product idea.
-Azure deployment proved the engineering.
+Deploy early if the product runs on cloud infra. Identity, webhook verification, runtime config injection, and idempotent branch naming are all product behavior, not side quests.
 
-If you are building an agentic DevOps system, treat deployment as part of the product:
-
-- identity is product behavior
-- webhook authenticity is product behavior
-- runtime config is product behavior
-- retry/idempotency is product behavior
-
-This was the difference between a cool local prototype and a demo-ready platform.
+Local proved the idea. Azure proved the wiring.
 
 ---
 

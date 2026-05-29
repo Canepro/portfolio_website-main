@@ -1,29 +1,23 @@
 ---
 title: "Designing SignalForge as an Evidence-First Diagnostics Control Plane"
 date: "2026-04-12"
-description: "Why I framed SignalForge around evidence collection, deterministic analysis, and operator trust instead of a vague model-first diagnostics assistant."
+description: "SignalForge design: collect evidence first, run structured analysis, keep AI in a narrow role."
 tags: ["ai", "reliability", "observability", "diagnostics", "platform-engineering"]
 ---
 
-A lot of infrastructure diagnostics work still fails in the same unglamorous place.
+A lot of infrastructure diagnostics work fails in the same place: the data exists, but it is scattered.
 
-It is not that there is no data. It is that the evidence path is messy.
+Logs sit in one tool. API responses in another. Dashboards show part of the picture. Someone stitches the context together under time pressure, then an AI layer is asked to produce a trustworthy answer on top.
 
-Logs live in one place. API responses live somewhere else. Dashboards tell part of the story. A human ends up stitching together the context under time pressure, and then an AI layer is expected to produce something trustworthy on top of that fragmented input.
-
-That is a weak foundation.
-
-SignalForge is the product direction I started shaping in response to that problem. The core idea is simple: treat diagnostics as an evidence-first system before treating it as an AI system.
+SignalForge started from that gap. Collect and normalise evidence first. Add AI only where it helps triage, not as the whole product.
 
 ## The Problem
 
-A lot of "AI for operations" tooling sounds impressive because it jumps straight to the assistant layer.
+A lot of "AI for operations" tooling leads with the assistant layer.
 
-But that skips the harder question: where does the evidence actually come from, how is it compared, and what makes the output defensible?
+That skips the harder questions: where does the input come from, how is it compared across runs, and what makes the output defensible?
 
-If the evidence path is implicit, the system can feel smart while still being operationally weak.
-
-That matters even more in diagnostics than in casual summarization. Operators do not just want a plausible explanation. They want a path they can inspect, compare, and trust.
+If collection is implicit, the tool can sound smart while staying hard to audit. In diagnostics, that becomes a trust problem fast.
 
 ## The Context
 
@@ -41,13 +35,11 @@ Instead of focusing on remediation, the current product line is centered on:
 - external collection
 - operator decision support
 
-That scope is deliberate. I would rather make diagnosis more structured and more trustworthy first than overclaim autonomy too early.
+That scope is intentional. Structured diagnosis comes before any claim of autonomy.
 
 ## The Change
 
-The public shape of SignalForge is now cleaner because the system is being framed as a diagnostics control plane rather than a generic AI assistant.
-
-The visible pieces already map to that story:
+The public shape of SignalForge maps to that split:
 
 - the control plane repo: [Canepro/signalforge](https://github.com/Canepro/signalforge)
 - the live app: [signalforge.canepro.me](https://signalforge.canepro.me/)
@@ -61,7 +53,7 @@ That separation is useful because it makes the boundaries more legible:
 - what supports operator workflows
 - where AI belongs, if it belongs at all
 
-The goal is not to hide the complexity behind a chatbot surface. The goal is to make the system easier to inspect.
+The goal is inspectability, not a chatbot surface that hides the pipeline.
 
 Here is the kind of diagnostics surface I want this product line to make normal: a clear overview, inspectable run detail, and compare workflows that help an operator reason about drift instead of guessing.
 
@@ -75,37 +67,23 @@ Here is the kind of diagnostics surface I want this product line to make normal:
 
 ## The Hard Parts
 
-The hardest part is not implementation mechanics. It is resisting the wrong story.
+The hard part is saying no to a model-first story.
 
-A vague model-first narrative is easier to market:
+That narrative demos well: it sounds autonomous, it fits a short clip, it markets easily.
 
-- it sounds more autonomous
-- it sounds more futuristic
-- it demos well in a short clip
+It also blurs evidence, reasoning, and guesswork. For ops tooling, that blur erodes trust quickly.
 
-But it also blurs the line between evidence, reasoning, and guesswork.
-
-For an operator-facing product, that blur becomes a trust problem quickly.
-
-Evidence-first is less flashy, but I think it is the better default for serious diagnostics work because it forces cleaner system design:
-
-- evidence has to be collected explicitly
-- deterministic analysis has to be useful on its own
-- compare workflows have to help a human reason across competing signals
-- any AI layer has to justify its place instead of becoming the whole product story
+Collecting evidence explicitly, making structured analysis useful on its own, and keeping compare workflows human-readable is slower to sell. It is also easier to verify.
 
 ## What Changed
 
-The public evidence is still early, but it is now coherent enough to support the product story:
+Public artifacts are still early, but they line up:
 
-- the live app is reachable
-- the public repos are live and separated by role
-- the GitHub profile now pins SignalForge as a flagship project
-- the README framing has been tightened so the repo explains the operator-first diagnostics direction more clearly
+- Live app at [signalforge.canepro.me](https://signalforge.canepro.me/)
+- Repos split by role: [control plane](https://github.com/Canepro/signalforge), [agent](https://github.com/Canepro/signalforge-agent), [collectors](https://github.com/Canepro/signalforge-collectors)
+- Compare view in the app shows drift between runs (screenshot below)
 
-That matters because under-packaged projects often look weaker than they are. A lot of technical work gets undervalued simply because the public surface does not explain what the system actually is.
-
-There is also a proof problem here. If the system is supposed to be evidence-first, the public artifacts should make that visible. A compare view is more convincing than marketing copy because it shows where drift analysis begins to matter operationally.
+A compare view beats marketing copy here because it shows what "drift" means in the product, not in a slide.
 
 ![SignalForge compare view from the live app.](/images/signalforge-compare-real.png)
 
@@ -113,21 +91,12 @@ There is also a proof problem here. If the system is supposed to be evidence-fir
 
 ## What I Would Keep
 
-I would keep the evidence-first constraint.
-
-For this kind of product, I think explicit collection and deterministic reasoning are a stronger foundation than trying to make the assistant look maximally autonomous.
-
-That trade-off gives you a clearer trust boundary and a more defensible technical story.
+Keep collection and structured analysis as the foundation. AI stays optional and narrow.
 
 ## What I Would Change
 
-I would add proof faster.
+Ship proof faster:
 
-The next step is not to make SignalForge sound bigger. It is to make it easier to verify:
-
-- capture screenshots of the live app and flow
-- publish one clear architecture diagram
-- write more publicly about the evidence-first design choice
-- keep the public repos and product copy aligned with the actual system boundaries
-
-That is the kind of work that turns a promising internal concept into something an outside reviewer can understand quickly.
+- More screenshots of live flows
+- One architecture diagram on the repo
+- Keep README boundaries aligned with what each repo actually does

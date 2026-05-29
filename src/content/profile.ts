@@ -11,8 +11,8 @@ export const profile = {
     twitter: 'https://twitter.com/Canepro',
   },
   summary: [
-    'I build reliability systems that turn recurring pain into reusable diagnostics.',
-    'I ship tooling with deterministic defaults, evidence-first triage, and bounded AI.',
-    'Recent work focuses on product-quality systems for remediation, diagnostics, and operator confidence.',
+    'I build tools for CI failures and platform diagnostics.',
+    'Automation ships only when the fix path is clear and reviewable.',
+    'Recent projects: PipelineHealer and SignalForge.',
   ],
 } as const;

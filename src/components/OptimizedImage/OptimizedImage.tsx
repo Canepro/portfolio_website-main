@@ -1,127 +1,26 @@
-// src/components/OptimizedImage/OptimizedImage.tsx
+'use client';
 
-import React, { useState, CSSProperties } from 'react';
-import Image, { ImageProps } from 'next/image';
-import styled from 'styled-components';
+import Image, { type ImageProps } from 'next/image';
+import { useState, type CSSProperties } from 'react';
 
-interface ImageContainerProps {
-  enableHover?: boolean;
-}
+import { cn } from '@/lib/utils';
 
-const ImageContainer = styled.div.withConfig({
-  shouldForwardProp: prop => !['enableHover'].includes(prop),
-})<ImageContainerProps>`
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  width: 100%;
-  height: 100%;
-
-  &:hover {
-    transform: ${props => (props.enableHover ? 'translateY(-2px)' : 'none')};
-    box-shadow: ${props => (props.enableHover ? '0 8px 25px rgba(0, 0, 0, 0.15)' : 'none')};
-  }
-`;
-
-interface BlurOverlayProps {
-  loading?: boolean;
-}
-
-const BlurOverlay = styled.div.withConfig({
-  shouldForwardProp: prop => !['loading'].includes(prop),
-})<BlurOverlayProps>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  /* Subtle skeleton shimmer (avoid loud purple placeholders). */
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.04) 0%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0.04) 100%
-  );
-  background-size: 200% 100%;
-  opacity: ${props => (props.loading ? 1 : 0)};
-  transition: opacity 0.25s ease;
-  z-index: 2;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0.55;
-    background: radial-gradient(
-      60% 60% at 30% 20%,
-      rgba(0, 219, 216, 0.12) 0%,
-      rgba(0, 219, 216, 0) 60%
-    );
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
-
-  animation: ${props => (props.loading ? 'shimmer 1.1s ease-in-out infinite' : 'none')};
-
-  html.light-theme & {
-    background: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.03) 0%,
-      rgba(0, 0, 0, 0.06) 50%,
-      rgba(0, 0, 0, 0.03) 100%
-    );
-  }
-`;
-
-interface StyledImageProps {
-  loaded?: boolean;
-}
-
-const StyledImage = styled(Image).withConfig({
-  shouldForwardProp: prop => !['loaded'].includes(prop),
-})<StyledImageProps>`
-  transition: filter 0.3s ease;
-  filter: ${props => (props.loaded ? 'blur(0px)' : 'blur(8px)')};
-`;
-
-// Generate a simple geometric blur placeholder
 const toBase64 = (str: string): string =>
   typeof window === 'undefined'
     ? Buffer.from(str).toString('base64')
     : btoa(unescape(encodeURIComponent(str)));
 
 const generateBlurDataURL = (width: number = 400, height: number = 300): string => {
-  // Create a simple SVG with geometric pattern
   const svg = `
     <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#667eea;stop-opacity:0.8" />
-          <stop offset="50%" style="stop-color:#764ba2;stop-opacity:0.6" />
-          <stop offset="100%" style="stop-color:#667eea;stop-opacity:0.8" />
-        </linearGradient>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#grad)"/>
-      <circle cx="20%" cy="30%" r="15%" fill="rgba(255,255,255,0.1)"/>
-      <circle cx="80%" cy="70%" r="10%" fill="rgba(255,255,255,0.1)"/>
-      <rect x="10%" y="10%" width="30%" height="20%" fill="rgba(255,255,255,0.05)" rx="5"/>
+      <rect width="100%" height="100%" fill="#151A22"/>
     </svg>
   `;
 
-  const base64 = toBase64(svg);
-  return `data:image/svg+xml;base64,${base64}`;
+  return `data:image/svg+xml;base64,${toBase64(svg)}`;
 };
 
-interface OptimizedImageProps extends Omit<
+export interface OptimizedImageProps extends Omit<
   ImageProps,
   'onLoad' | 'onLoadingComplete' | 'onError' | 'placeholder'
 > {
@@ -133,12 +32,11 @@ interface OptimizedImageProps extends Omit<
   priority?: boolean;
   sizes?: string;
   className?: string;
-  enableHover?: boolean;
   placeholder?: boolean;
   style?: CSSProperties;
 }
 
-const OptimizedImage: React.FC<OptimizedImageProps> = ({
+export default function OptimizedImage({
   src,
   alt,
   width,
@@ -147,17 +45,14 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   priority = false,
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
   className = '',
-  enableHover = true,
   placeholder = true,
   style,
   ...props
-}) => {
+}: OptimizedImageProps) {
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
   const isGif = src.toLowerCase().endsWith('.gif');
-  const containerStyle: CSSProperties | undefined = fill
-    ? { position: 'absolute', inset: 0 }
-    : undefined;
+  const blurDataURL = placeholder ? generateBlurDataURL(width, height) : undefined;
 
   const handleLoaded = () => {
     setLoaded(true);
@@ -166,14 +61,11 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
 
   const handleError = () => {
     setLoading(false);
-    // Could set an error state here if needed
   };
 
-  const blurDataURL = placeholder ? generateBlurDataURL(width, height) : undefined;
-
   return (
-    <ImageContainer enableHover={enableHover} className={className} style={containerStyle}>
-      <StyledImage
+    <div className={cn('relative h-full w-full overflow-hidden', fill && 'absolute inset-0')}>
+      <Image
         src={src}
         alt={alt}
         width={fill ? undefined : width}
@@ -181,23 +73,29 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         fill={fill}
         priority={priority}
         sizes={sizes}
-        loaded={loaded}
-        className={className}
         onLoad={handleLoaded}
         onError={handleError}
         placeholder={placeholder ? 'blur' : 'empty'}
         blurDataURL={blurDataURL}
         unoptimized={isGif}
         quality={85}
+        className={cn(
+          'h-full w-full transition-[filter] duration-300',
+          !loaded && 'blur-sm',
+          className
+        )}
         style={{
           objectFit: 'cover',
           ...style,
         }}
         {...props}
       />
-      {placeholder && <BlurOverlay loading={loading} />}
-    </ImageContainer>
+      {placeholder && loading ? (
+        <div
+          aria-hidden="true"
+          className="image-shimmer pointer-events-none absolute inset-0 z-[2]"
+        />
+      ) : null}
+    </div>
   );
-};
-
-export default OptimizedImage;
+}

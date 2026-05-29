@@ -1,13 +1,13 @@
 ---
 title: "PipelineHealer: An AI Agent That Fixes CI/CD Failures"
 date: "2026-02-10"
-description: "Building a multi-agent system that detects, diagnoses, and remediates broken pipelines, for the AI Dev Days Hackathon."
+description: "PipelineHealer hackathon entry: webhook in, diagnosis, fix PR or structured issue out."
 tags: ["hackathon", "ai-agents", "devops", "azure", "github-actions"]
 ---
 
-CI/CD failures follow a predictable loop: pipeline goes red, someone scrolls through logs, finds the error, context-switches to fix it, pushes, waits. Steps two through five are repetitive and interruptible. They do not require a human. They require pattern matching and a structured response.
+CI/CD failures follow a predictable loop: pipeline goes red, someone scrolls logs, finds the error, fixes it, pushes, waits. Steps two through five are repetitive. They map well to pattern matching plus a structured response.
 
-**PipelineHealer** automates the repetitive part of that loop. A GitHub webhook fires on a failed workflow run, the system analyzes the failure, and PipelineHealer either opens a fix PR for deterministic cases or files a structured issue when confidence is low.
+**PipelineHealer** handles that loop. A GitHub webhook fires on a failed workflow run, the system analyzes the failure, and PipelineHealer either opens a fix PR or files a structured issue when confidence is low.
 
 This is my entry for the [AI Dev Days Hackathon](https://github.com/Azure/AI-Dev-Days-Hackathon), targeting the **Agentic DevOps** grand prize.
 
@@ -15,7 +15,7 @@ This is my entry for the [AI Dev Days Hackathon](https://github.com/Azure/AI-Dev
 
 The single-prompt approach, "here are 500 lines of CI logs, fix it", produces inconsistent results. The context is too broad, the task is too vague, and the output oscillates between useful and hallucinated.
 
-Breaking the problem into four focused agents changed the reliability entirely:
+Breaking the problem into four focused agents improved consistency:
 
 1. **Log Analyzer**: parses raw output, extracts structured error patterns. Does not diagnose.
 2. **Diagnosis Agent**: maps extracted patterns to early failure categories: dependency issues, lint/format failures, test failures, build config errors, and timeouts. Does not fix.
@@ -37,7 +37,7 @@ The flow: GitHub sends the webhook → the backend validates and persists the fa
 
 ## What's Built
 
-The scaffold is done, agents, GitHub integration, webhook handler, dashboard frontend, Docker setup. Next phase is production hardening and Azure deployment, including live webhook wiring and real-failure validation.
+The scaffold is in place: agents, GitHub integration, webhook handler, dashboard, Docker. Next: Azure deployment, live webhook wiring, and validation against real failures.
 
 ## What's Coming
 

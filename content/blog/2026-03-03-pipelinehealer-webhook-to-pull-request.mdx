@@ -1,7 +1,7 @@
 ---
 title: "From Webhook to Pull Request: The Full Healing Loop (Including the Parts That Surprised Me)"
 date: "2026-03-03"
-description: "A concrete walkthrough of PipelineHealer processing a real CI failure, from webhook delivery through diagnosis, external diagnostics, remediation, and the backfill system I didn't plan to build."
+description: "Real CI failure walkthrough: webhook gating, pattern diagnosis, fix PR, ci-doctor timing gap, and the backfill sweep."
 tags: ["hackathon", "ai-agents", "ci-cd", "github-actions", "azure", "devops", "observability"]
 ---
 
@@ -64,9 +64,9 @@ Result:
 - **Failure type**: `dependency`
 - **Auto-fixable**: yes
 
-No LLM call was needed. The model fallback exists for ambiguous cases, test failures with unclear assertions, config errors in unfamiliar build tools, but for known patterns, deterministic wins every time.
+No LLM call was needed. The model fallback covers ambiguous cases: unclear test assertions, unfamiliar build tools, odd config errors.
 
-This is one of the design decisions I keep reinforcing: pattern-first, model-second. Every failure type that can be resolved with string matching should be.
+Pattern matching first. Model second. Every failure type that resolves with string matching should.
 
 ## Remediation: Branch, Commit, PR
 
@@ -127,7 +127,7 @@ Implementation:
 
 When backfill finds a `ci-doctor` issue that correlates with the activity, it replaces the `poll_window_exhausted` entry with the real findings.
 
-This was not in the original plan. I built it because the E2E test showed me a real gap. That is what end-to-end testing is for.
+I built the backfill sweep after an E2E run showed `poll_window_exhausted` persisting even after `ci-doctor` finished. Component tests would not have caught the timing gap.
 
 ## Deep Enrichment: Not Just a Link
 
@@ -177,14 +177,14 @@ That is the full loop. Webhook to PR, with an independent AI second opinion enri
 
 The backfill sweep, the deep enrichment parser, and the sanitizer all came out of running the real system end-to-end and watching what happened.
 
-If I had only tested components in isolation, I would have shipped a system that:
+If I had only tested components in isolation, the shipped system would have:
 
-- correctly diagnosed and fixed failures (good)
-- showed "poll window exhausted" for external diagnostics permanently (bad)
-- stored raw `ci-doctor` boilerplate in the database (bad)
-- rendered internal HTML comments in the UI (bad)
+- diagnosed and fixed failures correctly
+- shown `poll_window exhausted` for external diagnostics permanently
+- stored raw `ci-doctor` boilerplate
+- rendered HTML comments in the UI
 
-Every one of those gaps was caught by a real run against the deployed system. The lesson is not "test more", it is "test the thing users will actually see."
+Each gap showed up on a deployed run, not in unit tests.
 
 ## Reusable Takeaway Checklist
 

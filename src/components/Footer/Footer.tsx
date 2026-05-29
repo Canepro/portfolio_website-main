@@ -5,6 +5,7 @@ import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
 import { profile } from '@/content/profile';
 import { safeExternalHref } from '@/lib/url';
 import { Button } from '@/components/ui/button';
+import { SectionLabel } from '@/components/layout/SectionLabel';
 
 export default function Footer() {
   const githubHref = safeExternalHref(profile.links.github);
@@ -16,26 +17,18 @@ export default function Footer() {
     { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contact' },
   ];
-  const homeSections = [
-    { href: '/#projects', label: 'Selected work' },
-    { href: '/#experience', label: 'Experience' },
-    { href: '/#tech', label: 'Capabilities' },
-    { href: '/#writing', label: 'Writing' },
-  ];
 
   return (
     <footer className="border-t border-[color:var(--color-border)]">
       <div className="mx-auto max-w-6xl px-6 py-12 md:px-10">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-70">
-              Get in touch
-            </div>
-            <p className="mt-3 max-w-sm text-sm leading-6 text-[color:var(--color-text-secondary)]">
-              If you include context (links, repo, error logs), I can respond faster.
+            <SectionLabel>Get in touch</SectionLabel>
+            <p className="mt-2 max-w-sm text-sm leading-6 text-[color:var(--color-text-secondary)]">
+              Email or LinkedIn works best. Include a repo link or error log if you have one.
             </p>
 
-            <div className="mt-5 flex flex-wrap gap-3">
+            <div className="mt-4 flex flex-wrap gap-3">
               <Button variant="glass" size="sm" className="gap-2" asChild>
                 <a href={`mailto:${profile.email}`}>
                   <Mail className="h-4 w-4" /> Email
@@ -52,26 +45,9 @@ export default function Footer() {
           </div>
 
           <div>
-            <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-70">
-              Navigate
-            </div>
-            <div className="mt-4 grid gap-2">
+            <SectionLabel>Navigate</SectionLabel>
+            <div className="mt-3 grid gap-2">
               {quickLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            <div className="mt-6 text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-70">
-              Home sections
-            </div>
-            <div className="mt-4 grid gap-2">
-              {homeSections.map(link => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -84,10 +60,8 @@ export default function Footer() {
           </div>
 
           <div>
-            <div className="text-xs font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-70">
-              Elsewhere
-            </div>
-            <div className="mt-5 flex items-center gap-2">
+            <SectionLabel>Elsewhere</SectionLabel>
+            <div className="mt-4 flex items-center gap-2">
               {githubHref ? (
                 <Button variant="glass" size="icon" aria-label="GitHub" asChild>
                   <a href={githubHref} target="_blank" rel="noopener noreferrer">
@@ -110,18 +84,11 @@ export default function Footer() {
                 </Button>
               ) : null}
             </div>
-
-            <p className="mt-5 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
-              Best contact path: email or LinkedIn. Include context if you want a faster response.
-            </p>
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-2 border-t border-[color:var(--color-border)] pt-6 text-xs text-[color:var(--color-text-secondary)] opacity-80 md:flex-row md:items-center md:justify-between">
-          <div>
-            © {new Date().getFullYear()} {profile.name}. Built with Next.js, Bun, and typed content.
-          </div>
-          <div className="font-mono">UK · kubernetes · gitops · observability</div>
+        <div className="mt-10 border-t border-[color:var(--color-border)] pt-6 text-xs text-[color:var(--color-text-secondary)]">
+          © {new Date().getFullYear()} {profile.name}. Built with Next.js and Bun.
         </div>
       </div>
     </footer>

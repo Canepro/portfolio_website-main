@@ -1,21 +1,21 @@
 ---
 title: "Hackathon Retrospective: What I'd Do Differently Building PipelineHealer"
 date: "2026-03-16"
-description: "Five weeks of building a multi-agent CI healing system for the AI Dev Days Hackathon. What worked, what surprised me, and what I would change if I started over."
+description: "Five weeks building PipelineHealer for the AI Dev Days Hackathon: what worked, what surprised me, what I would change."
 tags: ["hackathon", "ai-agents", "ci-cd", "devops", "azure", "retrospective", "observability"]
 ---
 
-PipelineHealer started as a weekend idea during the AI Dev Days Hackathon kickoff to build a system where CI failures can fix themselves.
+PipelineHealer started during the AI Dev Days Hackathon kickoff: receive a failed CI webhook, diagnose it, open a fix PR or a structured issue.
 
-> Editor's note (March 6, 2026): this retrospective is intentionally anchored to the hackathon submission baseline from March 2, 2026 (`v0.3.0`). PipelineHealer has since moved through `v0.3.2`, `v0.4.0`, and `v0.5.2`, adding Jenkins bridge support, a reference Assign-to-Agent receiver, and notification sinks for Slack, Teams, Rocket.Chat, and email.
+> Editor's note (March 6, 2026): anchored to submission baseline `v0.3.0` (March 2, 2026). Since then: Jenkins bridge (`v0.3.2`), Assign-to-Agent receiver (`v0.4.0`), notification sinks (`v0.5.2`).
 
-By the end of the hackathon, it was a deployed multi-agent system on Azure that received GitHub webhooks, diagnosed failures, opened fix PRs, filed tracking issues, ingested third-party AI diagnostics, and rendered the full story in a dashboard. As of `v0.3.0`, Activity Detail also supported one-click `Copy Context` handoff payloads with a visible `Assign to Agent` (`Coming Soon`) path. It worked. It was also very different from what I planned on day one.
+By submission it ran on Azure: webhooks in, diagnosis, fix PRs, tracking issues, optional `ci-doctor` ingestion, dashboard view. Activity Detail in `v0.3.0` added `Copy Context` and a visible `Assign to Agent (Coming Soon)` affordance. The build diverged from day-one plans.
 
 ![Activity Detail with Copy Context and Assign to Agent (Coming Soon)](/images/Activity_page_copy_context.png)
 
 *Activity Detail in `v0.3.0`: AI handoff UX baseline with one-click context copy and visible agent-assignment affordance.*
 
-This post is an honest look back at the build. What paid off, what I would skip, what caught me off guard, and what I would change if I started over tomorrow.
+This post covers what paid off, what surprised me, and what I would reorder if starting again.
 
 If you want the implementation-level detail behind the biggest lessons here, [Post 4](/blog/2026-02-13-teaching-ai-to-read-github-actions-logs) covers the log-parsing and confidence-gating path, while [Post 5](/blog/2026-03-03-pipelinehealer-webhook-to-pull-request) walks through the end-to-end webhook, remediation, and backfill flow.
 
@@ -27,9 +27,9 @@ For full context, see the [PipelineHealer repository](https://github.com/Canepro
 
 This was the single best architectural decision.
 
-The instinct with an AI hackathon project is to put the model at the center of everything. I almost did. Early prototypes sent full log dumps to GPT and asked for fixes. The results were inconsistent and hard to debug.
+The default with an AI hackathon project is to put the model at the center. Early prototypes sent full log dumps to GPT and asked for fixes. Results were inconsistent and hard to debug.
 
-Flipping the order, deterministic pattern matching first, LLM fallback only for ambiguity, made the system predictable.
+Pattern matching first, LLM fallback for ambiguity, made behavior predictable.
 
 Benefits:
 - Dependency failures, lint errors, and build config issues are resolved without a model call.
@@ -38,9 +38,9 @@ Benefits:
 
 ### 2. Typed contracts between agents
 
-Every agent-to-agent handoff is a Pydantic model. `LogAnalysis`, `Diagnosis`, `RemediationPlan`, all typed, all validatable, all testable without running the full pipeline.
+Every agent handoff is a Pydantic model: `LogAnalysis`, `Diagnosis`, `RemediationPlan`. Validatable and testable without running the full pipeline.
 
-This sounds obvious. In practice, most multi-agent demos I have seen pass free-form text between agents and hope for the best. Typed contracts prevented an entire class of "agent 2 misunderstood agent 1" bugs.
+Most multi-agent demos pass free-form text between agents. Typed contracts avoided "agent 2 misunderstood agent 1" bugs.
 
 ### 3. One-command operator interface
 
@@ -58,9 +58,9 @@ Deploying early surfaced identity issues, proxy failures, webhook configuration 
 
 ### 5. Safe defaults everywhere
 
-PipelineHealer's default posture is conservative. Low-confidence diagnoses create issues, not PRs. Repo allowlists are enforced in the webhook handler. Healing mode defaults to `safe`. Admin settings routes support key-based auth in `api_key`/`hybrid` mode and Entra role-based auth in `entra`/`hybrid` mode.
+PipelineHealer defaults conservative: low-confidence diagnoses file issues, repo allowlists gate webhooks, healing mode starts at `safe`. Admin settings support key auth (`api_key`/`hybrid`) and Entra roles (`entra`/`hybrid`).
 
-I never had a moment during the hackathon where the system did something unexpected to a repository. That peace of mind was worth the extra gating logic.
+No unexpected repo actions during the hackathon.
 
 ## What Surprised Me
 
@@ -91,9 +91,7 @@ Third-party content is never clean. Budget time for sanitization.
 
 ### 3. Documentation is a forcing function
 
-I wrote six blog posts during the hackathon. That was not originally planned as part of the build, I did it because the hackathon judges value documented thinking, and because my portfolio site needed content.
-
-What I did not expect: writing about the system forced me to clarify decisions I had been hand-waving. The diagnostics wait policy and its rationale are easy to gloss over in code but impossible to skip in a blog post. Every post made the system slightly better because it made me justify choices out loud.
+I wrote six blog posts during the hackathon, partly for judges, partly for this portfolio. Writing forced decisions I had been hand-waving in code, especially around the diagnostics wait policy.
 
 ### 4. The CLI became the most-used interface
 
@@ -157,11 +155,7 @@ These were real gaps in the `v0.3.0` submission baseline, not aspirational featu
 
 PipelineHealer works. It does what the pitch says: detect CI failures, diagnose them, and open fix PRs or structured issues. The deployed system on Azure processes real webhook events and produces real remediation artifacts.
 
-The most valuable lessons came from everything around the agent logic:
-- deployment failures, timing gaps, sanitization edge cases, and operator workflow surfaced only in real usage
-- agents are roughly 30% of the code, while infrastructure, safety gating, observability, CLI tooling, and integration plumbing make up the rest
-
-AI is the capability. Engineering is the product.
+The most useful lessons sat outside the agent logic: deployment failures, timing gaps, sanitization edge cases, and operator workflow showed up only in real usage. Agents are roughly 30% of the code; infrastructure, safety gates, observability, CLI, and integrations are the rest.
 
 ## Reusable Takeaway Checklist
 

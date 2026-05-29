@@ -6,8 +6,7 @@ export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
   title: 'Projects',
-  description:
-    "Explore Vincent Mogah's portfolio of DevOps, cloud, and frontend projects. Filter by technology and category.",
+  description: 'DevOps, cloud, and frontend project case studies.',
   alternates: { canonical: '/projects' },
 };
 

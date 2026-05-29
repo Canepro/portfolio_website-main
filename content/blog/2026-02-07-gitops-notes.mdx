@@ -1,7 +1,7 @@
 ---
 title: "GitOps Notes: The Parts That Actually Matter"
 date: "2026-02-07"
-description: "A practical mental model for GitOps beyond the buzzwords, drawn from running ArgoCD across OCI and Azure."
+description: "GitOps patterns from running Argo CD on OCI and Azure."
 tags: ["gitops", "argocd", "kubernetes", "ci-cd"]
 ---
 
@@ -13,7 +13,7 @@ GitOps is less about tools and more about **control loops**. After running ArgoC
 2. **A reconciler continuously compares desired vs actual.** ArgoCD watches the repo and diffs against the live cluster. This is where drift becomes visible.
 3. **Drift is correctable, not catastrophic.** A misconfigured resource is not a crisis. It is a PR away from being fixed.
 
-The key insight: GitOps is not "infrastructure as code." It is *infrastructure as a feedback loop*. The value is not in storing YAML in Git; it is in the reconciler closing the gap automatically.
+The key insight: GitOps is infrastructure as a feedback loop. Storing YAML in Git is not the value; the reconciler closing the gap is.
 
 ## What This Looks Like in Practice
 

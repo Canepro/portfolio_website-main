@@ -1,6 +1,3 @@
-'use client';
-
-import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, BarChart3, Boxes, GitBranch, Server, Waypoints } from 'lucide-react';
 
 function Node({
@@ -17,24 +14,21 @@ function Node({
   return (
     <div
       className={[
-        // min-w-0 is critical: CSS grid items default to min-width:auto and can overflow/clipped.
-        'relative min-w-0 rounded-2xl border px-3 py-2 shadow-sm backdrop-blur',
+        'relative min-w-0 rounded-xl border px-3 py-2',
         accent
           ? 'border-[color:var(--color-border)] bg-[color:var(--color-card-hover)]'
-          : 'border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] hover:bg-[color:var(--color-card-hover)]',
+          : 'border-[color:var(--color-border)] bg-[color:var(--color-card-bg)]',
       ].join(' ')}
     >
       <div className="flex items-center gap-2">
-        <div className="grid h-8 w-8 place-items-center rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-secondary)]">
+        <div className="grid h-8 w-8 place-items-center rounded-lg border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] text-[color:var(--color-text-secondary)]">
           {icon}
         </div>
         <div className="min-w-0">
           <div className="truncate text-xs font-semibold text-[color:var(--color-text-primary)]">
             {label}
           </div>
-          <div className="truncate text-[10px] font-mono text-[color:var(--color-text-secondary)] opacity-80">
-            {sub}
-          </div>
+          <div className="truncate text-[11px] text-[color:var(--color-text-secondary)]">{sub}</div>
         </div>
       </div>
     </div>
@@ -42,84 +36,51 @@ function Node({
 }
 
 export default function HeroVisual() {
-  const shouldReduceMotion = useReducedMotion();
-
   return (
     <div
       data-hero-visual
-      className="relative h-[240px] w-full overflow-hidden rounded-3xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] md:h-full md:min-h-[440px]"
+      className="relative h-[240px] w-full overflow-hidden rounded-2xl border border-[color:var(--color-border)] border-t-2 border-t-[color:var(--color-accent)] bg-[color:var(--color-card-bg)] md:h-full md:min-h-[420px]"
     >
-      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(circle_at_30%_20%,rgba(14,165,233,0.10),transparent_60%),radial-gradient(circle_at_75%_55%,rgba(255,255,255,0.04),transparent_65%)]" />
-
-      <motion.div
-        aria-hidden="true"
-        className="absolute -left-16 -top-16 h-56 w-56 rounded-full bg-[color:var(--color-accent)]/20 blur-2xl"
-        animate={shouldReduceMotion ? undefined : { x: [0, 24, 0], y: [0, 12, 0] }}
-        transition={
-          shouldReduceMotion ? undefined : { duration: 10, repeat: Infinity, ease: 'easeInOut' }
-        }
-      />
-      <motion.div
-        aria-hidden="true"
-        className="absolute -bottom-20 right-[-40px] h-72 w-72 rounded-full bg-[color:var(--color-card-hover)] blur-3xl"
-        animate={shouldReduceMotion ? undefined : { x: [0, -18, 0], y: [0, -10, 0] }}
-        transition={
-          shouldReduceMotion ? undefined : { duration: 12, repeat: Infinity, ease: 'easeInOut' }
-        }
-      />
-
       <div className="relative flex h-full flex-col p-5 md:p-6">
-        <div className="flex items-center justify-between gap-4">
-          <div className="text-[11px] font-semibold uppercase tracking-widest text-[color:var(--color-text-secondary)] opacity-80">
-            Systems Snapshot
-          </div>
-          <div className="hidden items-center gap-2 md:flex">
-            <span className="rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-2.5 py-1 text-[10px] font-mono text-[color:var(--color-text-secondary)] opacity-80">
-              Netlify: deploy previews
-            </span>
-            <span className="text-[10px] font-mono text-[color:var(--color-text-secondary)] opacity-70">
-              gitops · ci · k8s · obs
-            </span>
-          </div>
-        </div>
+        <p className="text-sm font-medium text-[color:var(--color-text-secondary)]">
+          How this site is built
+        </p>
 
         <div className="mt-4 flex-1">
           <div className="hidden h-full items-center md:flex">
             <div className="relative grid w-full min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
               <Node label="GitHub" sub="main + PRs" icon={<GitBranch className="h-4 w-4" />} />
-              <div className="flex shrink-0 items-center justify-center text-[color:var(--color-text-secondary)] opacity-50">
-                <ArrowRight className="h-4 w-4" />
+              <div className="flex shrink-0 items-center justify-center text-[color:var(--color-text-secondary)]">
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </div>
               <Node
                 label="Jenkins"
-                sub="multibranch (controller: OKE)"
+                sub="multibranch on OKE"
                 icon={<Waypoints className="h-4 w-4" />}
                 accent
               />
-              <div className="flex shrink-0 items-center justify-center text-[color:var(--color-text-secondary)] opacity-50">
-                <ArrowRight className="h-4 w-4" />
+              <div className="flex shrink-0 items-center justify-center text-[color:var(--color-text-secondary)]">
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </div>
               <Node
-                label="Build Agents"
-                sub="AKS agent (RBAC constrained)"
+                label="Build agents"
+                sub="AKS, RBAC constrained"
                 icon={<Server className="h-4 w-4" />}
               />
 
               <div className="col-span-5 mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
                 <Node
-                  label="AKS Spoke"
-                  sub="Rocket.Chat + metrics → hub"
+                  label="AKS spoke"
+                  sub="Rocket.Chat + metrics"
                   icon={<Boxes className="h-4 w-4" />}
                 />
-                <div className="flex shrink-0 flex-col items-center justify-center text-[color:var(--color-text-secondary)] opacity-50">
-                  <ArrowRight className="h-4 w-4" />
-                  <div className="mt-1 text-[10px] font-mono text-[color:var(--color-text-secondary)] opacity-70">
-                    OTLP
-                  </div>
+                <div className="flex shrink-0 flex-col items-center justify-center text-[color:var(--color-text-secondary)]">
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  <div className="mt-1 text-[10px] font-mono">OTLP</div>
                 </div>
                 <Node
-                  label="OKE Hub"
-                  sub="ArgoCD + GrafanaLocal"
+                  label="OKE hub"
+                  sub="Argo CD + Grafana"
                   icon={<BarChart3 className="h-4 w-4" />}
                   accent
                 />
@@ -129,37 +90,35 @@ export default function HeroVisual() {
 
           <div className="grid gap-3 md:hidden">
             <Node
-              label="GitHub → Jenkins (OKE)"
-              sub="multibranch CI + gated builds"
+              label="GitHub → Jenkins"
+              sub="multibranch CI on OKE"
               icon={<GitBranch className="h-4 w-4" />}
               accent
             />
             <Node
-              label="Kubernetes (Agents + Clusters)"
-              sub="OKE + AKS (build + run)"
+              label="Kubernetes"
+              sub="OKE hub + AKS spoke"
               icon={<Boxes className="h-4 w-4" />}
             />
             <Node
-              label="Deploy Previews"
-              sub="Netlify (PR preview URLs)"
+              label="Deploy previews"
+              sub="Netlify PR URLs"
               icon={<Waypoints className="h-4 w-4" />}
             />
             <Node
               label="Observability"
-              sub="Grafana / LGTM demos"
+              sub="Grafana / LGTM"
               icon={<BarChart3 className="h-4 w-4" />}
             />
           </div>
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 border-t border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] px-4 py-3 backdrop-blur">
-        <div className="text-xs text-[color:var(--color-text-secondary)]">
-          This portfolio is a working system, not a slide.
-        </div>
-        <div className="hidden text-xs text-[color:var(--color-text-secondary)] opacity-80 md:block">
-          Projects show outcomes. Writing shows thinking.
-        </div>
+      <div className="absolute inset-x-0 bottom-0 border-t border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-4 py-3">
+        <p className="text-xs text-[color:var(--color-text-secondary)]">
+          Netlify deploys production. Jenkins runs CI. Details on{' '}
+          <span className="text-[color:var(--color-text-primary)]">/systems</span>.
+        </p>
       </div>
     </div>
   );

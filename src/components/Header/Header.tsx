@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Github, Linkedin, Menu, X } from 'lucide-react';
 
 import SimpleThemeToggle from '@/components/ThemeToggle/SimpleThemeToggle';
@@ -13,10 +13,15 @@ import { safeExternalHref } from '@/lib/url';
 
 type NavItem = { href: string; label: string };
 
+function isNavActive(pathname: string, href: string): boolean {
+  return href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Header() {
   const pathname = usePathname() ?? '';
   const [open, setOpen] = useState(false);
   const [renderMobileMenu, setRenderMobileMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const nav: NavItem[] = [
     { href: '/', label: 'Home' },
@@ -51,18 +56,42 @@ export default function Header() {
       return;
     }
 
-    // Unmount after the close animation so the overlay can't steal taps on mobile.
     const t = window.setTimeout(() => setRenderMobileMenu(false), 220);
     return () => window.clearTimeout(t);
   }, [open]);
 
   useEffect(() => {
-    // Close mobile menu on navigation.
     setOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!open || !menuRef.current) return;
+
+    const panel = menuRef.current;
+    const focusable = panel.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab' || focusable.length === 0) return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    };
+
+    panel.addEventListener('keydown', onKeyDown);
+    return () => panel.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-[color:var(--color-border)] bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50">
+    <header className="sticky top-0 z-50 border-b border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)]">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-6 md:px-10">
         <Link href="/" className="group inline-flex items-center gap-3">
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-sm font-semibold text-[color:var(--color-text-primary)] shadow-sm transition-colors group-hover:bg-[color:var(--color-card-hover)]">
@@ -75,19 +104,15 @@ export default function Header() {
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
           {nav.map(item => {
-            const isActive =
-              item.href === '/'
-                ? pathname === '/'
-                : pathname === item.href || pathname.startsWith(`${item.href}/`);
+            const active = isNavActive(pathname, item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                aria-current={isActive ? 'page' : undefined}
+                aria-current={active ? 'page' : undefined}
                 className={cn(
                   'rounded-xl px-3 py-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition-colors hover:opacity-90',
-                  isActive &&
-                    'bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)]'
+                  active && 'bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)]'
                 )}
               >
                 {item.label}
@@ -119,6 +144,10 @@ export default function Header() {
 
           <SimpleThemeToggle className="hidden md:inline-flex" />
 
+          <Button variant="accent" size="sm" className="hidden md:inline-flex" asChild>
+            <Link href="/contact">Contact</Link>
+          </Button>
+
           <Button
             type="button"
             variant="glass"
@@ -134,7 +163,6 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {renderMobileMenu ? (
         <div
           className={cn(
@@ -145,16 +173,17 @@ export default function Header() {
         >
           <div
             className={cn(
-              'absolute inset-0 bg-black/55 backdrop-blur-sm transition-opacity duration-200',
+              'absolute inset-0 bg-black/50 transition-opacity duration-200',
               open ? 'opacity-100' : 'opacity-0'
             )}
             onClick={() => setOpen(false)}
           />
 
           <div
+            ref={menuRef}
             id="mobile-menu"
             className={cn(
-              'absolute right-0 top-0 h-full w-[86vw] max-w-sm border-l border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)] p-5 shadow-2xl transition-transform duration-200',
+              'absolute right-0 top-0 flex h-full w-[86vw] max-w-sm flex-col border-l border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)] p-5 shadow-lg transition-transform duration-200',
               open ? 'translate-x-0' : 'translate-x-full'
             )}
             onClick={e => e.stopPropagation()}
@@ -181,16 +210,33 @@ export default function Header() {
             </div>
 
             <div className="mt-5 grid gap-1">
-              {nav.map(item => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-4 py-3 text-sm font-medium text-[color:var(--color-text-primary)] shadow-sm hover:bg-[color:var(--color-card-hover)]"
-                >
-                  {item.label}
+              {nav.map(item => {
+                const active = isNavActive(pathname, item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={active ? 'page' : undefined}
+                    className={cn(
+                      'rounded-xl border px-4 py-3 text-sm font-medium transition-colors',
+                      active
+                        ? 'border-[color:var(--color-accent)]/30 bg-[color:var(--color-card-hover)] text-[color:var(--color-text-primary)]'
+                        : 'border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]'
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="mt-6">
+              <Button variant="accent" className="w-full" asChild>
+                <Link href="/contact" onClick={() => setOpen(false)}>
+                  Get in touch
                 </Link>
-              ))}
+              </Button>
             </div>
 
             <div className="mt-6 flex items-center gap-2">
@@ -221,8 +267,8 @@ export default function Header() {
               ) : null}
             </div>
 
-            <p className="mt-6 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
-              Short, high-signal notes on production-safe tooling. AI supports, systems decide.
+            <p className="mt-auto pt-6 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
+              Platform engineering portfolio.
             </p>
           </div>
         </div>
