@@ -41,11 +41,11 @@ portfolio_website-main/
 │   │   └── sitemap.ts      # /sitemap.xml (MetadataRoute)
 │   ├── pages/              # Pages Router (API routes only)
 │   │   └── api/            # /api/contact, /api/metrics
-│   ├── components/         # UI/components
+│   ├── components/         # UI/components (layout/, ui/, page components)
 │   ├── constants/          # Project + certification data
 │   ├── content/            # Profile/experience/skills content
-│   ├── lib/                # Utilities (blog parsing, URL sanitization, analytics)
-│   ├── styles/             # Global CSS + legacy styled-components
+│   ├── lib/                # Utilities (blog parsing, URL sanitization, analytics, prose)
+│   ├── styles/             # Global CSS tokens (`GlobalStyles.css`, `globals.css`)
 │   └── types/              # TypeScript definitions
 ├── docs/                  # Documentation
 ├── Dockerfile            # Container configuration
@@ -66,12 +66,12 @@ portfolio_website-main/
 
 ### Styling & UI
 
-- **Tailwind + CSS variables** - primary styling path for new UI
+- **Tailwind + CSS variables** — primary styling path for all UI
+- **Layout primitives** — `src/components/layout/` (`PageShell`, `SectionCard`, `SectionLabel`, `SectionHeader`, `ContentSection`)
 - **shadcn-inspired primitives** (`src/components/ui/*`) — Button (CVA), Badge (incl. `tech` variant), Card, Input
-- **Legacy styled-components** - still present in parts of the codebase (kept, not extended)
-- **framer-motion** - Animation library (respects `prefers-reduced-motion`)
-- **lucide-react** - Modern icon library
-- **react-icons** - Icon library for technology logos
+- **framer-motion** — Animation library (respects `prefers-reduced-motion`)
+- **lucide-react** — Modern icon library
+- **react-icons** — Icon library for technology logos
 
 ### Development Tools
 
@@ -90,15 +90,14 @@ portfolio_website-main/
 
 ### Theme Architecture
 
-The application uses a **dual CSS-variable** system with a legacy styled-components bridge:
+The application uses **CSS variables** in two complementary files:
 
 ```css
-/* GlobalStyles.css — legacy CSS variables */
+/* GlobalStyles.css — site tokens */
 :root {
   --color-accent: #0ea5e9; /* sky-500 */
-  --color-accent-hover: #38bdf8; /* sky-400 */
-  --color-bg: #0f1115;
-  --color-text: #e2e8f0;
+  --color-bg-primary: #0f1115;
+  --color-text-primary: #ffffff;
 }
 
 /* globals.css — shadcn-style HSL variables (dark class) */
@@ -109,9 +108,7 @@ The application uses a **dual CSS-variable** system with a legacy styled-compone
 }
 ```
 
-The styled-components `Theme` provider in `src/themes/default.ts` references these CSS variables, so both systems stay in sync automatically.
-
-UI primitives live in `src/components/ui/*` and use CVA (class-variance-authority) with a `cn()` helper (clsx + tailwind-merge):
+UI primitives live in `src/components/ui/*` and use CVA (class-variance-authority) with a `cn()` helper (clsx + tailwind-merge). Page structure uses shared layout components under `src/components/layout/`.
 
 ```typescript
 // src/components/ui/badge.tsx
@@ -131,31 +128,19 @@ const badgeVariants = cva('...base classes...', {
 
 - **Atoms**: Basic UI elements (Button, Badge, Input)
 - **Molecules**: Simple combinations (ProjectCard, TimelineItem)
-- **Organisms**: Complex sections (Hero, Projects, Timeline)
-- **Templates**: Page layouts (Layout, PageWrapper)
-- **Pages**: Complete pages (Home, Contact, Projects)
+- **Organisms**: Complex sections (HeroVisual, project grids, blog lists)
+- **Templates**: Page layouts (`PageShell`, `SectionCard`)
+- **Pages**: Complete pages (Home, Contact, Projects, Systems)
 
-#### Styled Components Pattern (Legacy)
+#### Layout pattern
 
-> For new components prefer Tailwind utilities with the shadcn primitives in `src/components/ui/*`.
+Use shared components from `src/components/layout/` rather than hand-rolling page wrappers:
 
 ```typescript
-// Component with typed props
-interface ButtonProps {
-  variant: 'primary' | 'secondary';
-  size: 'sm' | 'md' | 'lg';
-}
-
-const StyledButton = styled.button<ButtonProps>`
-  // Styled component implementation
-`;
-
-// Usage with proper typing
-const Button: React.FC<ButtonProps> = ({ variant, size, children }) => (
-  <StyledButton variant={variant} size={size}>
-    {children}
-  </StyledButton>
-);
+// PageShell + SectionCard example
+<PageShell eyebrow="Projects" title="All case studies" description="...">
+  <SectionCard>...</SectionCard>
+</PageShell>
 ```
 
 ## 🔄 Data Flow
