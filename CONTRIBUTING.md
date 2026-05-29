@@ -84,31 +84,30 @@ const Button: React.FC<ButtonProps> = ({ variant, size = 'md', children, onClick
 };
 ```
 
-### Styled Components (Legacy)
+### Styling (Tailwind)
 
-> **Note**: styled-components is a legacy layer in this codebase. For new components, prefer Tailwind utilities with shadcn-style primitives from `src/components/ui/*`.
-
-- **Type Safety**: Use TypeScript interfaces for styled component props
-- **Theme Integration**: Access theme values through props.theme
-- **Naming Convention**: Use descriptive names for styled components
+- **Tailwind + CSS variables** for all UI work
+- **Layout primitives** in `src/components/layout/` for page structure
+- **UI primitives** in `src/components/ui/*` (Button, Badge, Card, Input)
+- Use `cn()` from `src/lib/utils.ts` for class composition
 
 ```typescript
-interface StyledButtonProps {
-  variant: 'primary' | 'secondary';
-  size: 'sm' | 'md' | 'lg';
-}
-
-const StyledButton = styled.button<StyledButtonProps>`
-  background-color: ${props =>
-    props.variant === 'primary' ? props.theme.colors.primary : props.theme.colors.secondary};
-  font-size: ${props => props.theme.fontSizes[props.size]};
-`;
+// src/components/ui/button.tsx — CVA variants
+const buttonVariants = cva('...', {
+  variants: {
+    variant: {
+      accent: 'bg-[color:var(--color-accent)] ...',
+      glass: 'border ... bg-[color:var(--color-card-bg)] ...',
+    },
+  },
+});
 ```
 
 ### File Organization
 
 - **Component Files**: Use `.tsx` extension for React components
-- **Styled Components**: Use `.ts` extension for styled component files
+- **UI primitives**: `src/components/ui/*` (CVA + Tailwind)
+- **Layout primitives**: `src/components/layout/*`
 - **Type Definitions**: Use `.d.ts` extension for type definition files
 - **Directory Structure**: Follow the existing project structure
 

@@ -23,7 +23,7 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
   - Skills groupings: `src/content/skills.ts`
   - Profile/experience: `src/content/profile.ts`, `src/content/experience.ts`
   - Blog posts: `content/blog/*.mdx`
-- Styles/themes: `src/styles`, `src/themes`
+- Styles/themes: `src/styles` (`GlobalStyles.css`, `globals.css`)
 - Static assets: `public/` (images in `public/images`)
 
 ## Key Routes
@@ -170,3 +170,55 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
 - `bun run build`
 - Verify key pages render: `/`, `/projects`, `/blog`, `/systems` (and any new routes added).
 - If the change affects layout/styling: verify both desktop + mobile (responsive nav, no overflow, readable type).
+
+## Agent Skills
+
+Portable skill library: [Canepro/codex-skills](https://github.com/Canepro/codex-skills) at `~/src/codex-skills`.
+
+Skills install **globally for Cursor** (all projects) via bootstrap:
+
+```bash
+bash ~/src/codex-skills/scripts/bootstrap.sh
+```
+
+After install, Cursor reads skills from `~/.cursor/skills/<skill-name>/SKILL.md`. Use the `skill-library` skill for routing. Do not duplicate skills inside individual repos unless a project needs a one-off override.
+
+Refresh or verify:
+
+```bash
+bash ~/src/codex-skills/scripts/check-drift.sh
+```
+
+| When                                    | Skill                       |
+| --------------------------------------- | --------------------------- |
+| Any user-visible prose (mandatory pass) | `anti-ai-writing`           |
+| UI polish; avoid generic/template look  | `frontend-uncodixfy`        |
+| Pre-ship UX audit                       | `frontend-review`           |
+| Mobile/responsive layout                | `responsive-design`         |
+| Browser verification after UI changes   | `webapp-testing`            |
+| Component/token consistency             | `design-system-maintenance` |
+| GitHub Actions CI red on a PR           | `gh-fix-ci`                 |
+| PR review comments                      | `gh-address-comments`       |
+| Jenkins / multibranch pipeline failures | `ci-pipeline-triage`        |
+| Commit hooks / lint-staged              | `setup-pre-commit`          |
+| Post-task delivery notes                | `codex-closeout`            |
+| Discover or install new skills          | `find-skills`               |
+
+Project rule: `.cursor/rules/anti-ai-writing.mdc` (`alwaysApply: true`). For all Cursor workspaces, also paste `~/src/codex-skills/cursor-rules/USER-RULE-anti-ai.txt` into **Cursor Settings → Rules → User Rules**.
+
+Cursor built-in helpers (not in codex-skills): `babysit`, `split-to-prs`, `create-rule`, `create-hook` under `~/.cursor/skills-cursor/`.
+
+## Learned User Preferences
+
+- Aim for a professional, polished portfolio that stays engaging—not flat, boring, or generic template UI.
+- Reject generic AI portfolio patterns in copy and visuals; tighten user-facing text with a direct, factual tone (anti-AI pass when polishing).
+- Keep UI/UX consistent site-wide: shared layout primitives, unified spacing, hierarchy, and mobile behavior.
+- After copy or content tightening, continue with UI/UX and frontend consistency work rather than stopping at text-only edits.
+
+## Learned Workspace Facts
+
+- Frontend styling is Tailwind utilities plus CSS variables only; `styled-components` was removed from application code.
+- Use shared layout components under `src/components/layout/` (`PageShell`, `SectionCard`, `SectionLabel`, `SectionHeader`) for page structure consistency.
+- Long-form typography for blog and project markdown lives in `src/lib/prose.ts` (`proseClasses`).
+- Avoid AI-slop UI chrome: decorative blur/motion haze, badge/pill overload, shouty uppercase section eyebrows, and glass/backdrop-blur header treatments.
+- Agent skills: install globally via `bash ~/src/codex-skills/scripts/bootstrap.sh` into `~/.cursor/skills/`; run `check-drift.sh` if skills look stale.

@@ -1,0 +1,14 @@
+---
+description: Mandatory anti-AI pass on all user-visible prose
+alwaysApply: true
+---
+
+# Anti-AI writing (always on)
+
+Before finishing any user-visible text, read `~/.cursor/skills/anti-ai-writing/SKILL.md` and run its editing pass.
+
+Applies to: chat replies, README/docs, site copy, commit messages, PR bodies, comments, handoffs.
+
+Non-negotiables: point first; plain words; name the actor or evidence; no em dash or en dash; stop when the action is clear.
+
+Skip for code, configs, and types unless they contain user-facing strings.

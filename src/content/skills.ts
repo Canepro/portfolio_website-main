@@ -96,7 +96,6 @@ export const skillGroups: SkillGroup[] = [
       { name: 'React' },
       { name: 'TypeScript' },
       { name: 'Tailwind CSS' },
-      { name: 'styled-components' },
       { name: 'Accessibility' },
     ],
     evidence: [

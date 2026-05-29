@@ -420,11 +420,11 @@ bun run start
 - **Type Checking**: Real-time error detection
 - **Auto-completion**: Enhanced developer experience
 
-### Styled Components
+### Styling (Tailwind + CSS variables)
 
-- **Theme Integration**: CSS variables for theme switching
-- **Type Safety**: Proper prop typing for all components
-- **SSR Support**: Server-side rendering enabled
+- **Theme tokens**: `GlobalStyles.css` and `globals.css` (sky accent, dark charcoal base)
+- **UI primitives**: CVA variants in `src/components/ui/*`
+- **Layout**: Shared page structure in `src/components/layout/*`
 
 ## 📞 Support
 
