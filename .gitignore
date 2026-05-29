@@ -64,3 +64,6 @@ output/playwright/
 
 # Codex local workspace metadata
 .codex/
+
+# Cursor hook local runtime state (machine-specific; rules under .cursor/rules stay tracked)
+.cursor/hooks/state/
