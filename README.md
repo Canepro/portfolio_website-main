@@ -63,7 +63,7 @@ For PipelineHealer internals, use the architecture diagram in the project repo: 
 
 ## 📊 Advanced Monitoring & Analytics
 
-This portfolio demonstrates enterprise-grade monitoring capabilities through a sophisticated dual analytics system showcasing real-world DevOps engineering skills.
+This portfolio monitors itself. A dual analytics system pairs real user monitoring with a custom Prometheus exporter, so the site doubles as a working DevOps demo.
 
 ### 🎯 Dual Analytics Architecture
 
@@ -90,7 +90,7 @@ This implementation showcases:
 - **Modern Tech Stack** - Latest Grafana tools (Faro, Alloy, Cloud)
 - **Meta-Demonstration** - Portfolio monitors itself while visitors explore
 
-_The dual analytics provides both business insights and demonstrates advanced monitoring capabilities sought by DevOps organizations._
+_The dual setup gives real usage insight and shows the monitoring stack working end to end._
 
 ## 🚀 Quick Start
 
@@ -248,8 +248,8 @@ portfolio_website-main/
 ## 🎨 Design System
 
 - **Typography**: IBM Plex Sans (body) + IBM Plex Mono (code) via `next/font`, with CSS vars `--font-sans` / `--font-mono`
-- **Colors**: Single accent — sky-500 (`#0EA5E9`) on dark, sky-600 (`#0284C7`) on light. Dark theme base is charcoal/ink (`#0F1115`). No neon or haze gradients.
-- **Components**: shadcn-inspired primitives in `src/components/ui/*` — Button (CVA), Badge (incl. `tech` variant), Card, Input — with a `cn()` helper (clsx + tailwind-merge)
+- **Colors**: Single accent, sky-500 (`#0EA5E9`) on dark and sky-600 (`#0284C7`) on light. Dark theme base is charcoal/ink (`#0F1115`). No neon or haze gradients.
+- **Components**: shadcn-inspired primitives in `src/components/ui/*`: Button (CVA), Badge (incl. `tech` variant), Card, and Input, all using a `cn()` helper (clsx + tailwind-merge)
 - **Animations**: Minimal, meaningful motion via framer-motion; respects `prefers-reduced-motion`
 - **Responsive**: Mobile-first layout with consistent spacing and readable font sizes
 
