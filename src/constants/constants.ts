@@ -40,7 +40,7 @@ export const projects: Project[] = [
 - Produces deterministic findings for comparison and replay
 - Adds one constrained AI pass for explanation and triage prioritization
 - Keeps remediation out of scope while trust boundaries are established`,
-    image: '/images/rocketchat-logs-viewer-web-ui.png',
+    image: '/images/signalforge-home-real.png',
     tags: ['Python', 'React', 'TypeScript', 'Observability', 'OpenTelemetry', 'LLM'],
     category: 'DevOps',
     featured: true,

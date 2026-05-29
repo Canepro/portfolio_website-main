@@ -77,6 +77,12 @@ The design is deliberate:
 - produce operator-facing findings with a clear source trail
 - support bounded automation decisions instead of broad model autonomy
 
+## What it looks like
+
+![SignalForge run detail with ranked operator priorities, findings, and analysis metadata](/images/signalforge-run-real.png)
+
+![SignalForge compare view showing deterministic finding drift between two runs](/images/signalforge-compare-real.png)
+
 ## Why this is a flagship line
 
 The project pushes the same trust model used in production systems:
@@ -277,7 +283,7 @@ Centralized observability hub deployed on **Oracle Kubernetes Engine (OKE)** to 
       'Used Terraform for OCI/OKE lifecycle and ArgoCD for continuous reconciliation of the observability stack',
     ],
     impact:
-      'A centralized, secure observability platform for multi-environment telemetry, demonstrating SRE practices around secure ingestion, storage design, and operational readiness—with Terraform + ArgoCD patterns for repeatable infrastructure and application changes.',
+      'A centralized, secure observability platform for multi-environment telemetry, demonstrating SRE practices around secure ingestion, storage design, and operational readiness, with Terraform + ArgoCD patterns for repeatable infrastructure and application changes.',
     technologies: {
       Kubernetes: ['OKE', 'NGINX Ingress', 'cert-manager', 'Helm'],
       Observability: ['Grafana', 'Prometheus', 'Loki', 'Tempo', 'Alertmanager'],

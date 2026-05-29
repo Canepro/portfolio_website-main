@@ -32,7 +32,7 @@ export const experience: ExperienceItem[] = [
   },
   {
     company: 'Tek Experts',
-    role: 'Technical Lead – Cloud Engineering',
+    role: 'Technical Lead, Cloud Engineering',
     location: 'Lagos State, Nigeria',
     start: '2020-01',
     end: '2020-11',

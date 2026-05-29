@@ -6,8 +6,8 @@
 
 ## Series 1: PipelineHealer Hackathon Journey (7 posts)
 
-The AI Dev Days Hackathon runs Feb 10 – Mar 15, 2026. These posts document the journey
-of building PipelineHealer — an AI-powered multi-agent system that automatically detects,
+The AI Dev Days Hackathon runs Feb 10 to Mar 15, 2026. These posts document the journey
+of building PipelineHealer, an AI-powered multi-agent system that automatically detects,
 diagnoses, and fixes CI/CD pipeline failures.
 
 | #   | Title                                                                      | Target Publish            | Status       |
@@ -30,7 +30,7 @@ Real posts drawn from actual projects and repos.
 | --- | ------------------------------------------------------------------------------------ | ------------------------------------------ | ------- |
 | 8   | Building a Centralized Observability Stack: Prometheus + Grafana Across Environments | `central-observability-hub-stack`          | ❌ TODO |
 | 9   | Rocket.Chat on K3s: Running Enterprise Chat with Prometheus Agent                    | `rocketchat-k8s`                           | ❌ TODO |
-| 10  | I Inherited a Terraform Repo — Here's How I Reviewed and Hardened It                 | `Aws-3tier-Infrastructure-using-Terraform` | ❌ TODO |
+| 10  | I Inherited a Terraform Repo, Here's How I Reviewed and Hardened It                  | `Aws-3tier-Infrastructure-using-Terraform` | ❌ TODO |
 | 11  | Automating Linux Server Audits with Bash                                             | `server-audit-kit`                         | ❌ TODO |
 | 12  | My Portable DevOps Workstation: Tools That Follow Me Everywhere                      | `portable-lab-setup`                       | ❌ TODO |
 
@@ -66,7 +66,7 @@ tags: ['tag1', 'tag2']
 
 ## Notes
 
-- Hackathon series doubles as submission narrative — judges value documented thinking
+- Hackathon series doubles as submission narrative, judges value documented thinking
 - DevOps posts can reference GitHub repos directly for credibility
 - Quick Hits should be punchy, one-problem-one-lesson format
 - Aim for 1 post per week minimum during hackathon period
