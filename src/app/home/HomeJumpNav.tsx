@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 
 const jumps = [
   { href: '#projects', label: 'Projects' },
-  { href: '#experience', label: 'Experience' },
   { href: '#skills', label: 'Skills' },
   { href: '#writing', label: 'Writing' },
   { href: '#contact', label: 'Contact' },
