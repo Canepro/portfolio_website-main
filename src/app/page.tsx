@@ -8,7 +8,6 @@ import { SectionHeader, SectionHeaderMobileAction } from '@/components/layout/Se
 import { SectionCard } from '@/components/layout/SectionCard';
 import { SectionLabel } from '@/components/layout/SectionLabel';
 import ProjectPreviewCard from '@/components/Projects/ProjectPreviewCard';
-import { experience } from '@/content/experience';
 import { profile } from '@/content/profile';
 import { skillGroups } from '@/content/skills';
 import { getAllBlogPostsMeta } from '@/lib/blog';
@@ -22,7 +21,6 @@ export default function HomePage() {
   const posts = getAllBlogPostsMeta().slice(0, 2);
   const featured = projects.filter(p => p.featured).slice(0, 3);
   const featuredCerts = certifications.slice(0, 2);
-  const currentRole = experience[0];
   const githubHref = safeExternalHref(profile.links.github);
   const linkedinHref = safeExternalHref(profile.links.linkedin);
   const profileLeads = profile.summary;
@@ -41,13 +39,13 @@ export default function HomePage() {
       <PageSection spacing="none" className="max-w-none px-0">
         <div className="grid gap-10 md:grid-cols-2 md:items-stretch">
           <div className="border-l-2 border-[color:var(--color-accent)] pl-6">
-            <SectionLabel>Reliability engineer · UK</SectionLabel>
+            <SectionLabel>Agent systems engineer · UK</SectionLabel>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">
               {profile.name}
             </h1>
             <p className="mt-4 max-w-xl text-[color:var(--color-text-secondary)] leading-7">
-              I ship diagnostics and remediation for CI pipelines and Kubernetes platforms. Recent
-              work: PipelineHealer and SignalForge.
+              I build agent systems for engineering and operations. They trace each decision to
+              evidence, limit what they can change, and test the result.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -70,7 +68,7 @@ export default function HomePage() {
           <SectionCard padding="lg">
             <SectionLabel>Profile</SectionLabel>
             <h2 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
-              Platform work and incident tooling
+              Tools that explain each action
             </h2>
             <div className="mt-4 space-y-3 text-[color:var(--color-text-secondary)] leading-7">
               {profileLeads.map(p => (
@@ -78,8 +76,17 @@ export default function HomePage() {
               ))}
             </div>
             <p className="mt-4 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-              Day job: Microsoft 365 and Entra escalations at Softcat. Side projects cover CI
-              remediation, infra diagnostics, and the Kubernetes setup behind this site.
+              My current public work is{' '}
+              <a
+                href="https://github.com/Canepro/codex-skills"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
+              >
+                codex-skills
+              </a>
+              , a portable set of engineering workflows for Codex, Claude Code, Cursor, and
+              compatible agents.
             </p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
               {githubHref ? (
@@ -106,21 +113,25 @@ export default function HomePage() {
           </SectionCard>
 
           <div className="grid gap-4">
-            {currentRole ? (
-              <SectionCard>
-                <SectionLabel>Current role</SectionLabel>
-                <div className="mt-2 text-lg font-semibold tracking-tight">{currentRole.role}</div>
-                <div className="text-sm text-[color:var(--color-text-secondary)]">
-                  {currentRole.company}
-                  {currentRole.location ? ` · ${currentRole.location}` : null}
-                </div>
-                <ul className="mt-4 space-y-2 text-sm text-[color:var(--color-text-secondary)]">
-                  {currentRole.highlights.slice(0, 2).map(highlight => (
-                    <li key={highlight}>{highlight}</li>
-                  ))}
-                </ul>
-              </SectionCard>
-            ) : null}
+            <SectionCard>
+              <SectionLabel>Current work</SectionLabel>
+              <div className="mt-2 text-lg font-semibold tracking-tight">codex-skills</div>
+              <p className="mt-3 text-sm text-[color:var(--color-text-secondary)] leading-6">
+                Portable workflows for Kubernetes, GitOps, observability, CI investigation, and
+                verification.
+              </p>
+              <div className="mt-4">
+                <Button variant="glass" asChild>
+                  <a
+                    href="https://github.com/Canepro/codex-skills"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View repository
+                  </a>
+                </Button>
+              </div>
+            </SectionCard>
 
             <SectionCard>
               <SectionLabel>How I work</SectionLabel>
@@ -162,7 +173,7 @@ export default function HomePage() {
       <PageSection id="projects" className="max-w-none px-0">
         <SectionHeader
           title="Selected work"
-          description="PipelineHealer and SignalForge first. Other entries are platform depth."
+          description="Public tools for CI remediation, infrastructure diagnostics, and platform operations."
           action={{ href: '/projects', label: 'View all projects' }}
         />
 
@@ -173,55 +184,6 @@ export default function HomePage() {
         </div>
 
         <SectionHeaderMobileAction href="/projects" label="View all projects" />
-      </PageSection>
-
-      <PageSection id="experience" className="max-w-none px-0">
-        <SectionHeader
-          title="Experience"
-          description="Enterprise support and platform roles across cloud, CI/CD, and incident response."
-          action={
-            linkedinHref
-              ? { href: linkedinHref, label: 'Full history on LinkedIn', external: true }
-              : undefined
-          }
-        />
-
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
-          {experience.slice(0, 2).map(item => (
-            <SectionCard key={`${item.company}-${item.role}-${item.start}`}>
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <div className="text-sm text-[color:var(--color-text-secondary)]">
-                    {item.company}
-                  </div>
-                  <h3 className="mt-1 text-lg font-semibold tracking-tight">{item.role}</h3>
-                </div>
-                <div className="text-xs text-[color:var(--color-text-secondary)]">
-                  {item.start}
-                  {item.end ? ` – ${item.end}` : ' – Present'}
-                </div>
-              </div>
-              {item.location ? (
-                <div className="mt-1 text-xs text-[color:var(--color-text-secondary)]">
-                  {item.location}
-                </div>
-              ) : null}
-              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-[color:var(--color-text-secondary)]">
-                {item.highlights.slice(0, 2).map(h => (
-                  <li key={h}>{h}</li>
-                ))}
-              </ul>
-            </SectionCard>
-          ))}
-        </div>
-
-        {linkedinHref ? (
-          <SectionHeaderMobileAction
-            href={linkedinHref}
-            label="Full history on LinkedIn"
-            external
-          />
-        ) : null}
       </PageSection>
 
       <PageSection id="skills" className="max-w-none px-0">
