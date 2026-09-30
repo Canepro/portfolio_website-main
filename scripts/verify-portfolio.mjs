@@ -264,12 +264,18 @@ async function main() {
     return pages.get(path);
   };
 
-  const [home, projects, systems, blog] = await Promise.all([
+  const [home, projects, systems, blog, contact] = await Promise.all([
     load('/'),
     load('/projects'),
     load('/systems'),
     load('/blog'),
+    load('/contact'),
   ]);
+  if (home) checkCanonical('home', home, baseUrl, '/');
+  if (contact) {
+    checkCanonical('contact', contact, baseUrl, '/contact');
+    checkSocialTitles('contact', contact);
+  }
 
   const projectPaths = projects ? findProjectPaths(projects, baseUrl) : [];
   check(

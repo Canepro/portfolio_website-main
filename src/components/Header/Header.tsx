@@ -17,6 +17,7 @@ const nav = [
 export default function Header() {
   const pathname = usePathname() ?? '';
   const [open, setOpen] = useState(false);
+  const barRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -35,7 +36,10 @@ export default function Header() {
     const panel = panelRef.current;
     const opener = openerRef.current;
     const previousOverflow = document.body.style.overflow;
-    const backgrounds = Array.from(document.querySelectorAll<HTMLElement>('main, footer'));
+    const backgrounds = [
+      ...Array.from(document.querySelectorAll<HTMLElement>('main, footer, a[href="#content"]')),
+      ...(barRef.current ? [barRef.current] : []),
+    ];
     const wasInert = backgrounds.map(el => el.inert);
     backgrounds.forEach(el => {
       el.inert = true;
@@ -103,7 +107,10 @@ export default function Header() {
     });
   return (
     <header className="sticky top-0 z-50 border-b border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)]">
-      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-6 md:px-10">
+      <div
+        ref={barRef}
+        className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-6 md:px-10"
+      >
         <Link href="/" className="text-base font-medium tracking-tight">
           {profile.name}
         </Link>
