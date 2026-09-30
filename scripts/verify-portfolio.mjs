@@ -276,6 +276,7 @@ async function main() {
     check('404 does not claim the homepage canonical', canonicalHrefs(missing).length === 0);
   if (systems) {
     const links = anchorHrefs(systems);
+    // Keep this published permalink in the archive: the old tag filter silently dropped it.
     check(
       'archive includes the GitOps implementation notes',
       links.includes('/blog/2026-02-07-gitops-notes')
