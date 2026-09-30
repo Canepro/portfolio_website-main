@@ -308,8 +308,7 @@ Goal: upgrades become a single version bump instead of manifest rewrites.
 
 ## Links
 
-- **Deployment**: the hosted Argo CD environment has been retired.
-- **Deployment**: the hosted Rocket.Chat sandbox has been retired.
+- **Deployment**: the hosted Argo CD environment and Rocket.Chat sandbox have been retired.
 - **Source**: https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd
 
 ## Safety

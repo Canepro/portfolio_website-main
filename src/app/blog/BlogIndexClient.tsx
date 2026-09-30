@@ -68,7 +68,7 @@ export default function BlogIndexClient({
             ) : null}
           </select>
           <p className="text-sm text-[color:var(--color-text-secondary)]" aria-live="polite">
-            {filteredPosts.length} articles
+            {filteredPosts.length} {filteredPosts.length === 1 ? 'article' : 'articles'}
           </p>
         </div>
       ) : null}

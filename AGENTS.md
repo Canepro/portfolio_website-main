@@ -31,7 +31,7 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
 - Home: `/` (`src/app/page.tsx`)
 - Projects: `/projects` + `/projects/[slug]`
 - Blog: `/blog` + `/blog/[slug]` (MDX)
-- Systems overview: `/systems` (high-level portfolio infrastructure map; not per-project architecture docs)
+- Platform archive: `/systems` (retired hosted deployments and recorded evidence; current project architecture belongs in its case study)
 - Contact: `/contact`
 - Sitemap: `/sitemap.xml` (`src/app/sitemap.ts`)
 
@@ -56,7 +56,7 @@ The codebase uses Tailwind utilities (primary) with CSS variables in `GlobalStyl
 ### Design System
 
 - **Fonts**: IBM Plex Sans (body) + IBM Plex Mono (code) via `next/font` — CSS vars `--font-sans`, `--font-mono`.
-- **Accent color**: sky-500 (`#0EA5E9`) on dark, sky-600 (`#0284C7`) on light. Defined as `--color-accent` in `GlobalStyles.css` and `--accent` (HSL) in `globals.css`. Use this single accent for CTAs, active states, focus rings, link colors, and tag badges.
+- **Accent color**: sky-500 (`#0EA5E9`) on dark, sky-700 (`#0369A1`) on light. Defined as `--color-accent` in `GlobalStyles.css`; the shadcn `--accent` token is a separate surface token. Use `--color-accent` for CTAs, active states, focus rings, link colors, and tag badges.
 - **Dark theme**: charcoal/ink (`#0F1115` base). No neon, no purple/cyan haze gradients. Background radials are subtle and desaturated.
 - **UI primitives** (`src/components/ui/*`): `Button` (CVA), `Badge` (including `tech` variant for skill/tag chips), `Card` (rounded-2xl, hover transition), `Input` (sky-500 focus ring). Use these instead of hand-rolling markup.
 - **Helper**: `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge).
@@ -96,9 +96,9 @@ tags: ['optional', 'array', 'of', 'strings']
 
 - Every post should end with a reusable takeaway: a checklist, snippet, or pattern.
 - Cross-link to project pages (`/projects/<slug>`) where relevant.
-- Use [Systems](/systems) for portfolio infrastructure context (OKE/AKS/Jenkins/LGTM).
+- Use [Platform archive](/systems) for historical OKE/AKS/Jenkins/LGTM deployment context. Do not imply that current projects or the Netlify site are retired.
 - For PipelineHealer architecture references, link to `https://github.com/Canepro/pipelinehealer#architecture`.
-- Tags are used by the Systems page to surface related posts (tags like `gitops`, `kubernetes`, `ci-cd`, `observability` are ranked highest).
+- The Platform archive selects implementation notes tagged `gitops`, `argocd`, `jenkins`, `aks`, or `migration`. General Kubernetes and observability tags also describe current work and do not identify historical deployments.
 - MDX supports: headings (h1-h3), links (internal auto-use `next/link`, external open in new tab), ordered/unordered lists, blockquotes, inline `code`, and fenced code blocks.
 - Keep posts scannable: use headings to break up sections, bold for key phrases, and lists for enumerations. Recruiters skim.
 - Avoid walls of text. If a section has more than three consecutive paragraphs without a heading, list, or code block, break it up.
@@ -140,7 +140,7 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
   - Pipeline should be deterministic (`bun install --frozen-lockfile`) and run the three checks above.
   - Jenkins `sh` steps run under `/bin/sh` by default; avoid bash-only options like `set -o pipefail`.
   - On Kubernetes clusters enforcing short-name image resolution, keep agent images fully qualified (for example `docker.io/library/node:22-bullseye`).
-  - This Jenkins instance runs on Kubernetes (OKE) and uses Kubernetes agents; builds may run on arm64 nodes.
+  - The historical Jenkins deployment used Kubernetes (OKE) agents, including arm64 nodes. Its configuration remains as recorded source; do not assume the instance is running.
     - Any downloaded binaries used in CI must be architecture-aware (for example `hadolint`).
   - Docker portability is validated in CI:
     - Dockerfile lint via `hadolint` (downloaded per-build; arch-aware for arm64/amd64)
@@ -168,6 +168,7 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
 - `bun run lint`
 - `bun run typecheck`
 - `bun run build`
+- `bun run verify:portfolio` against the production build on a loopback server (`bun run start -- -H 127.0.0.1 -p 3100`).
 - Verify key pages render: `/`, `/projects`, `/blog`, `/systems` (and any new routes added).
 - If the change affects layout/styling: verify both desktop + mobile (responsive nav, no overflow, readable type).
 

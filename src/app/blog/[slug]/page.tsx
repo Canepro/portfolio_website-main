@@ -54,7 +54,7 @@ export default async function BlogPostPage({ params }: { params: ParamsPromise }
       width="narrow"
       title={post.meta.title}
       description={post.meta.description}
-      back={{ href: '/blog', label: 'Back to blog' }}
+      back={{ href: '/blog', label: 'Back to writing' }}
       meta={
         <time
           className="text-xs text-[color:var(--color-text-secondary)] opacity-80"
@@ -83,7 +83,7 @@ export default async function BlogPostPage({ params }: { params: ParamsPromise }
           href="/blog"
           className="text-sm font-medium text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
         >
-          ← All posts
+          ← All writing
         </Link>
       </footer>
     </PageShell>

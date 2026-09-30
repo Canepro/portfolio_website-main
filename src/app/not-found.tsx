@@ -15,13 +15,13 @@ export default function NotFound() {
           <Link href="/">Home</Link>
         </Button>
         <Button variant="glass" asChild>
-          <Link href="/projects">Projects</Link>
+          <Link href="/projects">Work</Link>
         </Button>
         <Button variant="glass" asChild>
-          <Link href="/systems">Systems</Link>
+          <Link href="/systems">Platform archive</Link>
         </Button>
         <Button variant="glass" asChild>
-          <Link href="/blog">Blog</Link>
+          <Link href="/blog">Writing</Link>
         </Button>
         <Button variant="glass" asChild>
           <Link href="/contact">Contact</Link>

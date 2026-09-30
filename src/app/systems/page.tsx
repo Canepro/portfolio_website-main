@@ -28,7 +28,7 @@ export default function SystemsPage() {
     p => p.deployment?.status === 'retired' && p.category === 'Cloud'
   );
   const posts = getAllBlogPostsMeta()
-    .filter(p => p.tags?.some(t => /gitops|kubernetes|observability|jenkins/i.test(t)))
+    .filter(p => p.tags?.some(t => /^(gitops|argocd|jenkins|aks|migration)$/i.test(t)))
     .slice(0, 3);
   const stages = [
     ['01', 'Provision', 'Terraform provisioned the OCI hub and workload environments.'],
@@ -106,7 +106,7 @@ export default function SystemsPage() {
                 {p.title}
               </Link>
               <p className="mt-1 text-sm text-[color:var(--color-text-secondary)]">
-                {p.date} · Historical implementation notes
+                {p.date} · Implementation notes
               </p>
             </li>
           ))}

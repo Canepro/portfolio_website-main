@@ -53,7 +53,7 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
   return (
     <PageShell
       width="wide"
-      back={{ href: '/projects', label: 'Back to projects' }}
+      back={{ href: '/projects', label: 'Back to work' }}
       title={project.title}
       meta={
         meta ? (
@@ -84,7 +84,11 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
             />
           </div>
         ) : (
-          <WorkflowFigure />
+          <WorkflowFigure
+            label={
+              project.slug === 'codex-skills' ? 'codex-skills / procedure library' : project.title
+            }
+          />
         )}
         <figcaption className="mt-3 max-w-3xl text-sm leading-6 text-[color:var(--color-text-secondary)]">
           {project.evidenceCaption ||

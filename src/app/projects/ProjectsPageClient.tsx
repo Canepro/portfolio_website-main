@@ -196,8 +196,12 @@ export default function ProjectsPageClient() {
 
       {filteredProjects.length > 0 ? (
         <div className="mt-10">
-          {filteredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+          {filteredProjects.map(project => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              priority={project === filteredProjects.find(p => p.media || p.image)}
+            />
           ))}
         </div>
       ) : (

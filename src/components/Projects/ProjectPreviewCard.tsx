@@ -4,12 +4,10 @@ import { safeExternalHref } from '@/lib/url';
 import type { Project } from '@/types/project';
 import { cn } from '@/lib/utils';
 
-export function WorkflowFigure() {
+export function WorkflowFigure({ label = 'Engineering workflow' }: { label?: string }) {
   return (
     <div className="grid min-h-52 content-center gap-5 bg-[color:var(--color-bg-secondary)] p-6 md:p-10">
-      <p className="font-mono text-xs text-[color:var(--color-text-secondary)]">
-        codex-skills / procedure library
-      </p>
+      <p className="font-mono text-xs text-[color:var(--color-text-secondary)]">{label}</p>
       <ol className="grid gap-3 text-lg md:grid-cols-3 md:gap-6">
         {['Read the source', 'Gather evidence', 'Verify the outcome'].map((step, i) => (
           <li key={step} className="border-t border-[color:var(--color-border)] pt-4">
@@ -65,7 +63,7 @@ export default function ProjectPreviewCard({
             href={href}
             className="font-medium underline decoration-[color:var(--color-accent)] underline-offset-4"
           >
-            Read case study ↗
+            Read case study <span aria-hidden="true">↗</span>
           </Link>
           {source ? (
             <a
@@ -90,7 +88,12 @@ export default function ProjectPreviewCard({
         </div>
       </div>
       <figure className="min-w-0">
-        <Link href={href} aria-label={`Read ${project.title} case study`} className="block">
+        <Link
+          href={href}
+          tabIndex={-1}
+          aria-label={`Read ${project.title} case study`}
+          className="block"
+        >
           {image ? (
             <div className="relative aspect-video bg-[color:var(--color-bg-secondary)]">
               <ProjectMedia
@@ -105,7 +108,11 @@ export default function ProjectPreviewCard({
               />
             </div>
           ) : (
-            <WorkflowFigure />
+            <WorkflowFigure
+              label={
+                project.slug === 'codex-skills' ? 'codex-skills / procedure library' : project.title
+              }
+            />
           )}
         </Link>
         <figcaption className="mt-3 max-w-xl text-xs leading-5 text-[color:var(--color-text-secondary)]">

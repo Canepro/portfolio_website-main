@@ -1,11 +1,12 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 
 type SectionHeaderProps = {
   title: string;
   description?: string;
-  action?: { href: string; label: string; external?: boolean };
+  action?: { href: string; label: ReactNode; external?: boolean };
   className?: string;
 };
 

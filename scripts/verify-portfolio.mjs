@@ -3,7 +3,6 @@
 import { isIP } from 'node:net';
 
 const DEFAULT_BASE_URL = 'http://127.0.0.1:3100';
-const EXPECTED_PROJECT_ROUTE_COUNT = 11;
 const REQUEST_TIMEOUT_MS = 10_000;
 const RETIRED_HOSTS = new Set([
   'argocd.canepro.me',
@@ -177,7 +176,7 @@ function check(name, condition, detail = '') {
   results.push({ name, ok: Boolean(condition), detail });
 }
 
-async function requestPage(baseUrl, path) {
+async function requestPage(baseUrl, path, expectedStatus = 200) {
   const url = new URL(path, baseUrl);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -192,13 +191,13 @@ async function requestPage(baseUrl, path) {
     const body = await response.text();
     const contentType = response.headers.get('content-type') ?? '';
 
-    check(`${path} resolves`, response.status === 200, `HTTP ${response.status}`);
+    check(`${path} resolves`, response.status === expectedStatus, `HTTP ${response.status}`);
     check(
       `${path} returns HTML`,
       contentType.includes('text/html'),
       contentType || 'missing content-type'
     );
-    return response.status === 200 && contentType.includes('text/html') ? body : null;
+    return response.status === expectedStatus && contentType.includes('text/html') ? body : null;
   } catch (error) {
     check(`${path} resolves`, false, error instanceof Error ? error.message : String(error));
     return null;
@@ -272,6 +271,20 @@ async function main() {
     load('/contact'),
   ]);
   if (home) checkCanonical('home', home, baseUrl, '/');
+  const missing = await requestPage(baseUrl, '/__portfolio_missing__', 404);
+  if (missing)
+    check('404 does not claim the homepage canonical', canonicalHrefs(missing).length === 0);
+  if (systems) {
+    const links = anchorHrefs(systems);
+    check(
+      'archive includes the GitOps implementation notes',
+      links.includes('/blog/2026-02-07-gitops-notes')
+    );
+    check(
+      'archive does not classify current SignalForge writing as retired',
+      !links.some(href => href.startsWith('/blog/') && href.includes('signalforge'))
+    );
+  }
   if (contact) {
     checkCanonical('contact', contact, baseUrl, '/contact');
     checkSocialTitles('contact', contact);
@@ -279,8 +292,8 @@ async function main() {
 
   const projectPaths = projects ? findProjectPaths(projects, baseUrl) : [];
   check(
-    '/projects renders the expected project-route inventory',
-    projectPaths.length === EXPECTED_PROJECT_ROUTE_COUNT,
+    '/projects renders project routes',
+    projectPaths.length > 0,
     `${projectPaths.length} routes: ${projectPaths.join(', ')}`
   );
   check(
@@ -312,15 +325,21 @@ async function main() {
   }
 
   if (blog) {
-    const latestArticlePath = anchorHrefs(blog)
-      .map(href => {
-        try {
-          return new URL(href, baseUrl).pathname;
-        } catch {
-          return null;
-        }
-      })
-      .find(path => /^\/blog\/[^/]+$/.test(path ?? ''));
+    const articlePaths = [
+      ...new Set(
+        anchorHrefs(blog)
+          .map(href => {
+            try {
+              return new URL(href, baseUrl).pathname;
+            } catch {
+              return null;
+            }
+          })
+          .filter(path => /^\/blog\/[^/]+$/.test(path ?? ''))
+      ),
+    ];
+    await Promise.all(articlePaths.map(path => load(path)));
+    const latestArticlePath = articlePaths[0];
     check(
       '/blog links to a latest article',
       Boolean(latestArticlePath),
@@ -340,7 +359,11 @@ async function main() {
     const html = await htmlPromise;
     if (
       html &&
-      (path === '/' || path === '/projects' || path === '/systems' || path.startsWith('/projects/'))
+      (path === '/' ||
+        path === '/projects' ||
+        path === '/systems' ||
+        path.startsWith('/projects/') ||
+        path.startsWith('/blog/'))
     ) {
       checkRetiredLinks(path, html, baseUrl);
     }

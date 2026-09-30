@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { PageSection } from '@/components/layout/PageShell';
 import { SectionHeader } from '@/components/layout/SectionHeader';
 import ProjectPreviewCard from '@/components/Projects/ProjectPreviewCard';
@@ -9,10 +10,12 @@ import { safeExternalHref } from '@/lib/url';
 import { certifications, projects } from '@/constants/constants';
 
 export const dynamic = 'force-static';
+export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 export default function HomePage() {
   const posts = getAllBlogPostsMeta().slice(0, 2);
   const featured = projects.filter(p => p.featured).slice(0, 3);
+  const firstImage = featured.find(p => p.media || p.image);
   const linkedin = safeExternalHref(profile.links.linkedin);
   return (
     <div className="mx-auto max-w-6xl px-6 pb-20 pt-12 md:px-10 md:pt-20">
@@ -41,7 +44,7 @@ export default function HomePage() {
               href="#projects"
               className="font-medium underline decoration-[color:var(--color-accent)] underline-offset-4"
             >
-              Explore the work ↓
+              Explore the work <span aria-hidden="true">↓</span>
             </a>
             <Link href="/contact" className="underline underline-offset-4">
               Contact
@@ -52,11 +55,18 @@ export default function HomePage() {
       <PageSection id="projects" spacing="none" className="max-w-none">
         <SectionHeader
           title="Selected work"
-          action={{ href: '/projects', label: 'All case studies ↗' }}
+          action={{
+            href: '/projects',
+            label: (
+              <>
+                All case studies <span aria-hidden="true">↗</span>
+              </>
+            ),
+          }}
         />
         <div className="mt-6">
-          {featured.map((p, i) => (
-            <ProjectPreviewCard key={p.slug} project={p} priority={i === 1} />
+          {featured.map(p => (
+            <ProjectPreviewCard key={p.slug} project={p} priority={p === firstImage} />
           ))}
         </div>
       </PageSection>
@@ -75,7 +85,7 @@ export default function HomePage() {
             proof. Those are separate outcomes, even when one tool handles both.
           </p>
           <Link href="/systems" className="inline-block text-base underline underline-offset-4">
-            Earlier platform and GitOps work ↗
+            Earlier platform and GitOps work <span aria-hidden="true">↗</span>
           </Link>
         </div>
       </PageSection>
@@ -98,14 +108,14 @@ export default function HomePage() {
                 const internal = e.href.startsWith('/');
                 const href = internal ? e.href : safeExternalHref(e.href);
                 return href ? (
-                  <a
+                  <Link
                     key={e.href}
                     href={href}
                     {...(!internal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                     className="mr-5 mt-3 inline-block text-sm underline underline-offset-4"
                   >
                     {e.label}
-                  </a>
+                  </Link>
                 ) : null;
               })}
             </div>
@@ -138,7 +148,17 @@ export default function HomePage() {
         </details>
       </PageSection>
       <PageSection id="writing" className="border-t border-[color:var(--color-border)] pt-10">
-        <SectionHeader title="Writing" action={{ href: '/blog', label: 'All writing ↗' }} />
+        <SectionHeader
+          title="Writing"
+          action={{
+            href: '/blog',
+            label: (
+              <>
+                All writing <span aria-hidden="true">↗</span>
+              </>
+            ),
+          }}
+        />
         <div className="mt-6 divide-y divide-[color:var(--color-border)]">
           {posts.map(p => (
             <article key={p.slug} className="grid gap-3 py-6 md:grid-cols-[0.8fr_1.2fr] md:gap-12">
@@ -189,7 +209,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="underline underline-offset-4"
               >
-                LinkedIn ↗
+                LinkedIn <span aria-hidden="true">↗</span>
               </a>
             ) : null}
             <Link href="/contact" className="underline underline-offset-4">

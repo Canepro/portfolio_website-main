@@ -124,7 +124,7 @@ export default function Header() {
             type="button"
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="hover:bg-[color:var(--color-bg-secondary)] md:hidden"
             aria-label="Open menu"
             aria-controls="mobile-menu"
             aria-expanded={open}
@@ -153,6 +153,7 @@ export default function Header() {
                 type="button"
                 variant="ghost"
                 size="icon"
+                className="hover:bg-[color:var(--color-bg-secondary)]"
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
               >
