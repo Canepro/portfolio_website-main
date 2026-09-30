@@ -6,9 +6,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { PageShell } from '@/components/layout/PageShell';
 import { SectionCard } from '@/components/layout/SectionCard';
-import { SectionLabel } from '@/components/layout/SectionLabel';
 import type { BlogPostMeta } from '@/lib/blog';
-import { cn } from '@/lib/utils';
 
 type TagCount = { tag: string; count: number };
 
@@ -44,46 +42,35 @@ export default function BlogIndexClient({
   return (
     <PageShell
       width="narrow"
-      eyebrow="Writing"
-      title="Blog"
-      description="Notes on DevOps, Kubernetes, CI/CD, and frontend work."
+      title="Writing"
+      description="Implementation notes, engineering decisions, and things that broke along the way."
       back={{ href: '/', label: 'Back home' }}
     >
       {tags.length > 0 ? (
-        <SectionCard className="mt-8" padding="md" hover={false}>
-          <SectionLabel>Filter by tag</SectionLabel>
-          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
-            <button
-              type="button"
-              onClick={() => setTag('all')}
-              aria-pressed={selectedTag === 'all'}
-              className={cn(
-                'text-sm',
-                selectedTag === 'all'
-                  ? 'font-semibold text-[color:var(--color-text-primary)] underline decoration-[color:var(--color-accent)] underline-offset-8'
-                  : 'text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]'
-              )}
-            >
-              All <span className="text-xs opacity-70">{posts.length}</span>
-            </button>
+        <div className="mt-8 flex flex-wrap items-center gap-4 border-b border-[color:var(--color-border)] pb-6">
+          <label htmlFor="writing-topic" className="text-sm">
+            Topic
+          </label>
+          <select
+            id="writing-topic"
+            value={selectedTag}
+            onChange={e => setTag(e.target.value)}
+            className="max-w-full rounded border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-3 py-2 text-sm"
+          >
+            <option value="all">All writing ({posts.length})</option>
             {tags.map(({ tag, count }) => (
-              <button
-                key={tag}
-                type="button"
-                onClick={() => setTag(tag)}
-                aria-pressed={selectedTag === tag}
-                className={cn(
-                  'text-sm',
-                  selectedTag === tag
-                    ? 'font-semibold text-[color:var(--color-text-primary)] underline decoration-[color:var(--color-accent)] underline-offset-8'
-                    : 'text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]'
-                )}
-              >
-                {tag} <span className="text-xs opacity-70">{count}</span>
-              </button>
+              <option key={tag} value={tag}>
+                {tag} ({count})
+              </option>
             ))}
-          </div>
-        </SectionCard>
+            {selectedTag !== 'all' && !tags.some(t => t.tag === selectedTag) ? (
+              <option value={selectedTag}>{selectedTag}</option>
+            ) : null}
+          </select>
+          <p className="text-sm text-[color:var(--color-text-secondary)]" aria-live="polite">
+            {filteredPosts.length} articles
+          </p>
+        </div>
       ) : null}
 
       <div className="mt-10 space-y-4">
@@ -104,7 +91,7 @@ export default function BlogIndexClient({
           filteredPosts.map(p => (
             <SectionCard key={p.slug} padding="md">
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <h2 className="text-xl font-semibold tracking-tight">
+                <h2 className="text-2xl font-medium tracking-tight">
                   <Link
                     href={`/blog/${encodeURIComponent(p.slug)}`}
                     className="underline-offset-4 hover:underline"
@@ -120,7 +107,7 @@ export default function BlogIndexClient({
                 </time>
               </div>
               {p.description ? (
-                <p className="mt-2 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+                <p className="mt-3 text-base leading-7 text-[color:var(--color-text-secondary)]">
                   {p.description}
                 </p>
               ) : null}

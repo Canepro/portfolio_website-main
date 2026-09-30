@@ -1,4 +1,3 @@
-import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 type SectionCardProps = {
@@ -21,8 +20,14 @@ export function SectionCard({
   hover = true,
 }: SectionCardProps) {
   return (
-    <Card className={cn(!hover && 'hover:bg-[color:var(--color-card-bg)]', className)}>
-      <CardContent className={paddingMap[padding]}>{children}</CardContent>
-    </Card>
+    <div
+      className={cn(
+        'border-t border-[color:var(--color-border)]',
+        hover && 'transition-colors',
+        className
+      )}
+    >
+      <div className={cn(paddingMap[padding], 'px-0')}>{children}</div>
+    </div>
   );
 }

@@ -2,6 +2,8 @@
 
 import React, { type ChangeEvent, type FormEvent, useEffect, useRef, useState } from 'react';
 
+import { profile } from '@/content/profile';
+import { safeExternalHref } from '@/lib/url';
 import { PageShell } from '@/components/layout/PageShell';
 import { SectionCard } from '@/components/layout/SectionCard';
 import { Button } from '@/components/ui/button';
@@ -52,10 +54,24 @@ export default function ContactClient() {
   return (
     <PageShell
       width="narrow"
-      eyebrow="Contact"
-      title="Get in touch"
+      title="Contact"
       description="Send a message below. A repo link, job description, or error log helps."
     >
+      <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+        <a href={`mailto:${profile.email}`} className="break-all underline underline-offset-4">
+          {profile.email}
+        </a>
+        {safeExternalHref(profile.links.linkedin) ? (
+          <a
+            href={safeExternalHref(profile.links.linkedin)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4"
+          >
+            LinkedIn
+          </a>
+        ) : null}
+      </div>
       <SectionCard className="mt-10" padding="lg">
         <form onSubmit={onSubmit} className="grid gap-5" aria-describedby="contact-form-status">
           <div>

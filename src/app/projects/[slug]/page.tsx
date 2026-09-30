@@ -22,6 +22,18 @@ export async function generateMetadata({ params }: { params: ParamsPromise }): P
     title: project.title,
     description: project.description,
     alternates: { canonical: `/projects/${project.slug}` },
+    openGraph: {
+      title: project.title,
+      description: project.description,
+      url: `/projects/${project.slug}`,
+      images: project.image ? [{ url: project.image, alt: project.title }] : [],
+    },
+    twitter: {
+      card: project.image ? 'summary_large_image' : 'summary',
+      title: project.title,
+      description: project.description,
+      images: project.image ? [project.image] : [],
+    },
   };
 }
 

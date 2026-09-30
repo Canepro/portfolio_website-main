@@ -27,7 +27,7 @@ export function PageShell({
   const maxWidth = width === 'narrow' ? 'max-w-3xl' : 'max-w-6xl';
 
   return (
-    <div className={cn('px-6 py-10 md:px-10', className)}>
+    <div className={cn('px-6 py-12 md:px-10 md:py-16', className)}>
       <div className={cn('mx-auto', maxWidth)}>
         {(back || meta) && (
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -49,7 +49,7 @@ export function PageShell({
           {eyebrow ? <SectionLabel className="mt-0">{eyebrow}</SectionLabel> : null}
           <h1
             className={cn(
-              'text-4xl font-semibold tracking-tight md:text-5xl',
+              'text-4xl font-medium leading-tight tracking-tight md:text-5xl',
               eyebrow ? 'mt-4' : undefined
             )}
           >

@@ -3,9 +3,7 @@ import type { ProjectDetail } from '../types/project';
 export const projectDetails: Record<string, ProjectDetail> = {
   pipelinehealer: {
     slug: 'pipelinehealer',
-    longDescription: `## Overview
-
-PipelineHealer handles failed GitHub Actions and Jenkins runs.
+    longDescription: `PipelineHealer handles failed GitHub Actions and Jenkins runs.
 
 1. Ingest the failure from the provider.
 2. Normalize it into diagnostics.
@@ -20,7 +18,7 @@ PipelineHealer handles failed GitHub Actions and Jenkins runs.
 
 ## Links
 
-- **Live demo:** https://ca-canepro-ph-frontend.kinddune-53ac219d.eastus2.azurecontainerapps.io
+- **Deployment:** the hosted demo has been retired; recorded screenshots document the interface.
 - **Source:** https://github.com/Canepro/pipelinehealer
 
 Auto-fix runs only when the failure maps to a known safe change. Everything else becomes a reviewable issue with run context attached.`,
@@ -48,9 +46,7 @@ Auto-fix runs only when the failure maps to a known safe change. Everything else
   },
   signalforge: {
     slug: 'signalforge',
-    longDescription: `## Overview
-
-SignalForge collects infra snapshots and telemetry, ranks findings, and adds an optional AI summary for triage.
+    longDescription: `SignalForge collects infra snapshots and telemetry, ranks findings, and adds an optional AI summary for triage.
 
 1. Ingest artifacts from observability and platform systems.
 2. Normalize them into comparable findings.
@@ -96,9 +92,7 @@ SignalForge collects infra snapshots and telemetry, ranks findings, and adds an 
   },
   'rocketchat-app-logs-viewer': {
     slug: 'rocketchat-app-logs-viewer',
-    longDescription: `## Overview
-
-Rocket.Chat app for log triage during incidents.
+    longDescription: `Rocket.Chat app for log triage during incidents.
 
 - **Loki/Grafana** stay the observability backend
 - **\`/logs\`** slash command with room and thread context
@@ -144,16 +138,14 @@ Rocket.Chat app for log triage during incidents.
   },
   'hybrid-cloud-gitops-control-plane': {
     slug: 'hybrid-cloud-gitops-control-plane',
-    longDescription: `## Overview
-
-Hub-and-spoke GitOps: **OCI OKE (hub)** manages a **remote K3s cluster (spoke)** from one Git repository.
+    longDescription: `Hub-and-spoke GitOps: **OCI OKE (hub)** manages a **remote K3s cluster (spoke)** from one Git repository.
 
 - **Terraform** provisions OCI resources and cluster primitives
 - **Argo CD** reconciles application and observability state from Git
 
 ## Always Free constraints
 
-Runs the LGTM stack (Loki, Grafana, Tempo, Mimir) within an OCI Always Free **200GB storage** budget.
+The deployment ran the LGTM stack (Loki, Grafana, Tempo, Mimir) within an OCI Always Free **200GB storage** budget.
 
 - Persistent volumes only where state matters
 - Ephemeral \`emptyDir\` for transient components such as Alertmanager
@@ -166,7 +158,7 @@ Runs the LGTM stack (Loki, Grafana, Tempo, Mimir) within an OCI Always Free **20
 
 ## Links
 
-- **Argo CD UI**: https://argocd.canepro.me *(authentication required)*
+- **Deployment**: the hosted Argo CD environment has been retired.
 - **Source**: https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd
 
 ## Cost and recovery
@@ -200,14 +192,11 @@ Runs the LGTM stack (Loki, Grafana, Tempo, Mimir) within an OCI Always Free **20
   },
   'central-observability-hub-stack': {
     slug: 'central-observability-hub-stack',
-    longDescription: `## Overview
+    longDescription: `Centralized observability hub deployed on **Oracle Kubernetes Engine (OKE)** to aggregate **metrics, logs, and traces** from multiple environments into one place.
 
-Centralized observability hub deployed on **Oracle Kubernetes Engine (OKE)** to aggregate **metrics, logs, and traces** from multiple environments into one place.
+## Deployment status
 
-## Live Demo (Grafana)
-
-- **Grafana**: https://grafana.canepro.me (**authentication required**)
-- Access can be provided **on request**.
+The hosted Grafana environment has been retired. Source and recorded dashboards remain as evidence of the build.
 
 ## Stack
 
@@ -259,17 +248,15 @@ Centralized observability hub deployed on **Oracle Kubernetes Engine (OKE)** to 
   },
   'rocketchat-kubernetes-enterprise': {
     slug: 'rocketchat-kubernetes-enterprise',
-    longDescription: `## Overview
-
-Sandbox Rocket.Chat deployment on Kubernetes designed for hands-on platform operations and SRE-style troubleshooting workflows.
+    longDescription: `Sandbox Rocket.Chat deployment on Kubernetes designed for hands-on platform operations and SRE-style troubleshooting workflows.
 
 ## Source
 
 - Repo: https://github.com/Canepro/rocketchat-k8s
 
-## Sandbox access (best effort)
+## Deployment status
 
-- https://k8.canepro.me *(availability may vary)*
+The hosted sandbox has been retired. This case study describes the earlier deployment.
 
 ## What is included
 
@@ -305,9 +292,7 @@ Sandbox/lab environment. No production SLO or uptime claim.`,
   },
   'rocketchat-microservices-migration': {
     slug: 'rocketchat-microservices-migration',
-    longDescription: `## Overview
-
-GitOps migration for Rocket.Chat: static manifests replaced with Argo CD + Helm.
+    longDescription: `GitOps migration for Rocket.Chat: static manifests replaced with Argo CD + Helm.
 
 Goal: upgrades become a single version bump instead of manifest rewrites.
 
@@ -323,8 +308,8 @@ Goal: upgrades become a single version bump instead of manifest rewrites.
 
 ## Links
 
-- **Argo CD UI**: https://argocd.canepro.me *(authentication required)*
-- **Rocket.Chat**: https://k8.canepro.me *(best effort)*
+- **Deployment**: the hosted Argo CD environment has been retired.
+- **Deployment**: the hosted Rocket.Chat sandbox has been retired.
 - **Source**: https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd
 
 ## Safety

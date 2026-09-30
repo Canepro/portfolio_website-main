@@ -24,6 +24,16 @@ export async function generateMetadata({ params }: { params: ParamsPromise }): P
     return {
       title: meta.title,
       description: meta.description,
+      alternates: { canonical: `/blog/${slug}` },
+      openGraph: {
+        type: 'article',
+        title: meta.title,
+        description: meta.description,
+        url: `/blog/${slug}`,
+        publishedTime: meta.date,
+        images: [],
+      },
+      twitter: { card: 'summary', title: meta.title, description: meta.description, images: [] },
     };
   } catch {
     return {};

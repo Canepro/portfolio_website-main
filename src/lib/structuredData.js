@@ -86,9 +86,9 @@ export const projectStructuredData = project => ({
   },
   programmingLanguage: project.tags,
   codeRepository: project.source,
-  url: project.visit,
+  url: `https://portfolio.canepro.me/projects/${encodeURIComponent(project.slug)}`,
   applicationCategory: project.category,
-  image: `https://portfolio.canepro.me${project.image}`,
+  ...(project.image ? { image: `https://portfolio.canepro.me${project.image}` } : {}),
   dateCreated: '2024',
   inLanguage: 'en-GB',
 });

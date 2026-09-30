@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 /** Shared long-form typography for markdown / MDX surfaces. */
 export const proseClasses = cn(
-  'text-sm leading-7 text-[color:var(--color-text-secondary)] md:text-base md:leading-8',
+  'text-base leading-8 text-[color:var(--color-text-secondary)] md:text-lg md:leading-8',
   '[&_h2]:mt-10 [&_h2]:mb-3 [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-[color:var(--color-text-primary)]',
   '[&_h3]:mt-8 [&_h3]:mb-2 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:tracking-tight [&_h3]:text-[color:var(--color-text-primary)]',
   '[&_h4]:mt-6 [&_h4]:mb-2 [&_h4]:text-lg [&_h4]:font-semibold [&_h4]:text-[color:var(--color-text-primary)]',

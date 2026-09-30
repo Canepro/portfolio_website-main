@@ -7,9 +7,23 @@ import { getAllBlogPostsMeta, getBlogTagsWithCounts } from '@/lib/blog';
 export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
-  title: 'Blog',
-  description: 'Notes on DevOps, Kubernetes, CI/CD, and frontend work.',
+  title: 'Writing',
+  description: 'Implementation notes, engineering decisions, and things that broke along the way.',
   alternates: { canonical: '/blog' },
+  openGraph: {
+    title: 'Writing',
+    description:
+      'Implementation notes, engineering decisions, and things that broke along the way.',
+    url: '/blog',
+    images: [],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Writing',
+    description:
+      'Implementation notes, engineering decisions, and things that broke along the way.',
+    images: [],
+  },
 };
 
 export default function BlogIndexPage() {

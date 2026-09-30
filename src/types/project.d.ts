@@ -11,6 +11,9 @@ export interface Project {
   source?: string;
   visit?: string;
   id: number;
+  year?: string;
+  evidenceCaption?: string;
+  deployment?: { status: 'retired' | 'live'; note: string };
   challenges?: string[];
   solutions?: string[];
   impact?: string;

@@ -2,6 +2,37 @@ import type { Project } from '../types/project';
 
 export const projects: Project[] = [
   {
+    title: 'Portable agent workflows',
+    slug: 'codex-skills',
+    description:
+      'A public library of engineering procedures for coding agents: investigate from source, keep permissions explicit, and verify the result.',
+    longDescription: `Coding agents need more than a task description when they operate on unfamiliar systems. They need the right investigation procedure, an explicit permission boundary, and a way to check their work.
+
+I built codex-skills as a portable library of those procedures. The public source covers Kubernetes, GitOps, observability, CI investigation, and verification.
+
+## Design decisions
+
+- Package supporting scripts and references with procedures where needed.
+- Use shared installation, sync, and drift checks across compatible agent surfaces.
+- Detect drift between source and installed skills.
+- Leave vendor-specific workflows with their installed integrations, and generic defaults with the runtime and repository.
+
+## Evidence and limits
+
+The repository includes the procedures, installation scripts, and drift checks. These are inspectable source artifacts; they are not a claim that every workflow has been measured across every agent or deployment.
+
+[Read the source and installation instructions](https://github.com/Canepro/codex-skills).`,
+    image: '',
+    tags: ['Agent workflows', 'Verification', 'Kubernetes', 'GitOps', 'CI', 'Automation'],
+    category: 'DevOps',
+    featured: true,
+    source: 'https://github.com/Canepro/codex-skills',
+    evidenceCaption:
+      'Workflow illustration. The procedures and installation checks are available in the public repository.',
+    year: 'Updated Sep 2026',
+    id: 10,
+  },
+  {
     title: 'PipelineHealer',
     slug: 'pipelinehealer',
     description:
@@ -26,12 +57,19 @@ export const projects: Project[] = [
     category: 'DevOps',
     featured: true,
     source: 'https://github.com/Canepro/pipelinehealer',
-    visit: 'https://ca-canepro-ph-frontend.kinddune-53ac219d.eastus2.azurecontainerapps.io',
+    deployment: {
+      status: 'retired',
+      note: 'The hosted demo has been retired. Source and recorded screenshots remain available.',
+    },
+    evidenceCaption:
+      'Recorded PipelineHealer dashboard: run diagnostics and remediation state. This is not a live deployment.',
     id: 7,
   },
   {
     title: 'SignalForge',
     slug: 'signalforge',
+    evidenceCaption:
+      'Recorded SignalForge interface. The source documents artifact ingestion, finding comparison, and optional AI analysis.',
     description:
       'Collects infra snapshots and telemetry, ranks findings, and adds an optional AI summary for triage.',
     longDescription: `Infrastructure diagnostics for platform teams.
@@ -81,7 +119,10 @@ export const projects: Project[] = [
     category: 'Cloud',
     featured: false,
     source: 'https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd',
-    visit: 'https://argocd.canepro.me',
+    deployment: {
+      status: 'retired',
+      note: 'Historical deployment. The hosted environment has been retired; source and recorded evidence remain available.',
+    },
     id: 5,
   },
   {
@@ -98,7 +139,7 @@ export const projects: Project[] = [
 - Ingress: NGINX Ingress and cert-manager TLS
 - Operations: Argo CD reconciliation for day-2 changes
 
-Grafana access requires authentication (available on request).`,
+The hosted Grafana deployment has been retired. The repository and screenshots document the build.`,
     image: '/images/grafana_k8s_dashboard.png',
     tags: [
       'Kubernetes',
@@ -113,9 +154,12 @@ Grafana access requires authentication (available on request).`,
       'ArgoCD',
     ],
     category: 'Cloud',
-    featured: true,
+    featured: false,
     source: 'https://github.com/Canepro/central-observability-hub-stack',
-    visit: 'https://grafana.canepro.me',
+    deployment: {
+      status: 'retired',
+      note: 'Historical deployment. The hosted environment has been retired; source and recorded evidence remain available.',
+    },
     id: 4,
   },
   {
@@ -131,7 +175,7 @@ Grafana access requires authentication (available on request).`,
 - External secrets (Key Vault-backed)
 - Scheduled scale-down/scale-up for cost control
 
-Sandbox URL (may be down): https://k8.canepro.me`,
+The hosted sandbox has been retired. Source and recorded evidence remain available.`,
     image: '/images/new_dashboard&rocketchatGif.gif',
     tags: [
       'Kubernetes',
@@ -149,7 +193,10 @@ Sandbox URL (may be down): https://k8.canepro.me`,
     category: 'Cloud',
     featured: false,
     source: 'https://github.com/Canepro/rocketchat-k8s',
-    visit: 'https://k8.canepro.me',
+    deployment: {
+      status: 'retired',
+      note: 'Historical deployment. The hosted environment has been retired; source and recorded evidence remain available.',
+    },
     id: 0,
   },
   {
@@ -177,7 +224,10 @@ Sandbox URL (may be down): https://k8.canepro.me`,
     category: 'DevOps',
     featured: false,
     source: 'https://github.com/Canepro/central-observability-hub-stack/tree/main/argocd',
-    visit: 'https://argocd.canepro.me',
+    deployment: {
+      status: 'retired',
+      note: 'Historical deployment. The hosted environment has been retired; source and recorded evidence remain available.',
+    },
     id: 6,
   },
   {
@@ -194,7 +244,6 @@ Sandbox URL (may be down): https://k8.canepro.me`,
     category: 'DevOps',
     featured: false,
     source: 'https://github.com/Canepro/rocketchat-log-analyzer',
-    visit: 'https://github.com/Canepro/rocketchat-log-analyzer',
     id: 1,
   },
   {
@@ -211,7 +260,6 @@ Sandbox URL (may be down): https://k8.canepro.me`,
     category: 'Cloud',
     featured: false,
     source: 'https://github.com/Canepro/MyTerraform_Templates',
-    visit: 'https://github.com/Canepro/MyTerraform_Templates',
     id: 2,
   },
   {
@@ -230,7 +278,6 @@ Sandbox URL (may be down): https://k8.canepro.me`,
     category: 'DevOps',
     featured: false,
     source: 'https://github.com/Canepro/maven-jenkins-cicd-docker-eks-project',
-    visit: 'https://github.com/Canepro/maven-jenkins-cicd-docker-eks-project',
     id: 3,
   },
 ];

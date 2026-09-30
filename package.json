@@ -12,7 +12,8 @@
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "prepare": "node scripts/prepare-husky.js"
+    "prepare": "node scripts/prepare-husky.js",
+    "verify:portfolio": "node scripts/verify-portfolio.mjs"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.0",

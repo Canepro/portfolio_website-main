@@ -22,12 +22,12 @@
 
 /* Light theme */
 html.light-theme {
-  --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F7F8FA;
+  --color-bg-primary: #FAF9F6;
+  --color-bg-secondary: #F0EFEB;
   --color-text-primary: #0F1624;
   --color-text-secondary: rgba(15, 22, 36, 0.75);
-  --color-accent: #0284C7;
-  --color-accent-secondary: #0284C7;
+  --color-accent: #0369A1;
+  --color-accent-secondary: #0369A1;
   --color-card-bg: rgba(0, 0, 0, 0.03);
   --color-card-hover: rgba(0, 0, 0, 0.06);
   --color-border: rgba(0, 0, 0, 0.1);
@@ -202,4 +202,14 @@ html.light-theme .image-shimmer {
   body.mobile-nav-open iframe[src*='livechat'] {
     visibility: hidden !important;
   }
+}
+
+/* Shared keyboard and reading treatment for the editorial layout. */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+main { overflow-wrap: break-word; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
