@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 function hasLiveDemo(project: Project): boolean {
+  if (project.deployment?.status !== 'live') return false;
   if (typeof project.visit !== 'string') return false;
   if (!/^https?:\/\//i.test(project.visit)) return false;
   if (/github\.com/i.test(project.visit)) return false;
@@ -90,9 +91,8 @@ export default function ProjectsPageClient() {
 
   return (
     <PageShell
-      eyebrow="Projects"
-      title="All case studies"
-      description="Case studies and builds across platform engineering, observability, automation, and frontend work."
+      title="Work"
+      description="Agent workflows, CI remediation, infrastructure diagnostics, and earlier platform work."
     >
       {liveOnly ? (
         <div className="mt-6 flex flex-wrap items-center gap-2 text-sm text-[color:var(--color-text-secondary)]">
@@ -111,7 +111,7 @@ export default function ProjectsPageClient() {
       ) : null}
 
       <SectionCard className="mt-8" padding="lg">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-start">
+        <div className="grid gap-5 md:grid-cols-2 md:items-start">
           <div>
             <label
               htmlFor="projects-search"
@@ -132,9 +132,6 @@ export default function ProjectsPageClient() {
               aria-label="Search projects"
               className="mt-3 h-11"
             />
-            <p className="mt-3 text-sm text-[color:var(--color-text-secondary)]">
-              Filter by title, stack, or problem area.
-            </p>
           </div>
 
           <div>
@@ -198,18 +195,24 @@ export default function ProjectsPageClient() {
       </SectionCard>
 
       {filteredProjects.length > 0 ? (
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {filteredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+        <div className="mt-10">
+          {filteredProjects.map(project => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              priority={project === filteredProjects.find(p => p.media || p.image)}
+            />
           ))}
         </div>
       ) : (
         <SectionCard className="mt-10 text-center" padding="lg" hover={false}>
           <div className="text-lg font-semibold text-[color:var(--color-text-primary)]">
-            No projects found
+            {liveOnly ? 'No hosted demos currently available' : 'No projects found'}
           </div>
           <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] opacity-80">
-            Try adjusting your search or filters.
+            {liveOnly
+              ? 'The hosted environments have been retired. Source and recorded evidence remain in the case studies.'
+              : 'Try adjusting your search or filters.'}
           </p>
         </SectionCard>
       )}

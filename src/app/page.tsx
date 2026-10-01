@@ -1,335 +1,222 @@
 import Link from 'next/link';
-import { Mail } from 'lucide-react';
-
-import HeroVisual from '@/app/home/HeroVisual';
-import HomeJumpNav from '@/app/home/HomeJumpNav';
+import type { Metadata } from 'next';
 import { PageSection } from '@/components/layout/PageShell';
-import { SectionHeader, SectionHeaderMobileAction } from '@/components/layout/SectionHeader';
-import { SectionCard } from '@/components/layout/SectionCard';
-import { SectionLabel } from '@/components/layout/SectionLabel';
+import { SectionHeader } from '@/components/layout/SectionHeader';
 import ProjectPreviewCard from '@/components/Projects/ProjectPreviewCard';
 import { profile } from '@/content/profile';
 import { skillGroups } from '@/content/skills';
 import { getAllBlogPostsMeta } from '@/lib/blog';
 import { safeExternalHref } from '@/lib/url';
 import { certifications, projects } from '@/constants/constants';
-import { Button } from '@/components/ui/button';
 
 export const dynamic = 'force-static';
+export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 export default function HomePage() {
   const posts = getAllBlogPostsMeta().slice(0, 2);
   const featured = projects.filter(p => p.featured).slice(0, 3);
-  const featuredCerts = certifications.slice(0, 2);
-  const githubHref = safeExternalHref(profile.links.github);
-  const linkedinHref = safeExternalHref(profile.links.linkedin);
-  const profileLeads = profile.summary;
-  type CertificationWithHref = (typeof featuredCerts)[number] & { href: string };
-  const featuredCertsSafe: CertificationWithHref[] = featuredCerts
-    .map(c => ({ ...c, href: safeExternalHref(c.link) }))
-    .filter((c): c is CertificationWithHref => Boolean(c.href));
-  const workPrinciples = [
-    'Fix the runbook before adding automation.',
-    'If I cannot replay the diagnosis, the tool is not ready.',
-    'Escalation stays human until the policy is obvious.',
-  ];
-
+  const firstImage = featured.find(p => p.media || p.image);
+  const linkedin = safeExternalHref(profile.links.linkedin);
   return (
-    <div className="mx-auto max-w-6xl px-6 py-10 md:px-10">
-      <PageSection spacing="none" className="max-w-none px-0">
-        <div className="grid gap-10 md:grid-cols-2 md:items-stretch">
-          <div className="border-l-2 border-[color:var(--color-accent)] pl-6">
-            <SectionLabel>Agent systems engineer · UK</SectionLabel>
-            <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">
-              {profile.name}
-            </h1>
-            <p className="mt-4 max-w-xl text-[color:var(--color-text-secondary)] leading-7">
-              I build agent systems for engineering and operations. They trace each decision to
-              evidence, limit what they can change, and test the result.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Button variant="accent" size="lg" className="h-11" asChild>
-                <Link href="/projects">View case studies</Link>
-              </Button>
-              <Button variant="glass" size="lg" className="h-11" asChild>
-                <Link href="/blog">Read blog</Link>
-              </Button>
-            </div>
-          </div>
-
-          <HeroVisual />
+    <div className="mx-auto max-w-6xl px-6 pb-20 pt-12 md:px-10 md:pt-20">
+      <section
+        className="grid gap-6 pb-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:items-end md:pb-16"
+        aria-labelledby="intro-title"
+      >
+        <div>
+          <p className="font-mono text-sm text-[color:var(--color-text-secondary)]">
+            Agent systems engineer · United Kingdom
+          </p>
+          <h1
+            id="intro-title"
+            className="mt-5 text-4xl font-medium leading-tight tracking-tight md:text-6xl"
+          >
+            {profile.name}
+          </h1>
         </div>
-        <HomeJumpNav />
-      </PageSection>
-
-      <PageSection id="about" spacing="default" className="mt-14 max-w-none px-0">
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
-          <SectionCard padding="lg">
-            <SectionLabel>Profile</SectionLabel>
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
-              Tools that explain each action
-            </h2>
-            <div className="mt-4 space-y-3 text-[color:var(--color-text-secondary)] leading-7">
-              {profileLeads.map(p => (
-                <p key={p}>{p}</p>
-              ))}
-            </div>
-            <p className="mt-4 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
-              My current public work is{' '}
-              <a
-                href="https://github.com/Canepro/codex-skills"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
-              >
-                codex-skills
-              </a>
-              , a portable set of engineering workflows for Codex, Claude Code, Cursor, and
-              compatible agents.
-            </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              {githubHref ? (
-                <Button variant="glass" asChild>
-                  <a href={githubHref} target="_blank" rel="noopener noreferrer">
-                    GitHub
-                  </a>
-                </Button>
-              ) : null}
-              {linkedinHref ? (
-                <Button variant="glass" asChild>
-                  <a href={linkedinHref} target="_blank" rel="noopener noreferrer">
-                    LinkedIn
-                  </a>
-                </Button>
-              ) : null}
-              <Button variant="glass" asChild>
-                <Link href="/contact">Contact</Link>
-              </Button>
-              <span className="text-sm text-[color:var(--color-text-secondary)]">
-                {profile.location}
-              </span>
-            </div>
-          </SectionCard>
-
-          <div className="grid gap-4">
-            <SectionCard>
-              <SectionLabel>Current work</SectionLabel>
-              <div className="mt-2 text-lg font-semibold tracking-tight">codex-skills</div>
-              <p className="mt-3 text-sm text-[color:var(--color-text-secondary)] leading-6">
-                Portable workflows for Kubernetes, GitOps, observability, CI investigation, and
-                verification.
-              </p>
-              <div className="mt-4">
-                <Button variant="glass" asChild>
-                  <a
-                    href="https://github.com/Canepro/codex-skills"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View repository
-                  </a>
-                </Button>
-              </div>
-            </SectionCard>
-
-            <SectionCard>
-              <SectionLabel>How I work</SectionLabel>
-              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-[color:var(--color-text-secondary)]">
-                {workPrinciples.map(item => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </SectionCard>
-
-            <SectionCard>
-              <SectionLabel>Certifications</SectionLabel>
-              <div className="mt-3 space-y-2">
-                {featuredCertsSafe.map(c => (
-                  <a
-                    key={c.name}
-                    href={c.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block rounded-xl border border-[color:var(--color-border)] px-4 py-3 hover:bg-[color:var(--color-card-hover)]"
-                  >
-                    <div className="text-sm font-semibold">{c.name}</div>
-                    <div className="mt-0.5 text-xs text-[color:var(--color-text-secondary)]">
-                      {c.issuer}
-                    </div>
-                  </a>
-                ))}
-              </div>
-              {certifications.length > featuredCertsSafe.length ? (
-                <p className="mt-3 text-xs text-[color:var(--color-text-secondary)]">
-                  +{certifications.length - featuredCertsSafe.length} more on LinkedIn.
-                </p>
-              ) : null}
-            </SectionCard>
+        <div>
+          <p className="max-w-xl text-lg leading-8 text-[color:var(--color-text-secondary)]">
+            I build agent workflows, CI remediation tools, and infrastructure diagnostics. The work
+            below shows how they use evidence, permissions, and verification.
+          </p>
+          <div className="mt-5 flex gap-6 text-sm">
+            <a
+              href="#projects"
+              className="font-medium underline decoration-[color:var(--color-accent)] underline-offset-4"
+            >
+              Explore the work <span aria-hidden="true">↓</span>
+            </a>
+            <Link href="/contact" className="underline underline-offset-4">
+              Contact
+            </Link>
           </div>
         </div>
-      </PageSection>
-
-      <PageSection id="projects" className="max-w-none px-0">
+      </section>
+      <PageSection id="projects" spacing="none" className="max-w-none">
         <SectionHeader
           title="Selected work"
-          description="Public tools for CI remediation, infrastructure diagnostics, and platform operations."
-          action={{ href: '/projects', label: 'View all projects' }}
+          action={{
+            href: '/projects',
+            label: (
+              <>
+                All case studies <span aria-hidden="true">↗</span>
+              </>
+            ),
+          }}
         />
-
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {featured.map((p, index) => (
-            <ProjectPreviewCard key={p.slug} project={p} priority={index === 0} />
+        <div className="mt-6">
+          {featured.map(p => (
+            <ProjectPreviewCard key={p.slug} project={p} priority={p === firstImage} />
           ))}
         </div>
-
-        <SectionHeaderMobileAction href="/projects" label="View all projects" />
       </PageSection>
-
-      <PageSection id="skills" className="max-w-none px-0">
-        <SectionHeader
-          title="Skills"
-          description="Grouped by area, with links to the project pages where each shows up."
-        />
-
-        <div className="mt-10 grid gap-4 lg:grid-cols-2">
+      <PageSection
+        id="about"
+        className="grid gap-8 border-t border-[color:var(--color-border)] pt-10 md:grid-cols-[0.8fr_1.2fr] md:gap-12"
+      >
+        <h2 className="text-3xl font-medium tracking-tight">How I approach the work</h2>
+        <div className="space-y-5 text-lg leading-8 text-[color:var(--color-text-secondary)]">
+          <p>
+            Start with the source and the failure. Keep the context that makes a diagnosis
+            reviewable. Give automation a narrow job and an explicit limit on what it can change.
+          </p>
+          <p>
+            A proposed fix needs a check through the path that failed. A deployment needs its own
+            proof. Those are separate outcomes, even when one tool handles both.
+          </p>
+          <Link href="/systems" className="inline-block text-base underline underline-offset-4">
+            Earlier platform and GitOps work <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
+      </PageSection>
+      <PageSection id="skills" className="border-t border-[color:var(--color-border)] pt-10">
+        <SectionHeader title="Engineering background" />
+        <div className="mt-8 grid gap-8 md:grid-cols-2">
           {skillGroups.map(group => (
-            <SectionCard key={group.title}>
-              <h3 className="text-lg font-semibold tracking-tight">{group.title}</h3>
-              <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
+            <div key={group.title}>
+              <h3 className="text-xl font-medium">{group.title}</h3>
+              <p className="mt-2 leading-7 text-[color:var(--color-text-secondary)]">
                 {group.description}
               </p>
-
-              <ul className="mt-4 grid gap-1 text-sm text-[color:var(--color-text-secondary)] sm:grid-cols-2">
-                {group.skills.slice(0, 6).map(skill => (
-                  <li key={skill.name}>{skill.name}</li>
-                ))}
-                {group.skills.length > 6 ? (
-                  <li className="text-xs text-[color:var(--color-text-secondary)]">
-                    +{group.skills.length - 6} more
-                  </li>
-                ) : null}
-              </ul>
-
-              {group.evidence && group.evidence.length ? (
-                <div className="mt-4 border-t border-[color:var(--color-border)] pt-4 text-sm text-[color:var(--color-text-secondary)]">
-                  <span className="font-medium text-[color:var(--color-text-primary)]">
-                    Shown in:
-                  </span>{' '}
-                  {group.evidence.map((e, index) => {
-                    const isInternal = e.href.startsWith('/') || e.href.startsWith('#');
-                    const safeHref = isInternal ? e.href : safeExternalHref(e.href);
-                    if (!safeHref) return null;
-
-                    const linkEl = isInternal ? (
-                      <Link
-                        key={e.href}
-                        href={safeHref}
-                        className="underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
-                      >
-                        {e.label}
-                      </Link>
-                    ) : (
-                      <a
-                        key={e.href}
-                        href={safeHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
-                      >
-                        {e.label}
-                      </a>
-                    );
-
-                    return (
-                      <span key={e.href}>
-                        {index > 0 ? ', ' : null}
-                        {linkEl}
-                      </span>
-                    );
-                  })}
-                  .
-                </div>
-              ) : null}
-            </SectionCard>
+              <p className="mt-3 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+                {group.skills
+                  .slice(0, 6)
+                  .map(s => s.name)
+                  .join(' · ')}
+              </p>
+              {group.evidence?.map(e => {
+                const internal = e.href.startsWith('/');
+                const href = internal ? e.href : safeExternalHref(e.href);
+                return href ? (
+                  <Link
+                    key={e.href}
+                    href={href}
+                    {...(!internal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    className="mr-5 mt-3 inline-block text-sm underline underline-offset-4"
+                  >
+                    {e.label}
+                  </Link>
+                ) : null;
+              })}
+            </div>
           ))}
         </div>
+        <details className="mt-10 border-t border-[color:var(--color-border)] pt-5">
+          <summary className="cursor-pointer text-sm font-medium">Certifications</summary>
+          <ul className="mt-4 space-y-3 text-sm">
+            {certifications.map(c => {
+              const href = safeExternalHref(c.link);
+              return (
+                <li key={c.name}>
+                  {href ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline underline-offset-4"
+                    >
+                      {c.name}
+                    </a>
+                  ) : (
+                    c.name
+                  )}
+                  <span className="ml-2 text-[color:var(--color-text-secondary)]">{c.issuer}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </details>
       </PageSection>
-
-      <PageSection id="writing" className="max-w-none px-0">
+      <PageSection id="writing" className="border-t border-[color:var(--color-border)] pt-10">
         <SectionHeader
           title="Writing"
-          description="Notes from migrations, CI changes, and production failures."
-          action={{ href: '/blog', label: 'View all posts' }}
+          action={{
+            href: '/blog',
+            label: (
+              <>
+                All writing <span aria-hidden="true">↗</span>
+              </>
+            ),
+          }}
         />
-
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <div className="mt-6 divide-y divide-[color:var(--color-border)]">
           {posts.map(p => (
-            <SectionCard key={p.slug}>
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="text-lg font-semibold tracking-tight">
+            <article key={p.slug} className="grid gap-3 py-6 md:grid-cols-[0.8fr_1.2fr] md:gap-12">
+              <time
+                dateTime={p.date}
+                className="font-mono text-xs text-[color:var(--color-text-secondary)]"
+              >
+                {p.date}
+              </time>
+              <div>
+                <h3 className="text-xl font-medium">
                   <Link
                     href={`/blog/${encodeURIComponent(p.slug)}`}
-                    className="hover:underline underline-offset-4"
+                    className="underline underline-offset-4"
                   >
                     {p.title}
                   </Link>
                 </h3>
-                <time
-                  className="shrink-0 text-xs text-[color:var(--color-text-secondary)]"
-                  dateTime={p.date}
-                >
-                  {p.date}
-                </time>
-              </div>
-              {p.description ? (
-                <p className="mt-2 text-sm text-[color:var(--color-text-secondary)] leading-6">
+                <p className="mt-3 leading-7 text-[color:var(--color-text-secondary)]">
                   {p.description}
                 </p>
-              ) : null}
-              <div className="mt-4">
-                <Link
-                  href={`/blog/${encodeURIComponent(p.slug)}`}
-                  className="text-sm font-medium text-[color:var(--color-text-primary)] underline underline-offset-4"
-                >
-                  Read post
-                </Link>
               </div>
-            </SectionCard>
+            </article>
           ))}
         </div>
-
-        <SectionHeaderMobileAction href="/blog" label="View all posts" />
       </PageSection>
-
-      <PageSection id="contact" className="max-w-none px-0">
-        <SectionCard padding="lg">
-          <SectionLabel>Contact</SectionLabel>
-          <h2 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
-            Hiring or have a platform problem?
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-[color:var(--color-text-secondary)] md:text-base">
-            Email works best. Include a repo link, job description, or error log if you have one.
+      <PageSection
+        id="contact"
+        className="grid gap-8 border-t border-[color:var(--color-border)] pt-10 md:grid-cols-[0.8fr_1.2fr] md:gap-12"
+      >
+        <h2 className="text-3xl font-medium tracking-tight">Let’s talk.</h2>
+        <div>
+          <p className="text-lg leading-8 text-[color:var(--color-text-secondary)]">
+            For engineering roles or a project conversation, email works best. A job description or
+            repository link helps.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Button variant="accent" size="lg" className="h-11 gap-2" asChild>
-              <Link href="/contact">Send a message</Link>
-            </Button>
-            <Button variant="glass" size="lg" className="h-11 gap-2" asChild>
-              <a href={`mailto:${profile.email}`}>
-                <Mail className="h-4 w-4" aria-hidden="true" />
-                Email
+          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
+            <a
+              href={`mailto:${profile.email}`}
+              className="break-all underline decoration-[color:var(--color-accent)] underline-offset-4"
+            >
+              {profile.email}
+            </a>
+            {linkedin ? (
+              <a
+                href={linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4"
+              >
+                LinkedIn <span aria-hidden="true">↗</span>
               </a>
-            </Button>
-            {linkedinHref ? (
-              <Button variant="glass" size="lg" className="h-11" asChild>
-                <a href={linkedinHref} target="_blank" rel="noopener noreferrer">
-                  LinkedIn
-                </a>
-              </Button>
             ) : null}
+            <Link href="/contact" className="underline underline-offset-4">
+              Contact form
+            </Link>
           </div>
-        </SectionCard>
+        </div>
       </PageSection>
     </div>
   );

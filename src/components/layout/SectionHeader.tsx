@@ -1,11 +1,12 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 import { cn } from '@/lib/utils';
 
 type SectionHeaderProps = {
   title: string;
   description?: string;
-  action?: { href: string; label: string; external?: boolean };
+  action?: { href: string; label: ReactNode; external?: boolean };
   className?: string;
 };
 
@@ -16,14 +17,14 @@ export function SectionHeader({ title, description, action, className }: Section
         href={action.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="hidden text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)] md:block"
+        className="text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
       >
         {action.label}
       </a>
     ) : (
       <Link
         href={action.href}
-        className="hidden text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)] md:block"
+        className="text-sm text-[color:var(--color-text-secondary)] underline underline-offset-4 hover:text-[color:var(--color-text-primary)]"
       >
         {action.label}
       </Link>
@@ -31,9 +32,9 @@ export function SectionHeader({ title, description, action, className }: Section
   ) : null;
 
   return (
-    <div className={cn('flex items-end justify-between gap-6', className)}>
+    <div className={cn('flex flex-wrap items-end justify-between gap-4', className)}>
       <div>
-        <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
+        <h2 className="text-3xl font-medium tracking-tight">{title}</h2>
         {description ? (
           <p className="mt-3 max-w-2xl text-[color:var(--color-text-secondary)] leading-7">
             {description}

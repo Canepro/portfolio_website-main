@@ -5,7 +5,7 @@ description: "What this blog covers and how posts are structured."
 tags: ["portfolio", "career", "writing"]
 ---
 
-This portfolio is a Next.js app on Netlify. Jenkins on Kubernetes runs CI. The [hub-and-spoke observability stack](/projects/central-observability-hub-stack) and Argo CD setup are the same infrastructure I write about here.
+This portfolio is a Next.js app on Netlify. At the time of writing, Jenkins on Kubernetes ran CI. The [hub-and-spoke observability stack](/projects/central-observability-hub-stack) and Argo CD setup described here are now historical deployments; their hosted environments have been retired.
 
 The blog records how those systems were built: tradeoffs, failures, and the parts that were boring but load-bearing.
 
@@ -13,7 +13,7 @@ The blog records how those systems were built: tradeoffs, failures, and the part
 
 - **Build notes** on projects like the [Hybrid Cloud GitOps Control Plane](/projects/hybrid-cloud-gitops-control-plane) and [Rocket.Chat on AKS](/projects/rocketchat-kubernetes-enterprise)
 - **Platform work**: Kubernetes, GitOps, observability, CI/CD from running workloads on OCI and Azure
-- **Frontend work**: performance, accessibility, and layout on this site ([Systems](/systems) has the architecture map)
+- **Frontend work**: performance, accessibility, and layout on this site ([Platform archive](/systems) records the earlier deployments)
 
 ## How Posts Are Structured
 
@@ -25,7 +25,7 @@ Each post covers:
 
 If a post does not end with something concrete, it should not go up.
 
-## What's Coming
+## Posts planned at publication
 
 - How the Jenkins pipeline validates this site (lint, typecheck, build, Dockerfile lint, container build) without pushing images on PRs
 - Setting up an LGTM stack (Grafana, Loki, Tempo) with OTLP ingestion on OKE

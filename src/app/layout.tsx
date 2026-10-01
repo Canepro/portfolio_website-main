@@ -29,18 +29,20 @@ export const metadata: Metadata = {
     default: profile.name,
     template: `%s | ${profile.name}`,
   },
-  description: 'Vincent Mogah: platform engineering, CI/CD tooling, and Kubernetes operations.',
+  description:
+    'Vincent Mogah builds agent workflows, CI remediation tools, and infrastructure diagnostics. Public source, case studies, and technical writing.',
   openGraph: {
     type: 'website',
     locale: 'en_GB',
     siteName: profile.name,
     title: profile.name,
-    description: 'Platform reliability work: case studies, systems map, and technical writing.',
+    description:
+      'Agent workflows and platform reliability: public source, case studies, and technical writing.',
     images: [
       {
-        url: '/images/new-portfolio-site.png',
-        width: 1280,
-        height: 800,
+        url: '/images/editorial-portfolio.png',
+        width: 1243,
+        height: 795,
         alt: 'Portfolio homepage',
       },
     ],
@@ -48,8 +50,9 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: profile.name,
-    description: 'Platform reliability work: case studies, systems map, and technical writing.',
-    images: ['/images/new-portfolio-site.png'],
+    description:
+      'Agent workflows and platform reliability: public source, case studies, and technical writing.',
+    images: ['/images/editorial-portfolio.png'],
   },
 };
 

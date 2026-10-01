@@ -67,7 +67,10 @@ export const skillGroups: SkillGroup[] = [
     ],
     evidence: [
       { label: 'Jenkins + EKS CI/CD', href: '/projects/jenkins-eks-cicd' },
-      { label: 'This repo CI', href: 'https://jenkins.canepro.me/job/portfolio_website-main/' },
+      {
+        label: 'Portfolio CI source',
+        href: 'https://github.com/Canepro/portfolio_website-main/tree/main/.github/workflows',
+      },
     ],
   },
   {

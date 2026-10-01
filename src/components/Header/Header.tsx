@@ -2,281 +2,176 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
-import { Github, Linkedin, Menu, X } from 'lucide-react';
-
+import { useEffect, useRef, useState } from 'react';
+import { Menu, X } from 'lucide-react';
 import SimpleThemeToggle from '@/components/ThemeToggle/SimpleThemeToggle';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { profile } from '@/content/profile';
-import { safeExternalHref } from '@/lib/url';
 
-type NavItem = { href: string; label: string };
-
-function isNavActive(pathname: string, href: string): boolean {
-  return href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
-}
-
+const nav = [
+  { href: '/projects', label: 'Work' },
+  { href: '/blog', label: 'Writing' },
+  { href: '/contact', label: 'Contact' },
+];
 export default function Header() {
   const pathname = usePathname() ?? '';
   const [open, setOpen] = useState(false);
-  const [renderMobileMenu, setRenderMobileMenu] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  const nav: NavItem[] = [
-    { href: '/', label: 'Home' },
-    { href: '/projects', label: 'Projects' },
-    { href: '/systems', label: 'Systems' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/contact', label: 'Contact' },
-  ];
-
-  const githubHref = safeExternalHref(profile.links.github);
-  const linkedinHref = safeExternalHref(profile.links.linkedin);
-
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-    if (open) window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [open]);
-
-  useEffect(() => {
-    if (open) {
-      setRenderMobileMenu(true);
-      return;
-    }
-
-    const t = window.setTimeout(() => setRenderMobileMenu(false), 220);
-    return () => window.clearTimeout(t);
-  }, [open]);
-
+  const barRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const openerRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
-
   useEffect(() => {
-    if (open) {
-      document.body.classList.add('mobile-nav-open');
-      return () => document.body.classList.remove('mobile-nav-open');
-    }
-    document.body.classList.remove('mobile-nav-open');
-  }, [open]);
-
+    const media = window.matchMedia('(min-width: 768px)');
+    const closeOnDesktop = () => {
+      if (media.matches) setOpen(false);
+    };
+    media.addEventListener('change', closeOnDesktop);
+    return () => media.removeEventListener('change', closeOnDesktop);
+  }, []);
   useEffect(() => {
-    if (!open || !menuRef.current) return;
-
-    const panel = menuRef.current;
-    const focusable = panel.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
-    );
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    first?.focus();
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== 'Tab' || focusable.length === 0) return;
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
+    if (!open || !panelRef.current) return;
+    const panel = panelRef.current;
+    const opener = openerRef.current;
+    const previousOverflow = document.body.style.overflow;
+    const backgrounds = [
+      ...Array.from(document.querySelectorAll<HTMLElement>('main, footer, a[href="#content"]')),
+      ...(barRef.current ? [barRef.current] : []),
+    ];
+    const wasInert = backgrounds.map(el => el.inert);
+    backgrounds.forEach(el => {
+      el.inert = true;
+    });
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('mobile-nav-open');
+    const controls = () =>
+      Array.from(panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'));
+    controls()[0]?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setOpen(false);
+      }
+      if (event.key !== 'Tab') return;
+      const items = controls();
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (
+        event.shiftKey &&
+        (document.activeElement === first || !panel.contains(document.activeElement))
+      ) {
+        event.preventDefault();
         last?.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
+      } else if (
+        !event.shiftKey &&
+        (document.activeElement === last || !panel.contains(document.activeElement))
+      ) {
+        event.preventDefault();
         first?.focus();
       }
     };
-
-    panel.addEventListener('keydown', onKeyDown);
-    return () => panel.removeEventListener('keydown', onKeyDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = previousOverflow;
+      document.body.classList.remove('mobile-nav-open');
+      backgrounds.forEach((el, i) => {
+        el.inert = wasInert[i];
+      });
+      opener?.focus();
+    };
   }, [open]);
-
+  const links = (mobile = false) =>
+    nav.map(item => {
+      const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+      return (
+        <Link
+          key={item.href}
+          href={item.href}
+          onClick={mobile ? () => setOpen(false) : undefined}
+          aria-current={active ? 'page' : undefined}
+          className={cn(
+            mobile
+              ? 'border-b border-[color:var(--color-border)] py-5 text-2xl'
+              : 'px-2 py-3 text-sm',
+            active
+              ? 'text-[color:var(--color-text-primary)] underline decoration-[color:var(--color-accent)] underline-offset-8'
+              : 'text-[color:var(--color-text-secondary)] hover:underline underline-offset-8'
+          )}
+        >
+          {item.label}
+        </Link>
+      );
+    });
   return (
     <header className="sticky top-0 z-50 border-b border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)]">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-6 md:px-10">
-        <Link href="/" className="group inline-flex items-center gap-3">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-sm font-semibold text-[color:var(--color-text-primary)] shadow-sm transition-colors group-hover:bg-[color:var(--color-card-hover)]">
-            VM
-          </span>
-          <span className="hidden text-sm font-semibold tracking-tight text-[color:var(--color-text-primary)] sm:inline">
-            {profile.name}
-          </span>
+      <div
+        ref={barRef}
+        className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-6 md:px-10"
+      >
+        <Link href="/" className="text-base font-medium tracking-tight">
+          {profile.name}
         </Link>
-
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Primary">
-          {nav.map(item => {
-            const active = isNavActive(pathname, item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={active ? 'page' : undefined}
-                className={cn(
-                  'rounded-xl px-3 py-2 text-sm font-medium text-[color:var(--color-text-secondary)] transition-colors hover:opacity-90',
-                  active && 'bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)]'
-                )}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          {githubHref ? (
-            <Button variant="glass" size="icon" className="hidden md:inline-flex" asChild>
-              <a href={githubHref} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <Github className="h-4 w-4" />
-              </a>
-            </Button>
-          ) : null}
-          {linkedinHref ? (
-            <Button variant="glass" size="icon" className="hidden md:inline-flex" asChild>
-              <a
-                href={linkedinHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="h-4 w-4" />
-              </a>
-            </Button>
-          ) : null}
-
-          <SimpleThemeToggle className="hidden md:inline-flex" />
-
-          <Button variant="accent" size="sm" className="hidden md:inline-flex" asChild>
-            <Link href="/contact">Contact</Link>
-          </Button>
-
+        <div className="flex items-center gap-4">
+          <nav className="hidden gap-5 md:flex" aria-label="Primary">
+            {links()}
+          </nav>
+          <SimpleThemeToggle />
           <Button
+            ref={openerRef}
             type="button"
-            variant="glass"
+            variant="ghost"
             size="icon"
-            className="shadow-sm md:hidden"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            className="hover:bg-[color:var(--color-bg-secondary)] md:hidden"
+            aria-label="Open menu"
             aria-controls="mobile-menu"
             aria-expanded={open}
-            onClick={() => setOpen(v => !v)}
+            onClick={() => setOpen(true)}
           >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <Menu className="h-5 w-5" />
           </Button>
         </div>
       </div>
-
-      {renderMobileMenu ? (
-        <div
-          className={cn(
-            'fixed inset-0 z-50 md:hidden',
-            open ? 'pointer-events-auto' : 'pointer-events-none'
-          )}
-          aria-hidden={!open}
-        >
+      {open ? (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
           <div
-            className={cn(
-              'absolute inset-0 bg-black/50 transition-opacity duration-200',
-              open ? 'opacity-100' : 'opacity-0'
-            )}
-            onClick={() => setOpen(false)}
-          />
-
-          <div
-            ref={menuRef}
+            ref={panelRef}
             id="mobile-menu"
-            className={cn(
-              'absolute right-0 top-0 flex h-full w-[86vw] max-w-sm flex-col border-l border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)] p-5 shadow-lg transition-transform duration-200',
-              open ? 'translate-x-0' : 'translate-x-full'
-            )}
-            onClick={e => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
-            aria-labelledby="mobile-menu-title"
+            aria-labelledby="menu-title"
+            className="absolute inset-y-0 right-0 flex w-[88vw] max-w-sm flex-col bg-[color:var(--color-bg-primary)] px-6 py-5 shadow-lg"
           >
-            <div className="flex items-center justify-between border-b border-[color:var(--color-border)] pb-4">
-              <div
-                id="mobile-menu-title"
-                className="text-sm font-semibold text-[color:var(--color-text-primary)]"
-              >
-                Menu
-              </div>
+            <div className="flex items-center justify-between">
+              <h2 id="menu-title" className="text-sm font-medium">
+                Navigation
+              </h2>
               <Button
                 type="button"
-                variant="glass"
+                variant="ghost"
                 size="icon"
+                className="hover:bg-[color:var(--color-bg-secondary)]"
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
               >
                 <X className="h-5 w-5" />
               </Button>
             </div>
-
-            <div className="mt-5 grid gap-1">
-              {nav.map(item => {
-                const active = isNavActive(pathname, item.href);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    aria-current={active ? 'page' : undefined}
-                    className={cn(
-                      'rounded-xl border px-4 py-3 text-sm font-medium transition-colors',
-                      active
-                        ? 'border-[color:var(--color-accent)]/30 bg-[color:var(--color-card-hover)] text-[color:var(--color-text-primary)]'
-                        : 'border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]'
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </div>
-
-            <div className="mt-6">
-              <Button variant="accent" className="w-full" asChild>
-                <Link href="/contact" onClick={() => setOpen(false)}>
-                  Get in touch
-                </Link>
-              </Button>
-            </div>
-
-            <div className="mt-6 flex items-center gap-2">
-              <SimpleThemeToggle />
-              {githubHref ? (
-                <Button variant="glass" size="icon" asChild>
-                  <a
-                    href={githubHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub"
-                  >
-                    <Github className="h-4 w-4" />
-                  </a>
-                </Button>
-              ) : null}
-              {linkedinHref ? (
-                <Button variant="glass" size="icon" asChild>
-                  <a
-                    href={linkedinHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                  >
-                    <Linkedin className="h-4 w-4" />
-                  </a>
-                </Button>
-              ) : null}
-            </div>
-
-            <p className="mt-auto pt-6 text-xs leading-5 text-[color:var(--color-text-secondary)] opacity-80">
-              Platform engineering portfolio.
+            <nav aria-label="Mobile" className="mt-7 flex flex-col">
+              {links(true)}
+            </nav>
+            <Link
+              href="/systems"
+              className="mt-8 text-sm underline underline-offset-4"
+              onClick={() => setOpen(false)}
+            >
+              Platform archive
+            </Link>
+            <p className="mt-auto text-sm text-[color:var(--color-text-secondary)]">
+              Agent workflows and platform reliability.
             </p>
           </div>
         </div>

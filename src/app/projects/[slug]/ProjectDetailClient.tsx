@@ -11,7 +11,7 @@ import { SectionCard } from '@/components/layout/SectionCard';
 import { SectionLabel } from '@/components/layout/SectionLabel';
 import { Button } from '@/components/ui/button';
 import { projectDetails } from '@/constants/projectDetails';
-import { projectMediaFit } from '@/lib/project-media';
+import { WorkflowFigure } from '@/components/Projects/ProjectPreviewCard';
 import { proseClasses } from '@/lib/prose';
 import { safeExternalHref } from '@/lib/url';
 import { cn } from '@/lib/utils';
@@ -32,14 +32,15 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
   }, [project.slug, project.title]);
 
   const heroSrc = (fullProject as Project).media || project.media || project.image;
-  const heroFit = projectMediaFit(heroSrc);
-  const visitHref = safeExternalHref(project.visit);
+  const heroFit = 'contain';
+  const visitHref =
+    project.deployment?.status === 'live' ? safeExternalHref(project.visit) : undefined;
   const sourceHref = safeExternalHref(project.source);
   const meta = [project.category, project.featured ? 'Featured' : null].filter(Boolean).join(' · ');
 
   const tocSections = useMemo(() => {
     const items: { id: string; label: string }[] = [{ id: 'overview', label: 'Overview' }];
-    if (fullProject.impact) items.push({ id: 'impact', label: 'Impact' });
+    if (fullProject.impact) items.push({ id: 'impact', label: 'Outcomes' });
     if (fullProject.challenges && fullProject.solutions) {
       items.push({ id: 'challenges-and-solutions', label: 'Challenges and solutions' });
     }
@@ -51,8 +52,8 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
 
   return (
     <PageShell
-      width="narrow"
-      back={{ href: '/projects', label: 'Back to projects' }}
+      width="wide"
+      back={{ href: '/projects', label: 'Back to work' }}
       title={project.title}
       meta={
         meta ? (
@@ -60,17 +61,40 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
         ) : undefined
       }
     >
-      <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-2xl border border-[color:var(--color-border)] border-t-2 border-t-[color:var(--color-accent)] bg-[color:var(--color-card-bg)]">
-        <ProjectMedia
-          src={heroSrc}
-          alt={project.title}
-          fill
-          priority
-          poster={project.image}
-          fit={heroFit}
-          className={heroFit === 'contain' ? 'object-contain p-3' : 'object-cover'}
-        />
-      </div>
+      <p className="mt-6 max-w-3xl text-lg leading-8 text-[color:var(--color-text-secondary)]">
+        {project.description}
+      </p>
+      {project.deployment ? (
+        <p className="mt-4 max-w-3xl text-sm leading-6 text-[color:var(--color-text-secondary)]">
+          {project.deployment.note}
+        </p>
+      ) : null}
+      <figure className="mt-10">
+        {heroSrc ? (
+          <div className="relative aspect-video bg-[color:var(--color-bg-secondary)]">
+            <ProjectMedia
+              src={heroSrc}
+              alt={`${project.title} recorded evidence`}
+              fill
+              priority
+              poster={project.image}
+              fit={heroFit}
+              sizes="(max-width: 1200px) 100vw, 1120px"
+              className="object-contain"
+            />
+          </div>
+        ) : (
+          <WorkflowFigure
+            label={
+              project.slug === 'codex-skills' ? 'codex-skills / procedure library' : project.title
+            }
+          />
+        )}
+        <figcaption className="mt-3 max-w-3xl text-sm leading-6 text-[color:var(--color-text-secondary)]">
+          {project.evidenceCaption ||
+            'Recorded project evidence. The case study below describes the implementation and its limits.'}
+        </figcaption>
+      </figure>
 
       {project.tags.length ? (
         <p className="mt-4 text-sm text-[color:var(--color-text-secondary)]">
@@ -95,7 +119,7 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
         </nav>
       ) : null}
 
-      <div className="mt-12 space-y-12">
+      <div className="mt-12 max-w-3xl space-y-12">
         <ContentSection title="Overview" id="overview">
           <div className={cn('max-w-3xl', proseClasses)}>
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -105,14 +129,11 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
         </ContentSection>
 
         {fullProject.impact ? (
-          <section id="impact" className="scroll-mt-24">
-            <SectionCard padding="lg">
-              <SectionLabel>Impact</SectionLabel>
-              <p className="mt-3 text-sm leading-7 text-[color:var(--color-text-secondary)] md:text-base">
-                {fullProject.impact}
-              </p>
-            </SectionCard>
-          </section>
+          <ContentSection title="Outcomes" id="impact">
+            <p className="text-base leading-8 text-[color:var(--color-text-secondary)] md:text-lg">
+              {fullProject.impact}
+            </p>
+          </ContentSection>
         ) : null}
 
         {fullProject.challenges && fullProject.solutions ? (

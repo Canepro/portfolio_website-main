@@ -1,87 +1,125 @@
-'use client';
-
 import Link from 'next/link';
-
 import ProjectMedia from '@/components/ProjectMedia/ProjectMedia';
-import { projectMediaFit } from '@/lib/project-media';
-import { Button } from '@/components/ui/button';
 import { safeExternalHref } from '@/lib/url';
 import type { Project } from '@/types/project';
 import { cn } from '@/lib/utils';
 
-type ProjectPreviewCardProps = {
-  project: Project;
-  priority?: boolean;
-  className?: string;
-};
+export function WorkflowFigure({ label = 'Engineering workflow' }: { label?: string }) {
+  return (
+    <div className="grid min-h-52 content-center gap-5 bg-[color:var(--color-bg-secondary)] p-6 md:p-10">
+      <p className="font-mono text-xs text-[color:var(--color-text-secondary)]">{label}</p>
+      <ol className="grid gap-3 text-lg md:grid-cols-3 md:gap-6">
+        {['Read the source', 'Gather evidence', 'Verify the outcome'].map((step, i) => (
+          <li key={step} className="border-t border-[color:var(--color-border)] pt-4">
+            <span className="mb-2 block font-mono text-xs text-[color:var(--color-accent)]">
+              0{i + 1}
+            </span>
+            {step}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
 
 export default function ProjectPreviewCard({
   project,
   priority = false,
   className,
-}: ProjectPreviewCardProps) {
-  const previewSrc = project.media || project.image;
-  const mediaFit = projectMediaFit(previewSrc);
-  const projectHref = `/projects/${encodeURIComponent(project.slug)}`;
-  const visitHref = safeExternalHref(project.visit);
-  const meta = [project.category, project.featured ? 'Featured' : null].filter(Boolean).join(' · ');
-
+  headingLevel = 3,
+}: {
+  project: Project;
+  priority?: boolean;
+  className?: string;
+  headingLevel?: 2 | 3;
+}) {
+  const Heading = headingLevel === 2 ? 'h2' : 'h3';
+  const href = `/projects/${encodeURIComponent(project.slug)}`;
+  const source = safeExternalHref(project.source);
+  const demo = project.deployment?.status === 'live' ? safeExternalHref(project.visit) : undefined;
+  const image = project.media || project.image;
   return (
     <article
       className={cn(
-        'flex flex-col overflow-hidden rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] transition-colors hover:bg-[color:var(--color-card-hover)]',
+        'grid gap-6 border-t border-[color:var(--color-border)] py-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-12 md:py-12',
         className
       )}
     >
-      <Link
-        href={projectHref}
-        className="relative block aspect-video overflow-hidden bg-[color:var(--color-bg-primary)]"
-      >
-        <ProjectMedia
-          src={previewSrc}
-          alt={`${project.title} preview`}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1200px) 50vw, 400px"
-          priority={priority}
-          poster={project.image}
-          fit={mediaFit}
-          className={mediaFit === 'contain' ? 'object-contain p-2' : 'object-cover'}
-        />
-      </Link>
-
-      <div className="flex flex-1 flex-col p-5 md:p-6">
-        {meta ? <p className="text-xs text-[color:var(--color-text-secondary)]">{meta}</p> : null}
-
-        <Link href={projectHref}>
-          <h3 className="mt-2 text-lg font-semibold tracking-tight md:text-xl">{project.title}</h3>
-        </Link>
-
-        <p className="mt-2 line-clamp-3 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+      <div className="min-w-0">
+        <p className="font-mono text-xs text-[color:var(--color-text-secondary)]">
+          {project.year || project.category}
+          {project.deployment?.status === 'retired' ? ' · Hosted demo retired' : ''}
+        </p>
+        <Heading className="mt-3 text-2xl font-medium tracking-tight md:text-3xl">
+          <Link href={href} className="hover:underline underline-offset-4">
+            {project.title}
+          </Link>
+        </Heading>
+        <p className="mt-4 max-w-xl leading-7 text-[color:var(--color-text-secondary)]">
           {project.description}
         </p>
-
-        {project.tags.length ? (
-          <p className="mt-3 text-xs text-[color:var(--color-text-secondary)]">
-            {project.tags.slice(0, 4).join(' · ')}
-          </p>
-        ) : null}
-
-        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-5">
-          <Button variant="accent" size="sm" asChild>
-            <Link href={projectHref}>Case study</Link>
-          </Button>
-          {visitHref ? (
+        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+          <Link
+            href={href}
+            className="font-medium underline decoration-[color:var(--color-accent)] underline-offset-4"
+          >
+            Read case study <span aria-hidden="true">↗</span>
+          </Link>
+          {source ? (
             <a
-              href={visitHref}
+              href={source}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]"
+              className="underline underline-offset-4"
+            >
+              Source
+            </a>
+          ) : null}
+          {demo ? (
+            <a
+              href={demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-4"
             >
               Live demo
             </a>
           ) : null}
         </div>
       </div>
+      <figure className="min-w-0">
+        <Link
+          href={href}
+          tabIndex={-1}
+          aria-label={`Read ${project.title} case study`}
+          className="block"
+        >
+          {image ? (
+            <div className="relative aspect-video bg-[color:var(--color-bg-secondary)]">
+              <ProjectMedia
+                src={image}
+                alt={`${project.title} recorded interface`}
+                fill
+                sizes="(max-width: 768px) 100vw, 640px"
+                priority={priority}
+                poster={project.image}
+                fit="contain"
+                className="object-contain"
+              />
+            </div>
+          ) : (
+            <WorkflowFigure
+              label={
+                project.slug === 'codex-skills' ? 'codex-skills / procedure library' : project.title
+              }
+            />
+          )}
+        </Link>
+        <figcaption className="mt-3 max-w-xl text-xs leading-5 text-[color:var(--color-text-secondary)]">
+          {project.evidenceCaption ||
+            'Recorded project evidence. Open the case study for architecture, source, and context.'}
+        </figcaption>
+      </figure>
     </article>
   );
 }
