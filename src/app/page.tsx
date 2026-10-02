@@ -126,7 +126,7 @@ export default function HomePage() {
         </div>
         <details className="mt-10 border-t border-[color:var(--color-border)] pt-5">
           <summary className="cursor-pointer text-sm font-medium">
-            Certifications and training
+            Certifications
           </summary>
           <ul className="mt-4 space-y-3 text-sm">
             {certifications.map(c => {
