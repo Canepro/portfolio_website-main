@@ -61,6 +61,7 @@ export const skillGroups: SkillGroup[] = [
     skills: [
       { name: 'Jenkins (Multibranch Pipelines)' },
       { name: 'GitHub Actions' },
+      { name: 'Azure Pipelines' },
       { name: 'Docker' },
       { name: 'Argo CD / GitOps' },
       { name: 'Static analysis + security gates' },
@@ -70,8 +71,12 @@ export const skillGroups: SkillGroup[] = [
       { label: 'PipelineHealer', href: '/projects/pipelinehealer' },
       { label: 'GitOps delivery', href: '/projects/hybrid-cloud-gitops-control-plane' },
       {
-        label: 'Portfolio CI source',
+        label: 'GitHub Actions source',
         href: 'https://github.com/Canepro/portfolio_website-main/tree/main/.github/workflows',
+      },
+      {
+        label: 'Azure Pipelines source',
+        href: 'https://github.com/Canepro/portfolio_website-main/blob/main/azure-pipelines.yml',
       },
     ],
   },
