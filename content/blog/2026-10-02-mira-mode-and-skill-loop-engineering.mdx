@@ -1,0 +1,60 @@
+---
+title: "Mira mode and skill loop engineering"
+date: "2026-10-02"
+description: "How I separate an agent's engineering workflow from the process that repairs repeated failures in that workflow."
+tags: ["ai-agents", "agent-skills", "reliability", "platform-engineering"]
+---
+
+I use Mira mode to organize engineering work, and skill loop engineering to repair repeated failures in how that work gets done.
+
+The distinction keeps an ordinary task from becoming an open-ended exercise in rewriting the agent. A failed command might need a small local fix. A recurring failure to choose the right tool, preserve authority or verify delivery needs a change at the owner of that behavior.
+
+## Start with the requested outcome
+
+Mira mode starts by identifying the deliverable, the evidence needed to accept it and the authorization already in place. It then selects a workflow suited to the task: investigation, implementation, review, delivery or continuation.
+
+That selection must preserve the request. A question about a system calls for an answer. A request to change it calls for verified changes. A status question during an authorized implementation should receive a brief answer while the work continues.
+
+The workflow also needs a clear relationship with specialist procedures. Repository rules define how a change ships. An integration's owner defines its tools and access boundaries. Mira mode coordinates those procedures; it does not grant a new deployment permission because implementation would be easier with one.
+
+## Record the miss before changing the rule
+
+Skill loop engineering begins when evidence points to a defect in the operating procedure.
+
+I classify the failure so the correction reaches the right owner. If the agent missed a relevant procedure, I inspect its selection criteria. If it stopped before verification, I inspect its completion condition. If it claimed a tool was unavailable after checking only one route, I inspect the capability-discovery procedure.
+
+A useful failure record includes the request, the observed action, the expected action and the artifact that supports the comparison. It should retain enough context to explain the defect without copying secrets or raw session transcripts into a shared knowledge base.
+
+This also protects against the wrong repair. A service outage does not prove that the skill's wording is defective. A stale local copy does not prove that its canonical source needs another instruction. I need to establish which component caused the miss before editing it.
+
+## Change the smallest owning component
+
+Some failures need better selection wording. Others need a completion condition the agent can check. Deterministic mechanics may belong in a script or validator. Global guidance should hold rules that apply across tasks, while repository and integration details stay with their owners.
+
+Before editing a skill, I compare its source with the installed copies. An installed copy may contain a useful correction that never reached the source. Overwriting it would lose evidence while making the directories look consistent.
+
+The resulting change needs a narrow explanation: what failed, what changed and why that change addresses the failure. Adding the same reminder to every document makes ownership harder to follow and can introduce conflicting instructions.
+
+## Verify behavior and delivery separately
+
+Validation can catch missing references and packaging drift. Behavioral cases can exercise the decision that failed and a nearby case that must remain unchanged. A real task can test whether the revised procedure works with the actual tools and side effects.
+
+These checks support different claims. A successful package build does not show that an installed agent selected the right procedure. A good response in a replay does not show that a live deployment succeeded. A correction on one host proves that host's state until the other intended consumers are checked.
+
+Review should inspect the changed rule, its failure paths and the evidence. A higher benchmark score alone is not enough to accept a change. If a case cannot observe the required behavior, I need better evidence rather than stronger wording around the score.
+
+## Keep the loop within its authority
+
+Improving a workflow can change what an agent attempts next. That makes authority part of the repair.
+
+Automatic correction must preserve gates for credentials, public publication, destructive actions and live infrastructure. A failed task does not create permission to cross them. The process also needs a usable rollback and a record of rejected changes, so it does not keep proposing the same unsuitable fix.
+
+This approach builds on the procedures in my [skill library](/projects/codex-skills). For each repeated miss, I ask:
+
+1. Which artifact shows what went wrong?
+2. Which component owns the behavior?
+3. What is the smallest correction that preserves the existing boundary?
+4. Which check will exercise the failure and a nearby valid case?
+5. Which installed consumers need verification before I claim the repair reached them?
+
+Mira mode supplies the workflow for the current task. Skill loop engineering maintains that workflow when real evidence shows where it fails.
