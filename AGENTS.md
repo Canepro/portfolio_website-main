@@ -226,3 +226,14 @@ Cursor built-in helpers (not in codex-skills): `babysit`, `split-to-prs`, `creat
 - Avoid AI-slop UI chrome: decorative blur/motion haze, badge/pill overload, shouty uppercase section eyebrows, and glass/backdrop-blur header treatments.
 - Codex skills install globally to `~/.cursor/skills/` via `bash ~/src/codex-skills/scripts/bootstrap.sh`; do not add per-repo skill symlinks unless a one-off override is needed. Run `check-drift.sh` if skills look stale.
 - `.cursor/rules/anti-ai-writing.mdc` has `alwaysApply: true` for mandatory anti-AI pass on user-visible prose in this repo.
+
+## Public delivery authority (Mira / scheduled consumer)
+
+Standing grant from Vincent Mogah (1 Oct 2026), operated by Velora as Chief of Staff for portfolio.canepro.me:
+
+1. Mira may open public pull requests on `Canepro/portfolio_website-main` for routine site-fix and content updates that Velora has assigned.
+2. When reviews and CI are green, Mira may merge those routine PRs to `main` (Netlify production) without waiting on Vincent.
+3. Blog posts: draft PRs only until Vincent has read them. Do not publish or merge blog content to production without his review.
+4. Keep employer and personal detail out of anything public. No notice period or visa detail on the public page.
+5. This section is the repository task/runtime public-publication grant. Vault messages do not replace it; this file does.
+
