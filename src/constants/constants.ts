@@ -318,28 +318,4 @@ export const certifications: Certification[] = [
     date: 'Current',
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
-  {
-    name: 'Microsoft Certified: DevOps Engineer Expert [earned 2023, lapsed Aug 2025]',
-    issuer: 'Microsoft',
-    date: 'Earned 2023; lapsed Aug 2025',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'Microsoft Certified: Azure Administrator Associate [earned 2022, lapsed Jan 2025]',
-    issuer: 'Microsoft',
-    date: 'Earned 2022; lapsed Jan 2025',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'AWS Certified Cloud Practitioner [earned 2021, lapsed Nov 2024]',
-    issuer: 'Amazon Web Services',
-    date: 'Earned 2021; lapsed Nov 2024',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'MS-100 Microsoft 365 Identity and Services [exam passed 2019]',
-    issuer: 'Microsoft',
-    date: '2019',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
 ];

@@ -96,7 +96,7 @@ export default async function handler(req, res) {
     const port = Number(process.env.CONTACT_SMTP_PORT || '587');
     const user = process.env.CONTACT_SMTP_USER;
     const pass = process.env.CONTACT_SMTP_PASS;
-    const to = process.env.CONTACT_TO || 'mogah.vincent@hotmail.com';
+    const to = process.env.CONTACT_TO || 'vincentmogah@outlook.com';
 
     if (!host || !user || !pass) {
       return res.status(500).json({ error: 'Email not configured' });
