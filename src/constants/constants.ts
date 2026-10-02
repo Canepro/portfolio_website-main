@@ -301,27 +301,21 @@ export interface Certification {
 
 export const certifications: Certification[] = [
   {
-    name: 'Microsoft Certified: Azure AI Fundamentals',
-    issuer: 'Microsoft',
-    date: 'Issued (see LinkedIn)',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'Microsoft Certified: Azure Fundamentals',
-    issuer: 'Microsoft',
-    date: 'Issued (see LinkedIn)',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'freeCodeCamp.org Responsive Web Design Certification',
-    issuer: 'freeCodeCamp',
-    date: 'Issued (see LinkedIn)',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'ITIL 4 Foundation Certificate in IT Service Management',
+    name: 'ITIL 4 Foundation [current, valid to Apr 2028]',
     issuer: 'PeopleCert',
-    date: 'Issued (see LinkedIn)',
+    date: 'Valid to Apr 2028',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure Fundamentals [current]',
+    issuer: 'Microsoft',
+    date: 'Current',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure AI Fundamentals [current]',
+    issuer: 'Microsoft',
+    date: 'Current',
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
 ];

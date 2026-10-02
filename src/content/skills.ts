@@ -56,20 +56,27 @@ export const skillGroups: SkillGroup[] = [
   },
   {
     title: 'Delivery + CI/CD',
-    description: 'Pipelines, quality gates, and release hygiene that keep shipping boring.',
+    description:
+      'Build, test, security checks, and release workflows recorded in public repositories.',
     skills: [
       { name: 'Jenkins (Multibranch Pipelines)' },
       { name: 'GitHub Actions' },
       { name: 'Azure Pipelines' },
       { name: 'Docker' },
-      { name: 'Artifact promotion' },
+      { name: 'Argo CD / GitOps' },
       { name: 'Static analysis + security gates' },
     ],
     evidence: [
       { label: 'Jenkins + EKS CI/CD', href: '/projects/jenkins-eks-cicd' },
+      { label: 'PipelineHealer', href: '/projects/pipelinehealer' },
+      { label: 'GitOps delivery', href: '/projects/hybrid-cloud-gitops-control-plane' },
       {
-        label: 'Portfolio CI source',
+        label: 'GitHub Actions source',
         href: 'https://github.com/Canepro/portfolio_website-main/tree/main/.github/workflows',
+      },
+      {
+        label: 'Azure Pipelines source',
+        href: 'https://github.com/Canepro/portfolio_website-main/blob/main/azure-pipelines.yml',
       },
     ],
   },

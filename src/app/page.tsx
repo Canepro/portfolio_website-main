@@ -25,7 +25,7 @@ export default function HomePage() {
       >
         <div>
           <p className="font-mono text-sm text-[color:var(--color-text-secondary)]">
-            Agent systems engineer · United Kingdom
+            Agent systems engineer · Glasgow, UK
           </p>
           <h1
             id="intro-title"
@@ -39,7 +39,7 @@ export default function HomePage() {
             I build agent workflows, CI remediation tools, and infrastructure diagnostics. The work
             below shows how they use evidence, permissions, and verification.
           </p>
-          <div className="mt-5 flex gap-6 text-sm">
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm">
             <a
               href="#projects"
               className="font-medium underline decoration-[color:var(--color-accent)] underline-offset-4"
@@ -49,6 +49,9 @@ export default function HomePage() {
             <Link href="/contact" className="underline underline-offset-4">
               Contact
             </Link>
+            <a href="/cv/Vincent-Mogah-CV.pdf" download className="underline underline-offset-4">
+              Download CV
+            </a>
           </div>
         </div>
       </section>
@@ -192,8 +195,8 @@ export default function HomePage() {
         <h2 className="text-3xl font-medium tracking-tight">Let’s talk.</h2>
         <div>
           <p className="text-lg leading-8 text-[color:var(--color-text-secondary)]">
-            For engineering roles or a project conversation, email works best. A job description or
-            repository link helps.
+            Based in Glasgow, UK. Open to remote or hybrid platform, SRE and cloud infrastructure
+            roles.
           </p>
           <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
             <a

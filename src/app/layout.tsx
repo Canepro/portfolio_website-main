@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
+import localFont from 'next/font/local';
 
 import AppShell from '@/app/shared/AppShell';
 import { profile } from '@/content/profile';
@@ -9,16 +9,24 @@ import { getSiteUrl } from '@/lib/site';
 import '@/styles/GlobalStyles.css';
 import '@/styles/globals.css';
 
-const ibmPlexSans = IBM_Plex_Sans({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+const ibmPlexSans = localFont({
+  src: [
+    { path: './fonts/IBMPlexSans-Light.woff2', weight: '300', style: 'normal' },
+    { path: './fonts/IBMPlexSans-Regular.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/IBMPlexSans-Medium.woff2', weight: '500', style: 'normal' },
+    { path: './fonts/IBMPlexSans-SemiBold.woff2', weight: '600', style: 'normal' },
+    { path: './fonts/IBMPlexSans-Bold.woff2', weight: '700', style: 'normal' },
+  ],
   display: 'swap',
   variable: '--font-sans',
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
+const ibmPlexMono = localFont({
+  src: [
+    { path: './fonts/IBMPlexMono-Regular.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/IBMPlexMono-Medium.woff2', weight: '500', style: 'normal' },
+    { path: './fonts/IBMPlexMono-SemiBold.woff2', weight: '600', style: 'normal' },
+  ],
   display: 'swap',
   variable: '--font-mono',
 });
