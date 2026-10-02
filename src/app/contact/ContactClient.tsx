@@ -61,6 +61,9 @@ export default function ContactClient() {
         <a href={`mailto:${profile.email}`} className="break-all underline underline-offset-4">
           {profile.email}
         </a>
+        <a href="/cv/Vincent-Mogah-CV.pdf" download className="underline underline-offset-4">
+          Download CV
+        </a>
         {safeExternalHref(profile.links.linkedin) ? (
           <a
             href={safeExternalHref(profile.links.linkedin)}

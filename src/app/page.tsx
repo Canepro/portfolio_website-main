@@ -25,7 +25,7 @@ export default function HomePage() {
       >
         <div>
           <p className="font-mono text-sm text-[color:var(--color-text-secondary)]">
-            Agent systems engineer · United Kingdom
+            Agent systems engineer · Glasgow, UK
           </p>
           <h1
             id="intro-title"
@@ -49,6 +49,9 @@ export default function HomePage() {
             <Link href="/contact" className="underline underline-offset-4">
               Contact
             </Link>
+            <a href="/cv/Vincent-Mogah-CV.pdf" download className="underline underline-offset-4">
+              Download CV
+            </a>
           </div>
         </div>
       </section>
@@ -122,7 +125,9 @@ export default function HomePage() {
           ))}
         </div>
         <details className="mt-10 border-t border-[color:var(--color-border)] pt-5">
-          <summary className="cursor-pointer text-sm font-medium">Certifications</summary>
+          <summary className="cursor-pointer text-sm font-medium">
+            Certifications and training
+          </summary>
           <ul className="mt-4 space-y-3 text-sm">
             {certifications.map(c => {
               const href = safeExternalHref(c.link);
@@ -192,8 +197,8 @@ export default function HomePage() {
         <h2 className="text-3xl font-medium tracking-tight">Let’s talk.</h2>
         <div>
           <p className="text-lg leading-8 text-[color:var(--color-text-secondary)]">
-            For engineering roles or a project conversation, email works best. A job description or
-            repository link helps.
+            Based in Glasgow, UK. Open to remote or hybrid platform, SRE and cloud infrastructure
+            roles.
           </p>
           <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
             <a

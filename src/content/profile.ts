@@ -1,8 +1,8 @@
 export const profile = {
   name: 'Vincent Mogah',
   headline: 'Agent Systems Engineer | Platform Reliability | CI and Infrastructure Automation',
-  location: 'United Kingdom',
-  email: 'mogah.vincent@hotmail.com',
+  location: 'Glasgow, UK',
+  email: 'vincentmogah@outlook.com',
   links: {
     github: 'https://github.com/Canepro',
     linkedin: 'https://www.linkedin.com/in/vincent-mogah',

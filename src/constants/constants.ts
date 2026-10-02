@@ -301,27 +301,45 @@ export interface Certification {
 
 export const certifications: Certification[] = [
   {
-    name: 'Microsoft Certified: Azure AI Fundamentals',
-    issuer: 'Microsoft',
-    date: 'Issued (see LinkedIn)',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'Microsoft Certified: Azure Fundamentals',
-    issuer: 'Microsoft',
-    date: 'Issued (see LinkedIn)',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'freeCodeCamp.org Responsive Web Design Certification',
-    issuer: 'freeCodeCamp',
-    date: 'Issued (see LinkedIn)',
-    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
-  },
-  {
-    name: 'ITIL 4 Foundation Certificate in IT Service Management',
+    name: 'ITIL 4 Foundation [current, valid to Apr 2028]',
     issuer: 'PeopleCert',
-    date: 'Issued (see LinkedIn)',
+    date: 'Valid to Apr 2028',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure Fundamentals [current]',
+    issuer: 'Microsoft',
+    date: 'Current',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure AI Fundamentals [current]',
+    issuer: 'Microsoft',
+    date: 'Current',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: DevOps Engineer Expert [earned 2023, lapsed Aug 2025]',
+    issuer: 'Microsoft',
+    date: 'Earned 2023; lapsed Aug 2025',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure Administrator Associate [earned 2022, lapsed Jan 2025]',
+    issuer: 'Microsoft',
+    date: 'Earned 2022; lapsed Jan 2025',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'AWS Certified Cloud Practitioner [earned 2021, lapsed Nov 2024]',
+    issuer: 'Amazon Web Services',
+    date: 'Earned 2021; lapsed Nov 2024',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'MS-100 Microsoft 365 Identity and Services [exam passed 2019]',
+    issuer: 'Microsoft',
+    date: '2019',
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
 ];
