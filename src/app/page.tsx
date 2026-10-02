@@ -39,7 +39,7 @@ export default function HomePage() {
             I build agent workflows, CI remediation tools, and infrastructure diagnostics. The work
             below shows how they use evidence, permissions, and verification.
           </p>
-          <div className="mt-5 flex gap-6 text-sm">
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm">
             <a
               href="#projects"
               className="font-medium underline decoration-[color:var(--color-accent)] underline-offset-4"
@@ -125,9 +125,7 @@ export default function HomePage() {
           ))}
         </div>
         <details className="mt-10 border-t border-[color:var(--color-border)] pt-5">
-          <summary className="cursor-pointer text-sm font-medium">
-            Certifications
-          </summary>
+          <summary className="cursor-pointer text-sm font-medium">Certifications</summary>
           <ul className="mt-4 space-y-3 text-sm">
             {certifications.map(c => {
               const href = safeExternalHref(c.link);
