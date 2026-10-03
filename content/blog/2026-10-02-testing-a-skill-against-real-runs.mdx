@@ -1,0 +1,60 @@
+---
+title: "Testing a skill against real runs"
+date: "2026-10-02"
+description: "A behavioral replay found three gaps in an agent workflow. Fixing the wording helped, but the evidence still had limits."
+tags: ["ai-agents", "agent-skills", "testing", "reliability"]
+---
+
+An agent skill can read well and still fail when a model uses it.
+
+I saw that while testing an engineering workflow. The instructions covered implementation, verification, review and continuity. A replay of 22 behavioral cases passed 19. The three failures each exposed a sentence that left the model room to stop too early or omit evidence.
+
+The useful result was the failure description. It told me which instruction to change and what the next run needed to prove.
+
+## Turn a failure into an observable case
+
+One case asked for status during work the agent was already authorized to finish. The agent answered the question and stopped. The instruction mentioned continued work inside a longer sentence, but the replay showed that it did not reliably produce the intended action.
+
+I made the rule explicit: answer briefly, then perform the next safe authorized step in the same turn. I kept a control case for a standalone status request about work that was not authorized. That case must remain read-only.
+
+Those are different requests. A test that rewards continued execution for both would make the workflow less safe while making its score look better.
+
+A second failure concerned self-review before external review. The instruction referred to a review packet without making the required evidence clear enough for the scenario. The revision required a record of what the author inspected and changed, written before dispatch and carried into the completion record.
+
+The third concerned continuity. A checkpoint described the objective, progress and next action, but did not say what the next run must check again. I added the current facts that need reproof, including branch heads, pull request state, checks and live hosts.
+
+A checkpoint is useful when it tells the next run how to establish whether its instructions still apply.
+
+## Keep comparisons tied to one candidate
+
+The initial replay ran each of the 22 cases once. After editing, I reran seven relevant cases against one final instruction fingerprint: the three failures and four controls.
+
+All three failures cleared the pass threshold. None of the controls fell below it. That supports the narrow claim that the revised wording handled those cases better in those runs. It does not establish a pass rate for the full suite, because I did not rerun all 22 cases on the final candidate.
+
+Single runs also moved between score bands. One control improved while another declined, with both still passing. I would need repeated runs to distinguish a reliable improvement from model variation. A precise-looking score does not remove that uncertainty.
+
+The fingerprint matters too. If an after table combines runs from several revisions, it describes a collection of experiments rather than the behavior of the version being shipped. Intermediate runs can help explain a decision, but the final comparison should identify one candidate.
+
+## A passing judge can still miss the important fact
+
+The self-review case passed after the repair, but its artifacts did not let the judge observe whether the author wrote the review record before dispatching external reviews.
+
+That ordering was the requirement. The presence of a self-review note afterward did not prove it.
+
+I kept the gap recorded as unverified. The next useful test needs evidence of the sequence, such as an ordered event record. Raising the score threshold would not fix a fixture that cannot expose the behavior it is meant to judge.
+
+## Use several kinds of proof
+
+Structural checks can show that a skill package contains its referenced files. Behavioral replay can show how a model responds to a scenario. A real task can reveal tool failures and state changes that the scenario did not model. Each supplies evidence the others may miss.
+
+I use the same discipline for agent procedures in my [skill library](/projects/codex-skills): make the failure concrete, change the smallest owning instruction, and test the nearby behavior that must stay intact.
+
+Before accepting a skill change, I now check:
+
+1. What observable failure prompted the edit?
+2. Which case reproduces it, and which control protects the boundary?
+3. Were the final runs made against one recorded fingerprint?
+4. Does the evidence show the required action and ordering?
+5. Which conclusions remain unproven, and what would prove them?
+
+The goal is a workflow whose claims can be checked against what the agent actually did.
