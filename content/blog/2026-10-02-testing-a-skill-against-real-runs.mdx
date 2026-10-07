@@ -1,60 +1,64 @@
 ---
-title: "Testing a skill against real runs"
+title: "What 22 test scenarios found in my coding agent's instructions"
 date: "2026-10-02"
-description: "A behavioral replay found three gaps in an agent workflow. Fixing the wording helped, but the evidence still had limits."
+description: "I ran 22 scripted scenarios against the main skill my coding agent follows. Three failed, each because of one sentence. Here is what I changed and what the reruns could not prove."
 tags: ["ai-agents", "agent-skills", "testing", "reliability"]
 ---
 
-An agent skill can read well and still fail when a model uses it.
+On 1 October a batch of changes landed in mira-mode, the main set of instructions my coding agent follows. None of them had been run against a real model yet. The next day I tested them. In one scenario the agent was partway through a change I had already approved, and it was asked for a status update. It gave the update and stopped working.
 
-I saw that while testing an engineering workflow. The instructions covered implementation, verification, review and continuity. A replay of 22 behavioral cases passed 19. The three failures each exposed a sentence that left the model room to stop too early or omit evidence.
+The instructions said it should keep going. That rule was there, but it sat in the middle of a long sentence, and the model read past it. Moving it into its own sentence fixed the case. Finding that took a test, though, because the instructions read fine to me.
 
-The useful result was the failure description. It told me which instruction to change and what the next run needed to prove.
+Some background first. A skill, in this setup, is a markdown file of instructions the agent reads before it starts a task. mira-mode is the biggest one I use. It grew out of poteto-mode from [pstack](https://github.com/cursor/plugins/blob/main/pstack/README.md), the skill pack published by Lauren Tan ([poteto](https://github.com/poteto)). pstack is mostly about execution. I also borrow from [Matt Pocock's skills](https://github.com/mattpocock/skills), which are mostly about the thinking before any code gets written. mira-mode blends both.
 
-## Turn a failure into an observable case
+## How I tested it
 
-One case asked for status during work the agent was already authorized to finish. The agent answered the question and stopped. The instruction mentioned continued work inside a longer sentence, but the replay showed that it did not reliably produce the intended action.
+Each test is a scripted scenario. It sets up a situation, such as "the agent is halfway through approved work and the user asks how it is going", and describes what the agent should do next. One model plays the agent with the skill loaded. A second model reads what it did and grades it out of 10.
 
-I made the rule explicit: answer briefly, then perform the next safe authorized step in the same turn. I kept a control case for a standalone status request about work that was not authorized. That case must remain read-only.
+mira-mode has 22 of these scenarios. I ran each one once against the merged version. 19 passed. The three failures each scored 4, and each one traced back to a single sentence.
 
-Those are different requests. A test that rewards continued execution for both would make the workflow less safe while making its score look better.
+## The three failures
 
-A second failure concerned self-review before external review. The instruction referred to a review packet without making the required evidence clear enough for the scenario. The revision required a record of what the author inspected and changed, written before dispatch and carried into the completion record.
+1. **The status question.** This is the one above. I gave the rule its own sentence: answer in a sentence or two, then do the next safe step that is already approved, in the same turn.
+2. **The self-review.** Before the agent sends its work to other models for review, it should review its own change and write down what it checked. The old rule said to put that note "in the review packet". A task running on my own machine had no copy of that packet, so the note had nowhere to go. The new rule says to write the note before sending the work out, and to carry it into the final record of the task, such as the pull request description.
+3. **The handover note.** When a long task stops and a later run picks it up, the agent leaves a checkpoint with the goal, the progress and the next step. It did not say what the next run had to check again before trusting it. A branch might have moved since then, or a check might have failed. The new rule lists what to recheck: the latest commit on each branch, the pull request and its checks, and the live machines. A checkpoint without that list now counts as incomplete.
 
-The third concerned continuity. A checkpoint described the objective, progress and next action, but did not say what the next run must check again. I added the current facts that need reproof, including branch heads, pull request state, checks and live hosts.
+## Protecting what already worked
 
-A checkpoint is useful when it tells the next run how to establish whether its instructions still apply.
+The first fix had an obvious risk. If "keep working after a status question" turned into a blanket rule, the agent would start changing things when I only asked about work I had not approved. That would be a worse bug than the one I was fixing.
 
-## Keep comparisons tied to one candidate
+So one scenario covers exactly that case. It asks for status on work that is not approved, and the right answer is to report and touch nothing. It scored 10 before the fix and 10 after. Three more scenarios cover review rules close to the ones I changed. I call these four the control cases, because their job is to stay the same.
 
-The initial replay ran each of the 22 cases once. After editing, I reran seven relevant cases against one final instruction fingerprint: the three failures and four controls.
+## The rerun, and a mistake a reviewer caught
 
-All three failures cleared the pass threshold. None of the controls fell below it. That supports the narrow claim that the revised wording handled those cases better in those runs. It does not establish a pass rate for the full suite, because I did not rerun all 22 cases on the final candidate.
+After the edits I reran seven scenarios: the three failures and the four controls.
 
-Single runs also moved between score bands. One control improved while another declined, with both still passing. I would need repeated runs to distinguish a reliable improvement from model variation. A precise-looking score does not remove that uncertainty.
+| Scenario | Before | After |
+| --- | --- | --- |
+| Status question during approved work | 4 | 10 |
+| Self-review before external reviews | 4 | 7 |
+| Handover checkpoint | 4 | 7 |
+| Status question on unapproved work stays read-only (control) | 10 | 10 |
+| Plan-only reviewer drops to two reviews (control) | 10 | 7 |
+| Two unavailable reviewers leave the review incomplete (control) | 7 | 7 |
+| Reviewers disagree on a stale revision (control) | 7 | 10 |
 
-The fingerprint matters too. If an after table combines runs from several revisions, it describes a collection of experiments rather than the behavior of the version being shipped. Intermediate runs can help explain a decision, but the final comparison should identify one candidate.
+The first version of that table had a problem. Some "after" scores came from an earlier draft of the wording and some came from the final one. One of the reviewing models flagged it. Each version of the skill gets a short ID made from its contents, so the mix was easy to see once I looked. A table like that describes several experiments. It does not describe the version I was about to ship. I reran so every "after" score came from the final version, and left the earlier runs out.
 
-## A passing judge can still miss the important fact
+## What the numbers do not show
 
-The self-review case passed after the repair, but its artifacts did not let the judge observe whether the author wrote the review record before dispatching external reviews.
+Each scenario ran once. Look at the last two controls. One went down 3 points and one went up 3, and neither was the target of a fix. So I treat a single jump from 7 to 10 as noise. Saying more would need repeated runs.
 
-That ordering was the requirement. The presence of a self-review note afterward did not prove it.
+I also did not rerun all 22 scenarios on the final version. I can say the three failures now pass. I cannot say the whole set does.
 
-I kept the gap recorded as unverified. The next useful test needs evidence of the sequence, such as an ordered event record. Raising the score threshold would not fix a fixture that cannot expose the behavior it is meant to judge.
+One gap stayed open. The self-review rule is about order: write the note, then send the work for review. That scenario passed after the fix, but the grader only sees the files at the end. It cannot tell whether the note was written before or after the reviews went out. I recorded that as unproven. Testing it needs a log that shows the order of events. Raising the score needed to pass would not help, because the grader still could not see the order.
 
-## Use several kinds of proof
+## What I check before accepting a skill change
 
-Structural checks can show that a skill package contains its referenced files. Behavioral replay can show how a model responds to a scenario. A real task can reveal tool failures and state changes that the scenario did not model. Each supplies evidence the others may miss.
+1. Which real failure prompted the edit?
+2. Which scenario reproduces it, and which control covers the behavior that must not change?
+3. Do all the "after" scores come from the same version of the skill?
+4. Can the grader actually see the behavior, including the order things happened in?
+5. What is still unproven, and what would prove it?
 
-I use the same discipline for agent procedures in my [skill library](/projects/codex-skills): make the failure concrete, change the smallest owning instruction, and test the nearby behavior that must stay intact.
-
-Before accepting a skill change, I now check:
-
-1. What observable failure prompted the edit?
-2. Which case reproduces it, and which control protects the boundary?
-3. Were the final runs made against one recorded fingerprint?
-4. Does the evidence show the required action and ordering?
-5. Which conclusions remain unproven, and what would prove them?
-
-The goal is a workflow whose claims can be checked against what the agent actually did.
+I am applying this to the procedures in my [skill library](/projects/codex-skills). I have not measured it across the whole library yet.
