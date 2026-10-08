@@ -1,2 +1,2 @@
-// Deliberate type error for the draft PR auto-fix proof.
-export const autoFixProof: number = "typecheck should fail";
+// Retained fixture for the draft PR auto-fix proof.
+export const autoFixProof: number = 1;
