@@ -112,6 +112,24 @@ try {
             errors.push('Embedded chat launcher did not become ready within 10 seconds');
           }
         }
+        await page.evaluate(() =>
+          Promise.all(
+            [...document.images].map(image => {
+              if (image.complete || image.getBoundingClientRect().width === 0) return;
+              return new Promise(resolve => {
+                const timer = setTimeout(done, 10_000);
+                function done() {
+                  clearTimeout(timer);
+                  image.removeEventListener('load', done);
+                  image.removeEventListener('error', done);
+                  resolve();
+                }
+                image.addEventListener('load', done, { once: true });
+                image.addEventListener('error', done, { once: true });
+              });
+            })
+          )
+        );
         const activeTheme = await page.evaluate(() =>
           document.documentElement.classList.contains('dark') ? 'dark' : 'light'
         );
@@ -125,7 +143,7 @@ try {
           heading: document.querySelector('main h1')?.textContent?.trim() ?? '',
           overflow: document.documentElement.scrollWidth - innerWidth,
           brokenImages: [...document.images].filter(
-            i => i.getBoundingClientRect().width > 0 && i.complete && !i.naturalWidth
+            i => i.getBoundingClientRect().width > 0 && (!i.complete || !i.naturalWidth)
           ).length,
         }));
         const state = {
@@ -161,7 +179,7 @@ try {
           add(
             'image',
             `${name} shows broken images`,
-            `${metrics.brokenImages} visible images did not load`,
+            `${metrics.brokenImages} visible images failed or did not load within 10 seconds`,
             'img'
           );
         if (errors.length)
