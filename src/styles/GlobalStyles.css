@@ -166,9 +166,22 @@ html.light-theme .image-shimmer {
   background-size: 200% 100%;
 }
 
+/* The livechat page declares no color-scheme. Inheriting the dark scheme makes
+   Chrome paint an opaque canvas behind the collapsed launcher, so the whole
+   86px frame hides article text instead of just the button. */
+.rocketchat-widget iframe {
+  color-scheme: light;
+}
+
 @media (max-width: 767px) {
   body.mobile-nav-open iframe[src*='livechat'] {
     visibility: hidden !important;
+  }
+
+  /* A fixed launcher always sits over some line of text on a phone. The header
+     chat button opens the widget instead; it shows again once opened. */
+  .rocketchat-widget[data-state='closed'] {
+    visibility: hidden;
   }
 }
 
