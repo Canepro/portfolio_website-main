@@ -1,0 +1,31 @@
+{
+  "runId": "2026-10-10T23-20-43-273Z",
+  "revision": "80fb1c596c698e9a5bb958501f7bc9bbd2a8b789",
+  "reviewedAt": "2026-10-10T23:26:45.891Z",
+  "reviewer": "Mira / Codex gpt-6.1-sol; all 40 PNGs inspected; native T3 browser repro",
+  "findings": [
+    {
+      "code": "overlap",
+      "target": "#rocketchat-iframe",
+      "title": "Chat launcher covers reader text on mobile",
+      "observed": "At 390x844 the collapsed chat iframe occupies an 86x86 area at the bottom right and covers article paragraph line endings. The same overlap appears on case-study, archive, and writing-list pages. A native browser repro confirmed the iframe rectangle x=304,y=758,width=86,height=86 intersects a paragraph at x=24,y=676,width=342,height=168.",
+      "expected": "The collapsed chat control remains reachable without covering reading text or page controls on mobile.",
+      "repro": [
+        "Open https://portfolio.canepro.me/blog/2026-05-29-giving-an-ai-agent-just-enough-access-in-signalforge at a 390x844 viewport.",
+        "Wait for the green chat launcher to load; switch to dark theme if needed to match the screenshot.",
+        "Read the introductory paragraph near the bottom of the viewport. The launcher covers the right-hand line endings; scrolling moves different reading text underneath it."
+      ],
+      "screenshot": "390-dark-6-article.png",
+      "url": "https://portfolio.canepro.me/blog/2026-05-29-giving-an-ai-agent-just-enough-access-in-signalforge",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "theme": "dark",
+      "fingerprint": "03f39efeba5ba391",
+      "screenshotSha256": "2c69a0b96963845d19c158eb1ae3e5c9755ef17648636620bbadab9361e74fc4"
+    }
+  ],
+  "omitted": 0,
+  "deduplicated": 0
+}
