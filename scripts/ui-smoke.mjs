@@ -100,6 +100,18 @@ try {
           scrollTo(0, 0);
         });
         await page.waitForTimeout(250);
+        // The production widget loads after hydration. An early blank iframe is not a settled UI.
+        if (origin.hostname === 'portfolio.canepro.me') {
+          try {
+            await page.locator('#rocketchat-iframe').waitFor({ state: 'visible' });
+            await page
+              .frameLocator('#rocketchat-iframe')
+              .getByRole('button', { name: 'Rocket.Chat', exact: true })
+              .waitFor();
+          } catch {
+            errors.push('Embedded chat launcher did not become ready within 10 seconds');
+          }
+        }
         const activeTheme = await page.evaluate(() =>
           document.documentElement.classList.contains('dark') ? 'dark' : 'light'
         );
