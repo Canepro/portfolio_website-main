@@ -97,7 +97,7 @@ export default function ProjectDetailClient({ project, slug }: { project: Projec
       </figure>
 
       {project.tags.length ? (
-        <p className="mt-4 text-sm text-[color:var(--color-text-secondary)]">
+        <p className="mt-4 text-sm font-medium leading-6 text-[color:var(--color-text-primary)] opacity-80">
           {project.tags.join(' · ')}
         </p>
       ) : null}

@@ -22,6 +22,36 @@ export function WorkflowFigure({ label = 'Engineering workflow' }: { label?: str
   );
 }
 
+export function PipelineHealerFigure() {
+  return (
+    <div className="grid aspect-video content-center gap-5 bg-[color:var(--color-bg-secondary)] p-6 lg:p-10">
+      <p className="font-mono text-sm font-medium text-[color:var(--color-text-primary)] opacity-80">
+        PipelineHealer / controlled remediation flow
+      </p>
+      <ol className="grid gap-3 text-lg lg:grid-cols-3 lg:gap-6">
+        {['Failed CI run', 'Evidence and diagnosis', 'Guarded fix PR or reviewable issue'].map(
+          (step, i) => (
+            <li key={step} className="border-t border-[color:var(--color-border)] pt-3">
+              <span className="mb-1 block font-mono text-sm font-medium text-[color:var(--color-accent)]">
+                0{i + 1}
+              </span>
+              {step}
+            </li>
+          )
+        )}
+      </ol>
+    </div>
+  );
+}
+
+// PipelineHealer's dashboard screenshot is unreadable at card size, so its card
+// draws PipelineHealerFigure instead. The case study still shows the screenshot.
+const isIllustrated = (project: Project) => project.slug === 'pipelinehealer';
+
+/** The image a preview card renders, if any. Use it to pick the card that gets `priority`. */
+export const previewImage = (project: Project) =>
+  isIllustrated(project) ? undefined : project.media || project.image;
+
 export default function ProjectPreviewCard({
   project,
   priority = false,
@@ -37,20 +67,21 @@ export default function ProjectPreviewCard({
   const href = `/projects/${encodeURIComponent(project.slug)}`;
   const source = safeExternalHref(project.source);
   const demo = project.deployment?.status === 'live' ? safeExternalHref(project.visit) : undefined;
-  const image = project.media || project.image;
+  const isPipelineHealer = isIllustrated(project);
+  const image = previewImage(project);
   return (
     <article
       className={cn(
-        'grid gap-6 border-t border-[color:var(--color-border)] py-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-12 md:py-12',
+        'grid gap-6 border-t border-[color:var(--color-border)] py-5 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-12 md:py-8',
         className
       )}
     >
       <div className="min-w-0">
-        <p className="font-mono text-xs text-[color:var(--color-text-secondary)]">
+        <p className="font-mono text-sm font-medium leading-6 text-[color:var(--color-text-primary)] opacity-80">
           {project.year || project.category}
           {project.deployment?.status === 'retired' ? ' · Hosted demo retired' : ''}
         </p>
-        <Heading className="mt-3 text-2xl font-medium tracking-tight md:text-3xl">
+        <Heading className="mt-1 text-2xl font-medium tracking-tight md:text-3xl">
           <Link href={href} className="hover:underline underline-offset-4">
             {project.title}
           </Link>
@@ -94,7 +125,9 @@ export default function ProjectPreviewCard({
           aria-label={`Read ${project.title} case study`}
           className="block"
         >
-          {image ? (
+          {isPipelineHealer ? (
+            <PipelineHealerFigure />
+          ) : image ? (
             <div className="relative aspect-video bg-[color:var(--color-bg-secondary)]">
               <ProjectMedia
                 src={image}
@@ -116,8 +149,10 @@ export default function ProjectPreviewCard({
           )}
         </Link>
         <figcaption className="mt-3 max-w-xl text-xs leading-5 text-[color:var(--color-text-secondary)]">
-          {project.evidenceCaption ||
-            'Recorded project evidence. Open the case study for architecture, source, and context.'}
+          {isPipelineHealer
+            ? 'Workflow illustration. The case study includes the recorded dashboard and project evidence.'
+            : project.evidenceCaption ||
+              'Recorded project evidence. Open the case study for architecture, source, and context.'}
         </figcaption>
       </figure>
     </article>

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { PageSection } from '@/components/layout/PageShell';
 import { SectionHeader } from '@/components/layout/SectionHeader';
-import ProjectPreviewCard from '@/components/Projects/ProjectPreviewCard';
+import ProjectPreviewCard, { previewImage } from '@/components/Projects/ProjectPreviewCard';
 import { profile } from '@/content/profile';
 import { skillGroups } from '@/content/skills';
 import { getAllBlogPostsMeta } from '@/lib/blog';
@@ -15,8 +15,9 @@ export const metadata: Metadata = { alternates: { canonical: '/' } };
 export default function HomePage() {
   const posts = getAllBlogPostsMeta().slice(0, 2);
   const featured = projects.filter(p => p.featured).slice(0, 3);
-  const firstImage = featured.find(p => p.media || p.image);
+  const firstImage = featured.find(previewImage);
   const linkedin = safeExternalHref(profile.links.linkedin);
+  const certificationList = safeExternalHref(certifications[0]?.link);
   return (
     <div className="mx-auto max-w-6xl px-6 pb-20 pt-12 md:px-10 md:pt-20">
       <section
@@ -124,31 +125,39 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-        <details className="mt-10 border-t border-[color:var(--color-border)] pt-5">
-          <summary className="cursor-pointer text-sm font-medium">Certifications</summary>
-          <ul className="mt-4 space-y-3 text-sm">
+        <section
+          className="mt-10 border-t border-[color:var(--color-border)] pt-5"
+          aria-labelledby="certifications-title"
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <h3 id="certifications-title" className="text-xl font-medium">
+              Certifications
+            </h3>
+            {certificationList ? (
+              <a
+                href={certificationList}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium underline underline-offset-4"
+              >
+                Credential list on LinkedIn <span aria-hidden="true">↗</span>
+              </a>
+            ) : null}
+          </div>
+          <ul className="mt-5 grid gap-x-8 gap-y-4 md:grid-cols-2">
             {certifications.map(c => {
-              const href = safeExternalHref(c.link);
+              const issuedYear = c.date.match(/\d{4}$/)?.[0];
               return (
-                <li key={c.name}>
-                  {href ? (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline underline-offset-4"
-                    >
-                      {c.name}
-                    </a>
-                  ) : (
-                    c.name
-                  )}
-                  <span className="ml-2 text-[color:var(--color-text-secondary)]">{c.issuer}</span>
+                <li key={c.name} className="border-t border-[color:var(--color-border)] pt-3">
+                  <p className="font-medium">{c.name}</p>
+                  <p className="mt-1 text-sm leading-6 text-[color:var(--color-text-secondary)]">
+                    {c.issuer} · {issuedYear ? `Issued ${issuedYear}` : 'Year not listed'}
+                  </p>
                 </li>
               );
             })}
           </ul>
-        </details>
+        </section>
       </PageSection>
       <PageSection id="writing" className="border-t border-[color:var(--color-border)] pt-10">
         <SectionHeader
@@ -167,7 +176,7 @@ export default function HomePage() {
             <article key={p.slug} className="grid gap-3 py-6 md:grid-cols-[0.8fr_1.2fr] md:gap-12">
               <time
                 dateTime={p.date}
-                className="font-mono text-xs text-[color:var(--color-text-secondary)]"
+                className="font-mono text-sm font-medium leading-6 text-[color:var(--color-text-primary)] opacity-80"
               >
                 {p.date}
               </time>
