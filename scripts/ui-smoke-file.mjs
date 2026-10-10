@@ -53,6 +53,17 @@ try {
     })
   )
     throw new Error('Every deterministic candidate needs an explicit adjudication');
+  const candidateReview = deterministic.map((candidate, index) => {
+    const { decision, reason } = adjudications.find(item => item.index === index);
+    return {
+      index,
+      code: candidate.code,
+      target: candidate.target,
+      screenshot: candidate.screenshot,
+      decision,
+      reason,
+    };
+  });
   const candidates = [];
   const screenshots = new Map();
   const codes = new Set([
@@ -125,13 +136,18 @@ try {
     if (error.code !== 'ENOENT') throw error;
   }
   const selected = candidates.slice(0, 5);
-  if (final && JSON.stringify(final.findings) !== JSON.stringify(selected))
+  if (
+    final &&
+    (JSON.stringify(final.findings) !== JSON.stringify(selected) ||
+      JSON.stringify(final.candidateReview) !== JSON.stringify(candidateReview))
+  )
     throw new Error('This run already has a different final selection');
   final ??= {
     runId: run.runId,
     revision: run.revision,
     reviewedAt: new Date().toISOString(),
     reviewer: review.reviewer,
+    candidateReview,
     findings: selected,
     omitted: candidates.length - selected.length,
     deduplicated: review.findings.length - candidates.length,
@@ -145,6 +161,16 @@ try {
     `${selected.length} findings; ${final.omitted} omitted by the five-finding cap; ${final.deduplicated} duplicates combined.`,
     '',
   ];
+  report.push(
+    '## Deterministic candidate review',
+    '',
+    `${candidateReview.filter(item => item.decision === 'accept').length} accepted; ${candidateReview.filter(item => item.decision === 'reject').length} rejected.`,
+    '',
+    ...candidateReview.map(
+      item => `- ${item.index}: ${item.code} / ${item.target}: ${item.decision}. ${item.reason}`
+    ),
+    ''
+  );
   for (const finding of selected)
     report.push(
       `## ${finding.title}`,
@@ -165,6 +191,8 @@ try {
       ''
     );
   await writeFile(resolve(output, 'findings.md'), `${report.join('\n')}\n`);
+  run.visualReview = 'complete';
+  await writeJson(resolve(output, 'run.json'), run);
   if (flag === '--publish' && selected.length) {
     if (run.origin !== 'https://portfolio.canepro.me')
       throw new Error('Only production portfolio findings may be published');

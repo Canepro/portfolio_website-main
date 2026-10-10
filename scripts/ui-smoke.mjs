@@ -88,7 +88,11 @@ try {
       page.on('response', response => {
         if (response.status() < 400 || failedResponses.length >= 10) return;
         const url = new URL(response.url());
-        failedResponses.push({ status: response.status(), url: `${url.origin}${url.pathname}` });
+        const path =
+          url.origin === origin.origin || url.pathname === '/api/v1/livechat/page.visited'
+            ? url.pathname
+            : '/<redacted-path>';
+        failedResponses.push({ status: response.status(), url: `${url.origin}${path}` });
       });
       await page.addInitScript(
         ({ origin, theme }) => {
@@ -113,13 +117,26 @@ try {
         const menuOpen = await page.evaluate(() =>
           document.body.classList.contains('mobile-nav-open')
         );
-        if (origin.hostname === 'portfolio.canepro.me' && !menuOpen) {
+        const hasChat =
+          origin.hostname === 'portfolio.canepro.me' ||
+          (await page.getByRole('button', { name: 'Open chat', exact: true }).count()) ||
+          (await page.locator('#rocketchat-iframe').count());
+        if (hasChat && !menuOpen) {
           try {
-            await page.locator('#rocketchat-iframe').waitFor({ state: 'visible' });
-            await page
-              .frameLocator('#rocketchat-iframe')
-              .getByRole('button', { name: 'Rocket.Chat', exact: true })
-              .waitFor();
+            await page.locator('#rocketchat-iframe').waitFor({ state: 'attached' });
+            const mobileChatHidden = await page.evaluate(() => {
+              const widget = document.querySelector('.rocketchat-widget[data-state="closed"]');
+              return innerWidth < 768 && widget && getComputedStyle(widget).visibility === 'hidden';
+            });
+            if (mobileChatHidden)
+              await page.getByRole('button', { name: 'Open chat', exact: true }).waitFor();
+            else {
+              await page.locator('#rocketchat-iframe').waitFor({ state: 'visible' });
+              await page
+                .frameLocator('#rocketchat-iframe')
+                .getByRole('button', { name: 'Rocket.Chat', exact: true })
+                .waitFor();
+            }
           } catch {
             errors.push('Embedded chat launcher did not become ready within 10 seconds');
           }

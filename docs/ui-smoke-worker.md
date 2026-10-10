@@ -20,6 +20,8 @@ Write `review.json` with `runId`, `reviewer` (actual provider/model), and `findi
 
 Adjudicate every `run.candidates` entry in `candidateReview`: `{ "index": 0, "decision": "accept", "reason": "Confirmed by replay" }`, or `reject` with a concrete reason. Accepted entries must appear in `findings` with the same code, target, and screenshot. Failed HTTP observations retain status and origin/path, without query strings or response bodies; use these when reproducing anonymous widget exceptions. A failed journey cannot silently become a healthy report.
 
+Final reports retain accepted and rejected candidates with reasons; these decisions become immutable alongside the finding selection. Unknown third-party response paths are redacted. A deliberately hidden collapsed mobile chat widget is ready when its replacement `Open chat` header button is visible; the open navigation modal intentionally hides chat too. Browser launch failures produce interrupted-run receipts and cannot be finalized.
+
 ```sh
 node scripts/ui-smoke-file.mjs /path/to/run /path/to/run/review.json
 node scripts/ui-smoke-file.mjs /path/to/run /path/to/run/review.json --publish

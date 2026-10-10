@@ -50,6 +50,13 @@ test('a failed journey needs an explicit disposition before a zero-finding repor
       JSON.parse(await readFile(resolve(directory, 'findings.json'), 'utf8')).findings.length,
       0
     );
+    assert.match(
+      await readFile(resolve(directory, 'findings.md'), 'utf8'),
+      /0 accepted; 1 rejected/
+    );
+    review.candidateReview[0].reason = 'Different reason after finalization';
+    await writeFile(reviewFile, JSON.stringify(review));
+    assert.notEqual(cli('ui-smoke-file.mjs', [directory, reviewFile]).status, 0);
   } finally {
     await rm(directory, { recursive: true });
   }
@@ -137,11 +144,15 @@ test('filing caps the entire run at five screenshot-backed repros and rejects ch
         screenshot: 'page.png',
       })),
     };
+    run.candidates = [{ code: 'overlap', target: '#item-0', screenshot: 'page.png' }];
+    review.candidateReview = [{ index: 0, decision: 'accept', reason: 'Confirmed by replay' }];
+    await writeFile(resolve(directory, 'run.json'), JSON.stringify(run));
     await writeFile(reviewFile, JSON.stringify(review));
     assert.equal(cli('ui-smoke-file.mjs', [directory, reviewFile]).status, 0);
     const final = JSON.parse(await readFile(resolve(directory, 'findings.json'), 'utf8'));
     assert.equal(final.findings.length, 5);
     assert.equal(final.omitted, 2);
+    assert.equal(final.candidateReview[0].decision, 'accept');
     assert.match(
       await readFile(resolve(directory, 'findings.md'), 'utf8'),
       /!\[Evidence\]\(page.png\)/
@@ -160,6 +171,8 @@ test('filing caps the entire run at five screenshot-backed repros and rejects ch
     assert.notEqual(cli('ui-smoke-file.mjs', [directory, reviewFile]).status, 0);
     // A listed symlink still must not admit an outside screenshot into a run.
     run.gaps = [];
+    run.candidates = [];
+    review.candidateReview = [];
     run.states[0].screenshot = 'linked.png';
     await writeFile(resolve(directory, 'run.json'), JSON.stringify(run));
     await writeFile(resolve(outside, 'linked.png'), png);
