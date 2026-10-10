@@ -5,11 +5,21 @@ import { execFileSync } from 'node:child_process';
 // File input permits receipt replay; scheduled runs use the live t3-usage CLI.
 const args = process.argv.slice(2);
 const fileIndex = args.indexOf('--usage-file');
-const usage = JSON.parse(
-  fileIndex < 0
-    ? execFileSync('t3-usage', { encoding: 'utf8' })
-    : readFileSync(args[fileIndex + 1], 'utf8')
-);
+let usage;
+try {
+  usage = JSON.parse(
+    fileIndex < 0
+      ? execFileSync('t3-usage', { encoding: 'utf8' })
+      : readFileSync(args[fileIndex + 1], 'utf8')
+  );
+  if (!usage || typeof usage !== 'object' || !Array.isArray(usage.providers))
+    throw new Error('Invalid usage receipt');
+} catch {
+  console.log(
+    JSON.stringify({ status: 'stop', reason: 'Usage cannot be verified', weeklyUsedPercent: null })
+  );
+  process.exit(2);
+}
 const excluded = args.filter((value, index) => args[index - 1] === '--exclude');
 const providers = usage.providers ?? [];
 const codex = providers.find(p => p.instanceId === 'codex');

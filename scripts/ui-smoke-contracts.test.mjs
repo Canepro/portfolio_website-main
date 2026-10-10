@@ -59,6 +59,13 @@ test('fix routing honors Claude priority, unavailable routes, and the weekly sto
   const directory = await mkdtemp(resolve(tmpdir(), 'ui-smoke-provider-'));
   try {
     const file = resolve(directory, 'usage.json');
+    await writeFile(file, '{invalid');
+    const invalid = cli('ui-smoke-provider.mjs', ['--usage-file', file]);
+    assert.equal(invalid.status, 2);
+    assert.equal(JSON.parse(invalid.stdout).status, 'stop');
+    const missing = cli('ui-smoke-provider.mjs', ['--usage-file']);
+    assert.equal(missing.status, 2);
+    assert.equal(JSON.parse(missing.stdout).status, 'stop');
     const providers = ['codex', 'acpRegistry_cursor', 'claudeAgent'].map(provider);
     await writeFile(file, JSON.stringify({ providers }));
     const pick = exclusions => {
