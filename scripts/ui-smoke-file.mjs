@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFile, writeFile, mkdir, rm, realpath } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, rm, realpath, rename } from 'node:fs/promises';
 import { resolve, basename, sep } from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
@@ -18,6 +18,11 @@ const api = (path, body) =>
       encoding: 'utf8',
     })
   );
+const writeJson = async (path, value) => {
+  const temporary = `${path}.${process.pid}.tmp`;
+  await writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`);
+  await rename(temporary, path);
+};
 try {
   const run = JSON.parse(await readFile(resolve(output, 'run.json'), 'utf8'));
   const review = JSON.parse(await readFile(reviewFile, 'utf8'));
@@ -27,6 +32,27 @@ try {
     throw new Error('Review must name this run, its reviewer, and findings');
   const validText = value =>
     typeof value === 'string' && value.trim().length > 0 && value.length <= 2000;
+  const deterministic = run.candidates ?? [];
+  const adjudications = review.candidateReview ?? [];
+  if (
+    !Array.isArray(adjudications) ||
+    adjudications.length !== deterministic.length ||
+    new Set(adjudications.map(item => item.index)).size !== deterministic.length ||
+    !adjudications.every(item => {
+      const candidate = deterministic[item.index];
+      return (
+        Number.isInteger(item.index) &&
+        candidate &&
+        ['accept', 'reject'].includes(item.decision) &&
+        validText(item.reason) &&
+        (item.decision === 'reject' ||
+          review.findings.some(finding =>
+            ['code', 'target', 'screenshot'].every(key => finding[key] === candidate[key])
+          ))
+      );
+    })
+  )
+    throw new Error('Every deterministic candidate needs an explicit adjudication');
   const candidates = [];
   const screenshots = new Map();
   const codes = new Set([
@@ -110,7 +136,7 @@ try {
     omitted: candidates.length - selected.length,
     deduplicated: review.findings.length - candidates.length,
   };
-  await writeFile(finalPath, `${JSON.stringify(final, null, 2)}\n`);
+  await writeJson(finalPath, final);
   const report = [
     `# UI smoke run ${run.runId}`,
     '',
@@ -124,6 +150,8 @@ try {
       `## ${finding.title}`,
       '',
       `URL: ${finding.url}`,
+      '',
+      `Code: ${finding.code}; target: ${finding.target}.`,
       '',
       `Viewport: ${finding.viewport.width}x${finding.viewport.height}; ${finding.theme}.`,
       '',
@@ -189,7 +217,7 @@ try {
         api(`repos/${repo}/git/refs`, { ref: `refs/heads/${evidenceBranch}`, sha: commit.sha });
         receipt.commit = commit.sha;
       }
-      await writeFile(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
+      await writeJson(receiptPath, receipt);
     }
     // Query the owning issue list once rather than eventually-consistent GitHub search.
     const openIssues = JSON.parse(
@@ -206,6 +234,8 @@ try {
         `Run: ${run.runId}; runner revision: ${run.revision}.`,
         '',
         `URL: ${finding.url}`,
+        '',
+        `Code: ${finding.code}; target: ${finding.target}.`,
         '',
         `Viewport: ${finding.viewport.width}x${finding.viewport.height}; ${finding.theme}.`,
         '',
@@ -233,7 +263,7 @@ try {
         reused: Boolean(existing),
         screenshot: imageUrl,
       });
-      await writeFile(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
+      await writeJson(receiptPath, receipt);
     }
     console.log(JSON.stringify(receipt));
   } else

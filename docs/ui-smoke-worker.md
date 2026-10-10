@@ -18,6 +18,8 @@ Read `run.json`, inspect **every** screenshot, and reproduce candidate problems.
 
 Write `review.json` with `runId`, `reviewer` (actual provider/model), and `findings`. Each finding needs `code`, `target` (a stable selector or named journey), `title`, `observed`, `expected`, `repro` (ordered steps), and `screenshot` (a filename from `run.json`). Codes are `journey`, `heading`, `overflow`, `image`, `runtime`, `overlap`, `spacing`, `typography`, `contrast`, `navigation`, or `content`. Read existing open smoke issues first; reuse their code and target for the same defect. Use separate targets for distinct defects on one page. Include confirmed deterministic candidates in the same selection as visual findings. Sort by reader impact before filing.
 
+Adjudicate every `run.candidates` entry in `candidateReview`: `{ "index": 0, "decision": "accept", "reason": "Confirmed by replay" }`, or `reject` with a concrete reason. Accepted entries must appear in `findings` with the same code, target, and screenshot. Failed HTTP observations retain status and origin/path, without query strings or response bodies; use these when reproducing anonymous widget exceptions. A failed journey cannot silently become a healthy report.
+
 ```sh
 node scripts/ui-smoke-file.mjs /path/to/run /path/to/run/review.json
 node scripts/ui-smoke-file.mjs /path/to/run /path/to/run/review.json --publish

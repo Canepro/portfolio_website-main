@@ -51,7 +51,9 @@ const report = {
 const browser = await chromium.launch({ headless: true });
 report.browserVersion = browser.version();
 const describeError = error =>
-  `${error.name}: ${error.message.replace(/https?:\/\/\S+/g, '<url>').slice(0, 200)}`;
+  `${error.name || 'Error'}: ${String(error.message)
+    .replace(/https?:\/\/\S+/g, '<url>')
+    .slice(0, 200)}`;
 try {
   for (const viewport of [
     { width: 1440, height: 900 },
@@ -80,7 +82,13 @@ try {
       const page = await context.newPage();
       page.setDefaultTimeout(10_000);
       const errors = [];
+      const failedResponses = [];
       page.on('pageerror', error => errors.push(describeError(error)));
+      page.on('response', response => {
+        if (response.status() < 400 || failedResponses.length >= 10) return;
+        const url = new URL(response.url());
+        failedResponses.push({ status: response.status(), url: `${url.origin}${url.pathname}` });
+      });
       await page.addInitScript(
         ({ origin, theme }) => {
           if (location.origin === origin) localStorage.setItem('theme', theme);
@@ -157,6 +165,7 @@ try {
           screenshot,
           repro,
           metrics,
+          failedResponses: failedResponses.splice(0),
         };
         report.states.push(state);
         const add = (code, title, observed, target) =>
@@ -199,6 +208,7 @@ try {
             await action();
           } catch {
             errors.length = 0;
+            failedResponses.length = 0;
             await action();
           }
           await capture(name, repro);

@@ -17,6 +17,44 @@ const provider = id => ({
   usage: { windows: [{ kind: 'weekly', usedPercent: 50 }] },
 });
 
+test('a failed journey needs an explicit disposition before a zero-finding report', async () => {
+  const directory = await mkdtemp(resolve(tmpdir(), 'ui-smoke-adjudication-'));
+  try {
+    const run = {
+      contract: 'portfolio-ui-smoke/v1',
+      runId: 'failed-journey',
+      revision: 'fixture',
+      origin: 'http://127.0.0.1:3100',
+      gaps: [],
+      states: [{ screenshot: 'page.png' }],
+      candidates: [{ code: 'journey', target: 'projects', screenshot: 'page.png' }],
+    };
+    const review = { runId: run.runId, reviewer: 'contract fixture', findings: [] };
+    const reviewFile = resolve(directory, 'review.json');
+    await writeFile(resolve(directory, 'run.json'), JSON.stringify(run));
+    await writeFile(reviewFile, JSON.stringify(review));
+    assert.notEqual(cli('ui-smoke-file.mjs', [directory, reviewFile]).status, 0);
+    review.candidateReview = [{ index: 0, decision: 'accept', reason: 'Reproduced 500' }];
+    await writeFile(reviewFile, JSON.stringify(review));
+    assert.notEqual(cli('ui-smoke-file.mjs', [directory, reviewFile]).status, 0);
+    review.candidateReview = [
+      {
+        index: 0,
+        decision: 'reject',
+        reason: 'Successful read-only replay; transient server error',
+      },
+    ];
+    await writeFile(reviewFile, JSON.stringify(review));
+    assert.equal(cli('ui-smoke-file.mjs', [directory, reviewFile]).status, 0);
+    assert.equal(
+      JSON.parse(await readFile(resolve(directory, 'findings.json'), 'utf8')).findings.length,
+      0
+    );
+  } finally {
+    await rm(directory, { recursive: true });
+  }
+});
+
 test('fix routing honors Claude priority, unavailable routes, and the weekly stop boundary', async () => {
   const directory = await mkdtemp(resolve(tmpdir(), 'ui-smoke-provider-'));
   try {
