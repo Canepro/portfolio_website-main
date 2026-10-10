@@ -160,7 +160,10 @@ export default function ProjectsPageClient() {
                         : 'text-sm text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-text-primary)]'
                     }
                   >
-                    {category.label} <span className="text-xs opacity-70">{count}</span>
+                    {category.label}{' '}
+                    <span className="text-xs text-[color:var(--color-text-secondary)]">
+                      {count}
+                    </span>
                   </button>
                 );
               })}
