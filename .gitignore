@@ -61,6 +61,7 @@ logs
 # Playwright CLI artifacts (local debugging only)
 .playwright-cli/
 output/playwright/
+output/ui-smoke/
 
 # Codex local workspace metadata
 .codex/
