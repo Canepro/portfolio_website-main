@@ -101,7 +101,10 @@ try {
         });
         await page.waitForTimeout(250);
         // The production widget loads after hydration. An early blank iframe is not a settled UI.
-        if (origin.hostname === 'portfolio.canepro.me') {
+        const menuOpen = await page.evaluate(() =>
+          document.body.classList.contains('mobile-nav-open')
+        );
+        if (origin.hostname === 'portfolio.canepro.me' && !menuOpen) {
           try {
             await page.locator('#rocketchat-iframe').waitFor({ state: 'visible' });
             await page
