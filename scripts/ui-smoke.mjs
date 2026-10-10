@@ -61,7 +61,9 @@ try {
         const request = route.request();
         if (
           !['GET', 'HEAD'].includes(request.method()) ||
-          (request.isNavigationRequest() && new URL(request.url()).origin !== origin.origin)
+          (request.isNavigationRequest() &&
+            request.frame().parentFrame() === null &&
+            new URL(request.url()).origin !== origin.origin)
         )
           return route.abort();
         return route.continue();
@@ -70,7 +72,12 @@ try {
       page.setDefaultTimeout(10_000);
       const errors = [];
       page.on('pageerror', error => errors.push(error.name));
-      await page.addInitScript(value => localStorage.setItem('theme', value), theme);
+      await page.addInitScript(
+        ({ origin, theme }) => {
+          if (location.origin === origin) localStorage.setItem('theme', theme);
+        },
+        { origin: origin.origin, theme }
+      );
       let step = 0;
       const capture = async (name, repro, failure = null) => {
         await page.locator('body').waitFor();
