@@ -29,15 +29,10 @@ const config = {
         '5xl': ['var(--type-5xl)', { lineHeight: '1' }],
         '6xl': ['var(--type-6xl)', { lineHeight: '1' }],
       },
-      boxShadow: {
-        DEFAULT: 'var(--shadow-sm)',
-        sm: 'var(--shadow-sm)',
-        md: 'var(--shadow-md)',
-        lg: 'var(--shadow-lg)',
-      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
+        placeholder: 'hsl(var(--placeholder))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

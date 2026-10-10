@@ -15,6 +15,7 @@ colors:
       primary: '#0EA5E9',
       onPrimary: '#0F1115',
       input: '#687180',
+      placeholder: '#9AA1AC',
       error: '#F87171',
     }
   light:
@@ -26,6 +27,7 @@ colors:
       primary: '#0369A1',
       onPrimary: '#FAF9F6',
       input: '#7C818A',
+      placeholder: '#6B7079',
       error: '#B91C1C',
     }
 rounded: { sm: 4, md: 6, lg: 8, xl: 12, 2xl: 16 }
@@ -79,13 +81,18 @@ record the equivalent brand hex colors. `:root` supplies dark defaults;
 | Quiet hover surface | `--accent` / `--accent-foreground`                           | Separate from the sky action color           |
 | Structural rule     | `--border`                                                   | `--color-border`                             |
 | Control boundary    | `--input`                                                    | Use `border-input`                           |
+| Placeholder         | `--placeholder`                                              | Use `placeholder:text-placeholder`           |
 | Error               | `--destructive` / `--destructive-foreground`                 | Use semantic utilities                       |
 
 Decorative rules use white at 10% on dark and black at 10% on light. They are
-structural separators, not control boundaries. Inputs and selects use the stronger
+structural separators, not control boundaries. The `--border` token includes its
+10% alpha; use `border-border` without an opacity modifier. `border-border/50`
+would append a second alpha and is unsupported. Inputs and selects use the stronger
 input token so their edges reach 3:1 against the canvas. Quiet cards preserve
 the existing translucent fills: white 5% / 8% on dark, black 3% / 6% on light
-(rest / hover). Text inherits the corresponding ink tokens.
+(rest / hover). Text inherits the corresponding ink tokens. Placeholders have a separate muted
+role (#9AA1AC dark, #6B7079 light) that remains at least 4.5:1 on the input canvas
+and visually distinct from typed text.
 
 Primary and accent buttons use sky fill with charcoal text on dark and warm-paper
 text on light. Hover reduces action fill opacity to 90%; links retain solid color and
@@ -119,7 +126,8 @@ The Tailwind type scale reads these CSS tokens. Sizes preserve the existing scal
 Page and section headings keep their current medium weight and tight tracking;
 long-form headings use semibold. `proseClasses` owns shared Markdown and MDX
 reading treatment: 16px mobile, 18px desktop, `--leading-prose: 2rem` (32px)
-line height. MDX paragraphs and lists use that same line height. Inline and
+line height. Published MDX paragraphs and lists preserve their existing
+`--leading-mdx: 1.75rem` (28px) line height. Inline and
 fenced code use Mono at 14px. Links remain underlined with 4px underline offset.
 
 ## Layout and spacing
@@ -136,14 +144,19 @@ Use 4px small accents, 6px compact controls and chips, 8px standard corners,
 12px inputs and inset links, and 16px cards. Pill badges retain full rounding.
 Tailwind radius utilities map to the matching `--radius-*` token.
 
-| Tier          | Dark shadow                 | Light shadow                 | Use                             |
-| ------------- | --------------------------- | ---------------------------- | ------------------------------- |
-| `--shadow-sm` | `0 2px 10px rgba(0,0,0,.3)` | `0 2px 10px rgba(0,0,0,.1)`  | Inputs, buttons, article images |
-| `--shadow-md` | `0 4px 20px rgba(0,0,0,.4)` | `0 4px 20px rgba(0,0,0,.15)` | Raised supporting surfaces      |
-| `--shadow-lg` | `0 8px 30px rgba(0,0,0,.5)` | `0 8px 30px rgba(0,0,0,.2)`  | Mobile navigation overlay       |
+Preserve Tailwind 3's existing utility elevation in both themes:
 
-Tailwind `shadow`, `shadow-sm`, `shadow-md`, and `shadow-lg` consume those tokens.
-Most editorial sections use a rule and spacing rather than elevation.
+| Utility     | Existing shadow                                                    | Use                          |
+| ----------- | ------------------------------------------------------------------ | ---------------------------- |
+| `shadow-sm` | `0 1px 2px 0 rgb(0 0 0 / .05)`                                     | Inputs and article images    |
+| `shadow`    | `0 1px 3px 0 rgb(0 0 0 / .1), 0 1px 2px -1px rgb(0 0 0 / .1)`      | Existing generic elevation   |
+| `shadow-md` | `0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1)`   | Existing supporting surfaces |
+| `shadow-lg` | `0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1)` | Mobile navigation overlay    |
+
+Legacy `--shadow-sm/md/lg` theme variables are reserved for `.hover-lift`, which
+has no current consumers. They are not the Tailwind utility scale and must not
+replace it: their stronger blur/opacity would change the existing look. Most
+editorial sections use a rule and spacing rather than elevation.
 
 ## Component recipes
 
@@ -151,7 +164,7 @@ Most editorial sections use a rule and spacing rather than elevation.
   Default and accent share the action pair. Outline uses the input edge; ghost
   uses the quiet surface on hover. Keep disabled and keyboard focus behavior.
 - Input and Textarea: 40px input height, 144px minimum textarea height, 12px
-  radius, canvas fill, input boundary, secondary-ink placeholder, sky focus ring.
+  radius, canvas fill, input boundary, dedicated placeholder token, sky focus ring.
 - Badge: retain existing variants; primary and destructive hover fills use 90%
   opacity. Tech chips use quiet card fill and secondary ink.
 - Card and inset links: retain existing geometry and hover fills. No new card
@@ -175,7 +188,8 @@ Do not use faint structural rules for controls that need a visible boundary.
 ## Responsive verification and iteration
 
 Capture before and after homepage, blog index, and a published post at 390px and
-1280px in each theme. Exercise the theme toggle, mobile navigation, blog filter,
+1280px in each theme. Also capture contact fields, projects controls, and the open
+mobile menu to cover the changed surfaces. Exercise the theme toggle, mobile navigation, blog filter,
 and contact field focus. Check key pages for horizontal overflow. Preserve the
 rendered repository verifier at 116/116, then run lint, typecheck, and production
 build. Measure normal text at 4.5:1 and controls/focus at 3:1, including alpha

@@ -13,6 +13,7 @@
   --primary: 198.6301 88.664% 48.4314%; /* #0EA5E9 */
   --primary-foreground: 220 16.6667% 7.0588%; /* #0F1115 */
   --input: 217.5 10.3448% 45.4902%; /* #687180 */
+  --placeholder: 216.6667 9.7826% 63.9216%; /* #9AA1AC */
   --destructive: 0 90.604% 70.7843%; /* #F87171 */
   --destructive-foreground: 220 16.6667% 7.0588%; /* #0F1115 */
   --card: var(--surface);
@@ -43,6 +44,7 @@
   --type-5xl: 3rem;
   --type-6xl: 3.75rem;
   --leading-prose: 2rem;
+  --leading-mdx: 1.75rem;
   --font-space-grotesk: var(--font-sans);
   /* Compatibility names share the same roles as the shadcn primitives. */
   --color-bg-primary: hsl(var(--background));
@@ -70,6 +72,7 @@ html.light-theme {
   --primary: 201.2658 96.3415% 32.1569%; /* #0369A1 */
   --primary-foreground: 45 28.5714% 97.2549%; /* #FAF9F6 */
   --input: 218.5714 5.6452% 51.3725%; /* #7C818A */
+  --placeholder: 218.5714 6.1404% 44.7059%; /* #6B7079 */
   --destructive: 0 73.7089% 41.7647%; /* #B91C1C */
   --destructive-foreground: 0 0% 100%; /* #FFFFFF */
   --border: 0 0% 0% / 0.1;

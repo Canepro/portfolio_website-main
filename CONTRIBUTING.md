@@ -86,7 +86,7 @@ const Button: React.FC<ButtonProps> = ({ variant, size = 'md', children, onClick
 
 ### Styling (Tailwind)
 
-- **Tailwind + CSS variables** for all UI work
+- **Tailwind + CSS variables** for all UI work; follow [`DESIGN.md`](DESIGN.md). Theme tokens live in `src/styles/globals.css`.
 - **Layout primitives** in `src/components/layout/` for page structure
 - **UI primitives** in `src/components/ui/*` (Button, Badge, Card, Input)
 - Use `cn()` from `src/lib/utils.ts` for class composition
@@ -96,7 +96,7 @@ const Button: React.FC<ButtonProps> = ({ variant, size = 'md', children, onClick
 const buttonVariants = cva('...', {
   variants: {
     variant: {
-      accent: 'bg-[color:var(--color-accent)] ...',
+      accent: 'bg-primary text-primary-foreground hover:bg-primary/90 ...',
       glass: 'border ... bg-[color:var(--color-card-bg)] ...',
     },
   },

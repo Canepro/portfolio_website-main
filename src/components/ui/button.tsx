@@ -16,7 +16,7 @@ const buttonVariants = cva(
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-[color:var(--color-accent)] underline-offset-4 hover:underline',
         // Use theme tokens so accent text stays legible in both themes:
-        // dark: text is near-black; light: text becomes white.
+        // dark: text is near-black; light: text becomes warm paper.
         accent: 'bg-primary text-primary-foreground hover:bg-primary/90',
         glass:
           'border border-[color:var(--color-border)] bg-[color:var(--color-card-bg)] text-[color:var(--color-text-primary)] hover:bg-[color:var(--color-card-hover)]',

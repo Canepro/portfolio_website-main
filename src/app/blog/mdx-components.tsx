@@ -50,7 +50,7 @@ export const mdxComponents: MDXComponents = {
   ),
   p: withProse(
     'p',
-    'mt-4 text-[color:var(--color-text-secondary)] leading-[var(--leading-prose)]',
+    'mt-4 text-[color:var(--color-text-secondary)] leading-[var(--leading-mdx)]',
     'MdxP'
   ),
   ul: withProse(
@@ -63,7 +63,7 @@ export const mdxComponents: MDXComponents = {
     'mt-4 list-decimal space-y-2 pl-5 text-[color:var(--color-text-secondary)]',
     'MdxOl'
   ),
-  li: withProse('li', 'leading-[var(--leading-prose)]', 'MdxLi'),
+  li: withProse('li', 'leading-[var(--leading-mdx)]', 'MdxLi'),
   strong: withProse('strong', 'font-semibold text-[color:var(--color-text-primary)]', 'MdxStrong'),
   blockquote: withProse(
     'blockquote',
