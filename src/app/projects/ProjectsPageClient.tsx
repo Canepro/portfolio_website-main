@@ -8,6 +8,7 @@ import { PageShell } from '@/components/layout/PageShell';
 import { SectionCard } from '@/components/layout/SectionCard';
 import { SectionLabel } from '@/components/layout/SectionLabel';
 import ProjectCard from '@/components/Projects/ProjectCard';
+import { previewImage } from '@/components/Projects/ProjectPreviewCard';
 import { projectCategories, projects } from '@/constants/constants';
 import type { Project } from '@/types/project';
 import { Button } from '@/components/ui/button';
@@ -200,7 +201,7 @@ export default function ProjectsPageClient() {
             <ProjectCard
               key={project.id}
               project={project}
-              priority={project === filteredProjects.find(p => p.media || p.image)}
+              priority={project === filteredProjects.find(previewImage)}
             />
           ))}
         </div>

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { PageSection } from '@/components/layout/PageShell';
 import { SectionHeader } from '@/components/layout/SectionHeader';
-import ProjectPreviewCard from '@/components/Projects/ProjectPreviewCard';
+import ProjectPreviewCard, { previewImage } from '@/components/Projects/ProjectPreviewCard';
 import { profile } from '@/content/profile';
 import { skillGroups } from '@/content/skills';
 import { getAllBlogPostsMeta } from '@/lib/blog';
@@ -15,7 +15,7 @@ export const metadata: Metadata = { alternates: { canonical: '/' } };
 export default function HomePage() {
   const posts = getAllBlogPostsMeta().slice(0, 2);
   const featured = projects.filter(p => p.featured).slice(0, 3);
-  const firstImage = featured.find(p => p.media || p.image);
+  const firstImage = featured.find(previewImage);
   const linkedin = safeExternalHref(profile.links.linkedin);
   const certificationList = safeExternalHref(certifications[0]?.link);
   return (

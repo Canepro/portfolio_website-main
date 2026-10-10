@@ -24,11 +24,11 @@ export function WorkflowFigure({ label = 'Engineering workflow' }: { label?: str
 
 export function PipelineHealerFigure() {
   return (
-    <div className="grid aspect-video content-center gap-5 bg-[color:var(--color-bg-secondary)] p-6 md:p-10">
+    <div className="grid aspect-video content-center gap-5 bg-[color:var(--color-bg-secondary)] p-6 lg:p-10">
       <p className="font-mono text-sm font-medium text-[color:var(--color-text-primary)] opacity-80">
         PipelineHealer / controlled remediation flow
       </p>
-      <ol className="grid gap-3 text-lg md:grid-cols-3 md:gap-6">
+      <ol className="grid gap-3 text-lg lg:grid-cols-3 lg:gap-6">
         {['Failed CI run', 'Evidence and diagnosis', 'Guarded fix PR or reviewable issue'].map(
           (step, i) => (
             <li key={step} className="border-t border-[color:var(--color-border)] pt-3">
@@ -43,6 +43,14 @@ export function PipelineHealerFigure() {
     </div>
   );
 }
+
+// PipelineHealer's dashboard screenshot is unreadable at card size, so its card
+// draws PipelineHealerFigure instead. The case study still shows the screenshot.
+const isIllustrated = (project: Project) => project.slug === 'pipelinehealer';
+
+/** The image a preview card renders, if any. Use it to pick the card that gets `priority`. */
+export const previewImage = (project: Project) =>
+  isIllustrated(project) ? undefined : project.media || project.image;
 
 export default function ProjectPreviewCard({
   project,
@@ -59,8 +67,8 @@ export default function ProjectPreviewCard({
   const href = `/projects/${encodeURIComponent(project.slug)}`;
   const source = safeExternalHref(project.source);
   const demo = project.deployment?.status === 'live' ? safeExternalHref(project.visit) : undefined;
-  const image = project.media || project.image;
-  const isPipelineHealer = project.slug === 'pipelinehealer';
+  const isPipelineHealer = isIllustrated(project);
+  const image = previewImage(project);
   return (
     <article
       className={cn(
