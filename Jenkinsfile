@@ -109,6 +109,16 @@ spec:
       }
     }
 
+    stage('UI Smoke Contracts') {
+      steps {
+        sh '''
+          set -eu
+          export PATH="$HOME/.bun/bin:$PATH"
+          bun run smoke:ui:contracts
+        '''
+      }
+    }
+
     stage('Typecheck') {
       steps {
         sh '''

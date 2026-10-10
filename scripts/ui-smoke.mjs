@@ -2,6 +2,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
 const args = process.argv.slice(2);
@@ -35,7 +36,10 @@ const report = {
   contract: 'portfolio-ui-smoke/v1',
   runId,
   startedAt: new Date().toISOString(),
-  revision: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+  revision: execFileSync('git', ['rev-parse', 'HEAD'], {
+    encoding: 'utf8',
+    cwd: fileURLToPath(new URL('..', import.meta.url)),
+  }).trim(),
   origin: origin.origin,
   browser: 'chromium',
   headless: true,
@@ -96,7 +100,10 @@ try {
           scrollTo(0, 0);
         });
         await page.waitForTimeout(250);
-        const screenshot = `${viewport.width}-${theme}-${++step}-${name}.png`;
+        const activeTheme = await page.evaluate(() =>
+          document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+        );
+        const screenshot = `${viewport.width}-${activeTheme}-${++step}-${name}.png`;
         await page.screenshot({
           path: resolve(output, screenshot),
           fullPage: true,
@@ -109,7 +116,15 @@ try {
             i => i.getBoundingClientRect().width > 0 && i.complete && !i.naturalWidth
           ).length,
         }));
-        const state = { name, url: page.url(), viewport, theme, screenshot, repro, metrics };
+        const state = {
+          name,
+          url: page.url(),
+          viewport,
+          theme: activeTheme,
+          screenshot,
+          repro,
+          metrics,
+        };
         report.states.push(state);
         const add = (code, title, observed, target) =>
           report.candidates.push({
@@ -160,7 +175,9 @@ try {
         }
       };
       const load = async path => {
-        const response = await page.goto(new URL(path, origin).href, { waitUntil: 'networkidle' });
+        const response = await page.goto(new URL(path, origin).href, {
+          waitUntil: 'domcontentloaded',
+        });
         if (!response?.ok())
           throw new Error(`Document request returned ${response?.status() ?? 'no response'}`);
         await page.locator('main h1').waitFor();

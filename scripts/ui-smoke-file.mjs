@@ -70,7 +70,7 @@ try {
       throw new Error('Finding URL is outside this run');
     const fingerprint = createHash('sha256')
       .update(
-        `${finding.code}|${finding.target.trim()}|${url.pathname}|${state.viewport.width}|${state.theme}`
+        `${finding.code}|${finding.target.trim()}|${url.pathname}${url.search}|${state.viewport.width}|${state.theme}`
       )
       .digest('hex')
       .slice(0, 16);
@@ -191,19 +191,16 @@ try {
       }
       await writeFile(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
     }
+    // Query the owning issue list once rather than eventually-consistent GitHub search.
+    const openIssues = JSON.parse(
+      gh(['api', '--paginate', '--slurp', `repos/${repo}/issues?state=open&per_page=100`])
+    ).flat();
     for (const finding of selected) {
       if (receipt.issues.some(i => i.fingerprint === finding.fingerprint)) continue;
       const title = `UI smoke: ${finding.title} [${finding.fingerprint}]`;
-      // Query the owning issue list rather than eventually-consistent GitHub search.
-      const pages = gh([
-        'api',
-        '--paginate',
-        '--slurp',
-        `repos/${repo}/issues?state=open&per_page=100`,
-      ]);
-      const existing = JSON.parse(pages)
-        .flat()
-        .find(i => !i.pull_request && i.title.endsWith(`[${finding.fingerprint}]`));
+      const existing = openIssues.find(
+        i => !i.pull_request && i.title.endsWith(`[${finding.fingerprint}]`)
+      );
       const imageUrl = `https://raw.githubusercontent.com/${repo}/${receipt.commit}/${finding.screenshot}`;
       const body = [
         `Run: ${run.runId}; runner revision: ${run.revision}.`,
