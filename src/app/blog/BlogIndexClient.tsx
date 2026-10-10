@@ -55,7 +55,7 @@ export default function BlogIndexClient({
             id="writing-topic"
             value={selectedTag}
             onChange={e => setTag(e.target.value)}
-            className="max-w-full rounded border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-3 py-2 text-sm"
+            className="max-w-full rounded border border-input bg-background px-3 py-2 text-sm"
           >
             <option value="all">All writing ({posts.length})</option>
             {tags.map(({ tag, count }) => (

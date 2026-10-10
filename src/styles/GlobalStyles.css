@@ -1,48 +1,4 @@
-/* Global CSS Variables for Theming */
-:root {
-  /* Dark theme (default) */
-  /* Fonts are injected via next/font as CSS variables. */
-  --font-space-grotesk: var(--font-sans);
-  --color-bg-primary: #0F1115;
-  --color-bg-secondary: #151A22;
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: rgba(255, 255, 255, 0.86);
-  /* Single accent: sky-500. Consistent across CTAs, links, focus rings. */
-  --color-accent: #0EA5E9;
-  --color-accent-secondary: #0EA5E9;
-  --color-card-bg: rgba(255, 255, 255, 0.05);
-  --color-card-hover: rgba(255, 255, 255, 0.08);
-  --color-border: rgba(255, 255, 255, 0.1);
-  --gradient-primary: linear-gradient(270deg, #0EA5E9 0%, #38BDF8 100%);
-  --gradient-secondary: linear-gradient(270deg, #38BDF8 0%, #0EA5E9 100%);
-  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
-}
-
-/* Light theme */
-html.light-theme {
-  --color-bg-primary: #FAF9F6;
-  --color-bg-secondary: #F0EFEB;
-  --color-text-primary: #0F1624;
-  --color-text-secondary: rgba(15, 22, 36, 0.75);
-  --color-accent: #0369A1;
-  --color-accent-secondary: #0369A1;
-  --color-card-bg: rgba(0, 0, 0, 0.03);
-  --color-card-hover: rgba(0, 0, 0, 0.06);
-  --color-border: rgba(0, 0, 0, 0.1);
-  --gradient-primary: linear-gradient(270deg, #0284C7 0%, #0EA5E9 100%);
-  --gradient-secondary: linear-gradient(270deg, #0EA5E9 0%, #0284C7 100%);
-  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Let form controls and UA widgets pick appropriate colors in both modes. */
-:root {
-  color-scheme: dark light;
-}
-
+/* Shared effects; theme and foundation tokens live in globals.css. */
 /* Enhanced animations */
 @keyframes fadeIn {
   from {
@@ -106,15 +62,27 @@ html.light-theme {
 }
 
 /* Stagger animation delays */
-.delay-100 { animation-delay: 0.1s; }
-.delay-200 { animation-delay: 0.2s; }
-.delay-300 { animation-delay: 0.3s; }
-.delay-400 { animation-delay: 0.4s; }
-.delay-500 { animation-delay: 0.5s; }
+.delay-100 {
+  animation-delay: 0.1s;
+}
+.delay-200 {
+  animation-delay: 0.2s;
+}
+.delay-300 {
+  animation-delay: 0.3s;
+}
+.delay-400 {
+  animation-delay: 0.4s;
+}
+.delay-500 {
+  animation-delay: 0.5s;
+}
 
 /* Enhanced hover effects */
 .hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .hover-lift:hover {
@@ -209,7 +177,11 @@ html.light-theme .image-shimmer {
   outline: 2px solid var(--color-accent);
   outline-offset: 4px;
 }
-main { overflow-wrap: break-word; }
+main {
+  overflow-wrap: break-word;
+}
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html {
+    scroll-behavior: auto;
+  }
 }

@@ -19,7 +19,7 @@ export const mdxComponents: MDXComponents = {
     const href = typeof props.href === 'string' ? props.href : '';
     const isExternal = href.startsWith('http://') || href.startsWith('https://');
     const className = cn(
-      'text-[color:var(--color-accent)] underline underline-offset-4 hover:opacity-90',
+      'text-[color:var(--color-accent)] underline underline-offset-4 hover:decoration-2',
       props.className
     );
 
@@ -48,7 +48,11 @@ export const mdxComponents: MDXComponents = {
     'mt-8 text-xl font-semibold tracking-tight text-[color:var(--color-text-primary)]',
     'MdxH3'
   ),
-  p: withProse('p', 'mt-4 text-[color:var(--color-text-secondary)] leading-7', 'MdxP'),
+  p: withProse(
+    'p',
+    'mt-4 text-[color:var(--color-text-secondary)] leading-[var(--leading-prose)]',
+    'MdxP'
+  ),
   ul: withProse(
     'ul',
     'mt-4 list-disc space-y-2 pl-5 text-[color:var(--color-text-secondary)]',
@@ -59,7 +63,7 @@ export const mdxComponents: MDXComponents = {
     'mt-4 list-decimal space-y-2 pl-5 text-[color:var(--color-text-secondary)]',
     'MdxOl'
   ),
-  li: withProse('li', 'leading-7', 'MdxLi'),
+  li: withProse('li', 'leading-[var(--leading-prose)]', 'MdxLi'),
   strong: withProse('strong', 'font-semibold text-[color:var(--color-text-primary)]', 'MdxStrong'),
   blockquote: withProse(
     'blockquote',

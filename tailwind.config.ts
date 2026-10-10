@@ -17,6 +17,24 @@ const config = {
         sans: ['var(--font-sans)'],
         mono: ['var(--font-mono)'],
       },
+      fontSize: {
+        xs: ['var(--type-xs)', { lineHeight: '1rem' }],
+        sm: ['var(--type-sm)', { lineHeight: '1.25rem' }],
+        base: ['var(--type-base)', { lineHeight: '1.5rem' }],
+        lg: ['var(--type-lg)', { lineHeight: '1.75rem' }],
+        xl: ['var(--type-xl)', { lineHeight: '1.75rem' }],
+        '2xl': ['var(--type-2xl)', { lineHeight: '2rem' }],
+        '3xl': ['var(--type-3xl)', { lineHeight: '2.25rem' }],
+        '4xl': ['var(--type-4xl)', { lineHeight: '2.5rem' }],
+        '5xl': ['var(--type-5xl)', { lineHeight: '1' }],
+        '6xl': ['var(--type-6xl)', { lineHeight: '1' }],
+      },
+      boxShadow: {
+        DEFAULT: 'var(--shadow-sm)',
+        sm: 'var(--shadow-sm)',
+        md: 'var(--shadow-md)',
+        lg: 'var(--shadow-lg)',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -53,9 +71,11 @@ const config = {
         },
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        sm: 'var(--radius-sm)',
+        md: 'var(--radius-md)',
+        lg: 'var(--radius-lg)',
+        xl: 'var(--radius-xl)',
+        '2xl': 'var(--radius-2xl)',
       },
       keyframes: {
         'accordion-down': {

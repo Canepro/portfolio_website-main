@@ -2,69 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+/* DESIGN.md owns the role names; this is the single theme token source.
+   HSL channels retain Tailwind v3 compatibility and the existing brand colors. */
+:root {
+  color-scheme: dark;
+  --background: 220 16.6667% 7.0588%; /* #0F1115 */
+  --foreground: 0 0% 100%; /* #FFFFFF */
+  --surface: 216.9231 23.6364% 10.7843%; /* #151A22 */
+  --muted-foreground: 210 2.9412% 86.6667%; /* #DCDDDE */
+  --primary: 198.6301 88.664% 48.4314%; /* #0EA5E9 */
+  --primary-foreground: 220 16.6667% 7.0588%; /* #0F1115 */
+  --input: 217.5 10.3448% 45.4902%; /* #687180 */
+  --destructive: 0 90.604% 70.7843%; /* #F87171 */
+  --destructive-foreground: 220 16.6667% 7.0588%; /* #0F1115 */
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--surface);
+  --accent: var(--surface);
+  --accent-foreground: var(--foreground);
+  --ring: var(--primary);
+  --border: 0 0% 100% / 0.1;
+  --radius: 0.5rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --type-xs: 0.75rem;
+  --type-sm: 0.875rem;
+  --type-base: 1rem;
+  --type-lg: 1.125rem;
+  --type-xl: 1.25rem;
+  --type-2xl: 1.5rem;
+  --type-3xl: 1.875rem;
+  --type-4xl: 2.25rem;
+  --type-5xl: 3rem;
+  --type-6xl: 3.75rem;
+  --leading-prose: 2rem;
+  --font-space-grotesk: var(--font-sans);
+  /* Compatibility names share the same roles as the shadcn primitives. */
+  --color-bg-primary: hsl(var(--background));
+  --color-bg-secondary: hsl(var(--surface));
+  --color-text-primary: hsl(var(--foreground));
+  --color-text-secondary: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--primary));
+  --color-accent-secondary: var(--color-accent);
+  --color-border: hsl(var(--border));
+  --color-card-bg: rgba(255, 255, 255, 0.05);
+  --color-card-hover: rgba(255, 255, 255, 0.08);
+  --gradient-primary: linear-gradient(270deg, #0ea5e9 0%, #38bdf8 100%);
+  --gradient-secondary: linear-gradient(270deg, #38bdf8 0%, #0ea5e9 100%);
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    /* Match legacy palette (see src/styles/GlobalStyles.css) */
-    --background: 220 17% 7%;
-    --foreground: 210 40% 98%;
-
-    --card: 217 24% 11%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 217 24% 11%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 218 22% 14%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 218 18% 13%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 199 89% 48%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 218 18% 18%;
-    --input: 218 18% 18%;
-    --ring: 212.7 26.8% 83.9%;
-  }
+html.light-theme {
+  color-scheme: light;
+  --background: 45 28.5714% 97.2549%; /* #FAF9F6 */
+  --foreground: 220 41.1765% 10%; /* #0F1624 */
+  --surface: 48 14.2857% 93.1373%; /* #F0EFEB */
+  --muted-foreground: 220 9.2025% 31.9608%; /* #4A4F59 */
+  --primary: 201.2658 96.3415% 32.1569%; /* #0369A1 */
+  --primary-foreground: 45 28.5714% 97.2549%; /* #FAF9F6 */
+  --input: 218.5714 5.6452% 51.3725%; /* #7C818A */
+  --destructive: 0 73.7089% 41.7647%; /* #B91C1C */
+  --destructive-foreground: 0 0% 100%; /* #FFFFFF */
+  --border: 0 0% 0% / 0.1;
+  --color-card-bg: rgba(0, 0, 0, 0.03);
+  --color-card-hover: rgba(0, 0, 0, 0.06);
+  --gradient-primary: linear-gradient(270deg, #0284c7 0%, #0ea5e9 100%);
+  --gradient-secondary: linear-gradient(270deg, #0ea5e9 0%, #0284c7 100%);
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
 @layer base {
