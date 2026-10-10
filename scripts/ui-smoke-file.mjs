@@ -28,11 +28,27 @@ try {
   const validText = value =>
     typeof value === 'string' && value.trim().length > 0 && value.length <= 2000;
   const candidates = [];
+  const screenshots = new Map();
+  const codes = new Set([
+    'journey',
+    'heading',
+    'overflow',
+    'image',
+    'runtime',
+    'overlap',
+    'spacing',
+    'typography',
+    'contrast',
+    'navigation',
+    'content',
+  ]);
   for (const finding of review.findings) {
     const state = run.states.find(s => s.screenshot === finding.screenshot);
     if (
       !state ||
-      !['code', 'title', 'observed', 'expected'].every(key => validText(finding[key])) ||
+      !['code', 'target', 'title', 'observed', 'expected'].every(key => validText(finding[key])) ||
+      !codes.has(finding.code) ||
+      finding.target.length > 160 ||
       finding.title.length > 160 ||
       /[\r\n]/.test(finding.title) ||
       !Array.isArray(finding.repro) ||
@@ -46,18 +62,22 @@ try {
     if (!source.startsWith(`${output}${sep}`) || basename(source) !== state.screenshot)
       throw new Error('Screenshot escapes the run');
     const bytes = await readFile(source);
+    screenshots.set(state.screenshot, bytes);
     if (!bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])))
       throw new Error('Screenshot must be a PNG');
     const url = new URL(state.url);
     if (url.origin !== run.origin || url.username || url.password)
       throw new Error('Finding URL is outside this run');
     const fingerprint = createHash('sha256')
-      .update(`${finding.code}|${url.pathname}|${state.viewport.width}|${state.theme}`)
+      .update(
+        `${finding.code}|${finding.target.trim()}|${url.pathname}|${state.viewport.width}|${state.theme}`
+      )
       .digest('hex')
       .slice(0, 16);
     if (!candidates.some(f => f.fingerprint === fingerprint))
       candidates.push({
         code: finding.code,
+        target: finding.target.trim(),
         title: finding.title,
         observed: finding.observed,
         expected: finding.expected,
@@ -88,14 +108,15 @@ try {
     reviewer: review.reviewer,
     findings: selected,
     omitted: candidates.length - selected.length,
+    deduplicated: review.findings.length - candidates.length,
   };
   await writeFile(finalPath, `${JSON.stringify(final, null, 2)}\n`);
   const report = [
     `# UI smoke run ${run.runId}`,
     '',
-    `Revision: ${run.revision}. ${run.states.length} browser states reviewed.`,
+    `Runner revision: ${run.revision}. ${run.states.length} browser states reviewed.`,
     '',
-    `${selected.length} findings; ${final.omitted} omitted by the five-finding cap.`,
+    `${selected.length} findings; ${final.omitted} omitted by the five-finding cap; ${final.deduplicated} duplicates combined.`,
     '',
   ];
   for (const finding of selected)
@@ -134,7 +155,7 @@ try {
       const tree = [];
       for (const screenshot of new Set(selected.map(f => f.screenshot))) {
         const blob = api(`repos/${repo}/git/blobs`, {
-          content: (await readFile(resolve(output, screenshot))).toString('base64'),
+          content: screenshots.get(screenshot).toString('base64'),
           encoding: 'base64',
         });
         tree.push({ path: screenshot, mode: '100644', type: 'blob', sha: blob.sha });
@@ -185,7 +206,7 @@ try {
         .find(i => !i.pull_request && i.title.endsWith(`[${finding.fingerprint}]`));
       const imageUrl = `https://raw.githubusercontent.com/${repo}/${receipt.commit}/${finding.screenshot}`;
       const body = [
-        `Run: ${run.runId}; source revision: ${run.revision}.`,
+        `Run: ${run.runId}; runner revision: ${run.revision}.`,
         '',
         `URL: ${finding.url}`,
         '',
@@ -203,7 +224,12 @@ try {
         '',
         `Evidence fingerprint: ${finding.fingerprint}`,
       ].join('\n');
-      const issue = existing ?? api(`repos/${repo}/issues`, { title, body });
+      const issue =
+        existing ??
+        api(`repos/${repo}/issues`, {
+          title: title.replaceAll('@', '@\u200b'),
+          body: body.replaceAll('@', '@\u200b'),
+        });
       receipt.issues.push({
         fingerprint: finding.fingerprint,
         url: issue.html_url,

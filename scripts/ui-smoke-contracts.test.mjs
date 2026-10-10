@@ -83,7 +83,8 @@ test('filing caps the entire run at five screenshot-backed repros and rejects ch
       runId: run.runId,
       reviewer: 'contract fixture',
       findings: Array.from({ length: 7 }, (_, i) => ({
-        code: `defect-${i}`,
+        code: 'overlap',
+        target: `#item-${i}`,
         title: `Defect ${i}`,
         observed: 'A visible failure',
         expected: 'A usable page',
@@ -120,7 +121,8 @@ test('filing caps the entire run at five screenshot-backed repros and rejects ch
     await symlink(resolve(outside, 'linked.png'), resolve(directory, 'linked.png'));
     review.findings = [
       {
-        code: 'invalid',
+        code: 'overlap',
+        target: '#item',
         title: 'Invalid',
         observed: 'failure',
         expected: 'page',

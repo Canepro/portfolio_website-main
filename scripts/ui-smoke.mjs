@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { mkdir, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { resolve, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 
@@ -29,7 +29,8 @@ for (let index = 0; index < args.length; index += 2) {
 }
 const runId = new Date().toISOString().replace(/[:.]/g, '-');
 const output = resolve(option('--output', `output/ui-smoke/${runId}`));
-await mkdir(output, { recursive: true });
+await mkdir(dirname(output), { recursive: true });
+await mkdir(output); // Never overwrite a previous run or reset its filing budget.
 const report = {
   contract: 'portfolio-ui-smoke/v1',
   runId,
@@ -45,6 +46,8 @@ const report = {
 };
 const browser = await chromium.launch({ headless: true });
 report.browserVersion = browser.version();
+const describeError = error =>
+  `${error.name}: ${error.message.replace(/https?:\/\/\S+/g, '<url>').slice(0, 200)}`;
 try {
   for (const viewport of [
     { width: 1440, height: 900 },
@@ -56,11 +59,13 @@ try {
         colorScheme: theme,
         reducedMotion: 'reduce',
       });
-      // Exercise a public reader's browser. Never send contact forms or analytics POSTs.
+      // Preserve native reader telemetry and embedded widgets; never submit contact messages.
       await context.route('**/*', route => {
         const request = route.request();
         if (
-          !['GET', 'HEAD'].includes(request.method()) ||
+          (new URL(request.url()).origin === origin.origin &&
+            new URL(request.url()).pathname === '/api/contact' &&
+            !['GET', 'HEAD'].includes(request.method())) ||
           (request.isNavigationRequest() &&
             request.frame().parentFrame() === null &&
             new URL(request.url()).origin !== origin.origin)
@@ -71,7 +76,7 @@ try {
       const page = await context.newPage();
       page.setDefaultTimeout(10_000);
       const errors = [];
-      page.on('pageerror', error => errors.push(error.name));
+      page.on('pageerror', error => errors.push(describeError(error)));
       await page.addInitScript(
         ({ origin, theme }) => {
           if (location.origin === origin) localStorage.setItem('theme', theme);
@@ -106,52 +111,58 @@ try {
         }));
         const state = { name, url: page.url(), viewport, theme, screenshot, repro, metrics };
         report.states.push(state);
-        const add = (code, title, observed) =>
+        const add = (code, title, observed, target) =>
           report.candidates.push({
             code,
             title,
             observed,
+            target,
             expected: 'The reader can use this page without a visible or interaction failure.',
             ...state,
           });
-        if (failure) add('journey', `${name} journey failed`, failure);
+        if (failure) add('journey', `${name} journey failed`, failure, name);
         if (!metrics.heading)
-          add('heading', `${name} has no main heading`, 'main h1 is absent or empty');
+          add('heading', `${name} has no main heading`, 'main h1 is absent or empty', 'main h1');
         if (metrics.overflow > 2)
           add(
             'overflow',
             `${name} overflows horizontally`,
-            `${metrics.overflow}px wider than viewport`
+            `${metrics.overflow}px wider than viewport`,
+            'html'
           );
         if (metrics.brokenImages)
           add(
             'image',
             `${name} shows broken images`,
-            `${metrics.brokenImages} visible images did not load`
+            `${metrics.brokenImages} visible images did not load`,
+            'img'
           );
         if (errors.length)
           add(
             'runtime',
             `${name} raised a browser error`,
-            [...new Set(errors.splice(0))].join(', ')
+            [...new Set(errors.splice(0))].join(', '),
+            'browser runtime'
           );
       };
       const journey = async (name, repro, action) => {
         try {
-          await action();
+          try {
+            await action();
+          } catch {
+            errors.length = 0;
+            await action();
+          }
           await capture(name, repro);
         } catch (error) {
           // Selector/action names are controlled; avoid retaining arbitrary page content in error logs.
-          await capture(
-            name,
-            repro,
-            `${error.name}: the named action did not complete within 10 seconds`
-          );
+          await capture(name, repro, describeError(error));
         }
       };
       const load = async path => {
         const response = await page.goto(new URL(path, origin).href, { waitUntil: 'networkidle' });
-        if (!response?.ok()) throw new Error('Document request failed');
+        if (!response?.ok())
+          throw new Error(`Document request returned ${response?.status() ?? 'no response'}`);
         await page.locator('main h1').waitFor();
       };
       await journey('home', ['Open /'], () => load('/'));
@@ -160,6 +171,7 @@ try {
         'case-study',
         ['Open /projects', 'Click the first case-study heading'],
         async () => {
+          await load('/projects');
           const link = page.locator('main a[href^="/projects/"]').first();
           await link.click();
           await page.waitForURL(/\/projects\/[^/]+$/);
@@ -171,6 +183,7 @@ try {
         'topic-filter',
         ['Open /blog', 'Select the first topic', 'Check the URL and article list'],
         async () => {
+          await load('/blog');
           const select = page.getByLabel('Topic', { exact: true });
           const value = await select.locator('option').nth(1).getAttribute('value');
           if (!value) throw new Error('No topic option');
@@ -210,6 +223,8 @@ try {
           'menu-navigation',
           ['Open menu', 'Click Writing', 'Verify menu closes and /blog opens'],
           async () => {
+            await load('/');
+            await page.getByRole('button', { name: 'Open menu', exact: true }).click();
             await page
               .getByRole('navigation', { name: 'Mobile', exact: true })
               .getByRole('link', { name: 'Writing' })

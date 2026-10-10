@@ -20,7 +20,7 @@ if (
   !Number.isFinite(weekly.usedPercent) ||
   codex.stale ||
   weekly.usedPercent > 90 ||
-  usage.unreadable?.length
+  weekly.resetPassed === true
 ) {
   console.log(
     JSON.stringify({
