@@ -48,13 +48,14 @@ const report = {
   gaps: [],
   visualReview: 'pending',
 };
-const browser = await chromium.launch({ headless: true });
-report.browserVersion = browser.version();
+let browser;
 const describeError = error =>
   `${error.name || 'Error'}: ${String(error.message)
     .replace(/https?:\/\/\S+/g, '<url>')
     .slice(0, 200)}`;
 try {
+  browser = await chromium.launch({ headless: true });
+  report.browserVersion = browser.version();
   for (const viewport of [
     { width: 1440, height: 900 },
     { width: 390, height: 844 },
@@ -302,7 +303,7 @@ try {
   report.gaps.push(`${error.name}: evidence collection interrupted`);
   process.exitCode = 1;
 } finally {
-  await browser.close();
+  await browser?.close();
   report.finishedAt = new Date().toISOString();
   await writeFile(resolve(output, 'run.json'), `${JSON.stringify(report, null, 2)}\n`);
   console.log(
