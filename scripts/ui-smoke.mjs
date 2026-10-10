@@ -238,7 +238,7 @@ try {
         });
         await journey(
           'menu-navigation',
-          ['Open menu', 'Click Writing', 'Verify menu closes and /blog opens'],
+          ['Open /', 'Open menu', 'Click Writing', 'Verify menu closes and /blog opens'],
           async () => {
             await load('/');
             await page.getByRole('button', { name: 'Open menu', exact: true }).click();
@@ -248,6 +248,7 @@ try {
               .click();
             await page.waitForURL(url => url.pathname === '/blog');
             await page.getByRole('dialog').waitFor({ state: 'hidden' });
+            await page.locator('main h1').waitFor();
           }
         );
       }
