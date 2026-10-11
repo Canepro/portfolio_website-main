@@ -88,10 +88,11 @@ export default function AppAnalytics() {
               w.RocketChat._ = [];
               var rcUrl = u || ${JSON.stringify(rocketChatUrl)};
               w.RocketChat.url = rcUrl;
-              var rcOrigin = null;
-              try { rcOrigin = new URL(rcUrl, w.location.href).origin; } catch (e) {}
               w.addEventListener('message', function onReady(e) {
-                if (e.origin !== rcOrigin || !e.data || e.data.src !== 'rocketchat' || e.data.fn !== 'ready') return;
+                // Same test the loader applies, plus the sender must be the chat iframe itself.
+                var frame = d.getElementById('rocketchat-iframe');
+                if (!frame || e.source !== frame.contentWindow) return;
+                if (!e.data || e.data.src !== 'rocketchat' || e.data.fn !== 'ready') return;
                 w.removeEventListener('message', onReady);
                 setStatus('ready');
               });

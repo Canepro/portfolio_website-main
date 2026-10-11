@@ -10,8 +10,9 @@ Contact stays in the primary navigation.
 
 **Success.** "Opening chat…" changes to "Chat couldn't load. Use the contact
 page instead." The `contact page` link points to `/contact` and is the next Tab
-stop after the chat button. Escape and Dismiss close the notice; Escape returns
-focus to the chat button. A later tap shows the failure immediately without
+stop after the chat button. Escape closes the notice whether focus is on the chat
+button or inside the notice, and returns focus to the chat button. Dismiss
+closes it too. A later tap shows the failure immediately without
 requesting the loader again. Following the link opens `/contact` and clears
 the notice.
 

@@ -42,7 +42,7 @@ git rev-parse HEAD; cat .next/BUILD_ID                           # the build you
 ## Drive
 
 ```bash
-bun run verify:chat                                   # success, delayed, failed, stalled (stub widget)
+bun run verify:chat                                   # success, delayed, failed, stalled, abandoned (stub widget)
 bun run verify:chat -- --cases failed,stalled         # a subset
 bun run verify:chat -- --expect disabled              # against the chat-disabled build
 bun run verify:chat -- --cases success --widget live  # one pass against the production widget
@@ -75,10 +75,11 @@ Stop only the server PID this run started (`kill <pid>`), then confirm with
 
 ## Feature map
 
-| Feature                                                            | File                                         |
-| ------------------------------------------------------------------ | -------------------------------------------- |
-| Chat opens from the header (mobile) or native launcher (desktop)   | [features/open.md](features/open.md)         |
-| Slow initialization shows a loading state, then opens              | [features/delayed.md](features/delayed.md)   |
-| Loader failure shows an unavailable notice with a contact link     | [features/failed.md](features/failed.md)     |
-| Widget never reports ready: still-loading notice, no failure claim | [features/stalled.md](features/stalled.md)   |
-| Chat disabled at build time                                        | [features/disabled.md](features/disabled.md) |
+| Feature                                                            | File                                           |
+| ------------------------------------------------------------------ | ---------------------------------------------- |
+| Chat opens from the header (mobile) or native launcher (desktop)   | [features/open.md](features/open.md)           |
+| Slow initialization shows a loading state, then opens              | [features/delayed.md](features/delayed.md)     |
+| Loader failure shows an unavailable notice with a contact link     | [features/failed.md](features/failed.md)       |
+| Widget never reports ready: still-loading notice, no failure claim | [features/stalled.md](features/stalled.md)     |
+| Reader leaves for /contact before ready: chat stays closed         | [features/abandoned.md](features/abandoned.md) |
+| Chat disabled at build time                                        | [features/disabled.md](features/disabled.md)   |

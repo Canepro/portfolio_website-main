@@ -8,7 +8,8 @@ the stub iframe reports `ready` 3 seconds after that. The harness taps while
 the status is `loading`, then taps again while waiting.
 
 **Success.** The button has `aria-busy="true"`. "Opening chat…" appears inside
-the mounted `role="status"` region, then the widget opens and the notice
+the notice and as plain text in the mounted `role="status"`
+region, which holds no links or buttons; then the widget opens and the notice
 clears. No "still loading" or "couldn't load" text appears at any point, and
 the loader is requested exactly once.
 

@@ -26,7 +26,8 @@ if (origin.protocol !== 'http:' || origin.hostname !== '127.0.0.1' || origin.pat
   throw new Error('Use a literal HTTP loopback origin such as http://127.0.0.1:3100');
 const expect = option('--expect', 'enabled');
 if (!['enabled', 'disabled'].includes(expect)) throw new Error('--expect is enabled or disabled');
-const allCases = expect === 'disabled' ? ['disabled'] : ['success', 'delayed', 'failed', 'stalled'];
+const allCases =
+  expect === 'disabled' ? ['disabled'] : ['success', 'delayed', 'failed', 'stalled', 'abandoned'];
 const cases = option('--cases', allCases.join(',')).split(',');
 if (cases.some(name => !allCases.includes(name)))
   throw new Error(`--cases must be drawn from ${allCases.join(',')}`);
@@ -43,10 +44,17 @@ await mkdir(output, { recursive: true });
 const report = {
   contract: 'portfolio-verify-chat/v1',
   runId,
-  revision: execFileSync('git', ['rev-parse', 'HEAD'], {
-    encoding: 'utf8',
-    cwd: fileURLToPath(new URL('..', import.meta.url)),
-  }).trim(),
+  revision: (() => {
+    try {
+      return execFileSync('git', ['rev-parse', 'HEAD'], {
+        encoding: 'utf8',
+        cwd: fileURLToPath(new URL('..', import.meta.url)),
+        stdio: ['ignore', 'pipe', 'ignore'],
+      }).trim();
+    } catch {
+      return 'unknown (not a git checkout)';
+    }
+  })(),
   origin: origin.origin,
   expect,
   widget,
@@ -74,7 +82,7 @@ const send = fn => parent.postMessage({ src: 'rocketchat', fn }, '*');
 const show = open => { document.body.classList.toggle('open', open); send(open ? 'openWidget' : 'minimizeWindow'); };
 addEventListener('message', e => {
   if (!e.data || e.data.src !== 'rocketchat') return;
-  if (e.data.fn === 'maximizeWidget') show(true);
+  if (e.data.fn === 'maximizeWidget') { window.maximizeCount = (window.maximizeCount || 0) + 1; show(true); }
   if (e.data.fn === 'minimizeWidget') show(false);
 });
 document.getElementById('launcher').onclick = () => show(true);
@@ -87,6 +95,8 @@ const scenarios = {
   delayed: { scriptDelay: 1500, readyDelay: 3000 },
   failed: { scriptDelay: 1500, abortScript: true },
   stalled: { scriptDelay: 0, readyDelay: -1 },
+  // Ready arrives after the reader has already followed the slow notice to /contact.
+  abandoned: { scriptDelay: 0, readyDelay: 16_000, mobileOnly: true },
   disabled: {},
 };
 
@@ -106,7 +116,7 @@ try {
     for (const viewport of [
       { width: 390, height: 844, label: 'mobile' },
       { width: 1280, height: 800, label: 'desktop' },
-    ]) {
+    ].filter(item => !scenario.mobileOnly || item.label === 'mobile')) {
       for (const theme of widget === 'live' ? ['light'] : ['light', 'dark']) {
         const ctx = `${caseName}/${viewport.label}/${theme}`;
         const context = await browser.newContext({
@@ -324,8 +334,9 @@ try {
             check(ctx, 'loading notice shown', true);
             check(
               ctx,
-              'loading notice sits in a mounted live region',
-              (await page.locator('[role="status"]:has([data-chat-notice])').count()) === 1
+              'live region announces loading as plain text',
+              (await page.locator('[role="status"]', { hasText: OPENING }).count()) === 1 &&
+                (await page.locator('[role="status"] :is(a, button)').count()) === 0
             );
             await noOverflow();
             await shot('opening');
@@ -346,6 +357,13 @@ try {
               seen.join(' | ')
             );
             check(ctx, 'loader requested once', traffic.loader === 1, traffic.loader);
+            const chatFrame = page
+              .frames()
+              .find(
+                frame => frame.parentFrame() && new URL(frame.url()).pathname.endsWith('/livechat')
+              );
+            const opens = await chatFrame.evaluate(() => window.maximizeCount ?? 0);
+            check(ctx, 'two taps send one maximizeWidget', opens === 1, opens);
             await shot('open');
           } else if (caseName === 'failed') {
             await page.waitForFunction(() => window.__portfolioChatStatus === 'loading');
@@ -387,6 +405,16 @@ try {
             await notice.getByText(FAILED).waitFor({ timeout: 1000 });
             check(ctx, 'known failure shows immediately on the next tap', true);
             check(ctx, 'no retry of the failed loader', traffic.loader === 1, traffic.loader);
+            check(
+              ctx,
+              'live region announces the failure as plain text',
+              (await page.locator('[role="status"]', { hasText: FAILED }).count()) === 1 &&
+                (await page.locator('[role="status"] :is(a, button)').count()) === 0
+            );
+            await page.keyboard.press('Escape'); // Focus is still on the chat button.
+            await notice.waitFor({ state: 'detached' });
+            check(ctx, 'Escape on the chat button dismisses', true);
+            await chatButton.click();
             await notice.getByRole('button', { name: 'Dismiss' }).click();
             check(ctx, 'Dismiss button closes notice', (await notice.count()) === 0);
             await chatButton.click();
@@ -396,6 +424,44 @@ try {
             check(ctx, 'contact link navigates to /contact', true);
             check(ctx, 'notice closes after navigation', (await notice.count()) === 0);
             await shot('contact');
+          } else if (caseName === 'abandoned') {
+            await page.locator('#rocketchat-iframe').waitFor({ state: 'attached' });
+            await chatButton.click();
+            await notice.getByText(OPENING).waitFor({ timeout: 2000 });
+            await page.locator('main a[href="/contact"]').first().click();
+            await page.waitForURL(url => new URL(url).pathname === '/contact');
+            const withdrawn = await notice
+              .waitFor({ state: 'detached', timeout: 2000 })
+              .then(() => true)
+              .catch(() => false);
+            check(
+              ctx,
+              'navigating while opening withdraws the request',
+              withdrawn && (await chatButton.getAttribute('aria-busy')) !== 'true'
+            );
+            await page.locator('header a[href="/"]').click();
+            await page.waitForURL(url => new URL(url).pathname === '/');
+            await chatButton.click();
+            await notice.getByText(STILL_LOADING).waitFor({ timeout: SLOW_WAIT_MS });
+            await notice.getByRole('link', { name: 'contact page' }).click();
+            await page.waitForURL(url => new URL(url).pathname === '/contact');
+            await page.waitForFunction(() => window.__portfolioChatStatus === 'ready', null, {
+              timeout: 8000,
+            });
+            await page.waitForTimeout(1500);
+            const state = await widgetState();
+            check(
+              ctx,
+              'chat stays closed after the reader chose /contact',
+              state === 'closed',
+              state
+            );
+            check(
+              ctx,
+              'chat button idle on /contact',
+              (await chatButton.getAttribute('aria-busy')) !== 'true'
+            );
+            await shot('contact-after-ready');
           } else if (caseName === 'stalled') {
             await page.locator('#rocketchat-iframe').waitFor({ state: 'attached' });
             await watchNotice();

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { CHAT_STATUS_EVENT } from '@/lib/chat';
 
 // "Opening chat" appears only when opening is not instant. The slow notice is not a
-// failure claim: the widget may still finish loading and open on its own.
+// failure claim: chat still opens if the widget becomes ready while the reader waits.
 const OPENING_NOTICE_MS = 400;
 const SLOW_NOTICE_MS = 10_000;
 
@@ -25,21 +25,24 @@ export default function ChatButton() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const waiting = phase === 'requested' || phase === 'opening' || phase === 'slow';
 
+  // Navigating withdraws a pending open and closes the notice.
   useEffect(() => {
-    setPhase(current => (current === 'slow' || current === 'failed' ? 'idle' : current));
+    setPhase('idle');
   }, [pathname]);
 
   useEffect(() => {
     if (!waiting) return;
     let requested = false;
     const update = () => {
-      if (window.__portfolioChatStatus === 'failed') {
+      const status = window.__portfolioChatStatus;
+      if (status === 'failed') {
         setPhase('failed');
         return;
       }
-      if (!requested && window.RocketChat) {
+      // Wait for ready instead of letting the loader queue the call: a queued open cannot be
+      // withdrawn, and would open chat after the reader dismissed the notice or left for /contact.
+      if (!requested && status === 'ready' && window.RocketChat) {
         requested = true;
-        // The livechat loader queues this until the widget is ready.
         window.RocketChat(function () {
           this.maximizeWidget();
         });
@@ -72,7 +75,7 @@ export default function ChatButton() {
   }, [waiting]);
 
   const openChat = () => {
-    // A queued request stays queued; tapping again does not send another.
+    // Already waiting for this tap's open; another tap changes nothing.
     if (waiting) return;
     setPhase(window.__portfolioChatStatus === 'failed' ? 'failed' : 'requested');
   };
@@ -80,8 +83,17 @@ export default function ChatButton() {
     setPhase('idle');
     buttonRef.current?.focus();
   };
-  const onNoticeKeyDown = (event: KeyboardEvent) => {
-    if (event.key !== 'Escape') return;
+  const announcement =
+    phase === 'opening'
+      ? 'Opening chat…'
+      : phase === 'slow'
+        ? 'Chat is still loading. Keep waiting, or use the contact page.'
+        : phase === 'failed'
+          ? "Chat couldn't load. Use the contact page instead."
+          : '';
+  // Escape closes the notice from the chat button or from inside the notice.
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== 'Escape' || !announcement) return;
     event.preventDefault();
     dismiss();
   };
@@ -89,6 +101,7 @@ export default function ChatButton() {
   const contactLink = (
     <Link
       href="/contact"
+      onClick={() => setPhase('idle')}
       className="font-medium text-[color:var(--color-accent)] underline underline-offset-4 hover:decoration-2"
     >
       contact page
@@ -115,6 +128,7 @@ export default function ChatButton() {
         title="Open chat"
         aria-busy={waiting || undefined}
         onClick={openChat}
+        onKeyDown={onKeyDown}
       >
         {waiting ? (
           <Loader2 className="h-5 w-5 motion-safe:animate-spin" aria-hidden="true" />
@@ -122,33 +136,32 @@ export default function ChatButton() {
           <MessageCircle className="h-5 w-5" aria-hidden="true" />
         )}
       </Button>
-      {/* Kept mounted so screen readers announce each change. */}
-      <div
-        role="status"
-        className="absolute right-4 top-full mt-2 w-72 max-w-[calc(100vw-2rem)] md:hidden"
-      >
-        {message ? (
-          <div
-            data-chat-notice=""
-            onKeyDown={onNoticeKeyDown}
-            className="flex items-start gap-2 rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)] py-3 pl-4 pr-2 text-sm text-[color:var(--color-text-primary)] shadow-lg"
-          >
-            <p className="flex-1 py-2 pr-2">{message}</p>
-            {phase === 'slow' || phase === 'failed' ? (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="shrink-0 hover:bg-[color:var(--color-bg-primary)]"
-                aria-label="Dismiss"
-                onClick={dismiss}
-              >
-                <X className="h-4 w-4" aria-hidden="true" />
-              </Button>
-            ) : null}
-          </div>
-        ) : null}
-      </div>
+      {/* Text-only live region, kept mounted so each change is announced; the link and
+          Dismiss button stay outside it. */}
+      <p role="status" className="sr-only">
+        {announcement}
+      </p>
+      {message ? (
+        <div
+          data-chat-notice=""
+          onKeyDown={onKeyDown}
+          className="absolute right-4 top-full mt-2 flex w-72 max-w-[calc(100vw-2rem)] items-start gap-2 rounded-xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-secondary)] py-3 pl-4 pr-2 text-sm text-[color:var(--color-text-primary)] shadow-lg md:hidden"
+        >
+          <p className="flex-1 py-2 pr-2">{message}</p>
+          {phase === 'slow' || phase === 'failed' ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="shrink-0 hover:bg-[color:var(--color-bg-primary)]"
+              aria-label="Dismiss"
+              onClick={dismiss}
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          ) : null}
+        </div>
+      ) : null}
     </>
   );
 }
