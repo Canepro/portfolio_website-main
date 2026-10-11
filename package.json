@@ -14,6 +14,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "prepare": "node scripts/prepare-husky.js",
     "verify:portfolio": "node scripts/verify-portfolio.mjs",
+    "verify:chat": "node scripts/verify-chat.mjs",
     "smoke:ui": "node scripts/ui-smoke.mjs",
     "smoke:ui:contracts": "node --test scripts/ui-smoke-contracts.test.mjs"
   },

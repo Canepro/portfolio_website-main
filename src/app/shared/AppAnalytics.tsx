@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
+import { CHAT_STATUS_EVENT } from '@/lib/chat';
 
 const init = {
   faro: false,
@@ -77,17 +78,34 @@ export default function AppAnalytics() {
       {process.env.NEXT_PUBLIC_RC_ENABLED === '1' && (
         <Script id="rocket-chat" strategy="afterInteractive">
           {`
-            (function(w, d, s, u) {
+            (function(w, d, s, u, ev) {
+              // Status for the header chat button; see src/lib/chat.ts.
+              function setStatus(status) {
+                w.__portfolioChatStatus = status;
+                w.dispatchEvent(new Event(ev));
+              }
               w.RocketChat = function(c) { w.RocketChat._.push(c) };
               w.RocketChat._ = [];
               var rcUrl = u || ${JSON.stringify(rocketChatUrl)};
               w.RocketChat.url = rcUrl;
+              var rcOrigin = null;
+              try { rcOrigin = new URL(rcUrl, w.location.href).origin; } catch (e) {}
+              w.addEventListener('message', function onReady(e) {
+                if (e.origin !== rcOrigin || !e.data || e.data.src !== 'rocketchat' || e.data.fn !== 'ready') return;
+                w.removeEventListener('message', onReady);
+                setStatus('ready');
+              });
               var h = d.getElementsByTagName(s)[0],
                 j = d.createElement(s);
               j.async = true;
+              j.onload = function() {
+                if (w.__portfolioChatStatus === 'loading') setStatus('loaded');
+              };
+              j.onerror = function() { setStatus('failed'); };
               j.src = rcUrl.replace(/\\/$/, '') + '/rocketchat-livechat.min.js';
+              setStatus('loading');
               h.parentNode.insertBefore(j, h);
-            })(window, document, 'script', ${JSON.stringify(rocketChatUrl)});
+            })(window, document, 'script', ${JSON.stringify(rocketChatUrl)}, ${JSON.stringify(CHAT_STATUS_EVENT)});
           `}
         </Script>
       )}

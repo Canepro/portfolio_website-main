@@ -3,8 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { Menu, MessageCircle, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import SimpleThemeToggle from '@/components/ThemeToggle/SimpleThemeToggle';
+import ChatButton from '@/components/Header/ChatButton';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { profile } from '@/content/profile';
@@ -15,16 +16,6 @@ const nav = [
   { href: '/contact', label: 'Contact' },
 ];
 const chatEnabled = process.env.NEXT_PUBLIC_RC_ENABLED === '1';
-
-// The livechat loader queues calls until the widget is ready.
-function openChat() {
-  const rocketChat = (
-    window as { RocketChat?: (callback: (this: { maximizeWidget(): void }) => void) => void }
-  ).RocketChat;
-  rocketChat?.(function () {
-    this.maximizeWidget();
-  });
-}
 
 export default function Header() {
   const pathname = usePathname() ?? '';
@@ -130,19 +121,7 @@ export default function Header() {
           <nav className="hidden gap-5 md:flex" aria-label="Primary">
             {links()}
           </nav>
-          {chatEnabled ? (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="hover:bg-[color:var(--color-bg-secondary)] md:hidden"
-              aria-label="Open chat"
-              title="Open chat"
-              onClick={openChat}
-            >
-              <MessageCircle className="h-5 w-5" />
-            </Button>
-          ) : null}
+          {chatEnabled ? <ChatButton /> : null}
           <SimpleThemeToggle />
           <Button
             ref={openerRef}
