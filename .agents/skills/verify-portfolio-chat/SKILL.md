@@ -1,6 +1,6 @@
 ---
 name: verify-portfolio-chat
-description: Verify the portfolio's header chat button and Rocket.Chat widget states (open, delayed, failed, stalled, disabled) in a real browser against a loopback production build. Use after changing the chat loader, the header chat button, chat CSS, or the mobile navigation that hides the widget.
+description: Verify the portfolio's header chat button and Rocket.Chat widget states (open, delayed, failed, stalled, abandoned, disabled) in a real browser against a loopback production build. Use after changing the chat loader, the header chat button, chat CSS, or the mobile navigation that hides the widget.
 ---
 
 # Verify portfolio chat

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Drives the header chat through success, delayed, failed, stalled and disabled
-// states against a loopback production build. The real Rocket.Chat loader runs
+// Drives the header chat through success, delayed, failed, stalled, abandoned and
+// disabled states against a loopback production build. The real Rocket.Chat loader runs
 // unchanged; its iframe is a local stub that speaks the same postMessage protocol,
 // so no chat session, message or contact submission reaches any server.
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -87,7 +87,9 @@ addEventListener('message', e => {
 });
 document.getElementById('launcher').onclick = () => show(true);
 document.getElementById('min').onclick = () => show(false);
-if (${readyDelay} >= 0) setTimeout(() => send('ready'), ${readyDelay});
+// -1 never reports ready on its own; the harness can still call sendReady().
+window.sendReady = () => send('ready');
+if (${readyDelay} >= 0) setTimeout(window.sendReady, ${readyDelay});
 </script></body></html>`;
 
 const scenarios = {
@@ -95,8 +97,8 @@ const scenarios = {
   delayed: { scriptDelay: 1500, readyDelay: 3000 },
   failed: { scriptDelay: 1500, abortScript: true },
   stalled: { scriptDelay: 0, readyDelay: -1 },
-  // Ready arrives after the reader has already followed the slow notice to /contact.
-  abandoned: { scriptDelay: 0, readyDelay: 16_000, mobileOnly: true },
+  // The harness reports ready itself, after the reader has followed the notice to /contact.
+  abandoned: { scriptDelay: 0, readyDelay: -1, mobileOnly: true },
   disabled: {},
 };
 
@@ -445,8 +447,14 @@ try {
             await notice.getByText(STILL_LOADING).waitFor({ timeout: SLOW_WAIT_MS });
             await notice.getByRole('link', { name: 'contact page' }).click();
             await page.waitForURL(url => new URL(url).pathname === '/contact');
+            await page
+              .frames()
+              .find(
+                frame => frame.parentFrame() && new URL(frame.url()).pathname.endsWith('/livechat')
+              )
+              .evaluate(() => window.sendReady());
             await page.waitForFunction(() => window.__portfolioChatStatus === 'ready', null, {
-              timeout: 8000,
+              timeout: 2000,
             });
             await page.waitForTimeout(1500);
             const state = await widgetState();

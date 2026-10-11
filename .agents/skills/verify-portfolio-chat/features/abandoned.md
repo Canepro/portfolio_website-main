@@ -4,10 +4,11 @@
 widget finishes loading: by following a page link while chat is opening, or by
 following the slow notice's contact link.
 
-**Harness.** Case `abandoned` (mobile only): the stub iframe reports `ready`
-16 seconds after it loads. The harness taps, follows the hero Contact link
-while "Opening chat…" shows, returns home, taps again, waits for the slow
-notice, follows `contact page`, then waits for `ready` on `/contact`.
+**Harness.** Case `abandoned` (mobile only): the stub iframe never reports
+`ready` on its own. The harness taps, follows the hero Contact link while
+"Opening chat…" shows, returns home, taps again, waits for the slow notice and
+follows `contact page`. On `/contact` it calls `sendReady()` inside the stub.
+No timer decides the order, so a slow runner cannot change it.
 
 **Success.** Navigating closes the notice and clears `aria-busy`. The widget
 stays `closed` after `ready` arrives. The app sends `maximizeWidget` only
