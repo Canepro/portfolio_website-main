@@ -1,0 +1,64 @@
+---
+title: "What 22 test scenarios found in my coding agent's instructions"
+date: "2026-10-02"
+description: "I ran 22 scripted scenarios against the main skill my coding agent follows. Three failed, each because of one sentence. Here is what I changed and what the reruns could not prove."
+tags: ["ai-agents", "agent-skills", "testing", "reliability"]
+---
+
+On 1 October a batch of changes landed in mira-mode, the main set of instructions my coding agent follows. None of them had been run against a real model yet. The next day I tested them. In one scenario the agent was partway through a change I had already approved, and it was asked for a status update. It gave the update and stopped working.
+
+The instructions said it should keep going. That rule was there, but it sat in the middle of a long sentence, and the model read past it. Moving it into its own sentence fixed the case. Finding that took a test, though, because the instructions read fine to me.
+
+Some background first. A skill, in this setup, is a markdown file of instructions the agent reads before it starts a task. mira-mode is the biggest one I use. It grew out of poteto-mode from [pstack](https://github.com/cursor/plugins/blob/main/pstack/README.md), the skill pack published by Lauren Tan ([poteto](https://github.com/poteto)). pstack is mostly about execution. I also borrow from [Matt Pocock's skills](https://github.com/mattpocock/skills), which are mostly about the thinking before any code gets written. mira-mode blends both.
+
+## How I tested it
+
+Each test is a scripted scenario. It sets up a situation, such as "the agent is halfway through approved work and the user asks how it is going", and describes what the agent should do next. One model plays the agent with the skill loaded. A second model reads what it did and grades it out of 10.
+
+mira-mode has 22 of these scenarios. I ran each one once against the merged version. 19 passed. The three failures each scored 4, and each one traced back to a single sentence.
+
+## The three failures
+
+1. **The status question.** This is the one above. I gave the rule its own sentence: answer in a sentence or two, then do the next safe step that is already approved, in the same turn.
+2. **The self-review.** Before the agent sends its work to other models for review, it should review its own change and write down what it checked. The old rule said to put that note "in the review packet". A task running on my own machine had no copy of that packet, so the note had nowhere to go. The new rule says to write the note before sending the work out, and to carry it into the final record of the task, such as the pull request description.
+3. **The handover note.** When a long task stops and a later run picks it up, the agent leaves a checkpoint with the goal, the progress and the next step. It did not say what the next run had to check again before trusting it. A branch might have moved since then, or a check might have failed. The new rule lists what to recheck: the latest commit on each branch, the pull request and its checks, and the live machines. A checkpoint without that list now counts as incomplete.
+
+## Protecting what already worked
+
+The first fix had an obvious risk. If "keep working after a status question" turned into a blanket rule, the agent would start changing things when I only asked about work I had not approved. That would be a worse bug than the one I was fixing.
+
+So one scenario covers exactly that case. It asks for status on work that is not approved, and the right answer is to report and touch nothing. It scored 10 before the fix and 10 after. Three more scenarios cover review rules close to the ones I changed. I call these four the control cases, because their job is to stay the same.
+
+## The rerun, and a mistake a reviewer caught
+
+After the edits I reran seven scenarios: the three failures and the four controls.
+
+| Scenario | Before | After |
+| --- | --- | --- |
+| Status question during approved work | 4 | 10 |
+| Self-review before external reviews | 4 | 7 |
+| Handover checkpoint | 4 | 7 |
+| Status question on unapproved work stays read-only (control) | 10 | 10 |
+| Plan-only reviewer drops to two reviews (control) | 10 | 7 |
+| Two unavailable reviewers leave the review incomplete (control) | 7 | 7 |
+| Reviewers disagree on a stale revision (control) | 7 | 10 |
+
+The first version of that table had a problem. Some "after" scores came from an earlier draft of the wording and some came from the final one. One of the reviewing models flagged it. Each version of the skill gets a short ID made from its contents, so the mix was easy to see once I looked. A table like that describes several experiments. It does not describe the version I was about to ship. I reran so every "after" score came from the final version, and left the earlier runs out.
+
+## What the numbers do not show
+
+Each scenario ran once. Look at the last two controls. One went down 3 points and one went up 3, and neither was the target of a fix. So I treat a single jump from 7 to 10 as noise. Saying more would need repeated runs.
+
+I also did not rerun all 22 scenarios on the final version. I can say the three failures now pass. I cannot say the whole set does.
+
+One gap stayed open. The self-review rule is about order: write the note, then send the work for review. That scenario passed after the fix, but the grader only sees the files at the end. It cannot tell whether the note was written before or after the reviews went out. I recorded that as unproven. Testing it needs a log that shows the order of events. Raising the score needed to pass would not help, because the grader still could not see the order.
+
+## What I check before accepting a skill change
+
+1. Which real failure prompted the edit?
+2. Which scenario reproduces it, and which control covers the behavior that must not change?
+3. Do all the "after" scores come from the same version of the skill?
+4. Can the grader actually see the behavior, including the order things happened in?
+5. What is still unproven, and what would prove it?
+
+I am applying this to the procedures in my [skill library](/projects/codex-skills). I have not measured it across the whole library yet.
