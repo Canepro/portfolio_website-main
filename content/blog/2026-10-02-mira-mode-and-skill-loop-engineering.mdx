@@ -1,0 +1,74 @@
+---
+title: "mira-mode, and how I fix my coding agent's instructions when they fail"
+date: "2026-10-02"
+description: "What mira-mode is, where it came from, and the loop I use when my coding agent keeps making the same mistake because of how its instructions are written."
+tags: ["ai-agents", "agent-skills", "reliability", "platform-engineering"]
+---
+
+In September I shipped a new version of mira-mode to the two machines where my coding agent runs, a Mac and a cloud VM. The install checks passed on both. On the VM, one small helper command still pointed at the previous version, which was no longer installed. A background service that needed that helper was skipping its work. The install check never looked at the helper, so its green result said nothing about it. It only showed up when the VM was inspected directly.
+
+That is the kind of problem this post is about. The agent's instructions can be right in the repo and still fail to reach it, or reach it and still be wrong. I want to explain what mira-mode is first, because the rest depends on it.
+
+## What mira-mode is
+
+My coding agent is a general model with a set of skills. A skill is a markdown file of instructions the agent reads before it starts work. mira-mode is the main one. It decides how the agent approaches a task: whether to investigate first, try a quick prototype, or build; what proof it needs before it calls the work done; and who reviews it. The goal is to take an issue all the way to a merged pull request I can trust, without me approving each step along the way.
+
+The structure is not mine. mira-mode grew out of poteto-mode, part of [pstack](https://github.com/cursor/plugins/blob/main/pstack/README.md), the skill pack published by Lauren Tan ([poteto](https://github.com/poteto)). poteto-mode reads a request, picks a playbook such as bug fix, feature or investigation, and will not report the work as finished until it has been checked against the real thing. I kept her playbooks and principles, pinned to a specific upstream commit with her [MIT licence](https://github.com/cursor/plugins/blob/main/pstack/LICENSE) notice, and adapted them so they load in the tools I run: Codex, Claude Code and Grok. pstack is mostly about execution. I also borrow from [Matt Pocock's skills](https://github.com/mattpocock/skills), which are mostly about the thinking before any code gets written. mira-mode blends both.
+
+One rule I added myself. Every change gets reviewed by models from each of the other providers I use, never by the one that wrote it. On 2 October, for example, Claude wrote a change and Codex and Grok reviewed it. Gemini had run out of its weekly quota that day, so that review ran with two.
+
+## When the instructions are the problem
+
+Most failures are ordinary. A test fails, a command errors, and the agent fixes it as part of the task. Some failures keep coming back because the instructions point the agent the wrong way. Those need a change to the skill itself, and I handle them in a separate loop. In my notes I call it skill loop engineering. It has five steps.
+
+1. Write down the miss with evidence: what was asked, what the agent did, what it should have done, and the file or log that shows it.
+2. Find where it came from. An outage, or an old copy of the skill on one machine, is not a wording problem. Rewriting the skill would not fix either.
+3. Make the smallest change in the place that caused it. That might be one sentence. If it is a mechanical check, it might be a script instead.
+4. Test the failure, and test a nearby case that must not change.
+5. Ship it to every machine and confirm each one actually has it.
+
+## One trip round the loop
+
+On 1 October a batch of mira-mode changes landed that had never been run against a model. The next day I ran 22 scripted scenarios against them. In each one, a model plays the agent with mira-mode loaded and a second model grades the result out of 10. 19 passed.
+
+One failure went like this. The agent was partway through work I had already approved and was asked for a status update. It answered and stopped. Here is how that went through the five steps.
+
+1. The record was the scenario, the agent's reply and a grade of 4.
+2. The cause was the wording. The rule to keep going was there, buried in the middle of a longer sentence.
+3. The change was one new sentence: answer in a sentence or two, then do the next safe approved step in the same turn.
+4. The rerun scored 10. A second scenario asks for status on work I have not approved, where the agent should report and change nothing. It scored 10 before and after, so the fix did not spill over.
+5. I released it as a new package version to the Mac and the VM, and compared a hash of the installed package on both. They matched.
+
+The same run found two more single-sentence failures. I wrote that test up in more detail separately, including the one thing the rerun could not prove.
+
+## Checking delivery is its own step
+
+Step 5 is where the September problem lived. The repo tests passed and the package was installed. The helper command on the VM was a separate piece that nothing checked. The next release repointed it, and a direct check on the VM showed the helper now pointed at the new version and ran. After September, the install doctor gained a check for that helper, and for the sibling Workbench front doors that can fail the same way.
+
+## Knowing where a rule came from
+
+A rule in a skill is only as good as its source. One of my planning files contained the line "The goal is not fewer gates. The goal is sharper gates." It was being treated as my policy. I never wrote it. A backlog automation added it in June, and I corrected the record on 2 October. The note about it now says who actually wrote it.
+
+Skills I borrow carry the same kind of record. They name the upstream repository and commit they came from, which is how the pstack material stays pinned to a known version. When an upstream pack changes, the new version goes through checks before it replaces the one in use. As of 1 October, one pack was still held back.
+
+## What is in place and what is not
+
+In place today:
+
+- Each skill change is an ordinary commit, so undoing one means reverting it.
+- Reviews from the other model providers on every change.
+- Upstream skill packs are checked before an update replaces the version in use.
+- Some actions still wait for me. On this site the agent can open and merge routine fixes, but blog posts like this one stay as drafts until I have read them.
+
+Not in place yet:
+
+- A durable record of skill fixes that were tried and rejected, so the loop does not propose the same bad fix twice.
+- The 22-scenario test ran once per case. I do not yet run repeated trials, so a single score change of a few points is noise to me.
+
+## The questions I ask for each repeated miss
+
+1. What did the agent do, what should it have done, and which file shows it?
+2. Is the cause the wording, or something else, such as an outage or an old copy on one machine?
+3. What is the smallest change, and where does it belong?
+4. Which test shows the failure is fixed, and which shows the nearby behavior has not changed?
+5. Has every machine that runs the agent got the new version, including the helpers around it?
