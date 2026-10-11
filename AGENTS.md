@@ -171,6 +171,7 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
 - `bun run verify:portfolio` against the production build on a loopback server (`bun run start -- -H 127.0.0.1 -p 3100`).
 - Verify key pages render: `/`, `/projects`, `/blog`, `/systems` (and any new routes added).
 - If the change affects layout/styling: verify both desktop + mobile (responsive nav, no overflow, readable type).
+- If the change touches the chat loader, the header chat button, chat CSS or the mobile menu: follow `.agents/skills/verify-portfolio-chat/SKILL.md` (`bun run verify:chat`).
 
 ## Agent Skills
 
