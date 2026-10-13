@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import SimpleThemeToggle from '@/components/ThemeToggle/SimpleThemeToggle';
-import ChatButton from '@/components/Header/ChatButton';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { profile } from '@/content/profile';
@@ -15,7 +14,6 @@ const nav = [
   { href: '/blog', label: 'Writing' },
   { href: '/contact', label: 'Contact' },
 ];
-const chatEnabled = process.env.NEXT_PUBLIC_RC_ENABLED === '1';
 
 export default function Header() {
   const pathname = usePathname() ?? '';
@@ -112,16 +110,18 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)]">
       <div
         ref={barRef}
-        className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-6 md:px-10"
+        className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-2 px-4 sm:gap-4 sm:px-6 md:px-10"
       >
         <Link href="/" className="text-base font-medium tracking-tight">
           {profile.name}
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1 sm:gap-4">
           <nav className="hidden gap-5 md:flex" aria-label="Primary">
             {links()}
           </nav>
-          {chatEnabled ? <ChatButton /> : null}
+          <Button asChild variant="outline" size="sm" className="shrink-0">
+            <a href="mailto:vincentmogah@outlook.com">Email Vincent</a>
+          </Button>
           <SimpleThemeToggle />
           <Button
             ref={openerRef}

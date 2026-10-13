@@ -58,9 +58,11 @@ public/images/    assets
 docs/             architecture, deployment, roadmap
 ```
 
+Visitors can email Vincent directly from the header: [Email Vincent](mailto:vincentmogah@outlook.com). This link needs no configuration.
+
 ## Env vars
 
-Copy `.env.example` to `.env.local`. All optional unless you need contact email, live chat, analytics, or a higher GitHub API limit.
+Copy `.env.example` to `.env.local`. All optional unless you need contact email, analytics, or a higher GitHub API limit.
 
 ## Docker
 
