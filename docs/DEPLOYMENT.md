@@ -89,10 +89,6 @@ GA_PROPERTY_ID=123456789                # GA4 Property ID (optional)
 GA_CREDENTIALS=path/to/credentials.json  # GA4 API credentials (optional)
 PROMETHEUS_SCRAPE_ENABLED=true          # Enable Prometheus scraping
 
-# Live Chat
-NEXT_PUBLIC_RC_ENABLED=1                # Enable Rocket.Chat
-NEXT_PUBLIC_RC_URL=https://your-instance.rocket.chat/livechat
-
 # GitHub API (increases rate limits)
 GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
 ```

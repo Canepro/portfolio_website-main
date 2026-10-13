@@ -66,7 +66,7 @@ try {
         colorScheme: theme,
         reducedMotion: 'reduce',
       });
-      // Preserve native reader telemetry and embedded widgets; never submit contact messages.
+      // Preserve native reader telemetry; never submit contact messages.
       await context.route('**/*', route => {
         const request = route.request();
         if (
@@ -88,10 +88,7 @@ try {
       page.on('response', response => {
         if (response.status() < 400 || failedResponses.length >= 10) return;
         const url = new URL(response.url());
-        const path =
-          url.origin === origin.origin || url.pathname === '/api/v1/livechat/page.visited'
-            ? url.pathname
-            : '/<redacted-path>';
+        const path = url.origin === origin.origin ? url.pathname : '/<redacted-path>';
         failedResponses.push({ status: response.status(), url: `${url.origin}${path}` });
       });
       await page.addInitScript(
@@ -113,34 +110,6 @@ try {
           scrollTo(0, 0);
         });
         await page.waitForTimeout(250);
-        // The production widget loads after hydration. An early blank iframe is not a settled UI.
-        const menuOpen = await page.evaluate(() =>
-          document.body.classList.contains('mobile-nav-open')
-        );
-        const hasChat =
-          origin.hostname === 'portfolio.canepro.me' ||
-          (await page.getByRole('button', { name: 'Open chat', exact: true }).count()) ||
-          (await page.locator('#rocketchat-iframe').count());
-        if (hasChat && !menuOpen) {
-          try {
-            await page.locator('#rocketchat-iframe').waitFor({ state: 'attached' });
-            const mobileChatHidden = await page.evaluate(() => {
-              const widget = document.querySelector('.rocketchat-widget[data-state="closed"]');
-              return innerWidth < 768 && widget && getComputedStyle(widget).visibility === 'hidden';
-            });
-            if (mobileChatHidden)
-              await page.getByRole('button', { name: 'Open chat', exact: true }).waitFor();
-            else {
-              await page.locator('#rocketchat-iframe').waitFor({ state: 'visible' });
-              await page
-                .frameLocator('#rocketchat-iframe')
-                .getByRole('button', { name: 'Rocket.Chat', exact: true })
-                .waitFor();
-            }
-          } catch {
-            errors.push('Embedded chat launcher did not become ready within 10 seconds');
-          }
-        }
         await page.evaluate(() =>
           Promise.all(
             [...document.images].map(image => {
@@ -243,7 +212,18 @@ try {
           throw new Error(`Document request returned ${response?.status() ?? 'no response'}`);
         await page.locator('main h1').waitFor();
       };
-      await journey('home', ['Open /'], () => load('/'));
+      await journey('home', ['Open /'], async () => {
+        await load('/');
+        const email = page
+          .locator('header')
+          .getByRole('link', { name: 'Email Vincent', exact: true });
+        await email.waitFor({ state: 'visible' });
+        if ((await email.getAttribute('href')) !== 'mailto:vincentmogah@outlook.com')
+          throw new Error('Header email link has the wrong destination');
+        await email.focus();
+        if (!(await email.evaluate(element => element === document.activeElement)))
+          throw new Error('Header email link cannot receive keyboard focus');
+      });
       await journey('projects', ['Open /projects'], () => load('/projects'));
       await journey(
         'case-study',

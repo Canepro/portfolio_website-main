@@ -3,7 +3,6 @@
 import { useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
-import { CHAT_STATUS_EVENT } from '@/lib/chat';
 
 const init = {
   faro: false,
@@ -13,7 +12,6 @@ const init = {
 export default function AppAnalytics() {
   const pathname = usePathname();
   const lastPathRef = useRef<string | null>(null);
-  const rocketChatUrl = process.env.NEXT_PUBLIC_RC_URL || 'https://canepros.rocket.chat/livechat';
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
   // 1) Grafana Faro init (once)
@@ -72,45 +70,9 @@ export default function AppAnalytics() {
       .catch(() => {});
   }, [pathname]);
 
-  // 3) Optional integrations: Rocket.Chat + GA scripts (same behavior as Pages Router _app)
+  // 3) Optional Google Analytics scripts
   return (
     <>
-      {process.env.NEXT_PUBLIC_RC_ENABLED === '1' && (
-        <Script id="rocket-chat" strategy="afterInteractive">
-          {`
-            (function(w, d, s, u, ev) {
-              // Status for the header chat button; see src/lib/chat.ts.
-              function setStatus(status) {
-                w.__portfolioChatStatus = status;
-                w.dispatchEvent(new Event(ev));
-              }
-              w.RocketChat = function(c) { w.RocketChat._.push(c) };
-              w.RocketChat._ = [];
-              var rcUrl = u || ${JSON.stringify(rocketChatUrl)};
-              w.RocketChat.url = rcUrl;
-              w.addEventListener('message', function onReady(e) {
-                // Same test the loader applies, plus the sender must be the chat iframe itself.
-                var frame = d.getElementById('rocketchat-iframe');
-                if (!frame || e.source !== frame.contentWindow) return;
-                if (!e.data || e.data.src !== 'rocketchat' || e.data.fn !== 'ready') return;
-                w.removeEventListener('message', onReady);
-                setStatus('ready');
-              });
-              var h = d.getElementsByTagName(s)[0],
-                j = d.createElement(s);
-              j.async = true;
-              j.onload = function() {
-                if (w.__portfolioChatStatus === 'loading') setStatus('loaded');
-              };
-              j.onerror = function() { setStatus('failed'); };
-              j.src = rcUrl.replace(/\\/$/, '') + '/rocketchat-livechat.min.js';
-              setStatus('loading');
-              h.parentNode.insertBefore(j, h);
-            })(window, document, 'script', ${JSON.stringify(rocketChatUrl)}, ${JSON.stringify(CHAT_STATUS_EVENT)});
-          `}
-        </Script>
-      )}
-
       {gaId && (
         <>
           <Script
