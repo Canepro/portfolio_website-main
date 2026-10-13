@@ -201,6 +201,5 @@ externally before merge and confirm its theme tokens on the live deployment.
 The X post's wording is unverified. The app has hand-maintained shadcn-style
 primitives but no components.json; CLI info detects Next.js and Tailwind 3 and
 does not identify those local components. Keep them rather than reinstalling.
-This pass measures owned text and control colors; embedded screenshots and the
-third-party chat frame have their own colors. A contrast pass alone does not
-establish full WCAG conformance.
+This pass measures owned text and control colors; embedded screenshots have
+their own colors. A contrast pass alone does not establish full WCAG conformance.

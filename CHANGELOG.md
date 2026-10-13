@@ -4,6 +4,13 @@
 
 All notable changes to this project will be documented here. Dates are in YYYY-MM-DD.
 
+## [Unreleased]
+
+### Changed
+
+- Replaced the retired visitor chat widget with a themed header link to email Vincent directly.
+- Removed the widget loader, configuration, styling, documentation, and verification harness.
+
 ## v1.4.0 - 2026-02-08
 
 ### Changed
