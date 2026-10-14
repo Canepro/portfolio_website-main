@@ -26,7 +26,7 @@
     "framer-motion": "12.23.12",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.540.0",
-    "next": "15.5.24",
+    "next": "15.5.27",
     "next-mdx-remote": "^6.0.0",
     "nodemailer": "^10.0.6",
     "react": "19.2.4",
@@ -35,7 +35,7 @@
     "react-markdown": "10.1.0",
     "remark-gfm": "4.0.1",
     "remark-gfm-mdx": "npm:remark-gfm@^4.0.0",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.4",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
@@ -56,7 +56,7 @@
     "typescript": "^5.9.2"
   },
   "overrides": {
-    "sharp": "0.35.3",
+    "sharp": "0.35.4",
     "glob": "10.5.0",
     "yaml": "2.8.4",
     "protobufjs": "7.5.8",
