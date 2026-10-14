@@ -7,7 +7,7 @@ tags: ["ai-agents", "agent-skills", "reliability", "platform-engineering"]
 
 In September I shipped a new version of mira-mode to the two machines where my coding agent runs, a Mac and a cloud VM. The install checks passed on both. On the VM, one small helper command still pointed at the previous version, which was no longer installed. A background service that needed that helper was skipping its work. The install check never looked at the helper, so its green result said nothing about it. It only showed up when the VM was inspected directly.
 
-That is the kind of problem this post is about. The agent's instructions can be right in the repo and still fail to reach it, or reach it and still be wrong. I want to explain what mira-mode is first, because the rest depends on it.
+That is the kind of problem this post is about. The agent's instructions can be right in the repo and still fail to reach it, or reach it and still be wrong. First, what mira-mode is.
 
 ## What mira-mode is
 
@@ -43,11 +43,11 @@ The same run found two more single-sentence failures. I wrote that test up in mo
 
 ## Checking delivery is its own step
 
-Step 5 is where the September problem lived. The repo tests passed and the package was installed. The helper command on the VM was a separate piece that nothing checked. The next release repointed it, and a direct check on the VM showed the helper now pointed at the new version and ran. After September, the install doctor gained a check for that helper, and for the sibling Workbench front doors that can fail the same way.
+Step 5 is where the September problem lived. The repo tests passed and the package was installed. The helper command on the VM was a separate piece that nothing checked. The next release repointed it, and a direct check on the VM showed the helper now pointed at the new version and ran. After September, the install doctor gained a check for that helper, and for three similar helper commands that could break the same way.
 
 ## Knowing where a rule came from
 
-A rule in a skill is only as good as its source. One of my planning files contained the line "The goal is not fewer gates. The goal is sharper gates." It was being treated as my policy. I never wrote it. A backlog automation added it in June, and I corrected the record on 2 October. The note about it now says who actually wrote it.
+I also check where each rule in a skill came from. One of my planning files contained the line "The goal is not fewer gates. The goal is sharper gates." It was being treated as my policy. I never wrote it. A backlog automation added it in June, and I corrected the record on 2 October. The note about it now says who actually wrote it.
 
 Skills I borrow carry the same kind of record. They name the upstream repository and commit they came from, which is how the pstack material stays pinned to a known version. When an upstream pack changes, the new version goes through checks before it replaces the one in use. As of 1 October, one pack was still held back.
 
