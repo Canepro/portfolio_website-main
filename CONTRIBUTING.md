@@ -28,7 +28,7 @@ We welcome various types of contributions:
 ### Prerequisites
 
 - Bun 1.3.5+ ([install Bun](https://bun.sh/docs/installation))
-- Node.js 20+ (recommended 22) - required for Next.js runtime
+- Node.js 22.23.4+ within 22.x or Node.js 24.22.1+ within 24.x - required for Next.js runtime
 - Git
 
 ### Local Development
@@ -284,7 +284,7 @@ What actually happened
 
 - OS: [e.g. Windows 10, macOS 12]
 - Browser: [e.g. Chrome 96, Firefox 95]
-- Node.js Version: [e.g. 18.0.0]
+- Node.js Version: [e.g. 22.23.4]
 
 ## Additional Information
 

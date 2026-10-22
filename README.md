@@ -19,7 +19,7 @@ PipelineHealer architecture: [github.com/Canepro/pipelinehealer#architecture](ht
 
 ## Quick start
 
-Needs Bun 1.3.5+ and Node 20+ (22 recommended).
+Needs Bun 1.3.5+ and Node 22.23.4+ within 22.x or Node 24.22.1+ within 24.x.
 
 ```bash
 git clone https://github.com/Canepro/portfolio_website-main.git
