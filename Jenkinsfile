@@ -23,7 +23,7 @@ spec:
           cpu: "500m"
           memory: "512Mi"
     - name: node
-      image: docker.io/library/node:22-bullseye
+      image: docker.io/library/node:22.23.4-bookworm
       command: ["cat"]
       tty: true
       resources:
