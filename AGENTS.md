@@ -139,7 +139,7 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
   - There is a `.jenkins/` folder; prefer a root `Jenkinsfile` for Multibranch Pipeline jobs.
   - Pipeline should be deterministic (`bun install --frozen-lockfile`) and run the three checks above.
   - Jenkins `sh` steps run under `/bin/sh` by default; avoid bash-only options like `set -o pipefail`.
-  - On Kubernetes clusters enforcing short-name image resolution, keep agent images fully qualified (for example `docker.io/library/node:22-bullseye`).
+  - On Kubernetes clusters enforcing short-name image resolution, keep agent images fully qualified (for example `docker.io/library/node:22.23.4-bookworm`).
   - The historical Jenkins deployment used Kubernetes (OKE) agents, including arm64 nodes. Its configuration remains as recorded source; do not assume the instance is running.
     - Any downloaded binaries used in CI must be architecture-aware (for example `hadolint`).
   - Docker portability is validated in CI:

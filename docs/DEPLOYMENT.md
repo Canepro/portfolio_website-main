@@ -24,7 +24,7 @@ Notes:
    ```bash
    Build command: bun run build
    Publish directory: .next (auto-managed by Next.js runtime)
-   Node version: 20
+   Node version: 22.23.4
    Bun version: 1.3.5 (pinned via `BUN_VERSION` and `bun.lock`)
    ```
 
@@ -103,7 +103,7 @@ Create a `netlify.toml` file in your project root:
   publish = ".next"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "22.23.4"
   BUN_VERSION = "1.3.5"
 
 [[plugins]]

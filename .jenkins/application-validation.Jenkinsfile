@@ -27,7 +27,7 @@ spec:
           cpu: "500m"
           memory: "512Mi"
     - name: node
-      image: docker.io/library/node:22-bullseye
+      image: docker.io/library/node:22.23.4-bookworm
       command: ["cat"]
       tty: true
       resources:
@@ -60,7 +60,7 @@ spec:
   // Environment variables for tool versions
   // These match the project's package.json requirements
   environment {
-    NODE_VERSION = '22'      // Node.js version (matches local dev)
+    NODE_VERSION = '22.23.4'      // Node.js version (matches local dev)
     BUN_TAG = 'bun-v1.3.5'   // Bun release tag (passed to installer). Override with BUN_TAG_OVERRIDE.
   }
 
@@ -72,7 +72,7 @@ spec:
       steps {
         sh '''
           # Install prerequisites for bun installer (needs unzip + curl + bash)
-          # node:22-bullseye runs as root by default, so apt works here.
+          # node:22.23.4-bookworm runs as root by default, so apt works here.
           set -eu
           BUN_TAG="${BUN_TAG_OVERRIDE:-$BUN_TAG}"
           apt-get update
