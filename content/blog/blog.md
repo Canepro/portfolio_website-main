@@ -1,6 +1,6 @@
 # Blog Content Roadmap
 
-> Last Updated: March 28, 2026
+> Last Updated: October 23, 2026
 
 ---
 
@@ -46,6 +46,16 @@ Short-form posts (~500 words) on specific gotchas and tips.
 | 14  | Cleaning Up 22 GitHub Repos in 5 Minutes                   | ❌ TODO |
 | 15  | Terraform State Locking: The DynamoDB Table You're Missing | ❌ TODO |
 | 16  | Why `terraform destroy` Was Running on Every Push to Main  | ❌ TODO |
+
+---
+
+## Series 4: Agent skills
+
+How I test and fix the instructions my coding agent follows.
+
+| #   | Title                                                          | Published  | Status       |
+| --- | -------------------------------------------------------------- | ---------- | ------------ |
+| 17  | What 22 test scenarios found in my coding agent's instructions | 2026-10-23 | ✅ Published |
 
 ---
 
