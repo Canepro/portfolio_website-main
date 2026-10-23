@@ -1,6 +1,6 @@
 ---
 title: "mira-mode, and how I fix my coding agent's instructions when they fail"
-date: "2026-10-02"
+date: "2026-10-23"
 description: "What mira-mode is, where it came from, and the loop I use when my coding agent keeps making the same mistake because of how its instructions are written."
 tags: ["ai-agents", "agent-skills", "reliability", "platform-engineering"]
 ---
@@ -13,7 +13,7 @@ That is the kind of problem this post is about. The agent's instructions can be 
 
 My coding agent is a general model with a set of skills. A skill is a markdown file of instructions the agent reads before it starts work. mira-mode is the main one. It decides how the agent approaches a task: whether to investigate first, try a quick prototype, or build; what proof it needs before it calls the work done; and who reviews it. The goal is to take an issue all the way to a merged pull request I can trust, without me approving each step along the way.
 
-The structure is not mine. mira-mode grew out of poteto-mode, part of [pstack](https://github.com/cursor/plugins/blob/main/pstack/README.md), the skill pack published by Lauren Tan ([poteto](https://github.com/poteto)). poteto-mode reads a request, picks a playbook such as bug fix, feature or investigation, and will not report the work as finished until it has been checked against the real thing. I kept her playbooks and principles, pinned to a specific upstream commit with her [MIT licence](https://github.com/cursor/plugins/blob/main/pstack/LICENSE) notice, and adapted them so they load in the tools I run: Codex, Claude Code and Grok. pstack is mostly about execution. I also borrow from [Matt Pocock's skills](https://github.com/mattpocock/skills), which are mostly about the thinking before any code gets written. mira-mode blends both.
+The structure is not mine. mira-mode grew out of poteto-mode, part of [pstack](https://github.com/cursor/plugins/blob/main/pstack/README.md), the skill pack published by Lauren Tan ([poteto](https://github.com/poteto)). poteto-mode reads a request, picks a playbook such as bug fix, feature or investigation, and will not report the work as finished until it has been checked against the real thing. I kept its playbooks and principles, pinned to a specific upstream commit with the [MIT licence](https://github.com/cursor/plugins/blob/main/pstack/LICENSE) notice, and adapted them so they load in the tools I run: Codex, Claude Code and Grok. Cursor now gets the same guidance too. pstack is mostly about execution. I also borrow from [Matt Pocock's skills](https://github.com/mattpocock/skills), which are mostly about the thinking before any code gets written. mira-mode blends both.
 
 One rule I added myself. Every change gets reviewed by models from each of the other providers I use, never by the one that wrote it. On 2 October, for example, Claude wrote a change and Codex and Grok reviewed it. Gemini had run out of its weekly quota that day, so that review ran with two.
 
@@ -43,13 +43,13 @@ The same run found two more single-sentence failures. I wrote that test up in mo
 
 ## Checking delivery is its own step
 
-Step 5 is where the September problem lived. The repo tests passed and the package was installed. The helper command on the VM was a separate piece that nothing checked. The next release repointed it, and a direct check on the VM showed the helper now pointed at the new version and ran. After September, the install doctor gained a check for that helper, and for three similar helper commands that could break the same way.
+Step 5 is where the September problem lived. The repo tests passed and the package was installed. The helper command on the VM was a separate piece that nothing checked. The next release repointed it, and a direct check on the VM showed the helper now pointed at the new version and ran. The next day the install doctor gained a check for that helper, and for three similar helper commands that could break the same way. On 23 October I widened it. Another command link had pointed at a removed copy for twelve days, so the doctor now fails on any of its own command links whose target is gone.
 
 ## Knowing where a rule came from
 
 I also check where each rule in a skill came from. One of my planning files contained the line "The goal is not fewer gates. The goal is sharper gates." It was being treated as my policy. I never wrote it. A backlog automation added it in June, and I corrected the record on 2 October. The note about it now says who actually wrote it.
 
-Skills I borrow carry the same kind of record. They name the upstream repository and commit they came from, which is how the pstack material stays pinned to a known version. When an upstream pack changes, the new version goes through checks before it replaces the one in use. As of 1 October, one pack was still held back.
+Skills I borrow carry the same kind of record. They name the upstream repository and commit they came from, which is how the pstack material stays pinned to a known version. When an upstream pack changes, the new version goes through checks before it replaces the one in use. Between 7 and 10 October those checks held back four newer versions of Matt Pocock's pack in a row. The latest one changed a script and added wording about publishing and secrets, which the checks treat as sensitive. The version in use stayed on the last one that passed.
 
 ## What is in place and what is not
 
@@ -62,8 +62,8 @@ In place today:
 
 Not in place yet:
 
-- A durable record of skill fixes that were tried and rejected, so the loop does not propose the same bad fix twice.
-- The 22-scenario test ran once per case. I do not yet run repeated trials, so a single score change of a few points is noise to me.
+- A durable list of skill fixes that were tried and rejected. The loop's instructions say to record each one and why, but there is no single place that keeps them yet, so the loop could still propose the same bad fix twice.
+- Repeated trials. The scenario set has grown from 22 to 63 cases since that run, but each case still runs once, so a single score change of a few points is noise to me.
 
 ## The questions I ask for each repeated miss
 
