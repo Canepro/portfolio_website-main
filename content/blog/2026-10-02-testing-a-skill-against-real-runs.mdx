@@ -1,6 +1,6 @@
 ---
 title: "What 22 test scenarios found in my coding agent's instructions"
-date: "2026-10-02"
+date: "2026-10-23"
 description: "I ran 22 scripted scenarios against the main skill my coding agent follows. Three failed, each because of one sentence. Here is what I changed and what the reruns could not prove."
 tags: ["ai-agents", "agent-skills", "testing", "reliability"]
 ---
@@ -17,7 +17,7 @@ Some background first. A skill, in this setup, is a markdown file of instruction
 
 Each test is a scripted scenario. It sets up a situation, such as "the agent is halfway through approved work and the user asks how it is going", and describes what the agent should do next. One model plays the agent with the skill loaded. A second model reads what it did and grades it out of 10.
 
-mira-mode has 22 of these scenarios. I ran each one once against the merged version. 19 passed. The three failures each scored 4, and each one traced back to a single sentence.
+On 2 October mira-mode had 22 of these scenarios. It has 63 now. I ran each of the 22 once against the merged version. 19 passed. The three failures each scored 4, and each one traced back to a single sentence.
 
 ## The three failures
 
