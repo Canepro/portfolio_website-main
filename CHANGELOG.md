@@ -4,6 +4,13 @@
 
 All notable changes to this project will be documented here. Dates are in YYYY-MM-DD.
 
+## [Unreleased]
+
+### Changed
+
+- Replaced the retired visitor chat widget with a themed header link to email Vincent directly.
+- Removed the widget loader, configuration, styling, documentation, and verification harness.
+
 ## v1.4.0 - 2026-02-08
 
 ### Changed
@@ -141,7 +148,6 @@ All notable changes to this project will be documented here. Dates are in YYYY-M
 - Header accessibility: ARIA attributes, Escape to close mobile menu, overlay dialog semantics
 - Social links: open in new tabs with rel security; added accessible labels
 - OptimizedImage: browser-safe base64 fallback (no Node Buffer)
-- App: Rocket.Chat script is env-gated via `NEXT_PUBLIC_RC_ENABLED`
 - Document: fonts preconnect uses `crossOrigin="anonymous"`
 - Performance: header `backdrop-filter` hints compositor via `will-change`
 - Footer: mobile grid responsiveness improved

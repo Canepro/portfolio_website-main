@@ -55,7 +55,7 @@ export default function BlogIndexClient({
             id="writing-topic"
             value={selectedTag}
             onChange={e => setTag(e.target.value)}
-            className="max-w-full rounded border border-[color:var(--color-border)] bg-[color:var(--color-bg-primary)] px-3 py-2 text-sm"
+            className="max-w-full rounded border border-input bg-background px-3 py-2 text-sm"
           >
             <option value="all">All writing ({posts.length})</option>
             {tags.map(({ tag, count }) => (
@@ -90,7 +90,7 @@ export default function BlogIndexClient({
         ) : (
           filteredPosts.map(p => (
             <SectionCard key={p.slug} padding="md">
-              <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="space-y-2">
                 <h2 className="text-2xl font-medium tracking-tight">
                   <Link
                     href={`/blog/${encodeURIComponent(p.slug)}`}
@@ -100,7 +100,7 @@ export default function BlogIndexClient({
                   </Link>
                 </h2>
                 <time
-                  className="shrink-0 text-xs text-[color:var(--color-text-secondary)]"
+                  className="block font-mono text-sm font-medium leading-6 text-[color:var(--color-text-primary)] opacity-80"
                   dateTime={p.date}
                 >
                   {p.date}
@@ -112,7 +112,7 @@ export default function BlogIndexClient({
                 </p>
               ) : null}
               {p.tags && p.tags.length ? (
-                <p className="mt-3 text-xs text-[color:var(--color-text-secondary)]">
+                <p className="mt-3 text-sm font-medium leading-6 text-[color:var(--color-text-primary)] opacity-80">
                   {p.tags.join(' · ')}
                 </p>
               ) : null}

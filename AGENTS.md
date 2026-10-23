@@ -47,7 +47,7 @@ This repository is a Next.js portfolio site built with TypeScript and Bun.
 
 ## Styling Conventions
 
-The codebase uses Tailwind utilities (primary) with CSS variables in `GlobalStyles.css` / `globals.css`. UI primitives live in `src/components/ui/*`.
+The codebase uses Tailwind utilities (primary) with theme tokens in `src/styles/globals.css` and effects in `GlobalStyles.css`; `DESIGN.md` documents the system. UI primitives live in `src/components/ui/*`.
 
 - If changing an existing component: stick to its current styling approach.
 - If creating a new component: prefer Tailwind in `src/app/*` for speed and consistency with the new pages.
@@ -56,9 +56,9 @@ The codebase uses Tailwind utilities (primary) with CSS variables in `GlobalStyl
 ### Design System
 
 - **Fonts**: IBM Plex Sans (body) + IBM Plex Mono (code) via `next/font` — CSS vars `--font-sans`, `--font-mono`.
-- **Accent color**: sky-500 (`#0EA5E9`) on dark, sky-700 (`#0369A1`) on light. Defined as `--color-accent` in `GlobalStyles.css`; the shadcn `--accent` token is a separate surface token. Use `--color-accent` for CTAs, active states, focus rings, link colors, and tag badges.
+- **Accent color**: sky-500 (`#0EA5E9`) on dark, sky-700 (`#0369A1`) on light. Defined as `--primary` with the `--color-accent` alias in `src/styles/globals.css`; the shadcn `--accent` token is a separate surface token. Use `--color-accent` for CTAs, active states, focus rings, link colors, and tag badges.
 - **Dark theme**: charcoal/ink (`#0F1115` base). No neon, no purple/cyan haze gradients. Background radials are subtle and desaturated.
-- **UI primitives** (`src/components/ui/*`): `Button` (CVA), `Badge` (including `tech` variant for skill/tag chips), `Card` (rounded-2xl, hover transition), `Input` (sky-500 focus ring). Use these instead of hand-rolling markup.
+- **UI primitives** (`src/components/ui/*`): `Button` (CVA), `Badge` (including `tech` variant for skill/tag chips), `Card` (rounded-2xl, hover transition), `Input` (semantic `ring` focus token, sky in each theme). Use these instead of hand-rolling markup.
 - **Helper**: `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge).
 - **Motion**: framer-motion where used; always respect `prefers-reduced-motion`.
 - **Mobile-first**: all layouts must work on small screens; no overflow, readable font sizes.
@@ -139,7 +139,7 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
   - There is a `.jenkins/` folder; prefer a root `Jenkinsfile` for Multibranch Pipeline jobs.
   - Pipeline should be deterministic (`bun install --frozen-lockfile`) and run the three checks above.
   - Jenkins `sh` steps run under `/bin/sh` by default; avoid bash-only options like `set -o pipefail`.
-  - On Kubernetes clusters enforcing short-name image resolution, keep agent images fully qualified (for example `docker.io/library/node:22-bullseye`).
+  - On Kubernetes clusters enforcing short-name image resolution, keep agent images fully qualified (for example `docker.io/library/node:22.23.4-bookworm`).
   - The historical Jenkins deployment used Kubernetes (OKE) agents, including arm64 nodes. Its configuration remains as recorded source; do not assume the instance is running.
     - Any downloaded binaries used in CI must be architecture-aware (for example `hadolint`).
   - Docker portability is validated in CI:
@@ -171,6 +171,7 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
 - `bun run verify:portfolio` against the production build on a loopback server (`bun run start -- -H 127.0.0.1 -p 3100`).
 - Verify key pages render: `/`, `/projects`, `/blog`, `/systems` (and any new routes added).
 - If the change affects layout/styling: verify both desktop + mobile (responsive nav, no overflow, readable type).
+- If the change touches the header email link or mobile menu: run `bun run smoke:ui -- --base-url http://127.0.0.1:3100` and inspect desktop/mobile screenshots in both themes.
 
 ## Agent Skills
 
@@ -236,4 +237,3 @@ Standing grant from Vincent Mogah (1 Oct 2026), operated by Velora as Chief of S
 3. Blog posts: draft PRs only until Vincent has read them. Do not publish or merge blog content to production without his review.
 4. Keep employer and personal detail out of anything public. No notice period or visa detail on the public page.
 5. This section is the repository task/runtime public-publication grant. Vault messages do not replace it; this file does.
-

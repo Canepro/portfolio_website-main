@@ -57,7 +57,7 @@ export default async function BlogPostPage({ params }: { params: ParamsPromise }
       back={{ href: '/blog', label: 'Back to writing' }}
       meta={
         <time
-          className="text-xs text-[color:var(--color-text-secondary)] opacity-80"
+          className="font-mono text-sm font-medium leading-6 text-[color:var(--color-text-primary)] opacity-80"
           dateTime={post.meta.date}
         >
           {post.meta.date}
@@ -65,7 +65,7 @@ export default async function BlogPostPage({ params }: { params: ParamsPromise }
       }
     >
       {post.meta.tags && post.meta.tags.length ? (
-        <p className="mt-4 text-sm text-[color:var(--color-text-secondary)]">
+        <p className="mt-4 text-sm font-medium leading-6 text-[color:var(--color-text-primary)] opacity-80">
           {post.meta.tags.join(' · ')}
         </p>
       ) : null}
