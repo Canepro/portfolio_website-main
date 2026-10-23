@@ -53,9 +53,10 @@ Short-form posts (~500 words) on specific gotchas and tips.
 
 How I test and fix the instructions my coding agent follows.
 
-| #   | Title                                                          | Published  | Status       |
-| --- | -------------------------------------------------------------- | ---------- | ------------ |
-| 17  | What 22 test scenarios found in my coding agent's instructions | 2026-10-23 | ✅ Published |
+| #   | Title                                                                  | Published  | Status       |
+| --- | ---------------------------------------------------------------------- | ---------- | ------------ |
+| 17  | What 22 test scenarios found in my coding agent's instructions         | 2026-10-23 | ✅ Published |
+| 18  | mira-mode, and how I fix my coding agent's instructions when they fail | 2026-10-23 | ✅ Published |
 
 ---
 

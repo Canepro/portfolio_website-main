@@ -39,11 +39,11 @@ One failure went like this. The agent was partway through work I had already app
 4. The rerun scored 10. A second scenario asks for status on work I have not approved, where the agent should report and change nothing. It scored 10 before and after, so the fix did not spill over.
 5. I released it as a new package version to the Mac and the VM, and compared a hash of the installed package on both. They matched.
 
-The same run found two more single-sentence failures. I wrote that test up in more detail separately, including the one thing the rerun could not prove.
+The same run found two more single-sentence failures. I wrote [that test](/blog/2026-10-02-testing-a-skill-against-real-runs) up in more detail separately, including the one thing the rerun could not prove.
 
 ## Checking delivery is its own step
 
-Step 5 is where the September problem lived. The repo tests passed and the package was installed. The helper command on the VM was a separate piece that nothing checked. The next release repointed it, and a direct check on the VM showed the helper now pointed at the new version and ran. The next day the install doctor gained a check for that helper, and for three similar helper commands that could break the same way. On 23 October I widened it. Another command link had pointed at a removed copy for twelve days, so the doctor now fails on any of its own command links whose target is gone.
+Step 5 is where the September problem lived. The repo tests passed and the package was installed. The helper command on the VM was a separate piece that nothing checked. The next release repointed it, and a direct check on the VM showed the helper now pointed at the new version and ran. On 14 September, the day after the fix, the install doctor gained a check for that helper, and for three similar helper commands that could break the same way. On 23 October I widened it. Another command link had pointed at a removed copy for twelve days, so the doctor now fails on any of its own command links whose target is gone.
 
 ## Knowing where a rule came from
 
@@ -70,5 +70,5 @@ Not in place yet:
 1. What did the agent do, what should it have done, and which file shows it?
 2. Is the cause the wording, or something else, such as an outage or an old copy on one machine?
 3. What is the smallest change, and where does it belong?
-4. Which test shows the failure is fixed, and which shows the nearby behavior has not changed?
+4. Which test shows the failure is fixed, and which shows the nearby behaviour has not changed?
 5. Has every machine that runs the agent got the new version, including the helpers around it?
