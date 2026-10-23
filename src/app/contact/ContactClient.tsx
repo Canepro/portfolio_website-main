@@ -149,7 +149,7 @@ export default function ContactClient() {
                 ref={statusRef}
                 tabIndex={-1}
                 role="alert"
-                className="text-sm text-red-500 outline-none"
+                className="text-sm text-destructive outline-none"
               >
                 Something went wrong. Please try again.
               </p>

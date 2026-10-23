@@ -28,7 +28,7 @@ We welcome various types of contributions:
 ### Prerequisites
 
 - Bun 1.3.5+ ([install Bun](https://bun.sh/docs/installation))
-- Node.js 20+ (recommended 22) - required for Next.js runtime
+- Node.js 22.23.4+ within 22.x, 24.22.1+ within 24.x, or 26.12.1 or newer - required for Next.js runtime. CI tests 22.23.4 and 24.22.1.
 - Git
 
 ### Local Development
@@ -86,7 +86,7 @@ const Button: React.FC<ButtonProps> = ({ variant, size = 'md', children, onClick
 
 ### Styling (Tailwind)
 
-- **Tailwind + CSS variables** for all UI work
+- **Tailwind + CSS variables** for all UI work; follow [`DESIGN.md`](DESIGN.md). Theme tokens live in `src/styles/globals.css`.
 - **Layout primitives** in `src/components/layout/` for page structure
 - **UI primitives** in `src/components/ui/*` (Button, Badge, Card, Input)
 - Use `cn()` from `src/lib/utils.ts` for class composition
@@ -96,7 +96,7 @@ const Button: React.FC<ButtonProps> = ({ variant, size = 'md', children, onClick
 const buttonVariants = cva('...', {
   variants: {
     variant: {
-      accent: 'bg-[color:var(--color-accent)] ...',
+      accent: 'bg-primary text-primary-foreground hover:bg-primary/90 ...',
       glass: 'border ... bg-[color:var(--color-card-bg)] ...',
     },
   },
@@ -284,7 +284,7 @@ What actually happened
 
 - OS: [e.g. Windows 10, macOS 12]
 - Browser: [e.g. Chrome 96, Firefox 95]
-- Node.js Version: [e.g. 18.0.0]
+- Node.js Version: [e.g. 22.23.4]
 
 ## Additional Information
 

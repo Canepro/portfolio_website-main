@@ -12,7 +12,6 @@ const init = {
 export default function AppAnalytics() {
   const pathname = usePathname();
   const lastPathRef = useRef<string | null>(null);
-  const rocketChatUrl = process.env.NEXT_PUBLIC_RC_URL || 'https://canepros.rocket.chat/livechat';
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
   // 1) Grafana Faro init (once)
@@ -71,27 +70,9 @@ export default function AppAnalytics() {
       .catch(() => {});
   }, [pathname]);
 
-  // 3) Optional integrations: Rocket.Chat + GA scripts (same behavior as Pages Router _app)
+  // 3) Optional Google Analytics scripts
   return (
     <>
-      {process.env.NEXT_PUBLIC_RC_ENABLED === '1' && (
-        <Script id="rocket-chat" strategy="afterInteractive">
-          {`
-            (function(w, d, s, u) {
-              w.RocketChat = function(c) { w.RocketChat._.push(c) };
-              w.RocketChat._ = [];
-              var rcUrl = u || ${JSON.stringify(rocketChatUrl)};
-              w.RocketChat.url = rcUrl;
-              var h = d.getElementsByTagName(s)[0],
-                j = d.createElement(s);
-              j.async = true;
-              j.src = rcUrl.replace(/\\/$/, '') + '/rocketchat-livechat.min.js';
-              h.parentNode.insertBefore(j, h);
-            })(window, document, 'script', ${JSON.stringify(rocketChatUrl)});
-          `}
-        </Script>
-      )}
-
       {gaId && (
         <>
           <Script

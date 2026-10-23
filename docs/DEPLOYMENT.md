@@ -24,7 +24,7 @@ Notes:
    ```bash
    Build command: bun run build
    Publish directory: .next (auto-managed by Next.js runtime)
-   Node version: 20
+   Node version: 22.23.4
    Bun version: 1.3.5 (pinned via `BUN_VERSION` and `bun.lock`)
    ```
 
@@ -89,10 +89,6 @@ GA_PROPERTY_ID=123456789                # GA4 Property ID (optional)
 GA_CREDENTIALS=path/to/credentials.json  # GA4 API credentials (optional)
 PROMETHEUS_SCRAPE_ENABLED=true          # Enable Prometheus scraping
 
-# Live Chat
-NEXT_PUBLIC_RC_ENABLED=1                # Enable Rocket.Chat
-NEXT_PUBLIC_RC_URL=https://your-instance.rocket.chat/livechat
-
 # GitHub API (increases rate limits)
 GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
 ```
@@ -107,7 +103,7 @@ Create a `netlify.toml` file in your project root:
   publish = ".next"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "22.23.4"
   BUN_VERSION = "1.3.5"
 
 [[plugins]]

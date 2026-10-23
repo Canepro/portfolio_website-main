@@ -90,21 +90,17 @@ portfolio_website-main/
 
 ### Theme Architecture
 
-The application uses **CSS variables** in two complementary files:
+[`DESIGN.md`](../DESIGN.md) records the colors, type scale, shapes, and elevation.
+`src/styles/globals.css` is the single theme-token source; `GlobalStyles.css`
+contains shared effects and component treatments.
 
 ```css
-/* GlobalStyles.css — site tokens */
+/* globals.css — dark defaults, overridden by html.light-theme */
 :root {
-  --color-accent: #0ea5e9; /* sky-500 */
-  --color-bg-primary: #0f1115;
-  --color-text-primary: #ffffff;
-}
-
-/* globals.css — shadcn-style HSL variables (dark class) */
-.dark {
-  --accent: 199 89% 48%; /* sky-500 */
-  --background: 222 47% 7%;
-  --foreground: 210 40% 95%;
+  --primary: 198.6301 88.664% 48.4314%; /* sky action */
+  --accent: var(--surface); /* quiet hover surface */
+  --ring: var(--primary);
+  --color-accent: hsl(var(--primary)); /* legacy compatibility alias */
 }
 ```
 

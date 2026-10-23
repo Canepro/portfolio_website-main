@@ -301,21 +301,51 @@ export interface Certification {
 
 export const certifications: Certification[] = [
   {
-    name: 'ITIL 4 Foundation [current, valid to Apr 2028]',
+    name: 'ITIL 4 Foundation',
     issuer: 'PeopleCert',
-    date: 'Valid to Apr 2028',
+    date: '',
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
   {
-    name: 'Microsoft Certified: Azure Fundamentals [current]',
+    name: 'Microsoft Certified: DevOps Engineer Expert',
     issuer: 'Microsoft',
-    date: 'Current',
+    date: '17 Aug 2023',
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
   {
-    name: 'Microsoft Certified: Azure AI Fundamentals [current]',
+    name: 'Microsoft Certified: Security, Compliance, and Identity Fundamentals',
     issuer: 'Microsoft',
-    date: 'Current',
+    date: '19 Feb 2026',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure AI Fundamentals',
+    issuer: 'Microsoft',
+    date: '23 Dec 2021',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure Fundamentals',
+    issuer: 'Microsoft',
+    date: '30 Sep 2021',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'Microsoft Certified: Azure Administrator Associate',
+    issuer: 'Microsoft',
+    date: '27 Jan 2022',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'AWS Certified Cloud Practitioner',
+    issuer: 'Amazon Web Services',
+    date: '',
+    link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
+  },
+  {
+    name: 'MS-100: Microsoft 365 Identity and Services',
+    issuer: 'Microsoft',
+    date: '2019',
     link: 'https://www.linkedin.com/in/vincent-mogah/details/certifications/',
   },
 ];

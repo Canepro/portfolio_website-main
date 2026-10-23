@@ -19,7 +19,7 @@ PipelineHealer architecture: [github.com/Canepro/pipelinehealer#architecture](ht
 
 ## Quick start
 
-Needs Bun 1.3.5+ and Node 20+ (22 recommended).
+Needs Bun 1.3.5+ and Node 22.23.4+ within 22.x, 24.22.1+ within 24.x, or 26.12.1 or newer. CI tests Node 22.23.4 and 24.22.1.
 
 ```bash
 git clone https://github.com/Canepro/portfolio_website-main.git
@@ -31,13 +31,23 @@ bun run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-| Command             | What it does            |
-| ------------------- | ----------------------- |
-| `bun run dev`       | Dev server on port 3000 |
-| `bun run build`     | Production build        |
-| `bun run lint`      | ESLint                  |
-| `bun run typecheck` | TypeScript              |
-| `bun run format`    | Prettier                |
+Preferred local secrets path once Infisical is linked for this checkout:
+
+```bash
+infisical login
+bun run dev:infisical       # injects canepro-secrets / dev / /portfolio
+```
+
+Keep `.env.local` while you validate the Infisical route. A moved checkout can use Infisical instead of copying the env file.
+
+| Command                 | What it does                                      |
+| ----------------------- | ------------------------------------------------- |
+| `bun run dev`           | Dev server on port 3000                           |
+| `bun run dev:infisical` | Same, with Infisical secrets from `/portfolio`    |
+| `bun run build`         | Production build                                  |
+| `bun run lint`          | ESLint                                            |
+| `bun run typecheck`     | TypeScript                                        |
+| `bun run format`        | Prettier                                          |
 
 ## Stack
 
@@ -58,9 +68,17 @@ public/images/    assets
 docs/             architecture, deployment, roadmap
 ```
 
+Visitors can email Vincent directly from the header: [Email Vincent](mailto:vincentmogah@outlook.com). This link needs no configuration.
+
 ## Env vars
 
-Copy `.env.example` to `.env.local`. All optional unless you need contact email, live chat, analytics, or a higher GitHub API limit.
+Copy `.env.example` to `.env.local`. All optional unless you need contact email, analytics, or a higher GitHub API limit.
+
+Infisical wiring for this Mac:
+
+- project: `canepro-secrets` (`.infisical.json`)
+- environment: `dev`
+- path: `/portfolio`
 
 ## Docker
 
