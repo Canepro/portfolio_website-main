@@ -33,6 +33,11 @@ server_pid=$!
 printf '%s\n' "$server_pid" > "$proof/server.pid"
 ```
 
+Use a persistent shell for the background launch above. In an execution harness
+that kills background children on command exit, run the same Next command in
+a retained foreground session, retain that session and its PID, and stop it
+through that session during cleanup.
+
 Wait at most 30 seconds for `curl --fail http://127.0.0.1:3100/` and the Next
 `Ready` line in server.log. On failure inspect that log, stop only the owned
 process, and report failure. Do not point this skill at production.
