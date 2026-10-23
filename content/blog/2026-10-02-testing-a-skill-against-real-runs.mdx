@@ -49,7 +49,7 @@ The first version of that table had a problem. Some "after" scores came from an 
 
 ## What the numbers do not show
 
-Each scenario ran once. Look at the last two controls. One went down 3 points and one went up 3, and neither was the target of a fix. So I treat a single jump from 7 to 10 as noise. Saying more would need repeated runs.
+Each scenario ran once. Look at the plan-only control and the stale-revision control. One went down 3 points and one went up 3, and neither was the target of a fix. So I treat a single jump from 7 to 10 as noise. Saying more would need repeated runs.
 
 I also did not rerun all 22 scenarios on the final version. I can say the three failures now pass. I cannot say the whole set does.
 
@@ -57,10 +57,10 @@ One gap stayed open. The self-review rule is about order: write the note, then s
 
 ## What I check before accepting a skill change
 
-1. Which real failure prompted the edit?
-2. Which scenario reproduces it, and which control covers the behavior that must not change?
-3. Do all the "after" scores come from the same version of the skill?
-4. Can the grader actually see the behavior, including the order things happened in?
-5. What is still unproven, and what would prove it?
+These are the five questions I ask. I am applying them to the procedures in my [skill library](/projects/codex-skills), but I have not measured the result across the whole library yet.
 
-I am applying this to the procedures in my [skill library](/projects/codex-skills). I have not measured it across the whole library yet.
+1. Which real failure prompted the edit?
+2. Which scenario reproduces it, and which control covers the behaviour that must not change?
+3. Do all the "after" scores come from the same version of the skill?
+4. Can the grader actually see the behaviour, including the order things happened in?
+5. What is still unproven, and what would prove it?
