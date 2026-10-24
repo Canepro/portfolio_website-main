@@ -6,7 +6,9 @@ import { createRequire } from 'node:module';
 
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
-// Apply before filesystem access and to tracked paths as well as discovered files.
+const sourceRoots = ['src', 'app', 'pages', 'content', 'public', 'scripts', '.agents'];
+
+// Classify names before inspecting excluded targets, including tracked paths.
 const excludedSourcePath = path =>
   path
     .split('/')
@@ -55,9 +57,18 @@ export function sourceFingerprint(root) {
     if (postcssConfig && dirname(resolve(postcssConfig)) !== resolve(root))
       throw new Error('PostCSS discovered a config outside the checkout');
   }
+  // Skipping a nested excluded input could falsely attest a Next route or asset.
+  // Git names also catch tracked exclusions whose target is missing on disk.
+  const rejectExcludedInput = path => {
+    if (excludedSourcePath(path))
+      throw new Error('Excluded entry in source scope; move it outside source roots');
+  };
+  for (const path of [...committed.keys(), ...git(['ls-files', '-z']).split('\0')]) {
+    if (sourceRoots.includes(path.split('/')[0])) rejectExcludedInput(path);
+  }
   const paths = new Set([...committed.keys()].filter(path => !excludedSourcePath(path)));
   const walk = relative => {
-    if (excludedSourcePath(relative)) return;
+    rejectExcludedInput(relative);
     const path = resolve(root, relative);
     if (!existsSync(path)) return;
     const stat = lstatSync(path);
@@ -66,9 +77,8 @@ export function sourceFingerprint(root) {
     } else paths.add(relative);
   };
   // Include ignored and untracked files where Next/content/verifier inputs live.
-  // Exclusions apply at every depth, before inspecting even a symlink or directory.
-  for (const scope of ['src', 'app', 'pages', 'content', 'public', 'scripts', '.agents'])
-    walk(scope);
+  // Reject nested exclusions before inspecting even a symlink or directory.
+  for (const scope of sourceRoots) walk(scope);
   for (const name of readdirSync(root)) {
     // Bounded root source/config admission catches hooks and their root imports,
     // including future hook names, without walking dependencies or private dirs.

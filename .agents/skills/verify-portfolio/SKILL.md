@@ -77,10 +77,23 @@ All six installed Next PostCSS filenames are covered: .postcssrc.json,
 postcss.config.json, .postcssrc.js, postcss.config.js/mjs/cjs. PostCSS filename
 discovery follows Next's order and rejects a discovered parent config unless
 a root package.json object-valued PostCSS field takes precedence.
-Non-regular source inputs are rejected. Any path containing a component named
-output, node_modules or .next, or beginning with .env, is excluded at every
-depth, including tracked paths. Exclusion happens before filesystem inspection,
-recursion or content reads; these paths and their hashes do not enter source proof.
+Non-regular source inputs are rejected. A component named output, node_modules
+or .next, or beginning with .env, inside any of the seven source roots causes
+attestation to fail closed. This applies to names observed in parent directory
+listings and HEAD/index tracked source-scoped paths, including missing targets.
+The guard rejects before filesystem access to the excluded target, recursion,
+content reads or hashing. The error records only the rejection category, without
+the excluded path or hash. This prevents a silently omitted Next route or public
+asset from receiving clean acceptance. Move such entries outside the source roots;
+do not inspect their contents to resolve the rejection.
+
+At the checkout root, output, node_modules, .next and .env-prefixed entries remain
+excluded without inspection by source traversal, including tracked root entries.
+Root .env.example is a harmless tracked exclusion because Next does not load it
+as an environment file. Actual root environment inputs and dependency bytes are
+outside this attestation. The bounded rejection rule covers the seven named
+source trees; it does not claim exclusion of every private file or every input
+Next or imported code could consume.
 Browser profiles must stay outside the documented source scopes. Arbitrarily
 named profile directories inside those scopes are not mechanically recognized
 or excluded by this bounded name policy.
@@ -90,8 +103,10 @@ scopes are outside this source attestation;
 use the locked install and retain build logs. Do not add private files to
 source scopes. Proof contains hashes, not source contents or environment dumps.
 
-Acceptance requires byte-for-byte committed inputs. For a deliberate dirty
-experiment only, supply a third positional absolute JSON path:
+Acceptance requires byte-for-byte committed inputs within the documented source
+and configuration scopes, with the root environment and dependency exclusions
+above. For a deliberate dirty experiment only, supply a third positional
+absolute JSON path:
 
 ```json
 {
