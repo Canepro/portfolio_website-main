@@ -69,10 +69,19 @@ parent config (including a parent package.json Browserslist field) is rejected.
 Parent config contents are not imported into proof or fingerprint scopes.
 Discovery errors fail closed. Move the intended config into committed root
 inputs before clean acceptance.
+All root files with js/mjs/cjs/jsx/ts/mts/cts/tsx/json/css/scss/sass/less/
+md/mdx/yaml/yml/toml/wasm/node extensions are admitted as source/config inputs. New root files must be committed before
+attestation; they are rejected without reading their contents. This
+includes root instrumentation-client hooks and root code/config imports.
+All six installed Next PostCSS filenames are covered: .postcssrc.json,
+postcss.config.json, .postcssrc.js, postcss.config.js/mjs/cjs. PostCSS filename
+discovery follows Next's order and rejects a discovered parent config unless
+a root package.json object-valued PostCSS field takes precedence.
 Non-regular source inputs are rejected. Untracked output/, node_modules/,
-.next/, local environment files and browser profiles are never traversed.
+.next/, all .env\* variants and browser profiles are never traversed.
 Environment overrides (including BROWSERSLIST_CONFIG), dependency bytes and
-configuration imports outside these scopes are outside this source attestation;
+root code, hooks, apps and configuration imports outside these documented
+scopes are outside this source attestation;
 use the locked install and retain build logs. Do not add private files to
 source scopes. Proof contains hashes, not source contents or environment dumps.
 
@@ -86,11 +95,15 @@ experiment only, supply a third positional absolute JSON path:
 }
 ```
 
+The manifest must be an object with a nonblank reason and nonempty valid changes.
+Falsy JSON values and malformed records fail before build with a bounded verdict.
 The manifest must match the complete sorted changed-path/hash list exactly
 (deletions use null). It cannot silently authorize another change. The wrapper
 builds those inputs and rechecks source after build and after driving. Its
 fingerprint labels the experiment explicitly. Every verdict has `clean`,
 `behaviorOk` and `ok`: `clean` requires committed inputs and no experiment;
+`clean=true` is established only by successful attestation; `clean=false` also
+covers errors or incomplete evidence and does not assert dirty source bytes.
 `behaviorOk` reports the route/browser/completeness/candidate/gap result;
 `ok` requires both. Any experiment, including one changing verifier inputs,
 prints EXPERIMENT with its behavioral result, `clean=false` and acceptance FAIL,

@@ -33,6 +33,22 @@ export function sourceFingerprint(root) {
   }
   if (browserslistConfig && dirname(resolve(browserslistConfig)) !== resolve(root))
     throw new Error('Browserslist discovered a config outside the checkout');
+  // Match installed Next findConfigPath's complete PostCSS filename order.
+  // package.json's object-valued field wins before filename discovery.
+  const packageConfig = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
+  const postcssNames = [
+    '.postcssrc.json',
+    'postcss.config.json',
+    '.postcssrc.js',
+    'postcss.config.js',
+    'postcss.config.mjs',
+    'postcss.config.cjs',
+  ];
+  if (packageConfig.postcss === null || typeof packageConfig.postcss !== 'object') {
+    const postcssConfig = require('next/dist/compiled/find-up').sync(postcssNames, { cwd: root });
+    if (postcssConfig && dirname(resolve(postcssConfig)) !== resolve(root))
+      throw new Error('PostCSS discovered a config outside the checkout');
+  }
   const paths = new Set(committed.keys());
   const walk = relative => {
     const path = resolve(root, relative);
@@ -43,11 +59,16 @@ export function sourceFingerprint(root) {
     } else paths.add(relative);
   };
   // Include ignored and untracked files where Next/content/verifier inputs live.
-  // Never traverse output/, node_modules/, .next/, local env files or profiles.
+  // Never traverse output/, node_modules/, .next/, any .env* files or profiles.
   for (const scope of ['src', 'app', 'pages', 'content', 'public', 'scripts', '.agents'])
     walk(scope);
   for (const name of readdirSync(root)) {
+    // Bounded root source/config admission catches hooks and their root imports,
+    // including future hook names, without walking dependencies or private dirs.
+    if (name.startsWith('.env')) continue;
     if (
+      postcssNames.includes(name) ||
+      /\.(?:[cm]?[jt]sx?|json|css|scss|sass|less|mdx?|ya?ml|toml|wasm|node)$/.test(name) ||
       /^(?:next\.config\.|next-env\.d\.ts$|tsconfig.*\.json$|jsconfig\.json$|\.babelrc(?:\.(?:json|js|mjs|cjs))?$|babel\.config\.(?:js|json|mjs|cjs)$|browserslist$|\.browserslistrc$|tailwind\.config\.|postcss\.config\.|package\.json$|bun\.lockb?$|mdx-components\.)/.test(
         name
       )
@@ -66,6 +87,10 @@ export function sourceFingerprint(root) {
     }
     const stat = lstatSync(absolute);
     if (!stat.isFile()) throw new Error(`Unsupported non-regular source input: ${path}`);
+    // Unknown root code/config must be committed first. Do not ingest arbitrary
+    // private JSON/auth file contents merely because an extension matches.
+    if (!expected && !path.includes('/'))
+      throw new Error('Uncommitted root source/config input; commit before attestation');
     const bytes = readFileSync(absolute);
     const digest = sha256(bytes);
     const oid = execFileSync('git', ['hash-object', '--stdin'], {
@@ -86,11 +111,32 @@ export function sourceFingerprint(root) {
 }
 
 export function requireSource(source, experiment) {
+  if (experiment !== null && experiment !== undefined) {
+    if (
+      typeof experiment !== 'object' ||
+      Array.isArray(experiment) ||
+      typeof experiment.reason !== 'string' ||
+      !experiment.reason.trim() ||
+      !Array.isArray(experiment.changes) ||
+      !experiment.changes.length ||
+      experiment.changes.some(
+        change =>
+          !change ||
+          typeof change !== 'object' ||
+          Array.isArray(change) ||
+          typeof change.path !== 'string' ||
+          !change.path ||
+          !(
+            change.sha256 === null ||
+            (typeof change.sha256 === 'string' && /^[a-f0-9]{64}$/.test(change.sha256))
+          )
+      )
+    )
+      throw new Error('Invalid experiment manifest: expected a reason and exact nonempty changes');
+  }
   const expected = experiment?.changes ?? [];
   if (JSON.stringify(source.changes) !== JSON.stringify(expected))
     throw new Error('Source differs from committed blobs or the exact experiment manifest');
-  if (experiment && (!experiment.reason || !expected.length))
-    throw new Error('An experiment needs a reason and exact nonempty changes');
 }
 
 export function completeReport(report) {

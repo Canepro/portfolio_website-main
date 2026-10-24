@@ -30,9 +30,8 @@ if (url.origin !== base || url.protocol !== 'http:' || url.hostname !== '127.0.0
 const destination = resolve(realpathSync(dirname(output)), basename(output));
 if (destination === root || destination.startsWith(`${root}/`))
   throw new Error('Evidence must be outside the worktree');
-if (experimentFile && !experimentFile.startsWith('/'))
-  throw new Error('Experiment manifest must be absolute');
-const experiment = experimentFile ? JSON.parse(readFileSync(experimentFile, 'utf8')) : null;
+const hasExperiment = experimentFile !== undefined;
+let experiment = null;
 const lock = resolve(root, '.verify-portfolio.lock');
 mkdirSync(destination); // Refuse existing evidence before any verdict write.
 mkdirSync(lock);
@@ -51,6 +50,16 @@ const verdict = { startedAt: new Date().toISOString(), ok: false, clean: false, 
 const save = (name, data) =>
   writeFileSync(resolve(destination, name), JSON.stringify(data, null, 2));
 try {
+  if (hasExperiment) {
+    if (!experimentFile.startsWith('/')) throw new Error('Experiment manifest must be absolute');
+    try {
+      experiment = JSON.parse(readFileSync(experimentFile, 'utf8'));
+    } catch {
+      throw new Error('Experiment manifest could not be read or parsed');
+    }
+    if (!experiment || typeof experiment !== 'object' || Array.isArray(experiment))
+      throw new Error('Invalid experiment manifest: expected an object');
+  }
   const run = (script, args, log) => {
     const result = spawnSync(process.execPath, [script, ...args], {
       cwd: root,
@@ -66,7 +75,7 @@ try {
   const source = sourceFingerprint(root);
   save('source.json', source);
   requireSource(source, experiment);
-  verdict.clean = !experiment && source.changes.length === 0;
+  verdict.clean = !hasExperiment && source.changes.length === 0;
   // Build inside this run, then launch the exact Next binary from this checkout.
   if (!run('node_modules/next/dist/bin/next', ['build'], 'build.log'))
     throw new Error('Production build failed');
@@ -203,6 +212,6 @@ try {
   rmdirSync(lock);
 }
 console.log(
-  `${experiment ? `EXPERIMENT ${verdict.behaviorOk ? 'BEHAVIOR PASS' : 'BEHAVIOR FAIL'}; clean=false; acceptance=FAIL` : verdict.ok ? 'PASS' : 'FAIL'} portfolio sweep: ${destination}${verdict.error ? `; ${verdict.error}` : ''}`
+  `${hasExperiment ? `EXPERIMENT ${verdict.behaviorOk ? 'BEHAVIOR PASS' : 'BEHAVIOR FAIL'}; clean=false; acceptance=FAIL` : verdict.ok ? 'PASS' : 'FAIL'} portfolio sweep: ${destination}${verdict.error ? `; ${verdict.error}` : ''}`
 );
 if (!verdict.ok) process.exitCode = 1;
