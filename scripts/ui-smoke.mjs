@@ -211,6 +211,8 @@ try {
         if (!response?.ok())
           throw new Error(`Document request returned ${response?.status() ?? 'no response'}`);
         await page.locator('main h1').waitFor();
+        // This control is absent until hydration; SSR menu buttons can lose early clicks.
+        await page.getByRole('button', { name: /^Switch to (light|dark) mode$/ }).waitFor();
       };
       await journey('home', ['Open /'], async () => {
         await load('/');

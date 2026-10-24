@@ -167,11 +167,12 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
 
 - `bun run lint`
 - `bun run typecheck`
-- `bun run build`
-- `bun run verify:portfolio` against the production build on a loopback server (`bun run start -- -H 127.0.0.1 -p 3100`).
+- Follow [verify-portfolio](.agents/skills/verify-portfolio/SKILL.md), the project-local exception for browser completion proof.
+- Run its strict wrapper with a new absolute proof directory outside the checkout: `node .agents/skills/verify-portfolio/scripts/sweep.mjs /absolute/proof-parent/new-run http://127.0.0.1:3100`. It builds production, owns the loopback server, runs route contracts and all 40 browser states, and closes its server.
+- Require `ok: true` and `clean: true` in `verdict.json` and inspect every capture as the skill directs. An experiment is never completion proof, even when `behaviorOk: true`. Raw `verify:portfolio` or `smoke:ui` success alone is insufficient.
 - Verify key pages render: `/`, `/projects`, `/blog`, `/systems` (and any new routes added).
 - If the change affects layout/styling: verify both desktop + mobile (responsive nav, no overflow, readable type).
-- If the change touches the header email link or mobile menu: run `bun run smoke:ui -- --base-url http://127.0.0.1:3100` and inspect desktop/mobile screenshots in both themes.
+- Header email and mobile-menu changes require the same strict sweep and desktop/mobile capture review in both themes.
 
 ## Agent Skills
 
@@ -191,20 +192,20 @@ Refresh or verify:
 bash ~/src/codex-skills/scripts/check-drift.sh
 ```
 
-| When                                    | Skill                       |
-| --------------------------------------- | --------------------------- |
-| Any user-visible prose (mandatory pass) | `anti-ai-writing`           |
-| UI polish; avoid generic/template look  | `frontend-uncodixfy`        |
-| Pre-ship UX audit                       | `frontend-review`           |
-| Mobile/responsive layout                | `responsive-design`         |
-| Browser verification after UI changes   | `webapp-testing`            |
-| Component/token consistency             | `design-system-maintenance` |
-| GitHub Actions CI red on a PR           | `gh-fix-ci`                 |
-| PR review comments                      | `gh-address-comments`       |
-| Jenkins / multibranch pipeline failures | `ci-pipeline-triage`        |
-| Commit hooks / lint-staged              | `setup-pre-commit`          |
-| Post-task delivery notes                | `codex-closeout`            |
-| Discover or install new skills          | `find-skills`               |
+| When                                    | Skill                            |
+| --------------------------------------- | -------------------------------- |
+| Any user-visible prose (mandatory pass) | `anti-ai-writing`                |
+| UI polish; avoid generic/template look  | `frontend-uncodixfy`             |
+| Pre-ship UX audit                       | `frontend-review`                |
+| Mobile/responsive layout                | `responsive-design`              |
+| Browser verification after UI changes   | project-local `verify-portfolio` |
+| Component/token consistency             | `design-system-maintenance`      |
+| GitHub Actions CI red on a PR           | `gh-fix-ci`                      |
+| PR review comments                      | `gh-address-comments`            |
+| Jenkins / multibranch pipeline failures | `ci-pipeline-triage`             |
+| Commit hooks / lint-staged              | `setup-pre-commit`               |
+| Post-task delivery notes                | `codex-closeout`                 |
+| Discover or install new skills          | `find-skills`                    |
 
 Project rule: `.cursor/rules/anti-ai-writing.mdc` (`alwaysApply: true`). For all Cursor workspaces, also paste `~/src/codex-skills/cursor-rules/USER-RULE-anti-ai.txt` into **Cursor Settings → Rules → User Rules**.
 
