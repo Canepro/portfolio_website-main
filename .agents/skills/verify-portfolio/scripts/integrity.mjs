@@ -6,6 +6,12 @@ import { createRequire } from 'node:module';
 
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
+// Apply before filesystem access and to tracked paths as well as discovered files.
+const excludedSourcePath = path =>
+  path
+    .split('/')
+    .some(part => ['output', 'node_modules', '.next'].includes(part) || part.startsWith('.env'));
+
 // Read bytes directly: Git's index flags must not hide a source change.
 export function sourceFingerprint(root) {
   const git = args => execFileSync('git', args, { cwd: root, encoding: 'utf8' });
@@ -49,8 +55,9 @@ export function sourceFingerprint(root) {
     if (postcssConfig && dirname(resolve(postcssConfig)) !== resolve(root))
       throw new Error('PostCSS discovered a config outside the checkout');
   }
-  const paths = new Set(committed.keys());
+  const paths = new Set([...committed.keys()].filter(path => !excludedSourcePath(path)));
   const walk = relative => {
+    if (excludedSourcePath(relative)) return;
     const path = resolve(root, relative);
     if (!existsSync(path)) return;
     const stat = lstatSync(path);
@@ -59,13 +66,13 @@ export function sourceFingerprint(root) {
     } else paths.add(relative);
   };
   // Include ignored and untracked files where Next/content/verifier inputs live.
-  // Never traverse output/, node_modules/, .next/, any .env* files or profiles.
+  // Exclusions apply at every depth, before inspecting even a symlink or directory.
   for (const scope of ['src', 'app', 'pages', 'content', 'public', 'scripts', '.agents'])
     walk(scope);
   for (const name of readdirSync(root)) {
     // Bounded root source/config admission catches hooks and their root imports,
     // including future hook names, without walking dependencies or private dirs.
-    if (name.startsWith('.env')) continue;
+    if (excludedSourcePath(name)) continue;
     if (
       postcssNames.includes(name) ||
       /\.(?:[cm]?[jt]sx?|json|css|scss|sass|less|mdx?|ya?ml|toml|wasm|node)$/.test(name) ||

@@ -58,8 +58,8 @@ second driver; inspect processes before removing your abandoned empty lock.
 ## Source identity and controlled experiments
 
 `source.json` records HEAD, a SHA-256 of actual file bytes/modes and bounded
-changed paths/hashes. Every tracked blob is compared directly with HEAD,
-independent of Git index flags. New files under src, app, pages, content,
+changed paths/hashes. Every tracked blob within the policy below is compared
+directly with HEAD, independent of Git index flags. New files under src, app, pages, content,
 public, scripts and .agents, plus root Next/TypeScript/Tailwind/PostCSS/package/
 Bun/MDX configuration inputs, join the fingerprint even when ignored by Git.
 This includes jsconfig.json, .babelrc and its json/js/mjs/cjs variants,
@@ -77,8 +77,13 @@ All six installed Next PostCSS filenames are covered: .postcssrc.json,
 postcss.config.json, .postcssrc.js, postcss.config.js/mjs/cjs. PostCSS filename
 discovery follows Next's order and rejects a discovered parent config unless
 a root package.json object-valued PostCSS field takes precedence.
-Non-regular source inputs are rejected. Untracked output/, node_modules/,
-.next/, all .env\* variants and browser profiles are never traversed.
+Non-regular source inputs are rejected. Any path containing a component named
+output, node_modules or .next, or beginning with .env, is excluded at every
+depth, including tracked paths. Exclusion happens before filesystem inspection,
+recursion or content reads; these paths and their hashes do not enter source proof.
+Browser profiles must stay outside the documented source scopes. Arbitrarily
+named profile directories inside those scopes are not mechanically recognized
+or excluded by this bounded name policy.
 Environment overrides (including BROWSERSLIST_CONFIG), dependency bytes and
 root code, hooks, apps and configuration imports outside these documented
 scopes are outside this source attestation;
