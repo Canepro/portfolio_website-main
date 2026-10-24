@@ -1,0 +1,138 @@
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
+
+// Read bytes directly: Git's index flags must not hide a source change.
+export function sourceFingerprint(root) {
+  const git = args => execFileSync('git', args, { cwd: root, encoding: 'utf8' });
+  const committed = new Map(
+    git(['ls-tree', '-r', '-z', 'HEAD'])
+      .split('\0')
+      .filter(Boolean)
+      .map(entry => {
+        const [metadata, path] = entry.split('\t');
+        const [mode, type, oid] = metadata.split(' ');
+        if (type !== 'blob') throw new Error('Unsupported source tree entry');
+        return [path, { mode, oid }];
+      })
+  );
+  const paths = new Set(committed.keys());
+  const walk = relative => {
+    const path = resolve(root, relative);
+    if (!existsSync(path)) return;
+    const stat = lstatSync(path);
+    if (stat.isDirectory()) {
+      for (const child of readdirSync(path)) walk(`${relative}/${child}`);
+    } else paths.add(relative);
+  };
+  // Include ignored and untracked files where Next/content/verifier inputs live.
+  // Never traverse output/, node_modules/, .next/, local env files or profiles.
+  for (const scope of ['src', 'app', 'pages', 'content', 'public', 'scripts', '.agents'])
+    walk(scope);
+  for (const name of readdirSync(root)) {
+    if (
+      /^(?:next\.config\.|next-env\.d\.ts$|tsconfig.*\.json$|tailwind\.config\.|postcss\.config\.|package\.json$|bun\.lockb?$|mdx-components\.)/.test(
+        name
+      )
+    )
+      paths.add(name);
+  }
+  const files = [];
+  const changes = [];
+  for (const path of [...paths].sort()) {
+    const absolute = resolve(root, path);
+    const expected = committed.get(path);
+    if (!existsSync(absolute)) {
+      files.push([path, 'missing']);
+      changes.push({ path, sha256: null });
+      continue;
+    }
+    const stat = lstatSync(absolute);
+    if (!stat.isFile()) throw new Error(`Unsupported non-regular source input: ${path}`);
+    const bytes = readFileSync(absolute);
+    const digest = sha256(bytes);
+    const oid = execFileSync('git', ['hash-object', '--stdin'], {
+      cwd: root,
+      input: bytes,
+      encoding: 'utf8',
+    }).trim();
+    const mode = stat.mode & 0o111 ? '100755' : '100644';
+    files.push([path, mode, digest]);
+    if (!expected || expected.oid !== oid || expected.mode !== mode)
+      changes.push({ path, sha256: digest });
+  }
+  return {
+    revision: git(['rev-parse', 'HEAD']).trim(),
+    sourceSha256: sha256(JSON.stringify(files)),
+    changes,
+  };
+}
+
+export function requireSource(source, experiment) {
+  const expected = experiment?.changes ?? [];
+  if (JSON.stringify(source.changes) !== JSON.stringify(expected))
+    throw new Error('Source differs from committed blobs or the exact experiment manifest');
+  if (experiment && (!experiment.reason || !expected.length))
+    throw new Error('An experiment needs a reason and exact nonempty changes');
+}
+
+export function completeReport(report) {
+  const common = [
+    'home',
+    'projects',
+    'case-study',
+    'blog',
+    'topic-filter',
+    'article',
+    'systems',
+    'contact',
+    'theme-toggle',
+  ];
+  const expected = [];
+  for (const [width, height] of [
+    [1440, 900],
+    [390, 844],
+  ]) {
+    for (const theme of ['dark', 'light']) {
+      for (const name of width === 390 ? [...common, 'mobile-menu', 'menu-navigation'] : common) {
+        expected.push(
+          JSON.stringify([
+            width,
+            height,
+            name,
+            name === 'theme-toggle' ? (theme === 'dark' ? 'light' : 'dark') : theme,
+          ])
+        );
+      }
+    }
+  }
+  const actual = report.states.map(state =>
+    JSON.stringify([state.viewport?.width, state.viewport?.height, state.name, state.theme])
+  );
+  return (
+    actual.length === expected.length &&
+    new Set(actual).size === actual.length &&
+    expected.every(tuple => actual.includes(tuple))
+  );
+}
+
+export function listeners(port) {
+  if (process.platform !== 'linux')
+    throw new Error('Listener binding requires Linux /proc; this host is unsupported');
+  return ['/proc/net/tcp', '/proc/net/tcp6'].flatMap(path =>
+    readFileSync(path, 'utf8')
+      .trim()
+      .split('\n')
+      .slice(1)
+      .flatMap(line => {
+        const fields = line.trim().split(/\s+/);
+        const [address, hexPort] = fields[1].split(':');
+        return fields[3] === '0A' && parseInt(hexPort, 16) === port
+          ? [{ address, inode: fields[9] }]
+          : [];
+      })
+  );
+}

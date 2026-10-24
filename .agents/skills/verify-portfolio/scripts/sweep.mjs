@@ -1,38 +1,56 @@
 #!/usr/bin/env node
-// Node >=22; uses this repository's pinned Playwright through ui-smoke.mjs.
-import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync, rmdirSync } from 'node:fs';
-import { resolve } from 'node:path';
+// Node >=22 and pinned repository Playwright; listener proof currently requires Linux /proc.
+import { spawn, spawnSync } from 'node:child_process';
+import {
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  rmdirSync,
+  openSync,
+  closeSync,
+  readlinkSync,
+  readdirSync,
+  realpathSync,
+} from 'node:fs';
+import { resolve, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createHash } from 'node:crypto';
+import { setTimeout as delay } from 'node:timers/promises';
+import { once } from 'node:events';
+import { sourceFingerprint, requireSource, completeReport, listeners } from './integrity.mjs';
 
-const root = resolve(fileURLToPath(new URL('../../../../', import.meta.url)));
-const output = process.argv[2];
-const base = process.argv[3] ?? 'http://127.0.0.1:3100';
-if (!output || !output.startsWith('/') || process.argv.length > 4)
+const root = realpathSync(resolve(fileURLToPath(new URL('../../../../', import.meta.url))));
+const [output, base = 'http://127.0.0.1:3100', experimentFile] = process.argv.slice(2);
+if (!output?.startsWith('/') || process.argv.length > 5)
   throw new Error(
-    'Usage: node .agents/skills/verify-portfolio/scripts/sweep.mjs /absolute/new-proof-dir [loopback-origin]'
+    'Usage: sweep.mjs /absolute/new-proof-dir [loopback-origin] [absolute-experiment.json]'
   );
 const url = new URL(base);
 if (url.origin !== base || url.protocol !== 'http:' || url.hostname !== '127.0.0.1')
   throw new Error('Use a literal HTTP loopback origin without a trailing slash');
-const destination = resolve(output);
+const destination = resolve(realpathSync(dirname(output)), basename(output));
 if (destination === root || destination.startsWith(`${root}/`))
   throw new Error('Evidence must be outside the worktree');
-const lock = resolve(root, '.next/verify-portfolio.lock');
-mkdirSync(lock); // Refuse a second driver; inspect ownership before recovering a stale lock.
+if (experimentFile && !experimentFile.startsWith('/'))
+  throw new Error('Experiment manifest must be absolute');
+const experiment = experimentFile ? JSON.parse(readFileSync(experimentFile, 'utf8')) : null;
+const lock = resolve(root, '.verify-portfolio.lock');
+mkdirSync(destination); // Refuse existing evidence before any verdict write.
+mkdirSync(lock);
+let server;
+let serverLog;
+let interrupted = false;
+const interrupt = () => {
+  interrupted = true;
+  server?.kill('SIGTERM');
+};
+process.on('SIGINT', interrupt);
+process.on('SIGTERM', interrupt);
+const port = Number(url.port || 80);
+/** @type {{ startedAt: string, ok: boolean, error?: string, finishedAt?: string }} */
+const verdict = { startedAt: new Date().toISOString(), ok: false };
+const save = (name, data) =>
+  writeFileSync(resolve(destination, name), JSON.stringify(data, null, 2));
 try {
-  mkdirSync(destination); // Existing evidence must never be overwritten.
-  const git = args => execFileSync('git', args, { cwd: root, encoding: 'utf8' });
-  const fingerprint = {
-    revision: git(['rev-parse', 'HEAD']).trim(),
-    trackedDiffSha256: createHash('sha256')
-      .update(git(['diff', 'HEAD', '--']))
-      .digest('hex'),
-    buildId: readFileSync(resolve(root, '.next/BUILD_ID'), 'utf8').trim(),
-    startedAt: new Date().toISOString(),
-  };
-  writeFileSync(resolve(destination, 'fingerprint.json'), JSON.stringify(fingerprint, null, 2));
   const run = (script, args, log) => {
     const result = spawnSync(process.execPath, [script, ...args], {
       cwd: root,
@@ -43,62 +61,145 @@ try {
     writeFileSync(resolve(destination, log), `${result.stdout ?? ''}\n${result.stderr ?? ''}`);
     return result.status === 0 && !result.error;
   };
+  if (listeners(port).length)
+    throw new Error('Port already has a listener; refusing an unowned or wrong-checkout server');
+  const source = sourceFingerprint(root);
+  save('source.json', source);
+  requireSource(source, experiment);
+  // Build inside this run, then launch the exact Next binary from this checkout.
+  if (!run('node_modules/next/dist/bin/next', ['build'], 'build.log'))
+    throw new Error('Production build failed');
+  const stableSource = () => {
+    if (JSON.stringify(sourceFingerprint(root)) !== JSON.stringify(source))
+      throw new Error('Source changed during verification');
+  };
+  stableSource();
+  const buildId = readFileSync(resolve(root, '.next/BUILD_ID'), 'utf8').trim();
+  serverLog = openSync(resolve(destination, 'server.log'), 'wx');
+  server = spawn(
+    process.execPath,
+    ['node_modules/next/dist/bin/next', 'start', '-H', '127.0.0.1', '-p', String(port)],
+    {
+      cwd: root,
+      stdio: ['ignore', serverLog, serverLog],
+    }
+  );
+  let launchError;
+  server.on('error', error => {
+    launchError = error;
+  });
+  const binding = () => {
+    if (
+      launchError ||
+      !server?.pid ||
+      server.exitCode !== null ||
+      server.signalCode !== null ||
+      interrupted
+    )
+      throw new Error('Owned server is no longer running');
+    const bound = listeners(port);
+    if (bound.length !== 1 || bound[0].address !== '0100007F')
+      throw new Error('Expected exactly one literal IPv4 loopback listener');
+    const proc = `/proc/${server.pid}`;
+    const inodes = readdirSync(`${proc}/fd`).flatMap(fd => {
+      try {
+        return [readlinkSync(`${proc}/fd/${fd}`)];
+      } catch {
+        return [];
+      }
+    });
+    if (
+      !inodes.includes(`socket:[${bound[0].inode}]`) ||
+      realpathSync(`${proc}/cwd`) !== root ||
+      realpathSync(`${proc}/exe`) !== realpathSync(process.execPath)
+    )
+      throw new Error('Listener PID, executable or checkout does not match the owned launch');
+    if (readFileSync(resolve(root, '.next/BUILD_ID'), 'utf8').trim() !== buildId)
+      throw new Error('Build changed during verification');
+    return {
+      pid: server.pid,
+      cwd: root,
+      executable: realpathSync(process.execPath),
+      ...bound[0],
+      buildId,
+    };
+  };
+  let ready = false;
+  for (let attempt = 0; attempt < 120; attempt++) {
+    if (launchError || server.exitCode !== null || server.signalCode !== null || interrupted) break;
+    if (listeners(port).length) {
+      binding();
+      try {
+        const response = await fetch(base, {
+          signal: AbortSignal.timeout(1000),
+          redirect: 'manual',
+        });
+        await response.body?.cancel();
+        if (response.status === 200) {
+          ready = true;
+          break;
+        }
+      } catch {
+        /* Readiness is bounded by the launch deadline. */
+      }
+    }
+    await delay(250);
+  }
+  if (!ready) throw new Error('Owned server did not become ready');
+  const fingerprint = {
+    ...source,
+    buildId,
+    listener: binding(),
+    experiment: experiment ?? null,
+    startedAt: verdict.startedAt,
+  };
+  save('fingerprint.json', fingerprint);
   const contracts = run('scripts/verify-portfolio.mjs', ['--base-url', base], 'contracts.log');
+  binding();
   const browser = run(
     'scripts/ui-smoke.mjs',
     ['--base-url', base, '--output', resolve(destination, 'browser')],
     'browser.log'
   );
+  binding();
+  stableSource();
   const report = JSON.parse(readFileSync(resolve(destination, 'browser/run.json'), 'utf8'));
-  const common = [
-    'home',
-    'projects',
-    'case-study',
-    'blog',
-    'topic-filter',
-    'article',
-    'systems',
-    'contact',
-    'theme-toggle',
-  ];
-  const complete = [1440, 390].every(width =>
-    ['dark', 'light'].every(theme => {
-      const names = width === 390 ? [...common, 'mobile-menu', 'menu-navigation'] : common;
-      return names.every(name =>
-        report.states.some(
-          state =>
-            state.viewport.width === width &&
-            state.name === name &&
-            state.theme ===
-              (name === 'theme-toggle' ? (theme === 'dark' ? 'light' : 'dark') : theme)
-        )
-      );
-    })
-  );
-  const ok =
-    contracts &&
-    browser &&
-    complete &&
-    report.states.length === 40 &&
-    report.candidates.length === 0 &&
-    report.gaps.length === 0;
-  const verdict = {
-    ...fingerprint,
-    finishedAt: new Date().toISOString(),
-    ok,
+  const complete = completeReport(report);
+  Object.assign(verdict, fingerprint, {
     contracts,
     browser,
     complete,
     states: report.states.length,
     candidates: report.candidates.length,
     gaps: report.gaps,
+    ok:
+      contracts &&
+      browser &&
+      complete &&
+      report.candidates.length === 0 &&
+      report.gaps.length === 0,
     visualReview: 'required separately; inspect every capture',
-  };
-  writeFileSync(resolve(destination, 'verdict.json'), JSON.stringify(verdict, null, 2));
-  console.log(
-    `${ok ? 'PASS' : 'FAIL'} portfolio sweep: ${report.states.length} states, ${report.candidates.length} candidates; ${destination}`
-  );
-  if (!ok) process.exitCode = 1;
+  });
+} catch (error) {
+  verdict.error = error instanceof Error ? error.message : String(error);
 } finally {
+  if (server && server.exitCode === null && server.signalCode === null) {
+    const exited = once(server, 'exit');
+    server.kill('SIGTERM');
+    const stopped = await Promise.race([exited.then(() => true), delay(5000).then(() => false)]);
+    if (!stopped) {
+      server.kill('SIGKILL');
+      await exited;
+    }
+  }
+  if (serverLog !== undefined) closeSync(serverLog);
+  process.off('SIGINT', interrupt);
+  process.off('SIGTERM', interrupt);
+  verdict.finishedAt = new Date().toISOString();
+  save('verdict.json', verdict);
   rmdirSync(lock);
 }
+console.log(
+  `${verdict.ok ? 'PASS' : 'FAIL'} portfolio sweep: ${destination}${verdict.error ? `; ${verdict.error}` : ''}`
+);
+if (!verdict.ok) process.exitCode = 1;
