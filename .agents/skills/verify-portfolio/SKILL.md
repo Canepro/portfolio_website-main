@@ -62,9 +62,17 @@ changed paths/hashes. Every tracked blob is compared directly with HEAD,
 independent of Git index flags. New files under src, app, pages, content,
 public, scripts and .agents, plus root Next/TypeScript/Tailwind/PostCSS/package/
 Bun/MDX configuration inputs, join the fingerprint even when ignored by Git.
+This includes jsconfig.json, .babelrc and its json/js/mjs/cjs variants,
+babel.config.js/json/mjs/cjs, browserslist and .browserslistrc. The installed
+Next Browserslist discovery is rechecked without its path cache; a discovered
+parent config (including a parent package.json Browserslist field) is rejected.
+Parent config contents are not imported into proof or fingerprint scopes.
+Discovery errors fail closed. Move the intended config into committed root
+inputs before clean acceptance.
 Non-regular source inputs are rejected. Untracked output/, node_modules/,
 .next/, local environment files and browser profiles are never traversed.
-Local environment and dependency identity are outside this source attestation;
+Environment overrides (including BROWSERSLIST_CONFIG), dependency bytes and
+configuration imports outside these scopes are outside this source attestation;
 use the locked install and retain build logs. Do not add private files to
 source scopes. Proof contains hashes, not source contents or environment dumps.
 
@@ -81,12 +89,18 @@ experiment only, supply a third positional absolute JSON path:
 The manifest must match the complete sorted changed-path/hash list exactly
 (deletions use null). It cannot silently authorize another change. The wrapper
 builds those inputs and rechecks source after build and after driving. Its
-fingerprint labels the experiment explicitly. Retain the controlled patch and
+fingerprint labels the experiment explicitly. Every verdict has `clean`,
+`behaviorOk` and `ok`: `clean` requires committed inputs and no experiment;
+`behaviorOk` reports the route/browser/completeness/candidate/gap result;
+`ok` requires both. Any experiment, including one changing verifier inputs,
+prints EXPERIMENT with its behavioral result, `clean=false` and acceptance FAIL,
+and exits 1 even when behavior passes. Retain the controlled patch and
 restoration receipt separately; a dirty experiment is never clean-commit proof.
 
 ## Evidence and cleanup
 
-Require PASS in `verdict.json` and inspect every PNG named in `browser/run.json`.
+Require `ok: true` and `clean: true` in `verdict.json`, then inspect every PNG
+named in `browser/run.json`.
 Record `visual-review.md` with reviewer, revision, captures, findings and limits.
 Automated PASS does not claim visual approval. Retain build, server, contract
 and browser logs, fingerprints, screenshots and failure verdicts outside Git.

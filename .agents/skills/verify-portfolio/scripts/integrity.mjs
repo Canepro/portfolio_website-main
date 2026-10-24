@@ -1,7 +1,8 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { createRequire } from 'node:module';
 
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
@@ -19,6 +20,19 @@ export function sourceFingerprint(root) {
         return [path, { mode, oid }];
       })
   );
+  // Use Next's installed discovery without retaining parent package contents.
+  // Clear its path cache so a config added during the sweep cannot go unnoticed.
+  const require = createRequire(resolve(root, 'package.json'));
+  const browserslist = require('next/dist/compiled/browserslist');
+  browserslist.clearCaches();
+  let browserslistConfig;
+  try {
+    browserslistConfig = browserslist.findConfigFile(root);
+  } catch {
+    throw new Error('Browserslist config discovery failed');
+  }
+  if (browserslistConfig && dirname(resolve(browserslistConfig)) !== resolve(root))
+    throw new Error('Browserslist discovered a config outside the checkout');
   const paths = new Set(committed.keys());
   const walk = relative => {
     const path = resolve(root, relative);
@@ -34,7 +48,7 @@ export function sourceFingerprint(root) {
     walk(scope);
   for (const name of readdirSync(root)) {
     if (
-      /^(?:next\.config\.|next-env\.d\.ts$|tsconfig.*\.json$|tailwind\.config\.|postcss\.config\.|package\.json$|bun\.lockb?$|mdx-components\.)/.test(
+      /^(?:next\.config\.|next-env\.d\.ts$|tsconfig.*\.json$|jsconfig\.json$|\.babelrc(?:\.(?:json|js|mjs|cjs))?$|babel\.config\.(?:js|json|mjs|cjs)$|browserslist$|\.browserslistrc$|tailwind\.config\.|postcss\.config\.|package\.json$|bun\.lockb?$|mdx-components\.)/.test(
         name
       )
     )
@@ -59,7 +73,7 @@ export function sourceFingerprint(root) {
       input: bytes,
       encoding: 'utf8',
     }).trim();
-    const mode = stat.mode & 0o111 ? '100755' : '100644';
+    const mode = stat.mode & 0o100 ? '100755' : '100644';
     files.push([path, mode, digest]);
     if (!expected || expected.oid !== oid || expected.mode !== mode)
       changes.push({ path, sha256: digest });

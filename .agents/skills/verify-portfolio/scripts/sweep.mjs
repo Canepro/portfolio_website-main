@@ -46,8 +46,8 @@ const interrupt = () => {
 process.on('SIGINT', interrupt);
 process.on('SIGTERM', interrupt);
 const port = Number(url.port || 80);
-/** @type {{ startedAt: string, ok: boolean, error?: string, finishedAt?: string }} */
-const verdict = { startedAt: new Date().toISOString(), ok: false };
+/** @type {{ startedAt: string, ok: boolean, clean: boolean, behaviorOk: boolean, error?: string, finishedAt?: string }} */
+const verdict = { startedAt: new Date().toISOString(), ok: false, clean: false, behaviorOk: false };
 const save = (name, data) =>
   writeFileSync(resolve(destination, name), JSON.stringify(data, null, 2));
 try {
@@ -66,6 +66,7 @@ try {
   const source = sourceFingerprint(root);
   save('source.json', source);
   requireSource(source, experiment);
+  verdict.clean = !experiment && source.changes.length === 0;
   // Build inside this run, then launch the exact Next binary from this checkout.
   if (!run('node_modules/next/dist/bin/next', ['build'], 'build.log'))
     throw new Error('Production build failed');
@@ -172,7 +173,7 @@ try {
     states: report.states.length,
     candidates: report.candidates.length,
     gaps: report.gaps,
-    ok:
+    behaviorOk:
       contracts &&
       browser &&
       complete &&
@@ -180,7 +181,9 @@ try {
       report.gaps.length === 0,
     visualReview: 'required separately; inspect every capture',
   });
+  verdict.ok = verdict.clean && verdict.behaviorOk;
 } catch (error) {
+  verdict.clean = false;
   verdict.error = error instanceof Error ? error.message : String(error);
 } finally {
   if (server && server.exitCode === null && server.signalCode === null) {
@@ -200,6 +203,6 @@ try {
   rmdirSync(lock);
 }
 console.log(
-  `${verdict.ok ? 'PASS' : 'FAIL'} portfolio sweep: ${destination}${verdict.error ? `; ${verdict.error}` : ''}`
+  `${experiment ? `EXPERIMENT ${verdict.behaviorOk ? 'BEHAVIOR PASS' : 'BEHAVIOR FAIL'}; clean=false; acceptance=FAIL` : verdict.ok ? 'PASS' : 'FAIL'} portfolio sweep: ${destination}${verdict.error ? `; ${verdict.error}` : ''}`
 );
 if (!verdict.ok) process.exitCode = 1;

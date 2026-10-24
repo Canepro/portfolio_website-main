@@ -169,7 +169,7 @@ Lesson learned: avoid downgrading `remark-gfm` to v3; it can break MDX compilati
 - `bun run typecheck`
 - Follow [verify-portfolio](.agents/skills/verify-portfolio/SKILL.md), the project-local exception for browser completion proof.
 - Run its strict wrapper with a new absolute proof directory outside the checkout: `node .agents/skills/verify-portfolio/scripts/sweep.mjs /absolute/proof-parent/new-run http://127.0.0.1:3100`. It builds production, owns the loopback server, runs route contracts and all 40 browser states, and closes its server.
-- Require a passing verdict and inspect every capture as the skill directs. Raw `verify:portfolio` or `smoke:ui` success alone is insufficient.
+- Require `ok: true` and `clean: true` in `verdict.json` and inspect every capture as the skill directs. An experiment is never completion proof, even when `behaviorOk: true`. Raw `verify:portfolio` or `smoke:ui` success alone is insufficient.
 - Verify key pages render: `/`, `/projects`, `/blog`, `/systems` (and any new routes added).
 - If the change affects layout/styling: verify both desktop + mobile (responsive nav, no overflow, readable type).
 - Header email and mobile-menu changes require the same strict sweep and desktop/mobile capture review in both themes.
