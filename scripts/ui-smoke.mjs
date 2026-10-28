@@ -60,7 +60,7 @@ try {
     { width: 1440, height: 900 },
     { width: 390, height: 844 },
   ]) {
-    for (const theme of ['dark', 'light']) {
+    for (const theme of /** @type {const} */ (['dark', 'light'])) {
       const context = await browser.newContext({
         viewport,
         colorScheme: theme,
@@ -131,7 +131,8 @@ try {
         const activeTheme = await page.evaluate(() =>
           document.documentElement.classList.contains('dark') ? 'dark' : 'light'
         );
-        const screenshot = `${viewport.width}-${activeTheme}-${++step}-${name}.png`;
+        // Keep capture identity stable even when hydration leaves the wrong theme active.
+        const screenshot = `${viewport.width}-${theme}-${++step}-${name}.png`;
         await page.screenshot({
           path: resolve(output, screenshot),
           fullPage: true,
@@ -148,6 +149,7 @@ try {
           name,
           url: page.url(),
           viewport,
+          contextTheme: theme,
           theme: activeTheme,
           screenshot,
           repro,
@@ -234,7 +236,7 @@ try {
           await load('/projects');
           const link = page.locator('main a[href^="/projects/"]').first();
           await link.click();
-          await page.waitForURL(/\/projects\/[^/]+$/);
+          await page.waitForURL(/\/projects\/[^/]+$/, { waitUntil: 'domcontentloaded' });
           await page.locator('main h1').waitFor();
         }
       );
@@ -248,14 +250,16 @@ try {
           const value = await select.locator('option').nth(1).getAttribute('value');
           if (!value) throw new Error('No topic option');
           await select.selectOption(value);
-          await page.waitForURL(url => url.searchParams.get('tag') === value);
+          await page.waitForURL(url => url.searchParams.get('tag') === value, {
+            waitUntil: 'domcontentloaded',
+          });
           await page.locator('main h2 a[href^="/blog/"]').first().waitFor();
         }
       );
       await journey('article', ['Open /blog', 'Click the first article heading'], async () => {
         await load('/blog');
         await page.locator('main h2 a[href^="/blog/"]').first().click();
-        await page.waitForURL(/\/blog\/[^/?]+$/);
+        await page.waitForURL(/\/blog\/[^/?]+$/, { waitUntil: 'domcontentloaded' });
         await page.locator('main h1').waitFor();
       });
       await journey('systems', ['Open /systems'], () => load('/systems'));
@@ -289,7 +293,9 @@ try {
               .getByRole('navigation', { name: 'Mobile', exact: true })
               .getByRole('link', { name: 'Writing' })
               .click();
-            await page.waitForURL(url => url.pathname === '/blog');
+            await page.waitForURL(url => url.pathname === '/blog', {
+              waitUntil: 'domcontentloaded',
+            });
             await page.getByRole('dialog').waitFor({ state: 'hidden' });
             await page.locator('main h1').waitFor();
           }
